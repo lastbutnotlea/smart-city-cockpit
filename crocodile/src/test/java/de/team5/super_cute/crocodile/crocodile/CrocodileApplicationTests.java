@@ -1,4 +1,4 @@
-package de.team5.super.cute.crocodile.crocodile;
+package de.team5.super_cute.crocodile.crocodile;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
