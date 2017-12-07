@@ -1,4 +1,4 @@
-package de.team5.super_cute.crocodile.crocodile;
+package de.team5.super_cute.crocodile;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
