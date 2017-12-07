@@ -27,4 +27,4 @@ deploy:
   app: charlie-five
   on:
     repo: qw3ry/team5
-    branch: heroku-deployment
+    branch: master
