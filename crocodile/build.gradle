@@ -11,7 +11,6 @@ buildscript {
 }
 
 apply plugin: 'java'
-apply plugin: 'eclipse'
 apply plugin: 'org.springframework.boot'
 
 group = 'de.team5.super.cute.crocodile'
@@ -24,7 +23,16 @@ repositories {
 
 
 dependencies {
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	//compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
+
+jar {
+	from('../charlie/dist') {
+		into 'static'
+	}
+}
+
+jar.mustRunAfter(':charlie:build')
+task stage(dependsOn: [':charlie:build', 'bootRepackage'])

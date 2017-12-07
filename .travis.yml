@@ -10,7 +10,7 @@ before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
   - psql -c "create user team5 with password 'augsburg123';" -U postgres
 
-script: cd calculator-prototype/ && ./gradlew check
+script: ./gradlew check
 
 deploy:
   provider: heroku
