@@ -1,0 +1,26 @@
+language: java
+
+services:
+  - postgresql
+
+jdk:
+  - oraclejdk8
+
+before_script:
+  - psql -c 'create database travis_ci_test;' -U postgres
+  - psql -c "create user team5 with password 'augsburg123';" -U postgres
+
+script: cd calculator-prototype/ && ./gradlew check
+
+deploy:
+  provider: heroku
+  api_key:
+    secure: YSxs5wfAazc6eA3qjEqzjQSW1MA2iVtNu67WLTQp/oEr688C+QjmJ+rB80AQg0fGxeo4ZR+6EqCuQJgGwvOSA4298Y6uCyAFbujQ9EE+IoYcegloYg30iOhOMms48kNP10+2Pud5bNz0nIblFlvuZh97uP8ZPs0YrIyl/546Y3pgHFyKcJlHHyzuuG3V/svN+TuzTdyT7ywi+8ZERUpBSBIfdCBogPtJrKnglMioZk7NkY67nHbEtZwFqvg0fWHqqLPpoFcpitJ+esX5L0kTMOXPzCZTZisE92xEwKUjTsweHalAtqQyEMfs57gx+gZS1o/N2lEHEdf8Pzvugy0PFYnZHLMAC5ENR4F6y37NYS1oeGMvVs6n8BU3xCK5XOLCYvSQX4KL+9xCpSK6Vm0A6O7aHC6YRyWJjiBiweuS4EZ1Ig+sMRYlPQBRNRd58y9YOPvhiBt7fHg8kenXArOYyxKhYLkuXpOGlLhUSYpoX6dqm0oFLoB4DyDcYuV2Y4r5jY64ENpD5ITD7g0FR/lNCoIXCIcP8iCbngx18vGU7ctO/S9YBjNNn8xM0qKSTRAOW/NhA/XtD1AE8fEnFBkMmuJzasGQlCdwVqfU2Picq3p1SR6pQPg5vtuY6Qif4o/Dx8ECp3gkeWUL1YwdxqSW0Nu4XsUYIWmCguMssKZyIDw=
+  app: se-team-5
+  on:
+    repo: qw3ry/team5
+
+notifications:
+  email:
+    on_success: never
+    on_failure: never
