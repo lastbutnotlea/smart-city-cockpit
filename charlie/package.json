@@ -7,6 +7,7 @@
     "start": "ng serve",
     "build": "ng build",
     "test": "ng test",
+    "test-headless": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
