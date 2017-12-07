@@ -30,3 +30,8 @@ hs_err_pid*
 
 # angular/npm
 package-lock.json
+
+# IntelliJ
+/.idea/workspace.xml
+/.idea/tasks.xml
+*.iml
