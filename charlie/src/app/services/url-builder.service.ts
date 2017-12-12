@@ -1,9 +1,10 @@
 import {Injectable} from "@angular/core";
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class UrlBuilderService {
 
-  private baseUrl = 'base/url/';
+  private baseUrl = environment.backendUrl;
 
   private networkBaseUrl = this.baseUrl + 'network/'
   private lineBaseUrl = this.baseUrl + 'line/';

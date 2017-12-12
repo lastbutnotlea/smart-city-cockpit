@@ -5,9 +5,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
-    "test": "ng test",
-    "test-headless": "karma start --single-run --browsers ChromeHeadless karma.conf.js",
+    "build-dev": "ng build",
+    "build-prod": "ng build --prod --env=prod",
+    "test": "ng test --single-run --config karma.conf.js",
+    "test-headless-dev": "ng test --single-run --browsers ChromeHeadless --config karma.conf.js",
+    "test-headless-prod": "ng test --prod --env=prod --single-run --browsers ChromeHeadless --config karma.conf.js",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
