@@ -1,0 +1,21 @@
+<h3>{{title}}</h3>
+
+<div>
+  FirstFilter: <input #ref1 type="checkbox" name="FirstFilter" (change)="onChange(ref2.checked)">
+  SecondFilter: <input #ref2 type="checkbox" name="SecondFilter" (change)="onChange(ref2.checked)">
+</div>
+
+<table class="data-table-format">
+  <thead>
+  <tr>
+    <th>First Parameter</th>
+    <th>Second Parameter</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let trip of (trips | tripsPipe: [ref1.checked, ref2.checked])">
+    <td>{{ trip.firstParam }}</td>
+    <td>{{ trip.secondParam }}</td>
+  </tr>
+  </tbody>
+</table>
