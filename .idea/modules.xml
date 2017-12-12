@@ -2,6 +2,11 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/charlie/charlie.iml" filepath="$PROJECT_DIR$/.idea/modules/charlie/charlie.iml" group="charlie" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/crocodile/crocodile.iml" filepath="$PROJECT_DIR$/.idea/modules/crocodile/crocodile.iml" group="crocodile" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/crocodile/crocodile_main.iml" filepath="$PROJECT_DIR$/.idea/modules/crocodile/crocodile_main.iml" group="crocodile" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/crocodile/crocodile_test.iml" filepath="$PROJECT_DIR$/.idea/modules/crocodile/crocodile_test.iml" group="crocodile" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/team5.iml" filepath="$PROJECT_DIR$/.idea/modules/team5.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/team5.iml" filepath="$PROJECT_DIR$/.idea/team5.iml" />
     </modules>
   </component>
