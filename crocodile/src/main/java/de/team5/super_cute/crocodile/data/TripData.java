@@ -1,16 +1,17 @@
 package de.team5.super_cute.crocodile.data;
 
+import de.team5.super_cute.crocodile.model.EVehicleType;
+import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Trip;
-import java.util.ArrayList;
-import java.util.List;
+import de.team5.super_cute.crocodile.model.Vehicle;
+import org.springframework.stereotype.Service;
 
-public class TripData extends DataBase {
+@Service
+public class TripData extends BaseData<Trip> {
 
-  /**
-   * @return all Trips currently in the system
-   */
-  public List<Trip> getLineData() {
-    return new ArrayList<Trip>();
+  public TripData() {
+    super();
+    objects.add(new Trip(new Vehicle(10, 0, 30, null, EVehicleType.Bus), new Line(), null));
   }
 
 }

@@ -1,15 +1,14 @@
 package de.team5.super_cute.crocodile.data;
 
 import de.team5.super_cute.crocodile.model.Line;
-import java.util.ArrayList;
-import java.util.List;
+import org.springframework.stereotype.Service;
 
-public class LineData extends DataBase {
+@Service
+public class LineData extends BaseData<Line> {
 
-  /**
-   * @return all Lines currently in the system
-   */
-  public List<Line> getLineData() {
-    return new ArrayList<Line>();
+  public LineData() {
+    super();
+    objects.add(new Line());
   }
+
 }
