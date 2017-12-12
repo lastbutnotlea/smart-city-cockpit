@@ -1,26 +1,30 @@
 language: java
 
 services:
-  - postgresql
+- postgresql
 
 jdk:
-  - oraclejdk8
+- oraclejdk8
 
 before_script:
-  - psql -c 'create database travis_ci_test;' -U postgres
-  - psql -c "create user team5 with password 'augsburg123';" -U postgres
+- psql -c 'create database travis_ci_test;' -U postgres
+- psql -c "create user team5 with password 'augsburg123';" -U postgres
 
 script: ./gradlew check
 
 deploy:
   provider: heroku
   api_key:
-    secure: YSxs5wfAazc6eA3qjEqzjQSW1MA2iVtNu67WLTQp/oEr688C+QjmJ+rB80AQg0fGxeo4ZR+6EqCuQJgGwvOSA4298Y6uCyAFbujQ9EE+IoYcegloYg30iOhOMms48kNP10+2Pud5bNz0nIblFlvuZh97uP8ZPs0YrIyl/546Y3pgHFyKcJlHHyzuuG3V/svN+TuzTdyT7ywi+8ZERUpBSBIfdCBogPtJrKnglMioZk7NkY67nHbEtZwFqvg0fWHqqLPpoFcpitJ+esX5L0kTMOXPzCZTZisE92xEwKUjTsweHalAtqQyEMfs57gx+gZS1o/N2lEHEdf8Pzvugy0PFYnZHLMAC5ENR4F6y37NYS1oeGMvVs6n8BU3xCK5XOLCYvSQX4KL+9xCpSK6Vm0A6O7aHC6YRyWJjiBiweuS4EZ1Ig+sMRYlPQBRNRd58y9YOPvhiBt7fHg8kenXArOYyxKhYLkuXpOGlLhUSYpoX6dqm0oFLoB4DyDcYuV2Y4r5jY64ENpD5ITD7g0FR/lNCoIXCIcP8iCbngx18vGU7ctO/S9YBjNNn8xM0qKSTRAOW/NhA/XtD1AE8fEnFBkMmuJzasGQlCdwVqfU2Picq3p1SR6pQPg5vtuY6Qif4o/Dx8ECp3gkeWUL1YwdxqSW0Nu4XsUYIWmCguMssKZyIDw=
-  app: se-team-5
+    secure: vHYA6o6BA/tT+0X400DmPIhdvLIcOPhacgWCwxxv65pvUdoWNeLmYM8wrE/RBSWpZtUdqHVaC4SjX4Wmm0WZd/Xb3baJhBukK3lmmf3xWJd3/1ZcuENfLsMT2LQ1uTS/zDBAnCSUV3tdbaobSt4X9cjURJsFTWrhgVoOzl77wTPh7nQHoKd1kYGdptsPNwR3CkZKS4BN78ofFMv86l3MYUFXl6mUN3Hl1GhGaauvHPnIKY6gAHKp5mGuXvlXfzKYcUzPLNhqDfjqKGkeRyRmLKP3NlRLQ45XPA4w+AGtbLyBk7mHLAa1u3QwFmfF9BCUrJdt3EJVwbdaXIQR21vSIVNklU1BuIc0BKP8OooQskJOD1M+xpb720k8RgizUONSpcnc0Dg4qHOdldB/0B9kOJzn/lpLrymu20b7yjymF7nOIdQSMpfug2jiy4M0RdaPLND1yXrRiss6EQAXknN28k0nI433sZyyLmfBdeBB+XyLktBwx7i0yYBeECVwuqsFymrLxrgNt7pyDhWHkbI0cACilhb9VEpkn+SbfSSGRHuImH3lanrJ8expj952NV71nUuCH4d6xS8xoqKWr0X0YK8dHTVmyG5ule6pXJ2yza3wFYHXa1z3nCQcCtFkAmehLmz2Z/oHZmbelBS6l5SyC6rHjvdmDxEe5lTF7QdsYgc=
+  app: charlie-five
   on:
     repo: qw3ry/team5
+    branch: master
 
 notifications:
   email:
     on_success: never
     on_failure: never
+  slack:
+    secure: HOZZ6Ot1bwiOImAI9VAWsh++aZuo6/16B1dqYY1x8YWvf9pyY1cbnAkrj6zo6dtTs2wxyqP6yIyXwI+CmcDRB2eSIzJNloJH2T1D62cX6aEMSlQeCWhlSC0nsXhXUBPPzt7uD9aRiAqwmxsNgEoypHFYaZOAEqHLkFNOA+UqdrDlFulhVcsqxAxxgnBj0INfSyf7nnGCK/i5VxlmUgXM41nYm3M2bi71h2FzndXcwfUFtN1tf6e5CpWwsXFNJHe8+EKPMP6dDQtz5lraNixvj8EqvYAXor9TfjO6GwkQO3eo46AiWA/VHm3+5CI403aPixYXKOFLIslpVzvgQ9TLHJvPM6TopOpxRen+6W2thcrtHLu9Bmyl+mKJpgd5sSSsDY6paAZOkc+LDiRGC4DxkB60rZ1/ujTPNFrIuQzMY5OuICV6XPf3Zcv7CBzyQlrQa2y1YfRJ0rtITGzlZ2SKjHrkKgi0tpMxD0avy4vKB2Yn5WsP6X6pWC5lJcxPVYFBEFoc1QfLJfJj/ewIBp7/rHdKfiuRNfKki9p2LnFRGS1gKWbEPBCfuMhRCmtAsEUxFyMl3Wu8V+nJ1JbFZgBVP+zLVhiVxj7Yp2S/j2Ame66DmSgCKjOz4SRStHAcTYioEtkJWf/aKfV7xn+PZaGqaqrwtMWkCol4fz/nvBLajqE=
+    on_success: never
