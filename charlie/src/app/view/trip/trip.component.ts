@@ -1,5 +1,5 @@
 import {Component, OnInit} from "@angular/core";
-import {TripDetails} from "./trip-details";
+import {TripDetails} from "../../shared/trip-data";
 
 @Component({
   selector: 'tripview',

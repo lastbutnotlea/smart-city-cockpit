@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {TripDetails} from '../trip/trip-details';
+import {TripDetails} from '../shared/trip-data';
 
 @Pipe({ name: 'tripsPipe' })
 export class FilterTripsPipe implements PipeTransform {

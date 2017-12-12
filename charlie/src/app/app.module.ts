@@ -4,8 +4,8 @@ import { HttpClientModule } from '@angular/common/http';
 
 
 import { AppComponent } from './app.component';
-import {NetworkComponent} from "./network/network.component";
-import {TripComponent} from "./trip/trip.component";
+import {NetworkComponent} from "./view/network/network.component";
+import {TripComponent} from "./view/trip/trip.component";
 import {AppRoutingModule} from "./app-routing.module";
 import {FilterTripsPipe} from "./pipes/filter-trips.pipe";
 import {UrlBuilderService} from "./services/url-builder.service";

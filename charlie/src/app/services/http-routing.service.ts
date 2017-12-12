@@ -6,10 +6,10 @@ export class HttpRoutingService {
 
   constructor(private http: HttpClient) {}
 
-  public sendGetRequest(url:string): void{
+  public sendGetRequest(url: string): void{
     this.http.get(url).subscribe(data => {
       // Read the result field from the JSON response.
-        console.log(data['results']);
+        console.log(data);
     },
     err => {
       console.log('Something went wrong!');
