@@ -1,7 +1,5 @@
 import { TestBed, async } from '@angular/core/testing';
 import { AppComponent } from './app.component';
-import {NetworkComponent} from './network/network.component';
-import {TripComponent} from './trip/trip.component';
 import {FilterTripsPipe} from './pipes/filter-trips.pipe';
 import {BrowserModule} from '@angular/platform-browser';
 import {HttpClientModule} from '@angular/common/http';
@@ -9,6 +7,8 @@ import {AppRoutingModule} from './app-routing.module';
 import {UrlBuilderService} from './services/url-builder.service';
 import {HttpRoutingService} from './services/http-routing.service';
 import { APP_BASE_HREF } from '@angular/common';
+import { NetworkComponent } from './view/network/network.component';
+import { TripComponent } from './view/trip/trip.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {

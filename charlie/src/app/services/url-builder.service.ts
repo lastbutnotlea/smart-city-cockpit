@@ -1,4 +1,4 @@
-import {Injectable} from "@angular/core";
+import {Injectable} from '@angular/core';
 import { environment } from '../../environments/environment';
 
 @Injectable()
@@ -6,10 +6,9 @@ export class UrlBuilderService {
 
   private baseUrl = environment.backendUrl;
 
-  private networkBaseUrl = this.baseUrl + 'network/'
-  private lineBaseUrl = this.baseUrl + 'line/';
+  private networkBaseUrl = this.baseUrl + '/lines'
 
-  private tripBaseUrl = this.baseUrl + 'trips/';
+  private tripBaseUrl = this.baseUrl + '/trips';
 
 
   public getNetworkUrl(): string {
@@ -17,7 +16,7 @@ export class UrlBuilderService {
   }
 
   public getLineUrl(lineId: string): string {
-    return this.lineBaseUrl + lineId;
+    return this.networkBaseUrl + '/' + lineId;
   }
 
   public getTripsUrl(): string {
@@ -25,6 +24,6 @@ export class UrlBuilderService {
   }
 
   public getTripDetailsUrl(tripId: string): string {
-    return this.tripBaseUrl + tripId;
+    return this.tripBaseUrl + '/' + tripId;
   }
 }
