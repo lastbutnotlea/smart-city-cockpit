@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 public class LineData extends BaseData<Line> {
 
   public LineData() {
-    super();
-    objects.add(new Line());
+    super(Line.class);
+    //addObject(new Line());
   }
 
 }

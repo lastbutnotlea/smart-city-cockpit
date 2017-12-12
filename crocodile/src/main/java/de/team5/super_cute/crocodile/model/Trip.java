@@ -1,18 +1,34 @@
 package de.team5.super_cute.crocodile.model;
 
-import java.util.Calendar;
-import java.util.Dictionary;
+import static javax.persistence.TemporalType.DATE;
 
+import java.util.Date;
+import java.util.Map;
+import javax.persistence.*;
+
+
+@Entity
+@Table(name="trip")
 public class Trip extends IdentifiableObject {
 
+  @OneToOne
+  @PrimaryKeyJoinColumn
   private Vehicle vehicle;
+
+  @ManyToOne
+  @PrimaryKeyJoinColumn
   private Line line;
-  private Dictionary<Stop, Calendar> stops;
+
+  @ElementCollection
+  @MapKeyColumn(name = "stop_id")
+  @Temporal(DATE)
+  @Basic
+  private Map<String, Date> stops;
 
   public Trip() {}
 
   public Trip(Vehicle vehicle, Line line,
-      Dictionary<Stop, Calendar> stops) {
+      Map<String, Date> stops) {
     super();
     this.vehicle = vehicle;
     this.line = line;
@@ -35,12 +51,12 @@ public class Trip extends IdentifiableObject {
     this.line = line;
   }
 
-  public Dictionary<Stop, Calendar> getStops() {
+  public Map<String, Date> getStops() {
     return stops;
   }
 
   public void setStops(
-      Dictionary<Stop, Calendar> stops) {
+      Map<String, Date> stops) {
     this.stops = stops;
   }
 }

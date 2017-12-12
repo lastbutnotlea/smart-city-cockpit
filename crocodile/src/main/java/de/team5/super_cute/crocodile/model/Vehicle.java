@@ -1,13 +1,24 @@
 package de.team5.super_cute.crocodile.model;
 
 import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "vehicle")
 public class Vehicle extends IdentifiableObject {
 
+  @Column
   private int capacity;
+  @Column
   private int delay;
+  @Column
   private int temperature;
+  @ElementCollection
   private List<String> defects;
+  @Column
   private EVehicleType type;
 
   public Vehicle() {}

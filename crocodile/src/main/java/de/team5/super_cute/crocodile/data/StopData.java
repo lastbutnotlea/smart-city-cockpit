@@ -5,8 +5,8 @@ import de.team5.super_cute.crocodile.model.Stop;
 public class StopData extends BaseData<Stop> {
 
   public StopData() {
-    super();
-    objects.add(new Stop());
+    super(Stop.class);
+    addObject(new Stop());
   }
 
 }
