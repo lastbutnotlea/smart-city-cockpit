@@ -1,5 +1,5 @@
-import {Component, OnInit} from "@angular/core";
-import {TripDetails} from "./trip-details";
+import {Component, OnInit} from '@angular/core';
+import {TripDetails} from './trip-details';
 
 @Component({
   selector: 'tripview',
@@ -12,13 +12,13 @@ export class TripComponent implements OnInit {
   trips: TripDetails[] = [];
 
   ngOnInit(): void {
-    this.title = "trip view";
+    this.title = 'trip view';
     this.trips.push(new TripDetails('filtered', 'second'));
     this.trips.push(new TripDetails('first', 'filtered'));
     this.trips.push(new TripDetails('filtered', 'filtered'));
   }
 
   onChange(val: boolean) {
-    //This function is needed to update the table in trip.component.html
+    // This function is needed to update the table in trip.component.html
   }
 }
