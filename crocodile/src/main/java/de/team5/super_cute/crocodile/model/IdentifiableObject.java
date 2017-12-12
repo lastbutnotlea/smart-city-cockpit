@@ -7,25 +7,11 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 public class IdentifiableObject {
 
-  private static final Map<Class<? extends IdentifiableObject>, Integer> currentNumber = new HashMap<>();
+  private static final Map<Class<? extends IdentifiableObject>, Integer> CURRENT_NUMBER = new HashMap<>();
   private String id = null;
 
   IdentifiableObject() {
-    // generate Id
-    getId();
-  }
-
-  //
-//  public void setId(String id) {
-//    this.id = id;
-//  }
-//
-//  //@JsonProperty("id")}
-  public String getId() {
-    if (id != null) {
-      return id;
-    }
-
+    // create id
     StringBuilder builder = new StringBuilder();
 
     // add classname
@@ -33,14 +19,17 @@ public class IdentifiableObject {
     builder.append("_");
 
     // add number
-    Integer number = currentNumber.get(this.getClass());
+    Integer number = CURRENT_NUMBER.get(this.getClass());
     if (number == null) {
       number = 0;
     }
-    currentNumber.put(this.getClass(), number + 1);
+    CURRENT_NUMBER.put(this.getClass(), number + 1);
     builder.append(number);
 
     id = builder.toString();
+  }
+
+  public final String getId() {
     return id;
   }
 

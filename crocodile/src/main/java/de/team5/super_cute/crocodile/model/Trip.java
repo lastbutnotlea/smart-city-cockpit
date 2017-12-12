@@ -1,18 +1,18 @@
 package de.team5.super_cute.crocodile.model;
 
-import java.util.Date;
+import java.util.Calendar;
 import java.util.Dictionary;
 
 public class Trip extends IdentifiableObject {
 
   private Vehicle vehicle;
   private Line line;
-  private Dictionary<Stop, Date> stops;
+  private Dictionary<Stop, Calendar> stops;
 
   public Trip() {}
 
   public Trip(Vehicle vehicle, Line line,
-      Dictionary<Stop, Date> stops) {
+      Dictionary<Stop, Calendar> stops) {
     super();
     this.vehicle = vehicle;
     this.line = line;
@@ -35,12 +35,12 @@ public class Trip extends IdentifiableObject {
     this.line = line;
   }
 
-  public Dictionary<Stop, Date> getStops() {
+  public Dictionary<Stop, Calendar> getStops() {
     return stops;
   }
 
   public void setStops(
-      Dictionary<Stop, Date> stops) {
+      Dictionary<Stop, Calendar> stops) {
     this.stops = stops;
   }
 }
