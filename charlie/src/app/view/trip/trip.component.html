@@ -1,21 +1,33 @@
-<h3>{{title}}</h3>
-
-<div>
-  FirstFilter: <input #ref1 type="checkbox" name="FirstFilter" (change)="onChange(ref2.checked)">
-  SecondFilter: <input #ref2 type="checkbox" name="SecondFilter" (change)="onChange(ref2.checked)">
+<div *ngIf="!isLoaded()">
+  <h3>Loading...</h3>
 </div>
 
-<table class="data-table-format">
-  <thead>
-  <tr>
-    <th>First Parameter</th>
-    <th>Second Parameter</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr *ngFor="let trip of (trips | tripsPipe: [ref1.checked, ref2.checked])">
-    <td>{{ trip.firstParam }}</td>
-    <td>{{ trip.secondParam }}</td>
-  </tr>
-  </tbody>
-</table>
+<div>
+
+  <h3>{{title}}</h3>
+
+  <div>
+    Line 1: <input #lineFilter type="checkbox" name="LineFilter" (change)="onChange(lineFilter.checked)">
+    Buses: <input #vehicleTypeFilter type="checkbox" name="VehicleTypeFilter" (change)="onChange(vehicleTypeFilter.checked)">
+  </div>
+
+  <table class="data-table-format">
+    <thead>
+    <tr>
+      <th>TripId</th>
+      <th>VehicleId</th>
+      <th>VehicleType</th>
+      <th>LineId</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let trip of (trips | tripsPipe: [lineFilter.checked, vehicleTypeFilter.checked])">
+      <td>{{ trip.id }}</td>
+      <td>{{ trip.vehicle.id }}</td>
+      <td>{{ trip.vehicle.type }}</td>
+      <td>{{ trip.line.id }}</td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>

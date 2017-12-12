@@ -1,3 +1,3 @@
 export class StopData {
-  id: number;
+  id: string;
 }

@@ -1,22 +1,44 @@
 import {HttpClient} from "@angular/common/http";
 import {Injectable} from "@angular/core";
+import { LineData } from '../shared/line-data';
+import { Observable } from 'rxjs/Observable';
+import { UrlBuilderService } from './url-builder.service';
+import { catchError, tap } from 'rxjs/operators';
+import { empty } from 'rxjs/observable/empty';
+import { TripData } from '../shared/trip-data';
 
 @Injectable()
 export class HttpRoutingService {
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private urlBuilder: UrlBuilderService) {}
 
-  public sendGetRequest(url: string): void{
-    this.http.get(url).subscribe(data => {
-      // Read the result field from the JSON response.
-        console.log(data);
-    },
-    err => {
-      console.log('Something went wrong!');
-    });
+  /**
+   * Gets all trip data from backend
+   * @returns {Observable<TripData[]>}
+   */
+  public getTrips (): Observable<TripData[]> {
+    return this.http.get<TripData[]>(this.urlBuilder.getTripsUrl())
+      .pipe(
+        tap(trips => console.log(`Fetched Trips.`))
+        // TODO: Error Handling!
+      );
   }
 
-  public sendPostRequest(url: string, body: any): void{
+  /**
+   * Gets all lines from backend
+   * @returns {Observable<LineData[]>}
+   */
+  public getLines (): Observable<LineData[]> {
+    return this.http.get<LineData[]>(this.urlBuilder.getNetworkUrl())
+      .pipe(
+        tap(lines => console.log(`Fetched Lines.`))
+        // TODO: Error Handling!
+      );
+  }
+
+  // these are dummy functions
+  // TODO: Implement functions to post or delete specific data
+  /*public sendPostRequest(url: string, body: any): void{
     this.http.post(url, body).subscribe(data => {
         // Read the result field from the JSON response.
         console.log(data['results']);
@@ -44,5 +66,5 @@ export class HttpRoutingService {
       err => {
         console.log('Something went wrong!');
       });
-  }
+  }*/
 }

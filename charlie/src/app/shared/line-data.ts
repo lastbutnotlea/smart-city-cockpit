@@ -1,4 +1,4 @@
 
 export class LineData {
-  id: number;
+  id: string;
 }
