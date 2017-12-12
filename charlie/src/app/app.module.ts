@@ -11,6 +11,7 @@ import {FilterTripsPipe} from './pipes/filter-trips.pipe';
 import {UrlBuilderService} from './services/url-builder.service';
 import {HttpRoutingService} from './services/http-routing.service';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {MenuComponent} from './menu/menu.component';
 
 
 @NgModule({
@@ -18,7 +19,8 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     AppComponent,
     NetworkComponent,
     TripComponent,
-    FilterTripsPipe
+    FilterTripsPipe,
+    MenuComponent
   ],
   imports: [
     BrowserModule,
