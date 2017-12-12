@@ -1,8 +1,7 @@
-import {RouterModule, Routes} from "@angular/router";
-import {NetworkComponent} from "./network/network.component";
-import {TripComponent} from "./trip/trip.component";
-import {NgModel} from "@angular/forms";
-import {NgModule} from "@angular/core";
+import {RouterModule, Routes} from '@angular/router';
+import {NetworkComponent} from './network/network.component';
+import {TripComponent} from './trip/trip.component';
+import {NgModule} from '@angular/core';
 
 const routes: Routes = [
   {path: '', redirectTo: '/network', pathMatch: 'full'},
@@ -15,4 +14,4 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 
-export class AppRoutingModule{}
+export class AppRoutingModule { }

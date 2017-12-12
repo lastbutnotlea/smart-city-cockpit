@@ -14,7 +14,7 @@
   </thead>
   <tbody>
   <tr *ngFor="let trip of (trips | tripsPipe: [ref1.checked, ref2.checked])">
-    <th>{{ trip.firstParam }}</th>
+    <td>{{ trip.firstParam }}</td>
     <td>{{ trip.secondParam }}</td>
   </tr>
   </tbody>
