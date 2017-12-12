@@ -1,9 +1,10 @@
 import {Injectable} from '@angular/core';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class UrlBuilderService {
 
-  private baseUrl = 'http://localhost:8080';
+  private baseUrl = environment.backendUrl;
 
   private networkBaseUrl = this.baseUrl + '/lines'
 
@@ -11,7 +12,6 @@ export class UrlBuilderService {
 
 
   public getNetworkUrl(): string {
-    console.log(this.networkBaseUrl);
     return this.networkBaseUrl;
   }
 
