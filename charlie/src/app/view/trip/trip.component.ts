@@ -8,13 +8,13 @@ import { HttpRoutingService } from '../../services/http-routing.service';
   styleUrls: ['./trip.component.css']
 })
 
-export class TripComponent implements OnInit {
+export class TripComponent implements OnInit{
   title: String;
   trips: TripData[] = [];
 
   constructor(private http: HttpRoutingService) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.title = 'trip view';
     // get trip data
     this.http.getTrips().subscribe( data => {
@@ -27,11 +27,11 @@ export class TripComponent implements OnInit {
     );
   }
 
-  // This function is needed to update the table in trip.component.html
+  // This function is needed to update the table in trip-detail.component.html
   // once filter options change
   public onChange(val: boolean) { }
 
-  isLoaded(): boolean {
+  public isLoaded(): boolean {
     if (this.trips.length > 0) {
       return true;
     }

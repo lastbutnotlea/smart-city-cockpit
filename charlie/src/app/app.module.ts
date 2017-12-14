@@ -10,6 +10,7 @@ import {AppRoutingModule} from "./app-routing.module";
 import {FilterTripsPipe} from "./pipes/filter-trips.pipe";
 import {UrlBuilderService} from "./services/url-builder.service";
 import {HttpRoutingService} from "./services/http-routing.service";
+import { TripDetailComponent } from './view/trip-detail/trip-detail.component';
 
 
 @NgModule({
@@ -17,6 +18,7 @@ import {HttpRoutingService} from "./services/http-routing.service";
     AppComponent,
     NetworkComponent,
     TripComponent,
+    TripDetailComponent,
     FilterTripsPipe
   ],
   imports: [
