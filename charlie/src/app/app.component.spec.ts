@@ -9,6 +9,7 @@ import {HttpRoutingService} from './services/http-routing.service';
 import { APP_BASE_HREF } from '@angular/common';
 import { NetworkComponent } from './view/network/network.component';
 import { TripComponent } from './view/trip/trip.component';
+import { TripDetailComponent } from './view/trip-detail/trip-detail.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -17,6 +18,7 @@ describe('AppComponent', () => {
         AppComponent,
         NetworkComponent,
         TripComponent,
+        TripDetailComponent,
         FilterTripsPipe
       ],
       imports: [
