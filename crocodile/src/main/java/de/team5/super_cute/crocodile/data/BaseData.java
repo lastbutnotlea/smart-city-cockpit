@@ -6,16 +6,18 @@ import java.util.List;
 import javax.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
+import org.springframework.stereotype.Service;
 
 /**
  * Base class for all "...Data" classes.
  * Responsible for Database persistence.
  */
 @Transactional
+@Service
 public abstract class BaseData<T extends IdentifiableObject> {
 
   @Autowired
-  private HibernateTemplate hibernateTemplate = new HibernateTemplate();
+  private HibernateTemplate hibernateTemplate;
 
   //final List<T> objects;
   final Class<T> clazz;
@@ -26,7 +28,7 @@ public abstract class BaseData<T extends IdentifiableObject> {
   }
 
   /**
-   * @return all Trips currently in the system
+   * @return all Objects of Type T currently in the system
    */
   public List<T> getData() {
     return Collections.unmodifiableList(hibernateTemplate.loadAll(clazz));

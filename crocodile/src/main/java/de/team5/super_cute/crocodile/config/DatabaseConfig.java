@@ -9,6 +9,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import javax.sql.DataSource;
 import org.apache.commons.dbcp.BasicDataSource;
+import org.hibernate.FlushMode;
 import org.hibernate.SessionFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +24,9 @@ public class DatabaseConfig {
 
   @Bean
   public HibernateTemplate hibernateTemplate() {
-    return new HibernateTemplate(sessionFactory());
+    HibernateTemplate ht =  new HibernateTemplate(sessionFactory());
+    ht.getSessionFactory().getCurrentSession().setFlushMode(FlushMode.AUTO);
+    return ht;
   }
 
   @Bean
@@ -59,6 +62,7 @@ public class DatabaseConfig {
     dataSource.setPassword(password);
     return dataSource;
   }
+
   @Bean
   public HibernateTransactionManager hibTransMan(){
     return new HibernateTransactionManager(sessionFactory());

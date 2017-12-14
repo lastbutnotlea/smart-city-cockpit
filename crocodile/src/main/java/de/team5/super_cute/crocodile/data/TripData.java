@@ -8,7 +8,7 @@ public class TripData extends BaseData<Trip> {
 
   public TripData() {
     super(Trip.class);
-    //addObject(new Trip(new Vehicle(10, 0, 30, null, EVehicleType.Bus), new Line(), null));
+    //addObject(new Trip(new Vehicle(10, 0, 30, null, EVehicleType.Bus), null, null));
   }
 
 }

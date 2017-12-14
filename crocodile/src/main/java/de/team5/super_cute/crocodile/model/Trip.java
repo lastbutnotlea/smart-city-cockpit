@@ -2,7 +2,7 @@ package de.team5.super_cute.crocodile.model;
 
 import static javax.persistence.TemporalType.DATE;
 
-import java.util.Date;
+import java.util.Calendar;
 import java.util.Map;
 import javax.persistence.*;
 
@@ -23,12 +23,12 @@ public class Trip extends IdentifiableObject {
   @MapKeyColumn(name = "stop_id")
   @Temporal(DATE)
   @Basic
-  private Map<String, Date> stops;
+  private Map<String, Calendar> stops;
 
   public Trip() {}
 
   public Trip(Vehicle vehicle, Line line,
-      Map<String, Date> stops) {
+      Map<String, Calendar> stops) {
     super();
     this.vehicle = vehicle;
     this.line = line;
@@ -51,12 +51,12 @@ public class Trip extends IdentifiableObject {
     this.line = line;
   }
 
-  public Map<String, Date> getStops() {
+  public Map<String, Calendar> getStops() {
     return stops;
   }
 
   public void setStops(
-      Map<String, Date> stops) {
+      Map<String, Calendar> stops) {
     this.stops = stops;
   }
 }
