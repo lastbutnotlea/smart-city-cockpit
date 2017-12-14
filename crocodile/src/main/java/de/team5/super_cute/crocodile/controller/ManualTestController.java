@@ -1,6 +1,5 @@
-package de.team5.super_cute.crocodile;
+package de.team5.super_cute.crocodile.controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import de.team5.super_cute.crocodile.data.LineData;
 import de.team5.super_cute.crocodile.data.StopData;
 import de.team5.super_cute.crocodile.data.TripData;
@@ -15,19 +14,14 @@ import de.team5.super_cute.crocodile.util.NetworkDataBuilder;
 import java.awt.Color;
 import java.util.Calendar;
 import java.util.List;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@RunWith(SpringRunner.class)
-@WebMvcTest
-public class TripControllerTest {
-
-  @Autowired
-  private MockMvc mockMvc;
+@RestController
+@RequestMapping("/test")
+public class ManualTestController {
 
   @Autowired
   private LineData lineData;
@@ -41,9 +35,8 @@ public class TripControllerTest {
   @Autowired
   private TripData tripData;
 
-
-  @Test
-  public void testTripController() throws Exception {
+  @GetMapping
+  public List<Trip> testTrips() {
     Stop s1 = new Stop("ApiId1", "Marienplatz", 10, 3.5, 50);
     Stop s2 = new Stop("ApiId2", "Odeonsplatz", 11, 3.7, 43);
     Stop s3 = new Stop("ApiId3", "Stachus", 10.2, 2, 61);
@@ -58,13 +51,10 @@ public class TripControllerTest {
         .addVehicles(v1, v2)
         .build();
 
-    ControllerTestHelper<Trip> tripControllerTestHelper = new ControllerTestHelper<>(mockMvc);
     Trip testTrip = NetworkDataBuilder.assembleWholeLineTrip(v1, l1,
         new Calendar.Builder().setDate(2017, Calendar.AUGUST, 12).setTimeOfDay(11, 30, 0).build(),
         true);
-    tripControllerTestHelper.testAddAndDelete("/trips", testTrip, new TypeReference<List<Trip>>() {
-    });
+    tripData.addObject(testTrip);
+    return tripData.getData();
   }
-
 }
-

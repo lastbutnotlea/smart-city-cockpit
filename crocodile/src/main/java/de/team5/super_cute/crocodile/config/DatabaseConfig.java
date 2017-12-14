@@ -8,6 +8,7 @@ import de.team5.super_cute.crocodile.model.Vehicle;
 import java.net.URI;
 import java.net.URISyntaxException;
 import javax.sql.DataSource;
+import javax.transaction.Transactional;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.FlushMode;
 import org.hibernate.SessionFactory;
@@ -23,6 +24,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class DatabaseConfig {
 
   @Bean
+  @Transactional
   public HibernateTemplate hibernateTemplate() {
     HibernateTemplate ht =  new HibernateTemplate(sessionFactory());
     ht.getSessionFactory().getCurrentSession().setFlushMode(FlushMode.AUTO);
@@ -35,6 +37,7 @@ public class DatabaseConfig {
         .addAnnotatedClasses(IdentifiableObject.class, Line.class, Stop.class, Trip.class, Vehicle.class)
         .setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect")
         .setProperty("hibernate.hbm2ddl.auto", "create")
+        .setProperty("packagesToScan", "de.team5.super_cute.crocodile.model")
         .buildSessionFactory();
   }
 

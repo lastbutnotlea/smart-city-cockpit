@@ -6,8 +6,8 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.Dictionary;
 import java.util.Hashtable;
+import java.util.Map;
 
 public class LineBuilder {
 
@@ -35,7 +35,7 @@ public class LineBuilder {
     ArrayList<Stop> stopsList = new ArrayList<>(Arrays.asList(stops));
     line.setStopsInbound(stopsList);
     Collections.reverse(stopsList);
-    line.setStopsInbound(stopsList);
+    line.setStopsOutbound(stopsList);
     return this;
   }
 
@@ -49,8 +49,8 @@ public class LineBuilder {
     }
     Integer max = travelTime[travelTime.length - 1];
     int numStops = line.getStopsInbound().size();
-    Dictionary<String, Integer> travelTimeInbound = new Hashtable<>();
-    Dictionary<String, Integer> travelTimeOutbound = new Hashtable<>();
+    Map<String, Integer> travelTimeInbound = new Hashtable<>();
+    Map<String, Integer> travelTimeOutbound = new Hashtable<>();
     for (int i = 0; i < numStops; i++) {
       travelTimeInbound.put(line.getStopsInbound().get(i).getId(), travelTime[i]);
       travelTimeOutbound.put(line.getStopsOutbound().get(numStops - i - 1).getId(), max - travelTime[i]);

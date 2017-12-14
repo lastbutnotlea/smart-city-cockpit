@@ -1,16 +1,27 @@
 package de.team5.super_cute.crocodile.model;
 
+import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "stop")
-public class Stop extends IdentifiableObject {
+public class Stop extends IdentifiableObject implements Serializable {
 
+  @Column
   private String commonName;
-  private double longitude;
-  private double latitude;
-  private int peopleWaiting;
+
+  @Column
+  private Double longitude;
+
+  @Column
+  private Double latitude;
+
+  @Column
+  private Integer peopleWaiting;
+
+  @Column
   private String apiIp;
 
   public Stop() { super(); }
@@ -40,7 +51,7 @@ public class Stop extends IdentifiableObject {
     this.commonName = commonName;
   }
 
-  public double getLongitude() {
+  public Double getLongitude() {
     return longitude;
   }
 
@@ -48,7 +59,7 @@ public class Stop extends IdentifiableObject {
     this.longitude = longitude;
   }
 
-  public double getLatitude() {
+  public Double getLatitude() {
     return latitude;
   }
 
@@ -56,7 +67,7 @@ public class Stop extends IdentifiableObject {
     this.latitude = latitude;
   }
 
-  public int getPeopleWaiting() {
+  public Integer getPeopleWaiting() {
     return peopleWaiting;
   }
 

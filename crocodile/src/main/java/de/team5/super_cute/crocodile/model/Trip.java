@@ -2,14 +2,24 @@ package de.team5.super_cute.crocodile.model;
 
 import static javax.persistence.TemporalType.DATE;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Map;
-import javax.persistence.*;
+import javax.persistence.Basic;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
 
 
 @Entity
 @Table(name="trip")
-public class Trip extends IdentifiableObject {
+public class Trip extends IdentifiableObject implements Serializable {
 
   @OneToOne
   @PrimaryKeyJoinColumn
@@ -19,7 +29,7 @@ public class Trip extends IdentifiableObject {
   @PrimaryKeyJoinColumn
   private Line line;
 
-  @ElementCollection
+  @ElementCollection(fetch = FetchType.EAGER)
   @MapKeyColumn(name = "stop_id")
   @Temporal(DATE)
   @Basic

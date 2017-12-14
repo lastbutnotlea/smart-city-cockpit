@@ -1,5 +1,8 @@
 package de.team5.super_cute.crocodile.model;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -8,16 +11,20 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "vehicle")
-public class Vehicle extends IdentifiableObject {
+public class Vehicle extends IdentifiableObject implements Serializable {
 
   @Column
-  private int capacity;
+  private Integer capacity;
+
   @Column
-  private int delay;
+  private Integer delay;
+
   @Column
-  private int temperature;
+  private Integer temperature;
+
   @ElementCollection
   private List<String> defects;
+
   @Column
   private EVehicleType type;
 
@@ -33,7 +40,16 @@ public class Vehicle extends IdentifiableObject {
     this.type = type;
   }
 
-  public int getCapacity() {
+  public Vehicle(int capacity, int delay, int temperature,
+      EVehicleType type, String... defects) {
+    this.capacity = capacity;
+    this.delay = delay;
+    this.temperature = temperature;
+    this.type = type;
+    this.defects = new ArrayList<>(Arrays.asList(defects));
+  }
+
+  public Integer getCapacity() {
     return capacity;
   }
 
@@ -41,7 +57,7 @@ public class Vehicle extends IdentifiableObject {
     this.capacity = capacity;
   }
 
-  public int getDelay() {
+  public Integer getDelay() {
     return delay;
   }
 
@@ -49,7 +65,7 @@ public class Vehicle extends IdentifiableObject {
     this.delay = delay;
   }
 
-  public int getTemperature() {
+  public Integer getTemperature() {
     return temperature;
   }
 

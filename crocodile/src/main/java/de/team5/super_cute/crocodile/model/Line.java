@@ -1,30 +1,68 @@
 package de.team5.super_cute.crocodile.model;
 
+import de.team5.super_cute.crocodile.util.ColorConverter;
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.Dictionary;
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.OrderColumn;
 import javax.persistence.Table;
+import org.hibernate.annotations.Proxy;
 
 @Entity
 @Table(name = "line")
-public class Line extends IdentifiableObject {
+@Proxy(lazy = false)
+public class Line extends IdentifiableObject implements Serializable {
 
+  @Column
   private String name;
-  private ArrayList<Stop> stopsInbound;
-  private ArrayList<Stop> stopsOutbound;
-  private Dictionary<String, Integer> travelTimeInbound;
-  private Dictionary<String, Integer> travelTimeOutbound;
+
+  @ManyToMany(fetch = FetchType.EAGER)
+  @OrderColumn
+  @JoinTable(
+      name="Line_Stops_InB",
+      joinColumns=@JoinColumn(name="line_id"),
+      inverseJoinColumns=@JoinColumn(name="stop_id")
+  )
+  private List<Stop> stopsInbound;
+
+  @ManyToMany(fetch = FetchType.EAGER)
+  @JoinTable(
+      name="Line_Stops_OutB",
+      joinColumns=@JoinColumn(name="line_id"),
+      inverseJoinColumns=@JoinColumn(name="stop_id")
+  )
+  private List<Stop> stopsOutbound;
+
+  @ElementCollection(fetch = FetchType.EAGER)
+  @MapKeyColumn(name = "stop_id_travel_time_inbound")
+  private Map<String, Integer> travelTimeInbound;
+
+  @ElementCollection(fetch = FetchType.EAGER)
+  @MapKeyColumn(name = "stop_id_travel_time_outbound")
+  private Map<String, Integer> travelTimeOutbound;
+
+  @Column
+  @Convert(converter = ColorConverter.class)
   private Color color;
 
   public Line() {
     super();
   }
 
-  public Line(String name, ArrayList<Stop> stopsInbound,
-      ArrayList<Stop> stopsOutbound,
-      Dictionary<String, Integer> travelTimeInbound,
-      Dictionary<String, Integer> travelTimeOutbound, Color color) {
+  public Line(String name, List<Stop> stopsInbound,
+      List<Stop> stopsOutbound,
+      Map<String, Integer> travelTimeInbound,
+      Map<String, Integer> travelTimeOutbound, Color color) {
     super();
     this.name = name;
     this.stopsInbound = stopsInbound;
@@ -42,19 +80,19 @@ public class Line extends IdentifiableObject {
     this.name = name;
   }
 
-  public ArrayList<Stop> getStopsInbound() {
+  public List<Stop> getStopsInbound() {
     return stopsInbound;
   }
 
-  public void setStopsInbound(ArrayList<Stop> stopsInbound) {
+  public void setStopsInbound(List<Stop> stopsInbound) {
     this.stopsInbound = stopsInbound;
   }
 
-  public ArrayList<Stop> getStopsOutbound() {
+  public List<Stop> getStopsOutbound() {
     return stopsOutbound;
   }
 
-  public void setStopsOutbound(ArrayList<Stop> stopsOutbound) {
+  public void setStopsOutbound(List<Stop> stopsOutbound) {
     this.stopsOutbound = stopsOutbound;
   }
 
@@ -66,21 +104,21 @@ public class Line extends IdentifiableObject {
     this.color = color;
   }
 
-  public Dictionary<String, Integer> getTravelTimeInbound() {
+  public Map<String, Integer> getTravelTimeInbound() {
     return travelTimeInbound;
   }
 
   public void setTravelTimeInbound(
-      Dictionary<String, Integer> travelTimeInbound) {
+      Map<String, Integer> travelTimeInbound) {
     this.travelTimeInbound = travelTimeInbound;
   }
 
-  public Dictionary<String, Integer> getTravelTimeOutbound() {
+  public Map<String, Integer> getTravelTimeOutbound() {
     return travelTimeOutbound;
   }
 
   public void setTravelTimeOutbound(
-      Dictionary<String, Integer> travelTimeOutbound) {
+      Map<String, Integer> travelTimeOutbound) {
     this.travelTimeOutbound = travelTimeOutbound;
   }
 }

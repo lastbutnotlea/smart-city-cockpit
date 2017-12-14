@@ -1,6 +1,7 @@
 package de.team5.super_cute.crocodile.data;
 
 import de.team5.super_cute.crocodile.model.IdentifiableObject;
+import de.team5.super_cute.crocodile.model.Trip;
 import java.util.Collections;
 import java.util.List;
 import javax.transaction.Transactional;
@@ -44,8 +45,9 @@ public abstract class BaseData<T extends IdentifiableObject> {
     return true;
   }
 
-  public boolean deleteObject(T obj) {
-    hibernateTemplate.delete(obj);
+  public boolean deleteObject(String id) {
+    Object objToDelete = hibernateTemplate.get(Trip.class.getName(), id);
+    hibernateTemplate.delete(objToDelete);
     return true;
   }
 
