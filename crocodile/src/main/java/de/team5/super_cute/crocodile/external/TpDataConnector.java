@@ -105,17 +105,23 @@ public class TpDataConnector {
             .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}",
                 JsonNode.class,
                 params);
-        travelTimeInbound.put(node_travelTime.get("timetable").get("departureStopId").asText(), 0);
-        for (int i = 0;
-            i < node_travelTime.get("timetable").get("routes").get(0).get("stationIntervals").get(0)
+
+        for(int x = 0; x < node_travelTime.get("timetable").get("routes").get(0).get("stationIntervals").size(); x ++){
+          if(travelTimeInbound.size() == stopsInbound.size())
+            break;
+          for (int i = 0;
+              i < node_travelTime.get("timetable").get("routes").get(0).get("stationIntervals").get(x)
+                  .get("intervals")
+                  .size(); i++) {
+            travelTimeInbound.put(node_travelTime.get("timetable").get("routes").get(0).get("stationIntervals").get(x)
                 .get("intervals")
-                .size(); i++) {
-            travelTimeInbound.put(node_travelTime.get("timetable").get("routes").get(0).get("stationIntervals").get(0)
-                .get("intervals")
-                .get(i).get("stopId").asText(), node_travelTime.get("timetable").get("routes").get(0).get("stationIntervals").get(0)
+                .get(i).get("stopId").asText(), node_travelTime.get("timetable").get("routes").get(0).get("stationIntervals").get(x)
                 .get("intervals")
                 .get(i).get("timeToArrival").asInt());
+          }
+          travelTimeInbound.put(node_travelTime.get("timetable").get("departureStopId").asText(), 0);
         }
+
 
         //generate travelTimeOutbound
         params = new HashMap<>();
@@ -125,16 +131,25 @@ public class TpDataConnector {
             .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}",
                 JsonNode.class,
                 params);
-        travelTimeOutbound.put(node_travelTime.get("timetable").get("departureStopId").asText(), 0);
-        for (int i = 0;
-            i < node_travelTime.get("timetable").get("routes").get(0).get("stationIntervals").get(0)
-                .get("intervals")
-                .size(); i++) {
-          travelTimeOutbound.put(node_travelTime.get("timetable").get("routes").get(0).get("stationIntervals").get(0)
-              .get("intervals")
-              .get(i).get("stopId").asText(), node_travelTime.get("timetable").get("routes").get(0).get("stationIntervals").get(0)
-              .get("intervals")
-              .get(i).get("timeToArrival").asInt());
+
+        for(int x = 0; x < node_travelTime.get("timetable").get("routes").get(0).get("stationIntervals").size(); x ++) {
+          if (travelTimeOutbound.size() == stopsOutbound.size())
+            break;
+          for (int i = 0;
+              i < node_travelTime.get("timetable").get("routes").get(0).get("stationIntervals")
+                  .get(x)
+                  .get("intervals")
+                  .size(); i++) {
+            travelTimeOutbound.put(
+                node_travelTime.get("timetable").get("routes").get(0).get("stationIntervals").get(x)
+                    .get("intervals")
+                    .get(i).get("stopId").asText(),
+                node_travelTime.get("timetable").get("routes").get(0).get("stationIntervals").get(x)
+                    .get("intervals")
+                    .get(i).get("timeToArrival").asInt());
+          }
+          travelTimeOutbound
+              .put(node_travelTime.get("timetable").get("departureStopId").asText(), 0);
         }
 
         lines.add(
