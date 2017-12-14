@@ -8,7 +8,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class IdentifiableObject {
 
   private static final Map<Class<? extends IdentifiableObject>, Integer> CURRENT_NUMBER = new HashMap<>();
-  private String id = null;
+  public String id = null;
 
   IdentifiableObject() {
     // create id

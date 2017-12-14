@@ -53,7 +53,7 @@ public class TpDataConnector {
         //generate travelTimeInbound
         params = new HashMap<>();
         params.put("id", node.get("lineId").asText());
-        params.put("fromStopPointId", stopsInbound.get(0).getApiIp());
+        params.put("fromStopPointId", stopsInbound.get(0).getId());
         JsonNode node_travelTime = rt
             .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}",
                 JsonNode.class,
@@ -63,7 +63,7 @@ public class TpDataConnector {
         //generate travelTimeOutbound
         params = new HashMap<>();
         params.put("id", node.get("lineId").asText());
-        params.put("fromStopPointId", stopsOutbound.get(0).getApiIp());
+        params.put("fromStopPointId", stopsOutbound.get(0).getId());
         node_travelTime = rt
             .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}",
                 JsonNode.class,

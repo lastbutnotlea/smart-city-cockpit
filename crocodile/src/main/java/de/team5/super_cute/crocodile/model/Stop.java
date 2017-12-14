@@ -5,25 +5,16 @@ public class Stop extends IdentifiableObject {
   private double longitude;
   private double latitude;
   private int peopleWaiting;
-  private String apiIp;
 
   public Stop() { super(); }
 
-  public Stop(String apiId, String commonName, double longitude, double latitude, int peopleWaiting) {
+  public Stop(String id, String commonName, double longitude, double latitude, int peopleWaiting) {
     super();
-    this.apiIp = apiId;
+    this.id = id;
     this.commonName = commonName;
     this.longitude = longitude;
     this.latitude = latitude;
     this.peopleWaiting = peopleWaiting;
-  }
-
-  public String getApiIp() {
-    return apiIp;
-  }
-
-  public void setApiIp(String apiIp) {
-    this.apiIp = apiIp;
   }
 
   public String getCommonName() {

@@ -19,10 +19,10 @@ public class TpDataConnectorTests {
       assertEquals("Error in line " + lines.get(i).getName() + " TravelTimeInbound and StopsInbound not equals", lines.get(i).getTravelTimeInbound().size(), lines.get(i).getStopsInbound().size());
       assertEquals("Error in line " + lines.get(i).getName() + " TravelTimeOutbound and StopsOutbound not equals", lines.get(i).getTravelTimeOutbound().size(), lines.get(i).getStopsOutbound().size());
       for(int x = 0; x < lines.get(i).getStopsInbound().size(); x++){
-        assertNotNull("Error in line " + lines.get(i).getName() + " TravelTimeInbound for specific stop not found", lines.get(i).getTravelTimeInbound().get(lines.get(i).getStopsInbound().get(x).getApiIp()));
+        assertNotNull("Error in line " + lines.get(i).getName() + " TravelTimeInbound for specific stop not found", lines.get(i).getTravelTimeInbound().get(lines.get(i).getStopsInbound().get(x).getId()));
       }
       for(int x = 0; x < lines.get(i).getStopsOutbound().size(); x++){
-        assertNotNull("Error in line " + lines.get(i).getName() + " TravelTimeOutbound for specific stop not found", lines.get(i).getTravelTimeOutbound().get(lines.get(i).getStopsOutbound().get(x).getApiIp()));
+        assertNotNull("Error in line " + lines.get(i).getName() + " TravelTimeOutbound for specific stop not found", lines.get(i).getTravelTimeOutbound().get(lines.get(i).getStopsOutbound().get(x).getId()));
       }
     }
     assert(0 == lines.get(0).getTravelTimeInbound().get("490014553J"));
