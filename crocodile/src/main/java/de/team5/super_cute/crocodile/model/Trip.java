@@ -7,12 +7,12 @@ public class Trip extends IdentifiableObject {
 
   private Vehicle vehicle;
   private Line line;
-  private Dictionary<Stop, Calendar> stops;
+  private Dictionary<String, Calendar> stops;
 
-  public Trip() {}
+  public Trip() { super(); }
 
   public Trip(Vehicle vehicle, Line line,
-      Dictionary<Stop, Calendar> stops) {
+      Dictionary<String, Calendar> stops) {
     super();
     this.vehicle = vehicle;
     this.line = line;
@@ -35,12 +35,12 @@ public class Trip extends IdentifiableObject {
     this.line = line;
   }
 
-  public Dictionary<Stop, Calendar> getStops() {
+  public Dictionary<String, Calendar> getStops() {
     return stops;
   }
 
   public void setStops(
-      Dictionary<Stop, Calendar> stops) {
+      Dictionary<String, Calendar> stops) {
     this.stops = stops;
   }
 }

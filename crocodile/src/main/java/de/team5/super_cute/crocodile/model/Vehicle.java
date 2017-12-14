@@ -10,7 +10,7 @@ public class Vehicle extends IdentifiableObject {
   private List<String> defects;
   private EVehicleType type;
 
-  public Vehicle() {}
+  public Vehicle() { super(); }
 
   public Vehicle(int capacity, int delay, int temperature, List<String> defects,
       EVehicleType type) {
