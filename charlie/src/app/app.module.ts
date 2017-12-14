@@ -12,6 +12,8 @@ import {UrlBuilderService} from './services/url-builder.service';
 import {HttpRoutingService} from './services/http-routing.service';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MenuComponent} from './menu/menu.component';
+import { TripDetailComponent } from './view/trip-detail/trip-detail.component';
+
 
 
 @NgModule({
@@ -19,8 +21,9 @@ import {MenuComponent} from './menu/menu.component';
     AppComponent,
     NetworkComponent,
     TripComponent,
-    FilterTripsPipe,
     MenuComponent
+    TripDetailComponent,
+    FilterTripsPipe
   ],
   imports: [
     BrowserModule,
