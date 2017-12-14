@@ -8,7 +8,6 @@ public class LineData extends BaseData<Line> {
 
   public LineData() {
     super(Line.class);
-    //addObject(new Line("UTest", Color.blue, null, null));
   }
 
 }

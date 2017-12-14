@@ -20,11 +20,9 @@ public abstract class BaseData<T extends IdentifiableObject> {
   @Autowired
   private HibernateTemplate hibernateTemplate;
 
-  //final List<T> objects;
   final Class<T> clazz;
 
   BaseData(Class<T> clazz) {
-    //objects = new ArrayList<>();
     this.clazz = clazz;
   }
 

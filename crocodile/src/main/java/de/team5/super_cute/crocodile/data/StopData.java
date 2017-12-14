@@ -8,7 +8,6 @@ public class StopData extends BaseData<Stop> {
 
   public StopData() {
     super(Stop.class);
-    //addObject(new Stop("TestStation", 10.0, 20.0, 5));
   }
 
 }
