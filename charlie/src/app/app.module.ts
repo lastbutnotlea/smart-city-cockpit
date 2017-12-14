@@ -21,7 +21,7 @@ import { TripDetailComponent } from './view/trip-detail/trip-detail.component';
     AppComponent,
     NetworkComponent,
     TripComponent,
-    MenuComponent
+    MenuComponent,
     TripDetailComponent,
     FilterTripsPipe
   ],
