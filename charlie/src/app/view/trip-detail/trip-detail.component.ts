@@ -26,7 +26,8 @@ export class TripDetailComponent implements OnInit {
   getTrip(): void {
     const tripId = this.route.snapshot.paramMap.get('id');
     this.http.getTripDetails(tripId).subscribe(
-      trip => this.trip = trip
+      trip => this.trip = trip,
+      err => console.log('Could not fetch trip data!')
     );
   }
 
@@ -35,7 +36,7 @@ export class TripDetailComponent implements OnInit {
   }
 
   isLoaded(): boolean {
-    if(this.trip != null) {
+    if (this.trip != null) {
       return true;
     }
     return false;
