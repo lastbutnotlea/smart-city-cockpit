@@ -3,11 +3,8 @@ package de.team5.super_cute.crocodile.external;
 import com.fasterxml.jackson.databind.JsonNode;
 import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Stop;
-import de.team5.super_cute.crocodile.model.Trip;
-import de.team5.super_cute.crocodile.model.Vehicle;
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Hashtable;
@@ -19,50 +16,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestTemplate;
 
 public class TpDataConnector {
-
-  private static final String APP_ID = "eec7bc0d";
-  private static final String APP_KEY = "d865ba51ed52b80e33bdb8fc65619d87";
-
-  /*public ArrayList<Stop> getStops(@NotNull @NotEmpty List<String> ids) {
-    ArrayList<Stop> stops = new ArrayList<Stop>();
-    RestTemplate rt = new RestTemplate();
-    String url = "";
-    for (String id : ids) {
-      try {
-        Map<String, Object> params = new HashMap<>();
-        params.put("id", id);
-        JsonNode node = rt
-            .getForObject("https://api.tfl.gov.uk/StopPoint/{id}", JsonNode.class,
-                params);
-        stops.add(new Stop(node.get("stationNaptan").asText(), node.get("commonName").asText(),
-            node.get("lon").asDouble(), node.get("lat").asDouble(), 0));
-      } catch (Exception e) {
-        LoggerFactory.getLogger(getClass()).error("Loading stop failed: " + e.getMessage());
-      }
-    }
-    //Lösung in der mehrere ids pro Abfrage abgefragt werden (funktioniert aber nicht)
-   *//* for (int i = 0; i < naptanIds.size(); i = i + 20) {
-      url = "https://api.tfl.gov.uk/StopPoint/";
-      for (int x = 0; x < naptanIds.size() && x < 20; x++) {
-        if (x != 0) {
-          url += "%2C";
-        }
-        url += naptanIds.get(i + x);
-      }
-    }
-    //url += "?&app_id=" + APP_ID + "&app_key=" + APP_KEY;
-    try {
-      JsonNode node = rt.getForObject(url, JsonNode.class);
-      //for(int i = 0; i < node.size(); i++){
-      stops.add(new Stop(node.get("stationNaptan").asText(), node.get("commonName").asText(),
-          node.get("lon").asDouble(), node.get("lat").asDouble(), 0));
-      //}
-    } catch (Exception e) {
-      LoggerFactory.getLogger(getClass()).info("Loading line failed: " + e.getMessage());
-    }*//*
-
-    return stops;
-  }*/
 
   public ArrayList<Line> getLines(@NotNull @NotEmpty List<String> lineIds) {
     ArrayList<Line> lines = new ArrayList<Line>();
@@ -105,23 +58,7 @@ public class TpDataConnector {
             .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}",
                 JsonNode.class,
                 params);
-
-        for(int x = 0; x < node_travelTime.get("timetable").get("routes").get(0).get("stationIntervals").size(); x ++){
-          if(travelTimeInbound.size() == stopsInbound.size())
-            break;
-          for (int i = 0;
-              i < node_travelTime.get("timetable").get("routes").get(0).get("stationIntervals").get(x)
-                  .get("intervals")
-                  .size(); i++) {
-            travelTimeInbound.put(node_travelTime.get("timetable").get("routes").get(0).get("stationIntervals").get(x)
-                .get("intervals")
-                .get(i).get("stopId").asText(), node_travelTime.get("timetable").get("routes").get(0).get("stationIntervals").get(x)
-                .get("intervals")
-                .get(i).get("timeToArrival").asInt());
-          }
-          travelTimeInbound.put(node_travelTime.get("timetable").get("departureStopId").asText(), 0);
-        }
-
+        getTravelTimes(node_travelTime, travelTimeInbound, stopsInbound.size());
 
         //generate travelTimeOutbound
         params = new HashMap<>();
@@ -131,26 +68,7 @@ public class TpDataConnector {
             .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}",
                 JsonNode.class,
                 params);
-
-        for(int x = 0; x < node_travelTime.get("timetable").get("routes").get(0).get("stationIntervals").size(); x ++) {
-          if (travelTimeOutbound.size() == stopsOutbound.size())
-            break;
-          for (int i = 0;
-              i < node_travelTime.get("timetable").get("routes").get(0).get("stationIntervals")
-                  .get(x)
-                  .get("intervals")
-                  .size(); i++) {
-            travelTimeOutbound.put(
-                node_travelTime.get("timetable").get("routes").get(0).get("stationIntervals").get(x)
-                    .get("intervals")
-                    .get(i).get("stopId").asText(),
-                node_travelTime.get("timetable").get("routes").get(0).get("stationIntervals").get(x)
-                    .get("intervals")
-                    .get(i).get("timeToArrival").asInt());
-          }
-          travelTimeOutbound
-              .put(node_travelTime.get("timetable").get("departureStopId").asText(), 0);
-        }
+        getTravelTimes(node_travelTime, travelTimeOutbound, stopsOutbound.size());
 
         lines.add(
             new Line(node.get("lineName").asText(), stopsInbound,
@@ -162,49 +80,28 @@ public class TpDataConnector {
     return lines;
   }
 
-  /*public Trip getTrip(@NotNull Line line, @NotNull Vehicle vehicle,
-      @NotNull @NotEmpty List<String> stopIds, @NotNull Calendar starttime) {
-    RestTemplate rt = new RestTemplate();
-    Dictionary<String, Calendar> stops = new Hashtable<>();
-    Calendar time;
-    try {
-      Map<String, Object> params = new HashMap<>();
-      params.put("id", line.getName());
-      params.put("fromStopPointId", stopIds.get(0));
-      JsonNode node = rt
-          .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}",
-              JsonNode.class,
-              params);
-      stops.put(stopIds.get(0), (Calendar) starttime.clone());
-      int stopcount = 1;
+  public void getTravelTimes(JsonNode node, Dictionary<String, Integer> travelTime, Integer stopsSize){
+    for (int x = 0;
+        x < node.get("timetable").get("routes").get(0).get("stationIntervals")
+            .size(); x++) {
+      if (travelTime.size() == stopsSize) {
+        break;
+      }
       for (int i = 0;
-          i < node.get("timetable").get("routes").get(0).get("stationIntervals").get(0)
+          i < node.get("timetable").get("routes").get(0).get("stationIntervals")
+              .get(x)
               .get("intervals")
               .size(); i++) {
-        if (stopcount >= stopIds.size()) {
-          break;
-        }
-        if (node.get("timetable").get("routes").get(0).get("stationIntervals").get(0)
-            .get("intervals")
-            .get(i).get("stopId").asText().equals(
-                stopIds.get(stopcount))) {
-          time = (Calendar) starttime.clone();
-          System.out.println(time.getTime());
-          time.add(Calendar.MINUTE,
-              node.get("timetable").get("routes").get(0).get("stationIntervals").get(0)
-                  .get("intervals")
-                  .get(i).get("timeToArrival").asInt());
-          System.out.println(time.getTime());
-          stops.put(stopIds.get(stopcount), time);
-          stopcount++;
-        }
+        travelTime.put(
+            node.get("timetable").get("routes").get(0).get("stationIntervals").get(x)
+                .get("intervals")
+                .get(i).get("stopId").asText(),
+            node.get("timetable").get("routes").get(0).get("stationIntervals").get(x)
+                .get("intervals")
+                .get(i).get("timeToArrival").asInt());
       }
-      if(stopcount < stopIds.size()){
-        throw new Exception("At least one stop not found");
-      }
-    } catch (Exception e) {
-      LoggerFactory.getLogger(getClass()).error("Loading trip failed: " + e.getMessage());
+      travelTime
+          .put(node.get("timetable").get("departureStopId").asText(), 0);
     }
-    return new Trip(vehicle, line, stops);
-  }*/
+  }
 }
