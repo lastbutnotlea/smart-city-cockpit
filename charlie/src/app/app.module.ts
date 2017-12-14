@@ -13,6 +13,7 @@ import {HttpRoutingService} from './services/http-routing.service';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MenuComponent} from './menu/menu.component';
 import { TripDetailComponent } from './view/trip-detail/trip-detail.component';
+import { TripEditComponent } from './view/trip-edit/trip-edit.component';
 
 
 
@@ -23,7 +24,8 @@ import { TripDetailComponent } from './view/trip-detail/trip-detail.component';
     TripComponent,
     MenuComponent,
     TripDetailComponent,
-    FilterTripsPipe
+    FilterTripsPipe,
+    TripEditComponent
   ],
   imports: [
     BrowserModule,
@@ -33,6 +35,10 @@ import { TripDetailComponent } from './view/trip-detail/trip-detail.component';
     NgbModule.forRoot()
   ],
   providers: [UrlBuilderService, HttpRoutingService],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  // modal dialogs:
+  entryComponents: [
+    TripEditComponent
+  ]
 })
 export class AppModule { }
