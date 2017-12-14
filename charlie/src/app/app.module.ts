@@ -9,8 +9,11 @@ import {TripComponent} from './view/trip/trip.component';
 import {AppRoutingModule} from './app-routing.module';
 import {UrlBuilderService} from './services/url-builder.service';
 import {HttpRoutingService} from './services/http-routing.service';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {MenuComponent} from './menu/menu.component';
 import { TripDetailComponent } from './view/trip-detail/trip-detail.component';
 import { FilterComponent } from './view/filter/filter.component';
+
 
 
 @NgModule({
@@ -18,13 +21,16 @@ import { FilterComponent } from './view/filter/filter.component';
     AppComponent,
     NetworkComponent,
     TripComponent,
+    MenuComponent,
     TripDetailComponent,
     FilterComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserModule,
+    NgbModule.forRoot()
   ],
   providers: [UrlBuilderService, HttpRoutingService],
   bootstrap: [AppComponent]
