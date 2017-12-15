@@ -1,5 +1,7 @@
 package de.team5.super_cute.crocodile;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import de.team5.super_cute.crocodile.model.Line;
 import java.util.List;
@@ -19,6 +21,7 @@ public class LineControllerTest {
 
   @Test
   public void testLineController() throws Exception {
+    mockMvc.perform(get("/test"));
     assert(!(new ControllerTestHelper<Line>(mockMvc)).getObjects("/lines", new TypeReference<List<Line>>() {}).isEmpty());
   }
 
