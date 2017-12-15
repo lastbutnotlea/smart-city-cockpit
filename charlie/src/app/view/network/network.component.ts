@@ -7,10 +7,13 @@ import * as d3Scale from 'd3-scale';
 import * as d3Shape from 'd3-shape';
 import * as d3Array from 'd3-array';
 import * as d3Axis from 'd3-axis';
+import * as d3Tube from 'd3-tube-map';
 
 import { Station, Stations } from './stations';
 import { Line, Lines } from './lines';
 import { Connection, Connections } from './connections';
+
+const jsonFile = require('./stations.json');
 
 @Component({
   selector: 'app-network-view',
@@ -54,6 +57,8 @@ export class NetworkComponent implements OnInit {
     this.initAxis();
     this.drawAxis();
     this.drawLine();
+
+    this.tube();
   }
 
 
@@ -66,6 +71,35 @@ export class NetworkComponent implements OnInit {
       return true;
     }
     return false;
+  }
+
+  private tube() {
+    debugger;
+    const el = document.getElementById('tube-map');
+
+    const canvas = d3.select(el)
+      .append('svg')
+      .style('width', '100%')
+      .style('height', '100%');
+
+    const width = 1200;
+    const height = 1200;
+
+    const map = d3Tube.tubeMap()
+      .width(width)
+      .height(height)
+      .margin({
+        top: height / 50,
+        right: width / 7,
+        bottom: height / 10,
+        left: width / 7,
+      });
+
+    /*d3.json('stations.json', function(error, data) {
+      canvas.datum(data).call(map);
+    });*/
+
+    canvas.datum(jsonFile).call(map);
   }
 
   private initSvg() {
@@ -135,7 +169,7 @@ export class NetworkComponent implements OnInit {
       if (station.id === id) {
         result = station;
       }
-    })
+    });
     return result;
   }
 }
