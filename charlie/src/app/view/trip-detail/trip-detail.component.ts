@@ -42,13 +42,11 @@ export class TripDetailComponent implements OnInit {
   edit(): void {
     const modal = this.modalService.open(TripEditComponent);
     modal.componentInstance.data = this.trip;
+    modal.componentInstance.initData();
   }
 
   isLoaded(): boolean {
-    if (this.trip != null) {
-      return true;
-    }
-    return false;
+    return this.trip != null;
   }
 
 }
