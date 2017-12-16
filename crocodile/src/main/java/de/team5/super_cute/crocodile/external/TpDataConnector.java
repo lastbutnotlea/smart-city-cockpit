@@ -51,23 +51,23 @@ public class TpDataConnector {
           }
         }
         //generate travelTimeInbound
-        params = new HashMap<>();
-        params.put("id", node.get("lineId").asText());
-        params.put("fromStopPointId", stopsInbound.get(0).getId());
+        Map<String, Object> paramsTravelTimeInbound = new HashMap<>();
+        paramsTravelTimeInbound.put("id", node.get("lineId").asText());
+        paramsTravelTimeInbound.put("fromStopPointId", stopsInbound.get(0).getId());
         JsonNode node_travelTime = rt
             .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}",
                 JsonNode.class,
-                params);
+                paramsTravelTimeInbound);
         getTravelTimes(node_travelTime, travelTimeInbound, stopsInbound.size());
 
         //generate travelTimeOutbound
-        params = new HashMap<>();
-        params.put("id", node.get("lineId").asText());
-        params.put("fromStopPointId", stopsOutbound.get(0).getId());
+        Map<String, Object> paramsTravelTimeOutbound = new HashMap<>();
+        paramsTravelTimeOutbound.put("id", node.get("lineId").asText());
+        paramsTravelTimeOutbound.put("fromStopPointId", stopsOutbound.get(0).getId());
         node_travelTime = rt
             .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}",
                 JsonNode.class,
-                params);
+                paramsTravelTimeOutbound);
         getTravelTimes(node_travelTime, travelTimeOutbound, stopsOutbound.size());
 
         lines.add(
@@ -80,25 +80,18 @@ public class TpDataConnector {
     return lines;
   }
 
-  public void getTravelTimes(JsonNode node, Dictionary<String, Integer> travelTime, Integer stopsSize){
-    for (int x = 0;
-        x < node.get("timetable").get("routes").get(0).get("stationIntervals")
-            .size(); x++) {
+  private void getTravelTimes(JsonNode node, Dictionary<String, Integer> travelTime,
+      Integer stopsSize) {
+    JsonNode stationIntervals = node.get("timetable").get("routes").get(0).get("stationIntervals");
+    for (int x = 0; x < stationIntervals.size(); x++) {
       if (travelTime.size() == stopsSize) {
         break;
       }
       for (int i = 0;
-          i < node.get("timetable").get("routes").get(0).get("stationIntervals")
-              .get(x)
-              .get("intervals")
-              .size(); i++) {
+          i < stationIntervals.get(x).get("intervals").size(); i++) {
         travelTime.put(
-            node.get("timetable").get("routes").get(0).get("stationIntervals").get(x)
-                .get("intervals")
-                .get(i).get("stopId").asText(),
-            node.get("timetable").get("routes").get(0).get("stationIntervals").get(x)
-                .get("intervals")
-                .get(i).get("timeToArrival").asInt());
+            stationIntervals.get(x).get("intervals").get(i).get("stopId").asText(),
+            stationIntervals.get(x).get("intervals").get(i).get("timeToArrival").asInt());
       }
       travelTime
           .put(node.get("timetable").get("departureStopId").asText(), 0);

@@ -8,7 +8,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class IdentifiableObject {
 
   private static final Map<Class<? extends IdentifiableObject>, Integer> CURRENT_NUMBER = new HashMap<>();
-  public String id = null;
+  private String id = null;
 
   IdentifiableObject() {
     // create id
@@ -31,6 +31,10 @@ public class IdentifiableObject {
 
   public final String getId() {
     return id;
+  }
+
+  public void setId(String id){
+    this.id = id;
   }
 
   @Override

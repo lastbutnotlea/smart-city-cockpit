@@ -6,7 +6,6 @@ import java.util.Dictionary;
 
 public class Line extends IdentifiableObject {
 
-  private String id;
   private String name;
   private ArrayList<Stop> stopsInbound;
   private ArrayList<Stop> stopsOutbound;
@@ -29,10 +28,6 @@ public class Line extends IdentifiableObject {
     this.travelTimeInbound = travelTimeInbound;
     this.travelTimeOutbound = travelTimeOutbound;
     this.color = color;
-  }
-
-  public void setId(String id) {
-    this.id = id;
   }
 
   public String getName() {

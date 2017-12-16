@@ -10,7 +10,7 @@ public class Stop extends IdentifiableObject {
 
   public Stop(String id, String commonName, double longitude, double latitude, int peopleWaiting) {
     super();
-    this.id = id;
+    setId(id);
     this.commonName = commonName;
     this.longitude = longitude;
     this.latitude = latitude;
