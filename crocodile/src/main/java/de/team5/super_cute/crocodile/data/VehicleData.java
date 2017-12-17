@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 public class VehicleData extends BaseData<Vehicle> {
 
   VehicleData() {
-    super();
+    super(Vehicle.class);
   }
+
 }
