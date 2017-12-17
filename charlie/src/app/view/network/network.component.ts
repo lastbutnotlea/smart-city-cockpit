@@ -57,7 +57,7 @@ export class NetworkComponent implements OnInit {
       .style('width', '100%')
       .style('height', '100%');
 
-    const width = 2000;
+    const width = 500;
     const height = 500;
 
     const map = d3Tube.tubeMap()
