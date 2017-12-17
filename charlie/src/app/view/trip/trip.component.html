@@ -22,10 +22,14 @@
     </thead>
     <tbody>
     <tr *ngFor="let trip of (trips | tripsPipe: [lineFilter.checked, vehicleTypeFilter.checked])">
-      <td>{{ trip.id }}</td>
-      <td>{{ trip.vehicle.id }}</td>
-      <td>{{ trip.vehicle.type }}</td>
-      <td>{{ trip.line.id }}</td>
+        <td>
+          <a routerLink="detail/{{trip.id}}">
+            {{ trip.id }}
+          </a>
+        </td>
+        <td>{{ trip.vehicle.id }}</td>
+        <td>{{ trip.vehicle.type }}</td>
+        <td>{{ trip.line.id }}</td>
     </tr>
     </tbody>
   </table>

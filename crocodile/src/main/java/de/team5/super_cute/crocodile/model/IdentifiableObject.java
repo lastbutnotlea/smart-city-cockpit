@@ -2,12 +2,19 @@ package de.team5.super_cute.crocodile.model;
 
 import java.util.HashMap;
 import java.util.Map;
+import javax.persistence.Column;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
-public class IdentifiableObject {
+@MappedSuperclass
+public abstract class IdentifiableObject {
 
   private static final Map<Class<? extends IdentifiableObject>, Integer> CURRENT_NUMBER = new HashMap<>();
+
+  @Id
+  @Column
   private String id = null;
 
   IdentifiableObject() {

@@ -1,18 +1,44 @@
 package de.team5.super_cute.crocodile.model;
 
+import static javax.persistence.TemporalType.DATE;
+
+import java.io.Serializable;
 import java.util.Calendar;
-import java.util.Dictionary;
+import java.util.Map;
+import javax.persistence.Basic;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
 
-public class Trip extends IdentifiableObject {
 
+@Entity
+@Table(name="trip")
+public class Trip extends IdentifiableObject implements Serializable {
+
+  @OneToOne
+  @PrimaryKeyJoinColumn
   private Vehicle vehicle;
+
+  @ManyToOne
+  @PrimaryKeyJoinColumn
   private Line line;
-  private Dictionary<Stop, Calendar> stops;
+
+  @ElementCollection(fetch = FetchType.EAGER)
+  @MapKeyColumn(name = "stop_id")
+  @Temporal(DATE)
+  @Basic
+  private Map<String, Calendar> stops;
 
   public Trip() {}
 
   public Trip(Vehicle vehicle, Line line,
-      Dictionary<Stop, Calendar> stops) {
+      Map<String, Calendar> stops) {
     super();
     this.vehicle = vehicle;
     this.line = line;
@@ -35,12 +61,12 @@ public class Trip extends IdentifiableObject {
     this.line = line;
   }
 
-  public Dictionary<Stop, Calendar> getStops() {
+  public Map<String, Calendar> getStops() {
     return stops;
   }
 
   public void setStops(
-      Dictionary<Stop, Calendar> stops) {
+      Map<String, Calendar> stops) {
     this.stops = stops;
   }
 }
