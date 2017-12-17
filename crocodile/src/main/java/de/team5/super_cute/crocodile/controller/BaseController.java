@@ -14,7 +14,7 @@ abstract class BaseController<T extends IdentifiableObject> {
   }
 
   ResponseEntity addObject(T input) {
-    boolean created = data.getData().add(input);
+    boolean created = data.addObject(input);
     if (created) {
       return ResponseEntity.created(URI.create(input.getId())).build();
     }
@@ -22,7 +22,7 @@ abstract class BaseController<T extends IdentifiableObject> {
   }
 
   ResponseEntity deleteObject(String id) {
-    boolean removed = data.getData().removeIf(t -> t.getId().equals(id));
+    boolean removed = data.deleteObject(id);
     if (removed) {
       return ResponseEntity.ok().build();
     }
