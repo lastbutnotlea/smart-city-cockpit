@@ -23,8 +23,8 @@ public class TpDataConnector {
     for (String id : lineIds) {
       ArrayList<Stop> stopsInbound = new ArrayList<Stop>();
       ArrayList<Stop> stopsOutbound = new ArrayList<Stop>();
-      Dictionary<String, Integer> travelTimeInbound = new Hashtable<>();
-      Dictionary<String, Integer> travelTimeOutbound = new Hashtable<>();
+      Map<String, Integer> travelTimeInbound = new Hashtable<>();
+      Map<String, Integer> travelTimeOutbound = new Hashtable<>();
       try {
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
@@ -80,7 +80,7 @@ public class TpDataConnector {
     return lines;
   }
 
-  private void getTravelTimes(JsonNode node, Dictionary<String, Integer> travelTime,
+  private void getTravelTimes(JsonNode node, Map<String, Integer> travelTime,
       Integer stopsSize) {
     JsonNode stationIntervals = node.get("timetable").get("routes").get(0).get("stationIntervals");
     for (int x = 0; x < stationIntervals.size(); x++) {

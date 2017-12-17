@@ -15,14 +15,18 @@ import java.util.Calendar;
 import java.util.Dictionary;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.PriorityQueue;
 import javafx.util.Pair;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import sun.util.resources.CalendarData;
 
+@Service
 public class InitialDataGenerator {
 
   @Autowired
@@ -56,8 +60,8 @@ public class InitialDataGenerator {
     Calendar to = Calendar.getInstance();
     from.set(Calendar.HOUR, 0);
     from.set(Calendar.MINUTE, 0);
-    to.set(Calendar.HOUR, 0);
-    to.set(Calendar.MINUTE, 0);
+    to.set(Calendar.HOUR, 23);
+    to.set(Calendar.MINUTE,59);
     generateTripsAndVehicles(from, to, lines);
   }
 
@@ -122,6 +126,7 @@ public class InitialDataGenerator {
             Vehicle vehicle;
             if(queueOutbound.peek() == null || queueOutbound.peek().getValue().compareTo(iterator) == 1){
               vehicle = new Vehicle(100, 0, 42, new ArrayList<String>(), EVehicleType.Bus);
+              networkDataBuilder.addVehicles(vehicle);
             }
             else{
               vehicle = queueOutbound.poll().getKey();
@@ -164,11 +169,11 @@ public class InitialDataGenerator {
     return pointer;
   }
 
-  public int maxTravelTime(Dictionary<String, Integer> travelTimes){
+  public int maxTravelTime(Map<String, Integer> travelTimes){
     int maxTravelTime = 0;
-    Enumeration<Integer> enumeration = travelTimes.elements();
-    while (enumeration.hasMoreElements()){
-      Integer next = enumeration.nextElement();
+    Iterator<Entry<String, Integer>> enumeration = travelTimes.entrySet().iterator();
+    while (enumeration.hasNext()){
+      Integer next = enumeration.next().getValue();
       maxTravelTime = next > maxTravelTime ? next : maxTravelTime;
     }
     return  maxTravelTime;

@@ -6,7 +6,7 @@ import org.junit.Test;
 public class InitialDataGeneratorTest {
 
   @Test
-  public void testGetLines() {
+  public void testGenerateInitialPrototypeSetup() {
     InitialDataGenerator initialDataGenerator = new InitialDataGenerator();
     initialDataGenerator.generateInitialPrototypeSetup();
   }
