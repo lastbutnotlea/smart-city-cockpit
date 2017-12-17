@@ -13,11 +13,11 @@ node {
 }
 
 task build(type: NpmTask) {
-  args = ['run', 'build']
+  args = ['run', 'build-prod']
 }
 
 task check(type: NpmTask, dependsOn: npmInstall) {
-  args = ['run', 'test-headless']
+  args = ['run', 'test-headless-prod']
 }
 
 build.dependsOn(npm_install)

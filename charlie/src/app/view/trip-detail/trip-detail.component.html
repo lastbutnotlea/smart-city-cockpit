@@ -1,0 +1,10 @@
+<div *ngIf="!isLoaded()">
+  <h3>Loading...</h3>
+</div>
+
+<div *ngIf="isLoaded()">
+
+  <h3>{{trip.id}}</h3>
+
+  <button (click)="goBack()">Back To Trips</button>
+</div>
