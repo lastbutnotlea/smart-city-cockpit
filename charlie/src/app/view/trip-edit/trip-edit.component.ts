@@ -4,6 +4,7 @@ import {TripData} from '../../shared/trip-data';
 import {HttpRoutingService} from '../../services/http-routing.service';
 import {LineData} from '../../shared/line-data';
 import {VehicleData} from '../../shared/vehicle-data';
+import {StopData} from "../../shared/stop-data";
 
 @Component({
   selector: 'app-trip-edit',
@@ -16,6 +17,7 @@ export class TripEditComponent implements OnInit {
 
   availLines: LineData[] = [];
   availVehicles: VehicleData[] = [];
+  availStops: StopData[] = [];
 
   constructor(public activeModal: NgbActiveModal, private http: HttpRoutingService) { }
 
@@ -39,5 +41,9 @@ export class TripEditComponent implements OnInit {
       this.selected.line = this.data.line;
       this.selected.vehicle = this.data.vehicle;
     }
+  }
+
+  computeStops(): void {
+    // this.http.getStops(this.selected.line.id);
   }
 }
