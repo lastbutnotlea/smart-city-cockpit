@@ -17,9 +17,11 @@ Depending on your Operating System and your intentions, do one of the following:
 1. Open a command line in the `charlie`-folder.
 2. Run `npm install` (sometimes you might want to skip this step because it takes a while)
 3. Build with:
-    - `npm run build` if you only want to build the app. You can find the result in `dist`.
+    - `npm run build-dev` if you only want to build the app. You can find the result in `dist`.
     - `npm start` if you want to start a server with the app. This server will recompile on changes of the source.
 4. Be happy =D
+
+Note: change `dev` to `prod` to build for the production environment. This uses a different config file (found in `charlie/src/environments`)
 
 ### The project as a whole
 
@@ -31,3 +33,4 @@ To initiate this process, call `./gradlew stage` (`start gradlew.bat stage`) in 
 This compiles into a `jar`-file located in `crocodile/build/libs` that contains everything.
 To run this `jar`, call `java -jar crocodile/build/libs/*.jar`.
 
+Note that this compiles the frontend configured for production, though (see section Frontend only).

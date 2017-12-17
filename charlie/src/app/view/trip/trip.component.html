@@ -1,0 +1,37 @@
+<div *ngIf="!isLoaded()">
+  <h3>Loading...</h3>
+</div>
+
+<div>
+
+  <h3>{{title}}</h3>
+
+  <div>
+    Line 1: <input #lineFilter type="checkbox" name="LineFilter" (change)="onChange(lineFilter.checked)">
+    Buses: <input #vehicleTypeFilter type="checkbox" name="VehicleTypeFilter" (change)="onChange(vehicleTypeFilter.checked)">
+  </div>
+
+  <table class="data-table-format">
+    <thead>
+    <tr>
+      <th>TripId</th>
+      <th>VehicleId</th>
+      <th>VehicleType</th>
+      <th>LineId</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let trip of (trips | tripsPipe: [lineFilter.checked, vehicleTypeFilter.checked])">
+        <td>
+          <a routerLink="detail/{{trip.id}}">
+            {{ trip.id }}
+          </a>
+        </td>
+        <td>{{ trip.vehicle.id }}</td>
+        <td>{{ trip.vehicle.type }}</td>
+        <td>{{ trip.line.id }}</td>
+    </tr>
+    </tbody>
+  </table>
+
+</div>
