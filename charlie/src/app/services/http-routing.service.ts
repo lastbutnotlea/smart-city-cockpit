@@ -25,6 +25,18 @@ export class HttpRoutingService {
   }
 
   /**
+   * Gets all trip data from backend
+   * @returns {Observable<TripData[]>}
+   */
+  public getTripDetails (tripId: string): Observable<TripData> {
+    return this.http.get<TripData>(this.urlBuilder.getTripDetailsUrl(tripId))
+      .pipe(
+        tap(trips => console.log(`Fetched Trip Details.`))
+        // TODO: Error Handling!
+      );
+  }
+
+  /**
    * Gets all lines from backend
    * @returns {Observable<LineData[]>}
    */
@@ -35,36 +47,4 @@ export class HttpRoutingService {
         // TODO: Error Handling!
       );
   }
-
-  // these are dummy functions
-  // TODO: Implement functions to post or delete specific data
-  /*public sendPostRequest(url: string, body: any): void{
-    this.http.post(url, body).subscribe(data => {
-        // Read the result field from the JSON response.
-        console.log(data['results']);
-      },
-      err => {
-        console.log('Something went wrong!');
-      });
-  }
-
-  public sendPutRequest(url: string, body: any): void{
-    this.http.put(url, body).subscribe(data => {
-        // Read the result field from the JSON response.
-        console.log(data['results']);
-      },
-      err => {
-        console.log('Something went wrong!');
-      });
-  }
-
-  public sendDeleteRequest(url: string): void{
-    this.http.delete(url).subscribe(data => {
-        // Read the result field from the JSON response.
-        console.log(data['results']);
-      },
-      err => {
-        console.log('Something went wrong!');
-      });
-  }*/
 }

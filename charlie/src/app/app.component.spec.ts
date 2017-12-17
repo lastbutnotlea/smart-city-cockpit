@@ -9,6 +9,8 @@ import {HttpRoutingService} from './services/http-routing.service';
 import { APP_BASE_HREF } from '@angular/common';
 import { NetworkComponent } from './view/network/network.component';
 import { TripComponent } from './view/trip/trip.component';
+import { TripDetailComponent } from './view/trip-detail/trip-detail.component';
+import {MenuComponent} from './menu/menu.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -17,7 +19,9 @@ describe('AppComponent', () => {
         AppComponent,
         NetworkComponent,
         TripComponent,
-        FilterTripsPipe
+        TripDetailComponent,
+        FilterTripsPipe,
+        MenuComponent
       ],
       imports: [
         BrowserModule,
@@ -38,12 +42,5 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
     expect(app.title).toEqual('app');
-  }));
-
-  it('should render title in a h1 tag', async(() => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Welcome to app!');
   }));
 });
