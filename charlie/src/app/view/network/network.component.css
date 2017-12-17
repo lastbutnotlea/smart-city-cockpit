@@ -12,10 +12,6 @@ a {
   color: rgba(0,0,0,0.87);
 }
 
-a:hover {
-  text-decoration: underline;
-}
-
 .md-sidenav-left p {
   font-size: 13px;
 }
@@ -26,7 +22,7 @@ a:hover {
   fill: rgb(255, 255, 255);
 }
 
-.angular-google-map-container { height: 300px; }
+.angular-google-map-container { height: 500px; }
 
 .autocomplete {
   width: 200px;
@@ -61,13 +57,6 @@ a:hover {
   text-align: center;
 }
 
-
-h2.name {
-  -webkit-margin-before: 0em;
-  -webkit-margin-after: 0.2em;
-  -webkit-margin-start: 0px;
-  -webkit-margin-end: 0px;
-}
 text {
   font-family: 'Hammersmith One', sans-serif;
   fill: #0019A8;
@@ -94,7 +83,13 @@ text.highlighted {
   transition-property: opacity;
   transition-duration: 0.5s;
   transition-timing-function: ease-out;
+  opacity: 0.7;
 }
+
+.line:hover{
+  opacity: 1.0;
+}
+
 .line.translucent {
   opacity: 0.1;
 }

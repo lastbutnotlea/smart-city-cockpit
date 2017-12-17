@@ -11,7 +11,6 @@ import {FilterTripsPipe} from "./pipes/filter-trips.pipe";
 import {UrlBuilderService} from "./services/url-builder.service";
 import {HttpRoutingService} from "./services/http-routing.service";
 
-
 @NgModule({
   declarations: [
     AppComponent,

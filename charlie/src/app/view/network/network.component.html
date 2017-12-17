@@ -1,23 +1,15 @@
-<!--
 <div *ngIf="!isLoaded()">
   <h3>Loading...</h3>
 </div>
 
-<div *ngIf="isLoaded()">
-
+<div id="network" *ngIf="isLoaded()">
   <h3>{{title}}</h3>
 
   <a *ngFor="let line of lines">
     <h4>{{ line.id }}</h4>
   </a>
-
 </div>
--->
 
-<h1>{{title}}</h1>
-<h2>subtitle</h2>
-<svg width="900" height="500"></svg>
-
-<div id="tube-map">
+<div style="height: 450px; width: 1200px;" id="tube-map">
 </div>
 
