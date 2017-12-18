@@ -19,10 +19,9 @@ import org.hibernate.annotations.Proxy;
 
 
 @Entity
-@Table(name="trip")
+@Table(name = "trip")
 @Proxy(lazy = false)
-public class
-Trip extends IdentifiableObject implements Serializable {
+public class Trip extends IdentifiableObject implements Serializable {
 
   @Column
   private boolean isInbound;
