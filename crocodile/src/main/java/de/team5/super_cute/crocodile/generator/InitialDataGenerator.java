@@ -12,8 +12,6 @@ import de.team5.super_cute.crocodile.model.Vehicle;
 import de.team5.super_cute.crocodile.util.NetworkDataBuilder;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Dictionary;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -24,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import sun.util.resources.CalendarData;
 
 @Service
 public class InitialDataGenerator {
@@ -51,10 +48,11 @@ public class InitialDataGenerator {
     add("waterloo-city");
   }};
 
-  NetworkDataBuilder networkDataBuilder = new NetworkDataBuilder(lineData, vehicleData, stopData,
-      tripData);
+  NetworkDataBuilder networkDataBuilder;
 
   public void generateInitialPrototypeSetup() {
+    networkDataBuilder = new NetworkDataBuilder(lineData, vehicleData, stopData,
+        tripData);
     ArrayList<Line> lines = new TpDataConnector().getLines(lineIds);
     Calendar from = Calendar.getInstance();
     Calendar to = Calendar.getInstance();
@@ -74,6 +72,7 @@ public class InitialDataGenerator {
     for (int x = 0; x < lines.size(); x++) {
       try {
         Line line = lines.get(x);
+        networkDataBuilder.addLinesWithStops(line);
         int inboundTravelTime = maxTravelTime(line.getTravelTimeInbound());
         int outboundTravelTime = maxTravelTime(line.getTravelTimeOutbound());
         PriorityQueue<Pair<Vehicle, Calendar>> queueInbound = new PriorityQueue<>((a,b) -> a.getValue().compareTo(b.getValue()));
@@ -101,6 +100,7 @@ public class InitialDataGenerator {
             Vehicle vehicle;
             if(queueInbound.peek() == null || queueInbound.peek().getValue().compareTo(iterator) == 1){
               vehicle = new Vehicle(100, 0, 42, new ArrayList<String>(), EVehicleType.Bus);
+              networkDataBuilder.addVehicles(vehicle);
             }
             else{
               vehicle = queueInbound.poll().getKey();
