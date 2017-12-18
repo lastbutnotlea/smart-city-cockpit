@@ -83,11 +83,6 @@ text.highlighted {
   transition-property: opacity;
   transition-duration: 0.5s;
   transition-timing-function: ease-out;
-  opacity: 0.7;
-}
-
-.line:hover{
-  opacity: 1.0;
 }
 
 .line.translucent {
