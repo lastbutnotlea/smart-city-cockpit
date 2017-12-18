@@ -29,6 +29,9 @@ public class Trip extends IdentifiableObject implements Serializable {
   @PrimaryKeyJoinColumn
   private Line line;
 
+  /**
+  der String stellt StopIds dar
+   **/
   @ElementCollection(fetch = FetchType.EAGER)
   @MapKeyColumn(name = "stop_id")
   @Temporal(DATE)
