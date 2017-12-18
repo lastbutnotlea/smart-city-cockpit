@@ -5,6 +5,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {TripEditComponent} from '../trip-edit/trip-edit.component';
+import {VehicleData} from '../../shared/vehicle-data';
 
 
 @Component({

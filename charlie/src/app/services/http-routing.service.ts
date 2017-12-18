@@ -1,5 +1,5 @@
-import {HttpClient} from "@angular/common/http";
-import {Injectable} from "@angular/core";
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 import { LineData } from '../shared/line-data';
 import { Observable } from 'rxjs/Observable';
 import { UrlBuilderService } from './url-builder.service';
@@ -46,5 +46,15 @@ export class HttpRoutingService {
         tap(lines => console.log(`Fetched Lines.`))
         // TODO: Error Handling!
       );
+  }
+
+  public addTrip(trip: TripData): void {
+    console.log('ADD TRIP, lineID: ' + trip.line.id + ' vehicleID: ' + trip.vehicle.id);
+    this.http.post(this.urlBuilder.getTripsUrl(), trip).subscribe();
+  }
+
+  public editTrip(trip: TripData): void {
+    console.log('ADD TRIP, lineID: ' + trip.line.id + ' vehicleID: ' + trip.vehicle.id);
+    this.http.put(this.urlBuilder.getTripsUrl(), trip).subscribe();
   }
 }

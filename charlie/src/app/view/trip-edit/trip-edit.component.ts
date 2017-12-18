@@ -4,7 +4,7 @@ import {TripData} from '../../shared/trip-data';
 import {HttpRoutingService} from '../../services/http-routing.service';
 import {LineData} from '../../shared/line-data';
 import {VehicleData} from '../../shared/vehicle-data';
-import {StopData} from "../../shared/stop-data";
+import {StopData} from '../../shared/stop-data';
 
 @Component({
   selector: 'app-trip-edit',
@@ -33,6 +33,7 @@ export class TripEditComponent implements OnInit {
     console.log('Confirm trip editing: selected line: ' + this.data.line.id +
       ' selected vehicle: ' + this.data.vehicle.id);
     this.activeModal.close('Close click');
+    // this.http.editTrip(this.data);
   }
 
   initData(): void {
