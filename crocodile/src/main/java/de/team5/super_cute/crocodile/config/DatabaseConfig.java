@@ -25,14 +25,14 @@ public class DatabaseConfig {
 
   @Bean
   @Transactional
-  public HibernateTemplate hibernateTemplate() {
-    HibernateTemplate ht =  new HibernateTemplate(sessionFactory());
+  public HibernateTemplate getHibernateTemplate() {
+    HibernateTemplate ht =  new HibernateTemplate(getSessionFactory());
     ht.getSessionFactory().getCurrentSession().setFlushMode(FlushMode.AUTO);
     return ht;
   }
 
   @Bean
-  public SessionFactory sessionFactory() {
+  public SessionFactory getSessionFactory() {
     return new LocalSessionFactoryBuilder(getDataSource())
         .addAnnotatedClasses(IdentifiableObject.class, Line.class, Stop.class, Trip.class, Vehicle.class)
         .setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect")
@@ -67,8 +67,8 @@ public class DatabaseConfig {
   }
 
   @Bean
-  public HibernateTransactionManager hibTransMan(){
-    return new HibernateTransactionManager(sessionFactory());
+  public HibernateTransactionManager getHibernateTransactionManager(){
+    return new HibernateTransactionManager(getSessionFactory());
   }
 
 }
