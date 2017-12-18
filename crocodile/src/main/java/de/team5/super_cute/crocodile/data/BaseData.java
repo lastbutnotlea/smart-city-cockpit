@@ -35,6 +35,7 @@ public abstract class BaseData<T extends IdentifiableObject> {
     if (hibernateTemplate.get(obj.getClass().getName(), obj.getId()) == null) {
       hibernateTemplate.save(obj);
     }
+    else return false;
     return true;
   }
 
