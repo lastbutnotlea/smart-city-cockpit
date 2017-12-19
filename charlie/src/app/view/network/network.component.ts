@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {HttpRoutingService} from '../../services/http-routing.service';
 import { LineData } from '../../shared/line-data';
 import { MapComponent } from '../map/map.component';
@@ -7,7 +7,6 @@ import { MapComponent } from '../map/map.component';
   selector: 'app-network-view',
   templateUrl: './network.component.html',
   styleUrls: ['./network.component.css'],
-  encapsulation: ViewEncapsulation.None
 })
 
 export class NetworkComponent implements OnInit {
