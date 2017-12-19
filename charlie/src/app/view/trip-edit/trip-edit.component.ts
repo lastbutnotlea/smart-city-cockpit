@@ -25,6 +25,10 @@ export class TripEditComponent implements OnInit {
     this.http.getLines().subscribe(
       data => this.availLines = data,
         err => console.log('Err'));
+
+    this.http.getVehicles().subscribe(
+      data => this.availVehicles = data,
+      err => console.log('Err'));
   }
 
   confirm(): void {
@@ -33,7 +37,7 @@ export class TripEditComponent implements OnInit {
     console.log('Confirm trip editing: selected line: ' + this.data.line.id +
       ' selected vehicle: ' + this.data.vehicle.id);
     this.activeModal.close('Close click');
-    // this.http.editTrip(this.data);
+    this.http.editTrip(this.data);
   }
 
   initData(): void {
