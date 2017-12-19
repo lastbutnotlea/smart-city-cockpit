@@ -1,10 +1,9 @@
-import {HttpClient} from "@angular/common/http";
-import {Injectable} from "@angular/core";
+import {HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 import { LineData } from '../shared/line-data';
 import { Observable } from 'rxjs/Observable';
 import { UrlBuilderService } from './url-builder.service';
-import { catchError, tap } from 'rxjs/operators';
-import { empty } from 'rxjs/observable/empty';
+import { tap } from 'rxjs/operators';
 import { TripData } from '../shared/trip-data';
 
 @Injectable()
@@ -44,6 +43,30 @@ export class HttpRoutingService {
     return this.http.get<LineData[]>(this.urlBuilder.getNetworkUrl())
       .pipe(
         tap(lines => console.log(`Fetched Lines.`))
+        // TODO: Error Handling!
+      );
+  }
+
+  public getMapDataStations (): Observable<any> {
+    return this.http.get<any>(this.urlBuilder.getMapStationsUrl())
+      .pipe(
+        tap(data => console.log(`Fetched Map-Data for Stations.`))
+        // TODO: Error Handling!
+      );
+  }
+
+  public getMapDataLines (): Observable<any> {
+    return this.http.get<any>(this.urlBuilder.getMapLinesUrl())
+      .pipe(
+        tap(data => console.log(`Fetched Map-Data for Lines.`))
+        // TODO: Error Handling!
+      );
+  }
+
+  public getMapDataConnections (): Observable<any> {
+    return this.http.get<any>(this.urlBuilder.getMapStationsUrl())
+      .pipe(
+        tap(data => console.log(`Fetched Map-Data for Connections.`))
         // TODO: Error Handling!
       );
   }

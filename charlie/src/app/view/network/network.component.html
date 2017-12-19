@@ -1,13 +1,11 @@
-<div *ngIf="!isLoaded()">
-  <h3>Loading...</h3>
-</div>
-
-<div *ngIf="isLoaded()">
-
+<div id="network">
   <h3>{{title}}</h3>
 
   <a *ngFor="let line of lines">
     <h4>{{ line.id }}</h4>
   </a>
-
 </div>
+
+<div style="height: 450px; width: 1200px;" id="tube-map">
+</div>
+
