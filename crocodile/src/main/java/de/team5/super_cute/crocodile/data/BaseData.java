@@ -28,11 +28,13 @@ public abstract class BaseData<T extends IdentifiableObject> {
    * @return all Objects of Type T currently in the system
    */
   public List<T> getData() {
-    return Collections.unmodifiableList(hibernateTemplate.loadAll(clazz));
+    return (List<T>) hibernateTemplate.getSessionFactory().getCurrentSession().createQuery("from " + clazz.getName()).list();
   }
 
   public boolean addObject(T obj) {
-    hibernateTemplate.save(obj);
+    if (hibernateTemplate.get(clazz.getName(), obj.getId()) == null) {
+      hibernateTemplate.save(obj);
+    }
     return true;
   }
 
@@ -42,7 +44,7 @@ public abstract class BaseData<T extends IdentifiableObject> {
   }
 
   public boolean deleteObject(String id) {
-    Object objToDelete = hibernateTemplate.get(Trip.class.getName(), id);
+    Object objToDelete = hibernateTemplate.get(clazz.getName(), id);
     hibernateTemplate.delete(objToDelete);
     return true;
   }
