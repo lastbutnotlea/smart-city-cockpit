@@ -39,11 +39,13 @@ public class MapController {
   private StopData stopData;
   private boolean gotDataFromTpConnector = false;
   private ObjectMapper mapper;
+  private ManualTestController manualTestController;
 
   @Autowired
-  public MapController(LineData lineData, StopData stopData) {
+  public MapController(LineData lineData, StopData stopData, ManualTestController manualTestController) {
     this.lineData = lineData;
     this.stopData = stopData;
+    this.manualTestController = manualTestController;
     mapper = new ObjectMapper();
   }
 
@@ -100,7 +102,7 @@ public class MapController {
     if (gotDataFromTpConnector) {
      return;
     }
-    new ManualTestController().testTrips();
+    manualTestController.testTrips();
     gotDataFromTpConnector = true;
      /**List<Line> lines = new TpDataConnector().getLines(LINES_WE_USE);
      List<Stop> stops = lines.stream().map(Line::getStopsInbound).flatMap(Collection::stream)
