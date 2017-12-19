@@ -1,18 +1,39 @@
 package de.team5.super_cute.crocodile.model;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Table;
+import org.hibernate.annotations.Proxy;
 
-public class Vehicle extends IdentifiableObject {
+@Entity
+@Table(name = "vehicle")
+@Proxy(lazy = false)
+public class Vehicle extends IdentifiableObject implements Serializable {
 
-  private int capacity;
-  private int delay;
-  private int temperature;
-  private List<String> defects;
+  @Column
+  private Integer capacity;
+
+  @Column
+  private Integer delay;
+
+  @Column
+  private Integer temperature;
+
+  @ElementCollection(fetch = FetchType.EAGER)
+  private Set<String> defects;
+
+  @Column
   private EVehicleType type;
 
   public Vehicle() {}
 
-  public Vehicle(int capacity, int delay, int temperature, List<String> defects,
+  public Vehicle(int capacity, int delay, int temperature, Set<String> defects,
       EVehicleType type) {
     super();
     this.capacity = capacity;
@@ -22,7 +43,16 @@ public class Vehicle extends IdentifiableObject {
     this.type = type;
   }
 
-  public int getCapacity() {
+  public Vehicle(int capacity, int delay, int temperature,
+      EVehicleType type, String... defects) {
+    this.capacity = capacity;
+    this.delay = delay;
+    this.temperature = temperature;
+    this.type = type;
+    this.defects = new HashSet<String>(Arrays.asList(defects));
+  }
+
+  public Integer getCapacity() {
     return capacity;
   }
 
@@ -30,7 +60,7 @@ public class Vehicle extends IdentifiableObject {
     this.capacity = capacity;
   }
 
-  public int getDelay() {
+  public Integer getDelay() {
     return delay;
   }
 
@@ -38,7 +68,7 @@ public class Vehicle extends IdentifiableObject {
     this.delay = delay;
   }
 
-  public int getTemperature() {
+  public Integer getTemperature() {
     return temperature;
   }
 
@@ -46,11 +76,11 @@ public class Vehicle extends IdentifiableObject {
     this.temperature = temperature;
   }
 
-  public List<String> getDefects() {
+  public Set<String> getDefects() {
     return defects;
   }
 
-  public void setDefects(List<String> defects) {
+  public void setDefects(Set<String> defects) {
     this.defects = defects;
   }
 
