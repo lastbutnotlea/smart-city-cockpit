@@ -30,6 +30,7 @@ export class NetworkComponent implements OnInit {
   }
 
   private getMapData(): void {
+    // TODO: If this is causing any performance issues, change back to parallel calls, in each subscribe, check if data from other two calls is already available
     this.http.getMapDataStations().subscribe(stationsData => {
       this.http.getMapDataLines().subscribe(linesData => {
         this.http.getMapDataConnections().subscribe(connectionsData => {

@@ -38,10 +38,7 @@ export class LineDetailComponent implements OnInit {
   }
 
   isLoaded(): boolean {
-    if (this.line != null) {
-      return true;
-    }
-    return false;
+    return (this.line != null);
   }
 
 }
