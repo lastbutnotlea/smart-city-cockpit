@@ -30,7 +30,9 @@ public class TpDataConnector {
             .getForObject("https://api.tfl.gov.uk/Line/{id}/Route/Sequence/all", JsonNode.class,
                 params);
         for (int i = 0; i < node.get("stopPointSequences").size(); i++) {
+          //first sequence is inbound, second is outbound
           for (int x = 0; x < node.get("stopPointSequences").get(i).get("stopPoint").size(); x++) {
+            //iterate over all stops and create objects
             Stop stop = new Stop(
                 node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("id")
                     .asText(),
@@ -67,6 +69,7 @@ public class TpDataConnector {
                 JsonNode.class,
                 paramsTravelTimeOutbound);
         travelTimeOutbound = getTravelTimes(node_travelTime, stopsOutbound.size());
+
         lines.add(
             new Line(node.get("lineName").asText(), stopsInbound,
                 stopsOutbound, travelTimeInbound, travelTimeOutbound, new Color(0)));
@@ -77,6 +80,7 @@ public class TpDataConnector {
     return lines;
   }
 
+  //maps stops to their delay from start-stop
   private Map<String, Integer> getTravelTimes(JsonNode node, Integer stopsSize) {
     Map<String, Integer> travelTime = new HashMap<>();
     JsonNode stationIntervals = node.get("timetable").get("routes").get(0).get("stationIntervals");
