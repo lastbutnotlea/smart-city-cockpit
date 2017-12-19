@@ -1,16 +1,19 @@
 package de.team5.super_cute.crocodile.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Table;
+import org.hibernate.annotations.Proxy;
 
 @Entity
 @Table(name = "vehicle")
+@Proxy(lazy = false)
 public class Vehicle extends IdentifiableObject implements Serializable {
 
   @Column
@@ -22,15 +25,15 @@ public class Vehicle extends IdentifiableObject implements Serializable {
   @Column
   private Integer temperature;
 
-  @ElementCollection
-  private List<String> defects;
+  @ElementCollection(fetch = FetchType.EAGER)
+  private Set<String> defects;
 
   @Column
   private EVehicleType type;
 
   public Vehicle() { super(); }
 
-  public Vehicle(int capacity, int delay, int temperature, List<String> defects,
+  public Vehicle(int capacity, int delay, int temperature, Set<String> defects,
       EVehicleType type) {
     super();
     this.capacity = capacity;
@@ -46,7 +49,7 @@ public class Vehicle extends IdentifiableObject implements Serializable {
     this.delay = delay;
     this.temperature = temperature;
     this.type = type;
-    this.defects = new ArrayList<>(Arrays.asList(defects));
+    this.defects = new HashSet<String>(Arrays.asList(defects));
   }
 
   public Integer getCapacity() {
@@ -73,11 +76,11 @@ public class Vehicle extends IdentifiableObject implements Serializable {
     this.temperature = temperature;
   }
 
-  public List<String> getDefects() {
+  public Set<String> getDefects() {
     return defects;
   }
 
-  public void setDefects(List<String> defects) {
+  public void setDefects(Set<String> defects) {
     this.defects = defects;
   }
 

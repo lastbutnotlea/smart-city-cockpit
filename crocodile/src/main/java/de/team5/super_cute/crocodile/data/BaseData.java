@@ -32,10 +32,9 @@ public abstract class BaseData<T extends IdentifiableObject> {
   }
 
   public boolean addObject(T obj) {
-    if (hibernateTemplate.get(obj.getClass().getName(), obj.getId()) == null) {
+    if (hibernateTemplate.get(clazz.getName(), obj.getId()) == null) {
       hibernateTemplate.save(obj);
     }
-    else return false;
     return true;
   }
 

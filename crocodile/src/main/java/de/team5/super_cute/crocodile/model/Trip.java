@@ -6,22 +6,27 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Map;
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyColumn;
-import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+import org.hibernate.annotations.Proxy;
 
 
 @Entity
-@Table(name="trip")
+@Table(name = "trip")
+@Proxy(lazy = false)
 public class Trip extends IdentifiableObject implements Serializable {
 
-  @OneToOne
+  @Column
+  private boolean isInbound;
+
+  @ManyToOne
   @PrimaryKeyJoinColumn
   private Vehicle vehicle;
 
