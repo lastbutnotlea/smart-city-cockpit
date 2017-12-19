@@ -33,7 +33,7 @@ import {LineDetailComponent} from './view/line-detail/line-detail.component';
     AppRoutingModule,
     NgbModule.forRoot()
   ],
-  providers: [UrlBuilderService, HttpRoutingService, MapCreatorService],
+  providers: [UrlBuilderService, HttpRoutingService, MapCreatorService, MapComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
