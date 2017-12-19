@@ -31,7 +31,6 @@ import {LineDetailComponent} from './view/line-detail/line-detail.component';
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    BrowserModule,
     NgbModule.forRoot()
   ],
   providers: [UrlBuilderService, HttpRoutingService, MapCreatorService, MapComponent],

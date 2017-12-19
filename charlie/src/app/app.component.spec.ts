@@ -11,6 +11,9 @@ import { TripComponent } from './view/trip/trip.component';
 import { TripDetailComponent } from './view/trip-detail/trip-detail.component';
 import {FilterComponent} from './view/filter/filter.component';
 import {MenuComponent} from './menu/menu.component';
+import { MapComponent } from './view/map/map.component';
+import { LineDetailComponent } from './view/line-detail/line-detail.component';
+import { MapCreatorService } from './services/map-creator.service';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -19,16 +22,18 @@ describe('AppComponent', () => {
         AppComponent,
         NetworkComponent,
         TripComponent,
+        MenuComponent,
         TripDetailComponent,
         FilterComponent,
-        MenuComponent
+        MapComponent,
+        LineDetailComponent,
       ],
       imports: [
         BrowserModule,
         HttpClientModule,
         AppRoutingModule
       ],
-      providers: [UrlBuilderService, HttpRoutingService, {provide: APP_BASE_HREF, useValue : '/' }]
+      providers: [UrlBuilderService, HttpRoutingService, MapCreatorService, MapComponent, {provide: APP_BASE_HREF, useValue : '/' }]
     }).compileComponents();
   }));
 
