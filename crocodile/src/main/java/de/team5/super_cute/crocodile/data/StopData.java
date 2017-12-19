@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class StopData extends BaseData<Stop> {
 
-  @Autowired public StopData(HibernateTemplate template) {
+  @Autowired
+  public StopData(HibernateTemplate template) {
     super(Stop.class, template);
   }
 

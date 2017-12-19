@@ -35,7 +35,7 @@ public class Trip extends IdentifiableObject implements Serializable {
   private Line line;
 
   /**
-  der String stellt StopIds dar
+  maps stopIds to departureTimes
    **/
   @ElementCollection(fetch = FetchType.EAGER)
   @MapKeyColumn(name = "stop_id")

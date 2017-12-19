@@ -8,7 +8,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class VehicleData extends BaseData<Vehicle> {
 
-  @Autowired public VehicleData(HibernateTemplate template) {
+  @Autowired
+  public VehicleData(HibernateTemplate template) {
     super(Vehicle.class, template);
   }
 

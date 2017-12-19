@@ -5,9 +5,7 @@ import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Stop;
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Dictionary;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 import javax.validation.constraints.NotNull;
@@ -23,8 +21,8 @@ public class TpDataConnector {
     for (String id : lineIds) {
       ArrayList<Stop> stopsInbound = new ArrayList<Stop>();
       ArrayList<Stop> stopsOutbound = new ArrayList<Stop>();
-      Map<String, Integer> travelTimeInbound = new Hashtable<>();
-      Map<String, Integer> travelTimeOutbound = new Hashtable<>();
+      Map<String, Integer> travelTimeInbound;
+      Map<String, Integer> travelTimeOutbound;
       try {
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
@@ -58,7 +56,7 @@ public class TpDataConnector {
             .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}",
                 JsonNode.class,
                 paramsTravelTimeInbound);
-        getTravelTimes(node_travelTime, travelTimeInbound, stopsInbound.size());
+        travelTimeInbound = getTravelTimes(node_travelTime, stopsInbound.size());
 
         //generate travelTimeOutbound
         Map<String, Object> paramsTravelTimeOutbound = new HashMap<>();
@@ -68,8 +66,7 @@ public class TpDataConnector {
             .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}",
                 JsonNode.class,
                 paramsTravelTimeOutbound);
-        getTravelTimes(node_travelTime, travelTimeOutbound, stopsOutbound.size());
-
+        travelTimeOutbound = getTravelTimes(node_travelTime, stopsOutbound.size());
         lines.add(
             new Line(node.get("lineName").asText(), stopsInbound,
                 stopsOutbound, travelTimeInbound, travelTimeOutbound, new Color(0)));
@@ -80,8 +77,8 @@ public class TpDataConnector {
     return lines;
   }
 
-  private void getTravelTimes(JsonNode node, Map<String, Integer> travelTime,
-      Integer stopsSize) {
+  private Map<String, Integer> getTravelTimes(JsonNode node, Integer stopsSize) {
+    Map<String, Integer> travelTime = new HashMap<>();
     JsonNode stationIntervals = node.get("timetable").get("routes").get(0).get("stationIntervals");
     for (int x = 0; x < stationIntervals.size(); x++) {
       if (travelTime.size() == stopsSize) {
@@ -96,5 +93,6 @@ public class TpDataConnector {
       travelTime
           .put(node.get("timetable").get("departureStopId").asText(), 0);
     }
+    return travelTime;
   }
 }

@@ -1,5 +1,7 @@
 package de.team5.super_cute.crocodile.generator;
 
+import static de.team5.super_cute.crocodile.util.InitialSetupConfig.lineIds;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import de.team5.super_cute.crocodile.data.LineData;
 import de.team5.super_cute.crocodile.data.StopData;
@@ -13,9 +15,8 @@ import de.team5.super_cute.crocodile.util.NetworkDataBuilder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.HashSet;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.PriorityQueue;
 import javafx.util.Pair;
 import org.slf4j.LoggerFactory;
@@ -35,20 +36,9 @@ public class InitialDataGenerator {
   @Autowired
   private TripData tripData;
 
-  private ArrayList<String> lineIds = new ArrayList<String>() {{
-    add("10");
-    add("283");
-    add("46");
-    add("228");
-    add("7");
-    add("bakerloo");
-    add("hammersmith-city");
-    add("jubilee");
-    add("victoria");
-    add("waterloo-city");
-  }};
+  
 
-  NetworkDataBuilder networkDataBuilder;
+  private NetworkDataBuilder networkDataBuilder;
 
   public void generateInitialPrototypeSetup() {
     networkDataBuilder = new NetworkDataBuilder(lineData, vehicleData, stopData,
@@ -73,13 +63,13 @@ public class InitialDataGenerator {
       try {
         Line line = lines.get(x);
         networkDataBuilder.addLinesWithStops(line);
-        int inboundTravelTime = maxTravelTime(line.getTravelTimeInbound());
-        int outboundTravelTime = maxTravelTime(line.getTravelTimeOutbound());
+        int inboundTravelTime = line.getTravelTimeInbound().values().stream().max(Integer::compareTo).orElse(-1);
+        int outboundTravelTime = line.getTravelTimeOutbound().values().stream().max(Integer::compareTo).orElse(-1);
         PriorityQueue<Pair<Vehicle, Calendar>> queueInbound = new PriorityQueue<>((a,b) -> a.getValue().compareTo(b.getValue()));
         PriorityQueue<Pair<Vehicle, Calendar>> queueOutbound = new PriorityQueue<>((a,b) -> a.getValue().compareTo(b.getValue()));
         Calendar iterator = (Calendar) from.clone();
-        Calendar inbound = (Calendar) from.clone();
-        Calendar outbound = (Calendar) from.clone();
+        Calendar nextTripInbound = (Calendar) from.clone();
+        Calendar nextTripOutbound = (Calendar) from.clone();
         inboundPointer = 0;
         outboundPointer = 0;
         params.put("id", lineIds.get(x));
@@ -91,15 +81,16 @@ public class InitialDataGenerator {
         JsonNode node_outbound = rt
             .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}", JsonNode.class,
                 params);
-        inboundPointer = initializePointer(inboundPointer - 1, node_inbound, inbound, from);
-        outboundPointer = initializePointer(outboundPointer - 1, node_outbound, outbound, from);
+        inboundPointer = initializePointer(inboundPointer, node_inbound, nextTripInbound, from);
+        outboundPointer = initializePointer(outboundPointer, node_outbound, nextTripOutbound, from);
 
         while (true) {
-          if(inbound.compareTo(outbound) < 1){
-            iterator = (Calendar) inbound.clone();
+          if(nextTripInbound.compareTo(nextTripOutbound) < 1){
+            iterator = (Calendar) nextTripInbound.clone();
             Vehicle vehicle;
             if(queueInbound.peek() == null || queueInbound.peek().getValue().compareTo(iterator) == 1){
-              vehicle = new Vehicle(100, 0, 42, new ArrayList<String>(), EVehicleType.Bus);
+              //If no (or no available) vehicle exists: create new one
+              vehicle = new Vehicle(100, 0, 42, new HashSet<>(), EVehicleType.Bus);
               networkDataBuilder.addVehicles(vehicle);
             }
             else{
@@ -108,24 +99,25 @@ public class InitialDataGenerator {
             networkDataBuilder.addTrip(vehicle, line, (Calendar) iterator.clone(), true);
             Calendar ready = (Calendar) iterator.clone();
             ready.add(Calendar.MINUTE, inboundTravelTime);
-            queueInbound.add(new Pair<>(vehicle, ready));
+            queueOutbound.add(new Pair<>(vehicle, ready));
             inboundPointer++;
             if(inboundPointer == node_inbound.get("timetable").get("routes").get(0).get("schedules")
                 .get(0)
-                .get("knownJourneys").size())
+                .get("knownJourneys").size()){
               continue linien;
-            inbound.set(Calendar.HOUR, node_inbound.get("timetable").get("routes").get(0).get("schedules")
+            }
+            nextTripInbound.set(Calendar.HOUR, node_inbound.get("timetable").get("routes").get(0).get("schedules")
                 .get(0)
                 .get("knownJourneys").get(inboundPointer).get("hour").asInt());
-            inbound.set(Calendar.MINUTE, node_inbound.get("timetable").get("routes").get(0).get("schedules")
+            nextTripInbound.set(Calendar.MINUTE, node_inbound.get("timetable").get("routes").get(0).get("schedules")
                 .get(0)
                 .get("knownJourneys").get(inboundPointer).get("minute").asInt());
           }
           else{
-            iterator = (Calendar) outbound.clone();
+            iterator = (Calendar) nextTripOutbound.clone();
             Vehicle vehicle;
             if(queueOutbound.peek() == null || queueOutbound.peek().getValue().compareTo(iterator) == 1){
-              vehicle = new Vehicle(100, 0, 42, new ArrayList<String>(), EVehicleType.Bus);
+              vehicle = new Vehicle(100, 0, 42, new HashSet<>(), EVehicleType.Bus);
               networkDataBuilder.addVehicles(vehicle);
             }
             else{
@@ -134,16 +126,17 @@ public class InitialDataGenerator {
             networkDataBuilder.addTrip(vehicle, line, (Calendar) iterator.clone(), false);
             Calendar ready = (Calendar) iterator.clone();
             ready.add(Calendar.MINUTE, outboundTravelTime);
-            queueOutbound.add(new Pair<>(vehicle, ready));
+            queueInbound.add(new Pair<>(vehicle, ready));
             outboundPointer++;
             if(outboundPointer == node_outbound.get("timetable").get("routes").get(0).get("schedules")
                 .get(0)
-                .get("knownJourneys").size())
+                .get("knownJourneys").size()) {
               continue linien;
-            outbound.set(Calendar.HOUR, node_outbound.get("timetable").get("routes").get(0).get("schedules")
+            }
+            nextTripOutbound.set(Calendar.HOUR, node_outbound.get("timetable").get("routes").get(0).get("schedules")
                 .get(0)
                 .get("knownJourneys").get(outboundPointer).get("hour").asInt());
-            outbound.set(Calendar.MINUTE, node_outbound.get("timetable").get("routes").get(0).get("schedules")
+            nextTripOutbound.set(Calendar.MINUTE, node_outbound.get("timetable").get("routes").get(0).get("schedules")
                 .get(0)
                 .get("knownJourneys").get(outboundPointer).get("minute").asInt());
           }
@@ -158,25 +151,15 @@ public class InitialDataGenerator {
 
   public int initializePointer(int pointer, JsonNode node, Calendar actual, Calendar from){
     do {
-      pointer ++;
       actual.set(Calendar.HOUR, node.get("timetable").get("routes").get(0).get("schedules")
           .get(0)
           .get("knownJourneys").get(pointer).get("hour").asInt());
       actual.set(Calendar.MINUTE, node.get("timetable").get("routes").get(0).get("schedules")
           .get(0)
           .get("knownJourneys").get(pointer).get("minute").asInt());
+      pointer ++;
     } while(from.compareTo(actual) == 1);
     return pointer;
-  }
-
-  public int maxTravelTime(Map<String, Integer> travelTimes){
-    int maxTravelTime = 0;
-    Iterator<Entry<String, Integer>> enumeration = travelTimes.entrySet().iterator();
-    while (enumeration.hasNext()){
-      Integer next = enumeration.next().getValue();
-      maxTravelTime = next > maxTravelTime ? next : maxTravelTime;
-    }
-    return  maxTravelTime;
   }
 }
 
