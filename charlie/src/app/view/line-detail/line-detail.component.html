@@ -1,0 +1,16 @@
+<div *ngIf="!isLoaded()">
+  <h3>Loading...</h3>
+</div>
+
+<div *ngIf="isLoaded()">
+
+  <h4>Line Id: {{line.id}}</h4>
+  <h4>Line Name: {{line.name}}</h4>
+
+  <h4>Stops:</h4>
+  <div *ngFor="let stop of line.stopsInbound">
+    Name: {{stop.commonName}}, PeopleWaiting: {{stop.peopleWaiting}}
+  </div>
+
+  <button (click)="goBack()">Back To Network-View</button>
+</div>

@@ -4,6 +4,7 @@ import {HttpRoutingService} from '../../services/http-routing.service';
 import * as d3 from 'd3-selection';
 import * as d3Tube from 'd3-tube-map';
 import { MapCreatorService } from '../../services/map-creator.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-network-map',
@@ -12,8 +13,7 @@ import { MapCreatorService } from '../../services/map-creator.service';
 })
 @Injectable()
 export class MapComponent implements OnInit {
-
-  constructor(private http: HttpRoutingService,
+  constructor(private router: Router,
               private mapCreator: MapCreatorService) { }
 
   ngOnInit(): void {
@@ -58,7 +58,7 @@ export class MapComponent implements OnInit {
     // add click-event to lines
     mapLines.on('click', line => {
       // TODO this should lead to a line-details-view
-      alert('Clicked on ' + line.name);
+      this.router.navigate(['/network/detail/' + line.name]);
     }).on('mouseover', line => {
       // line does not contain some attributes of the svg (like stroke-width)
       // lineSvg is the corresponding svg-element that contains these attributes as well

@@ -13,6 +13,7 @@ import { TripDetailComponent } from './view/trip-detail/trip-detail.component';
 import { MapCreatorService } from './services/map-creator.service';
 import { FilterComponent } from './view/filter/filter.component';
 import { MapComponent } from './view/map/map.component';
+import {LineDetailComponent} from './view/line-detail/line-detail.component';
 
 
 @NgModule({
@@ -23,7 +24,8 @@ import { MapComponent } from './view/map/map.component';
     MenuComponent,
     TripDetailComponent,
     FilterComponent,
-    MapComponent
+    MapComponent,
+    LineDetailComponent,
   ],
   imports: [
     BrowserModule,

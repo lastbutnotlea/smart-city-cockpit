@@ -1,5 +1,5 @@
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import { LineData } from '../shared/line-data';
 import { Observable } from 'rxjs/Observable';
 import { UrlBuilderService } from './url-builder.service';
@@ -23,13 +23,13 @@ export class HttpRoutingService {
   }
 
   /**
-   * Gets all trip data from backend
+   * Gets data for trip with tripId from backend
    * @returns {Observable<TripData[]>}
    */
   public getTripDetails (tripId: string): Observable<TripData> {
     return this.http.get<TripData>(this.urlBuilder.getTripDetailsUrl(tripId))
       .pipe(
-        tap(trips => console.log(`Fetched Trip Details.`))
+        tap(trip => console.log(`Fetched Trip Details.`))
       );
   }
 
@@ -41,6 +41,17 @@ export class HttpRoutingService {
     return this.http.get<LineData[]>(this.urlBuilder.getNetworkUrl())
       .pipe(
         tap(lines => console.log(`Fetched Lines.`))
+      );
+  }
+
+  /**
+   * Gets data for line with lineId from backend
+   * @returns {Observable<LineData[]>}
+   */
+  public getLineDetails (lineId: string): Observable<LineData> {
+    return this.http.get<LineData>(this.urlBuilder.getLineDetailsUrl(lineId))
+      .pipe(
+        tap(line => console.log(`Fetched Line Details.`))
       );
   }
 
