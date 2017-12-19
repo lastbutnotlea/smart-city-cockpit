@@ -7,13 +7,13 @@ import { AppComponent } from './app.component';
 import {NetworkComponent} from './view/network/network.component';
 import {TripComponent} from './view/trip/trip.component';
 import {AppRoutingModule} from './app-routing.module';
-import {FilterTripsPipe} from './pipes/filter-trips.pipe';
 import {UrlBuilderService} from './services/url-builder.service';
 import {HttpRoutingService} from './services/http-routing.service';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import {MenuComponent} from './menu/menu.component';
 import { TripDetailComponent } from './view/trip-detail/trip-detail.component';
 import { TripEditComponent } from './view/trip-edit/trip-edit.component';
+import { FilterComponent } from './view/filter/filter.component';
 
 
 
@@ -24,8 +24,8 @@ import { TripEditComponent } from './view/trip-edit/trip-edit.component';
     TripComponent,
     MenuComponent,
     TripDetailComponent,
-    FilterTripsPipe,
-    TripEditComponent
+    TripEditComponent,
+    FilterComponent
   ],
   imports: [
     BrowserModule,
