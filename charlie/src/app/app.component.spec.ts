@@ -33,7 +33,7 @@ describe('AppComponent', () => {
         HttpClientModule,
         AppRoutingModule
       ],
-      providers: [UrlBuilderService, HttpRoutingService, MapCreatorService, MapComponent, {provide: APP_BASE_HREF, useValue : '/' }]
+      providers: [UrlBuilderService, HttpRoutingService, MapCreatorService, {provide: APP_BASE_HREF, useValue : '/' }]
     }).compileComponents();
   }));
 
