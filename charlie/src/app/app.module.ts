@@ -12,6 +12,7 @@ import { MenuComponent } from './menu/menu.component';
 import { TripDetailComponent } from './view/trip-detail/trip-detail.component';
 import { MapCreatorService } from './services/map-creator.service';
 import { FilterComponent } from './view/filter/filter.component';
+import { MapComponent } from './view/map/map.component';
 
 
 @NgModule({
@@ -21,7 +22,8 @@ import { FilterComponent } from './view/filter/filter.component';
     TripComponent,
     MenuComponent,
     TripDetailComponent,
-    FilterComponent
+    FilterComponent,
+    MapComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +32,7 @@ import { FilterComponent } from './view/filter/filter.component';
     BrowserModule,
     NgbModule.forRoot()
   ],
-  providers: [UrlBuilderService, HttpRoutingService, MapCreatorService],
+  providers: [UrlBuilderService, HttpRoutingService, MapCreatorService, MapComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
