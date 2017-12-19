@@ -157,10 +157,10 @@ export class NetworkComponent implements OnInit {
       // line does not contain some attributes of the svg (like stroke-width)
       // lineSvg is the corresponding svg-element that contains these attributes as well
       // TODO: look for a solution where we don't need to select this lineSvg
-      const lineSvg =  d3.select('path#' + line.name)
+      const lineSvg =  d3.select('path#' + line.name);
       lineSvg.attr('stroke-width', lineSvg.attr('stroke-width') * 1.2);
     }).on('mouseout', line => {
-      const lineSvg =  d3.select('path#' + line.name)
+      const lineSvg =  d3.select('path#' + line.name);
       lineSvg.attr('stroke-width', lineSvg.attr('stroke-width') / 1.2);
     });
   }
