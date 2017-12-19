@@ -6,8 +6,8 @@ export class MapCreatorService {
 
   public createMap(testStations: any, testLines: any, testConnections: any): any {
     // Define the size of the raster, the larger the higher the resolution
-    const rasterWidth = 40;
-    const rasterHeight = 40;
+    const rasterWidth = 150;
+    const rasterHeight = 150;
     // Convert the relevant data to the right format
     // TODO this is running on test data, do this with the real data
     const generatedStations = this.calcStations(testStations, rasterWidth, rasterHeight);

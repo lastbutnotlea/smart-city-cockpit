@@ -21,11 +21,18 @@ export class MapComponent implements OnInit {
   }
 
   public getMap(stationMapData: any, lineMapData: any, connectionMapData: any) {
+    console.log(stationMapData);
+    console.log(lineMapData);
+    console.log(connectionMapData);
+    debugger;
     this.drawTubeMap(this.mapCreator.createMap(stationMapData, lineMapData, connectionMapData));
     this.addLineEvents();
   }
 
   private drawTubeMap(jsonData: any) {
+
+    console.log(jsonData);
+
     // Get element where map should be placed
     const el = document.getElementById('tube-map');
 
