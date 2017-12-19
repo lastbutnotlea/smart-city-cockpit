@@ -56,7 +56,7 @@ public class MapController {
     ObjectNode stations = mapper.createObjectNode();
     List<Stop> stopData = this.stopData.getData();
     for (Stop s : stopData) {
-      ObjectNode stop = stations.putObject(s.getCommonName());
+      ObjectNode stop = stations.putObject(s.getId());
       stop.put("title", s.getCommonName());
       ObjectNode position = stop.putObject("position");
       position.put("lat", s.getLatitude());
@@ -72,7 +72,7 @@ public class MapController {
     ObjectNode lines = mapper.createObjectNode();
     List<Line> lineData = this.lineData.getData();
     for (Line l : lineData) {
-      ObjectNode line = lines.putObject(l.getName());
+      ObjectNode line = lines.putObject(l.getId());
       line.put("name", l.getName());
       line.put("color", "#" + Integer.toHexString(l.getColor().getRGB()).substring(2));
     }
@@ -86,12 +86,12 @@ public class MapController {
     ObjectNode connections = mapper.createObjectNode();
     List<Line> lineData = this.lineData.getData();
     for (Line l : lineData) {
-      ArrayNode line = connections.putArray(l.getName());
+      ArrayNode line = connections.putArray(l.getId());
       // TODO replace with consolidated getStops() when it exists
       List<Stop> stops = l.getStopsInbound();
       for (int i = 0; i < stops.size(); i++) {
         ObjectNode connection = line.addObject();
-        connection.put("station", stops.get(i).getCommonName());
+        connection.put("station", stops.get(i).getId());
         connection.put("number", i);
       }
     }
