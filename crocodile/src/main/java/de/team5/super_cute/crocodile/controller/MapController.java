@@ -97,10 +97,12 @@ public class MapController {
   }
 
   private void insertLines() {
-    /**if (gotDataFromTpConnector) {
+    if (gotDataFromTpConnector) {
      return;
-     }
-     List<Line> lines = new TpDataConnector().getLines(LINES_WE_USE);
+    }
+    new ManualTestController().testTrips();
+    gotDataFromTpConnector = true;
+     /**List<Line> lines = new TpDataConnector().getLines(LINES_WE_USE);
      List<Stop> stops = lines.stream().map(Line::getStopsInbound).flatMap(Collection::stream)
      .collect(
      Collectors.toList());
