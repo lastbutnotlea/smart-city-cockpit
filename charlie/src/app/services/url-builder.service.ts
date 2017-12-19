@@ -16,7 +16,7 @@ export class UrlBuilderService {
     return this.networkBaseUrl;
   }
 
-  public getLineUrl(lineId: string): string {
+  public getLineDetailsUrl(lineId: string): string {
     return this.networkBaseUrl + '/' + lineId;
   }
 
