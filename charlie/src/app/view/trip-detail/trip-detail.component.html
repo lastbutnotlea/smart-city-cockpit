@@ -9,9 +9,9 @@
   <h5>Line ID: {{trip.line.id}}</h5>
   <h5>Vehicle ID: {{trip.vehicle.id}}</h5>
 
-  <div *ngFor="let stop of stops">
-    <!-- TODO: display stop-data here -->
-    Display stop-data here!
+  <h5>Stops: </h5>
+  <div *ngFor="let stop of trip.stops">
+    {{stop.id}}
   </div>
 
   <button (click)="goBack()">Back To Trips</button>
