@@ -65,8 +65,8 @@ public class MapController {
       ObjectNode stop = stations.putObject(s.getCommonName());
       stop.put("title", s.getCommonName());
       ObjectNode position = stop.putObject("position");
-      position.put("lat", s.getLatitude());
-      position.put("lon", s.getLongitude());
+      position.put("lat", Math.round(s.getLatitude() * 100000) / 100000.0);
+      position.put("lon", Math.round(s.getLongitude() * 100000) / 100000.0);
     }
     //return mapper.writeValueAsString(stations);
     return stations;
@@ -108,7 +108,7 @@ public class MapController {
   }
 
   private void insertLines() {
-    if (gotDataFromTpConnector) {
+    if (gotDataFromTpConnector || !stopData.getData().isEmpty() || !lineData.getData().isEmpty()) {
       return;
     }
     List<Line> lines = new TpDataConnector().getLines(LINES_WE_USE);

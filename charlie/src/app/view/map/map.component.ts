@@ -24,7 +24,6 @@ export class MapComponent implements OnInit {
     console.log(stationMapData);
     console.log(lineMapData);
     console.log(connectionMapData);
-    debugger;
     this.drawTubeMap(this.mapCreator.createMap(stationMapData, lineMapData, connectionMapData));
     this.addLineEvents();
   }
