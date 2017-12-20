@@ -69,7 +69,6 @@ export class MapCreatorService {
     let linecounter = 0;
     // This iterates through the connections
     for (const i in connections) {
-      debugger;
       // Gather relevant info for the current line, this will be drawn
       const currentLine = {
         'name': lines[i].id,
