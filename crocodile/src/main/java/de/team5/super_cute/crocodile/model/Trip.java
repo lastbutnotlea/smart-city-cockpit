@@ -2,16 +2,13 @@ package de.team5.super_cute.crocodile.model;
 
 import static javax.persistence.TemporalType.DATE;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.*;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -23,6 +20,7 @@ import javax.persistence.MapKeyColumn;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+
 import org.hibernate.annotations.Proxy;
 
 
@@ -88,30 +86,35 @@ public class Trip extends IdentifiableObject implements Serializable {
     this.stops = stops;
   }
 
-  @JsonProperty("stops")
+  @JsonGetter("stops")
   public List<?> getStopsAsList() {
-    return stops.entrySet().stream().map(entry -> new StopDepartureData(entry.getKey(),
-        LocalDateTime.ofInstant(entry.getValue().toInstant(), ZoneId.systemDefault()))).collect(Collectors.toList());
+    return stops.entrySet().stream().map(entry -> {
+      StopDepartureData data = new StopDepartureData();
+      data.id = entry.getKey();
+      data.departureTime = LocalDateTime.ofInstant(entry.getValue().toInstant(), ZoneId.systemDefault()).toString();
+      return data;
+    }).collect(Collectors.toList());
   }
 
-  @JsonProperty("stops")
-  public void setStopsAsList(List<StopDepartureData> stopDepartureData) {
-    stopDepartureData.forEach(data -> {
-      Calendar c = Calendar.getInstance();
-      c.setTime(Date.from(LocalDateTime.parse(data.departureTime).toInstant(ZoneOffset.UTC)));
-      stops.put(data.id, c);
-    });
-  }
-
-  public class StopDepartureData {
-    @JsonProperty
-    String id;
-    @JsonProperty
-    String departureTime;
-
-    public StopDepartureData(String id, LocalDateTime departureTime) {
-      this.id = id;
-      this.departureTime = departureTime.toString();
+  @JsonSetter("stops")
+  public void setStopsAsList(List<StopDepartureData> list) {
+    try {
+      stops = new HashMap<>(list.size());
+      list.forEach(data -> {
+        Calendar c = Calendar.getInstance();
+        c.setTime(Date.from(LocalDateTime.parse(data.departureTime).toInstant(ZoneOffset.UTC)));
+        stops.put(data.id, c);
+      });
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw e;
     }
+  }
+
+  public static class StopDepartureData {
+    @JsonProperty
+    public String id;
+    @JsonProperty
+    public String departureTime;
   }
 }
