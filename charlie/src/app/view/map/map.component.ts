@@ -35,14 +35,14 @@ export class MapComponent implements OnInit {
     // Get element where map should be placed
     const el = document.getElementById('tube-map');
 
+    const width = 1600;
+    const height = 1024;
+
     // Add svg to element
     const canvas = d3.select(el)
       .append('svg')
-      .style('width', '100%')
-      .style('height', '100%');
-
-    const width = 500;
-    const height = 500;
+      .style('width', width + 'px')
+      .style('height', height + 'px');
 
     // create new tube map
     const map = d3Tube.tubeMap()
