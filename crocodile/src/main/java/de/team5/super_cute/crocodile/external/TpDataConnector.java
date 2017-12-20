@@ -11,6 +11,7 @@ import java.util.Map;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 public class TpDataConnector {
@@ -36,8 +37,12 @@ public class TpDataConnector {
         lines.add(
             new Line(node.get("lineName").asText(), stopsInbound,
                 stopsOutbound, travelTimeInbound, travelTimeOutbound, new Color(0)));
+      } catch (RestClientException e) {
+        LoggerFactory.getLogger(getClass()).error("Error while accessing Transport-API while creating lines: " + e.getMessage());
+      } catch (NullPointerException e) {
+        LoggerFactory.getLogger(getClass()).error("Error while accessing JsonNode while creating lines: " + e.getMessage());
       } catch (Exception e) {
-        LoggerFactory.getLogger(getClass()).error("Loading line failed: " + e.getMessage());
+        LoggerFactory.getLogger(getClass()).error("Error while creating lines: " + e.getMessage());
       }
     }
     return lines;
@@ -91,7 +96,7 @@ public class TpDataConnector {
             .equals("outbound")) {
           stopsOutbound.add(stop);
         } else {
-          throw new Exception("Wrong direction");
+          throw new Exception("Invalid direction in JsonNode");
         }
       }
     }

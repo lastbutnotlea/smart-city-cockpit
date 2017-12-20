@@ -22,6 +22,7 @@ import javafx.util.Pair;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 @Service
@@ -87,20 +88,21 @@ public class InitialDataGenerator {
                 JsonNode.class,
                 params);
         inboundPointer = initializePointer(inboundPointer - 1, node_inbound, nextTripInbound, from);
-        outboundPointer = initializePointer(outboundPointer - 1, node_outbound, nextTripOutbound, from);
+        outboundPointer = initializePointer(outboundPointer - 1, node_outbound, nextTripOutbound,
+            from);
 
         while (true) {
           //determines if the next departure is inbound or outbound
           if (nextTripInbound.compareTo(nextTripOutbound) < 1) {
-            inboundPointer = generateTrip(iterator, nextTripInbound, queueInbound, queueOutbound, line, node_inbound,
-                inboundPointer, inboundTravelTime);
-            if(inboundPointer == -1){
+            inboundPointer = generateTrip(iterator, nextTripInbound, queueInbound, queueOutbound,
+                line, node_inbound, inboundPointer, inboundTravelTime);
+            if (inboundPointer == -1) {
               continue lines;
             }
           } else {
-            outboundPointer = generateTrip(iterator, nextTripOutbound, queueOutbound, queueInbound, line,
-                node_outbound, outboundPointer, outboundTravelTime);
-            if(outboundPointer == -1){
+            outboundPointer = generateTrip(iterator, nextTripOutbound, queueOutbound, queueInbound,
+                line, node_outbound, outboundPointer, outboundTravelTime);
+            if (outboundPointer == -1) {
               continue lines;
             }
           }
@@ -109,8 +111,12 @@ public class InitialDataGenerator {
             break;
           }
         }
+      } catch (RestClientException e) {
+        LoggerFactory.getLogger(getClass()).error("Error while accessing Transport-API while creating trips: " + e.getMessage());
+      } catch (NullPointerException e) {
+        LoggerFactory.getLogger(getClass()).error("Error while accessing JsonNode while creating trips: " + e.getMessage());
       } catch (Exception e) {
-        LoggerFactory.getLogger(getClass()).error("Generating trip failed: " + e.getMessage());
+        LoggerFactory.getLogger(getClass()).error("Error while creating trips: " + e.getMessage());
       }
     }
   }
@@ -129,6 +135,7 @@ public class InitialDataGenerator {
     return pointer;
   }
 
+  //returns the pointer to the next departure in JsonNode or -1 if iterated over all departures
   private int generateTrip(Calendar iterator, Calendar nextTrip,
       PriorityQueue<Pair<Vehicle, Calendar>> queueFrom,
       PriorityQueue<Pair<Vehicle, Calendar>> queueTo, Line line, JsonNode node, int pointer,
