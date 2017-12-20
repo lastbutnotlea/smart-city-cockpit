@@ -38,11 +38,11 @@ export class MapComponent implements OnInit {
     // Add svg to element
     const canvas = d3.select(el)
       .append('svg')
-      .style('width', '100%')
-      .style('height', '100%');
+      .style('width', '1600px')
+      .style('height', '1240px');
 
-    const width = 500;
-    const height = 500;
+    const width = 1600;
+    const height = 1240;
 
     // create new tube map
     const map = d3Tube.tubeMap()
@@ -63,12 +63,13 @@ export class MapComponent implements OnInit {
     const mapLines = d3.selectAll('.lines').selectAll('path');
     // add click-event to lines
     mapLines.on('click', line => {
-      // TODO this should lead to a line-details-view
+      debugger;
       this.router.navigate(['/network/detail/' + line.name]);
     }).on('mouseover', line => {
       // line does not contain some attributes of the svg (like stroke-width)
       // lineSvg is the corresponding svg-element that contains these attributes as well
       // TODO: look for a solution where we don't need to select this lineSvg
+      debugger;
       const lineSvg =  d3.select('path#' + line.name);
       lineSvg.attr('stroke-width', lineSvg.attr('stroke-width') * 1.4);
     }).on('mouseout', line => {

@@ -80,7 +80,7 @@ public class MapController {
     List<Line> lineData = this.lineData.getData().subList(0, 5);
     for (Line l : lineData) {
       ObjectNode line = lines.putObject(l.getName());
-      line.put("name", l.getName());
+      line.put("id", l.getId());
       line.put("color", "#" + Integer.toHexString(l.getColor().getRGB()).substring(2));
     }
     //return mapper.writeValueAsString(lines);
