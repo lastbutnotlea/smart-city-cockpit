@@ -12,13 +12,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./map.component.css']
 })
 @Injectable()
-export class MapComponent implements OnInit {
+export class MapComponent {
+
   constructor(private router: Router,
               private mapCreator: MapCreatorService) { }
-
-  ngOnInit(): void {
-
-  }
 
   public getMap(stationMapData: any, lineMapData: any, connectionMapData: any) {
     console.log(stationMapData);
