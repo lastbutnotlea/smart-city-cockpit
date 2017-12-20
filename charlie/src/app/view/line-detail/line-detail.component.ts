@@ -1,34 +1,36 @@
 import { Component, OnInit } from '@angular/core';
+import { LineData } from '../../shared/line-data';
 import { HttpRoutingService } from '../../services/http-routing.service';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import {TripData} from '../../shared/trip-data';
-
 
 @Component({
   selector: 'app-trip-detail-view',
-  templateUrl: './trip-detail.component.html',
-  styleUrls: ['./trip-detail.component.css']
+  templateUrl: './line-detail.component.html',
+  styleUrls: ['./line-detail.component.css']
 })
 
-export class TripDetailComponent implements OnInit {
+export class LineDetailComponent implements OnInit {
 
-  trip: TripData;
+  line: LineData;
 
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
               private location: Location) { }
 
   ngOnInit(): void {
-    this.getTrip();
+    this.getLine();
   }
 
-  getTrip(): void {
-    const tripId = this.route.snapshot.paramMap.get('id');
-    this.http.getTripDetails(tripId).subscribe(
-      trip => this.trip = trip,
-      err => console.log('Could not fetch trip data!')
-    );
+  getLine(): void {
+    const lineId = this.route.snapshot.paramMap.get('id');
+    this.http.getLineDetails(lineId).subscribe(
+      line => {
+        this.line = line;
+      },
+          err => {
+        console.log('Could not fetch line data!')
+      });
   }
 
   goBack(): void {
@@ -36,10 +38,7 @@ export class TripDetailComponent implements OnInit {
   }
 
   isLoaded(): boolean {
-    if (this.trip != null) {
-      return true;
-    }
-    return false;
+    return (this.line != null);
   }
 
 }

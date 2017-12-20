@@ -34,6 +34,15 @@ public class TpDataConnector {
         travelTimeInbound = getTravelTimes(node, stopsInbound, rt);
         travelTimeOutbound = getTravelTimes(node, stopsOutbound, rt);
 
+        //generate travelTimeOutbound
+        Map<String, Object> paramsTravelTimeOutbound = new HashMap<>();
+        paramsTravelTimeOutbound.put("id", node.get("lineId").asText());
+        paramsTravelTimeOutbound.put("fromStopPointId", stopsOutbound.get(0).getId());
+        node_travelTime = rt
+            .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}",
+                JsonNode.class,
+                paramsTravelTimeOutbound);
+        travelTimeOutbound = getTravelTimes(node_travelTime, stopsOutbound.size());
         lines.add(
             new Line(node.get("lineName").asText(), stopsInbound,
                 stopsOutbound, travelTimeInbound, travelTimeOutbound, new Color(0)));
