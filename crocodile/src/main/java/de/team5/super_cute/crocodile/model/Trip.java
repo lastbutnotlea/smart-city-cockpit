@@ -34,6 +34,9 @@ public class Trip extends IdentifiableObject implements Serializable {
   @PrimaryKeyJoinColumn
   private Line line;
 
+  /**
+  maps stopIds to departureTimes
+   **/
   @ElementCollection(fetch = FetchType.EAGER)
   @MapKeyColumn(name = "stop_id")
   @Temporal(DATE)

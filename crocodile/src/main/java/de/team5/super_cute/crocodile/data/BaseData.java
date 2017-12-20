@@ -15,13 +15,13 @@ import org.springframework.orm.hibernate5.HibernateTemplate;
 @Transactional
 public abstract class BaseData<T extends IdentifiableObject> {
 
-  @Autowired
-  private HibernateTemplate hibernateTemplate;
+  private final HibernateTemplate hibernateTemplate;
 
   final Class<T> clazz;
 
-  BaseData(Class<T> clazz) {
+  BaseData(Class<T> clazz, HibernateTemplate hibernateTemplate) {
     this.clazz = clazz;
+    this.hibernateTemplate = hibernateTemplate;
   }
 
   /**

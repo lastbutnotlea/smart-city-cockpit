@@ -46,6 +46,19 @@ public class NetworkDataBuilder {
     return this;
   }
 
+  public NetworkDataBuilder addLinesWithStops(Line... lines) {
+    for (Line l : lines) {
+      for (Stop s : l.getStopsInbound()){
+        stopData.addObject(s);
+      }
+      for (Stop s : l.getStopsOutbound()){
+        stopData.addObject(s);
+      }
+      lineData.addObject(l);
+    }
+    return this;
+  }
+
   public NetworkDataBuilder addVehicles(Vehicle... vehicles) {
     for (Vehicle v : vehicles) {
       vehicleData.addObject(v);
