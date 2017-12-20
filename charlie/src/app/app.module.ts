@@ -14,6 +14,7 @@ import {MenuComponent} from './menu/menu.component';
 import { TripDetailComponent } from './view/trip-detail/trip-detail.component';
 import { TripEditComponent } from './view/trip-edit/trip-edit.component';
 import { FilterComponent } from './view/filter/filter.component';
+import { FormsModule } from '@angular/forms';
 
 
 
@@ -31,7 +32,7 @@ import { FilterComponent } from './view/filter/filter.component';
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
-    BrowserModule,
+    FormsModule,
     NgbModule.forRoot()
   ],
   providers: [UrlBuilderService, HttpRoutingService],

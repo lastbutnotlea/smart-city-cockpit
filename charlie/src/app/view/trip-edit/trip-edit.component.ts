@@ -44,27 +44,26 @@ export class TripEditComponent implements OnInit {
 
   initData(): void {
     if (this.data != null) {
-      // TODO: remove this if it is not needed!
-      /*this.selected = new TripData;
+      this.selected = new TripData;
       this.selected.line = Object.assign(new LineData(), this.data.line);
       this.selected.vehicle = Object.assign(new VehicleData(), this.data.vehicle);
-      this.selected.stops = Object.assign(new Map<String, Date>(), this.data.stops);*/
-      this.selected = this.data;
+      this.selected.stops = [];
+      for (const stop of this.data.stops) {
+        this.selected.stops.push(stop);
+      }
     }
   }
 
   isChecked(stop: StopData): boolean {
     // returns true if selected.stops contains one object with the id of stop
-    return this.selected.stops.filter(tripStop => tripStop.stopId === stop.id).length === 1;
+    return this.selected.stops.filter(tripStop => tripStop.id === stop.id).length === 1;
   }
 
   includeStop(stop: StopData, included: boolean): void {
     if (included) {
-      debugger;
       this.selected.stops.push(new TripStopData(stop.id, -1));
     } else {
-      debugger;
-      this.selected.stops = this.selected.stops.filter(filteredStop => filteredStop.stopId !== stop.id);
+      this.selected.stops = this.selected.stops.filter(filteredStop => filteredStop.id !== stop.id);
     }
     console.log(JSON.stringify(this.selected.stops));
   }
