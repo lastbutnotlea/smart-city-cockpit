@@ -29,46 +29,9 @@ public class TpDataConnector {
         JsonNode node = rt
             .getForObject("https://api.tfl.gov.uk/Line/{id}/Route/Sequence/all", JsonNode.class,
                 params);
-        for (int i = 0; i < node.get("stopPointSequences").size(); i++) {
-          //first sequence is inbound, second is outbound
-          for (int x = 0; x < node.get("stopPointSequences").get(i).get("stopPoint").size(); x++) {
-            //iterate over all stops and create objects
-            Stop stop = new Stop(
-                node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("id")
-                    .asText(),
-                node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("name").asText(),
-                node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("lon").asDouble(),
-                node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("lat").asDouble(),
-                0);
-            if (node.get("stopPointSequences").get(i).get("direction").asText().equals("inbound")) {
-              stopsInbound.add(stop);
-            } else if (node.get("stopPointSequences").get(i).get("direction").asText()
-                .equals("outbound")) {
-              stopsOutbound.add(stop);
-            } else {
-              throw new Exception("Wrong direction");
-            }
-          }
-        }
-        //generate travelTimeInbound
-        Map<String, Object> paramsTravelTimeInbound = new HashMap<>();
-        paramsTravelTimeInbound.put("id", node.get("lineId").asText());
-        paramsTravelTimeInbound.put("fromStopPointId", stopsInbound.get(0).getId());
-        JsonNode node_travelTime = rt
-            .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}",
-                JsonNode.class,
-                paramsTravelTimeInbound);
-        travelTimeInbound = getTravelTimes(node_travelTime, stopsInbound.size());
-
-        //generate travelTimeOutbound
-        Map<String, Object> paramsTravelTimeOutbound = new HashMap<>();
-        paramsTravelTimeOutbound.put("id", node.get("lineId").asText());
-        paramsTravelTimeOutbound.put("fromStopPointId", stopsOutbound.get(0).getId());
-        node_travelTime = rt
-            .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}",
-                JsonNode.class,
-                paramsTravelTimeOutbound);
-        travelTimeOutbound = getTravelTimes(node_travelTime, stopsOutbound.size());
+        getStopsFromNode(node, stopsInbound, stopsOutbound);
+        travelTimeInbound = getTravelTimes(node, stopsInbound, rt);
+        travelTimeOutbound = getTravelTimes(node, stopsOutbound, rt);
 
         lines.add(
             new Line(node.get("lineName").asText(), stopsInbound,
@@ -81,11 +44,20 @@ public class TpDataConnector {
   }
 
   //maps stops to their delay from start-stop
-  private Map<String, Integer> getTravelTimes(JsonNode node, Integer stopsSize) {
+  private Map<String, Integer> getTravelTimes(JsonNode node, ArrayList<Stop> stops,
+      RestTemplate rt) {
+    Map<String, Object> params = new HashMap<>();
+    params.put("id", node.get("lineId").asText());
+    params.put("fromStopPointId", stops.get(0).getId());
+    JsonNode node_travelTime = rt
+        .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}",
+            JsonNode.class,
+            params);
     Map<String, Integer> travelTime = new HashMap<>();
-    JsonNode stationIntervals = node.get("timetable").get("routes").get(0).get("stationIntervals");
+    JsonNode stationIntervals = node_travelTime.get("timetable").get("routes").get(0)
+        .get("stationIntervals");
     for (int x = 0; x < stationIntervals.size(); x++) {
-      if (travelTime.size() == stopsSize) {
+      if (travelTime.size() == stops.size()) {
         break;
       }
       for (int i = 0;
@@ -95,8 +67,33 @@ public class TpDataConnector {
             stationIntervals.get(x).get("intervals").get(i).get("timeToArrival").asInt());
       }
       travelTime
-          .put(node.get("timetable").get("departureStopId").asText(), 0);
+          .put(node_travelTime.get("timetable").get("departureStopId").asText(), 0);
     }
     return travelTime;
+  }
+
+  private void getStopsFromNode(JsonNode node, ArrayList<Stop> stopsInbound,
+      ArrayList<Stop> stopsOutbound) throws Exception {
+    for (int i = 0; i < node.get("stopPointSequences").size(); i++) {
+      //first sequence is inbound, second is outbound
+      for (int x = 0; x < node.get("stopPointSequences").get(i).get("stopPoint").size(); x++) {
+        //iterate over all stops and create objects
+        Stop stop = new Stop(
+            node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("id")
+                .asText(),
+            node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("name").asText(),
+            node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("lon").asDouble(),
+            node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("lat").asDouble(),
+            0);
+        if (node.get("stopPointSequences").get(i).get("direction").asText().equals("inbound")) {
+          stopsInbound.add(stop);
+        } else if (node.get("stopPointSequences").get(i).get("direction").asText()
+            .equals("outbound")) {
+          stopsOutbound.add(stop);
+        } else {
+          throw new Exception("Wrong direction");
+        }
+      }
+    }
   }
 }
