@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class InitialSetupConfig {
   public static final ArrayList<String> lineIds = new ArrayList<String>() {{
     add("10");
-    /*add("283");
+    add("283");
     add("46");
     add("228");
     add("7");
@@ -13,6 +13,6 @@ public class InitialSetupConfig {
     add("hammersmith-city");
     add("jubilee");
     add("victoria");
-    add("waterloo-city");*/
+    add("waterloo-city");
   }};
 }
