@@ -5,8 +5,6 @@ import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {TripEditComponent} from '../trip-edit/trip-edit.component';
-import {VehicleData} from '../../shared/vehicle-data';
-import {StopData} from '../../shared/stop-data';
 
 
 @Component({
@@ -34,7 +32,6 @@ export class TripDetailComponent implements OnInit {
     this.http.getTripDetails(tripId).subscribe(
       trip => {
         this.trip = trip;
-        // this.trip.stops = <Map<string, Date>> this.trip.stops;
       },
       err => console.log('Could not fetch trip data!')
     );

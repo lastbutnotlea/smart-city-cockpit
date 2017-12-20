@@ -6,8 +6,9 @@ export class LineData {
   name: string;
   stopsInbound: StopData[];
   stopsOutbound: StopData[];
-  travelTimeInbound: Map<string, number>;
-  travelTimeOutbound: Map<string, number>;
+  // TODO: No maps! Agree on different object here (with backend)
+  travelTimeInbound: any;
+  travelTimeOutbound: any;
   color: string;
 
 }
