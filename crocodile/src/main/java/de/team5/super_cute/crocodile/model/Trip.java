@@ -7,7 +7,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -81,8 +83,8 @@ public class Trip extends IdentifiableObject implements Serializable {
     return stops;
   }
 
-  public void setStops(
-      Map<String, Calendar> stops) {
+  @JsonIgnore
+  public void setStops(Map<String, Calendar> stops) {
     this.stops = stops;
   }
 
@@ -90,6 +92,15 @@ public class Trip extends IdentifiableObject implements Serializable {
   public List<?> getStopsAsList() {
     return stops.entrySet().stream().map(entry -> new StopDepartureData(entry.getKey(),
         LocalDateTime.ofInstant(entry.getValue().toInstant(), ZoneId.systemDefault()))).collect(Collectors.toList());
+  }
+
+  @JsonProperty("stops")
+  public void setStopsAsList(List<StopDepartureData> stopDepartureData) {
+    stopDepartureData.forEach(data -> {
+      Calendar c = Calendar.getInstance();
+      c.setTime(Date.from(LocalDateTime.parse(data.departureTime).toInstant(ZoneOffset.UTC)));
+      stops.put(data.id, c);
+    });
   }
 
   public class StopDepartureData {
