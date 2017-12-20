@@ -21,7 +21,7 @@
   <div class="d-block">
     <label>Stops:</label>
     <div class="form-group" *ngFor="let stop of data.line.stopsInbound; let i = index">
-      <input #box type="checkbox" checked="isChecked(stop)" (change)="includeStop(stop, box.checked)">
+      <input #box type="checkbox" [ngModel]="isChecked(stop)" (change)="includeStop(stop, box.checked)">
       <label>{{stop.commonName}}</label>
     </div>
   </div>
