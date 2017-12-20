@@ -30,14 +30,9 @@ abstract class BaseController<T extends IdentifiableObject> {
   }
 
   ResponseEntity editObject(T input) {
-    boolean removed = data.getData().removeIf(t -> t.getId().equals(input.getId()));
-    if (removed) {
-      boolean added = data.getData().add(input);
-      if (added) {
-        return ResponseEntity.ok().build();
-      }
-    }
-    return ResponseEntity.badRequest().build();
+    data.deleteObject(input.getId());
+    data.addObject(input);
+    return ResponseEntity.ok().build();
   }
 
 }

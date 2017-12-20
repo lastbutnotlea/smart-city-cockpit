@@ -10,6 +10,8 @@ export class UrlBuilderService {
 
   private tripBaseUrl = this.baseUrl + '/trips';
 
+  private vehicleBaseUrl = this.baseUrl + '/vehicles';
+
   private mapBaseUrl = this.baseUrl + '/map';
 
   public getNetworkUrl(): string {
@@ -18,6 +20,10 @@ export class UrlBuilderService {
 
   public getLineDetailsUrl(lineId: string): string {
     return this.networkBaseUrl + '/' + lineId;
+  }
+
+  public getVehiclesUrl(): string {
+    return this.vehicleBaseUrl;
   }
 
   public getTripsUrl(): string {

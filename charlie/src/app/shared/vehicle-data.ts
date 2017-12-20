@@ -1,9 +1,8 @@
 export class VehicleData {
   id: string;
-
   capacity: number;
   delay: number;
   temperature: number;
-  defects: string;
+  defects: string[];
   type: string;
 }

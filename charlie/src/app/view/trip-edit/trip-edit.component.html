@@ -1,0 +1,33 @@
+<div class="modal-header">
+  <h4 class="modal-title">
+    Edit trip {{data.id}} on line {{data.line.name}}
+  </h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+
+  <label>Vehicle: </label>
+  <div ngbDropdown class="d-inline-block">
+    <button class="btn btn-outline-primary" ngbDropdownToggle>{{selected.vehicle.id}}</button>
+    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+      <div *ngFor="let vehicle of availVehicles">
+        <button class="dropdown-item" (click)="selected.vehicle=vehicle">{{vehicle.id}}</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="d-block">
+    <label>Stops:</label>
+    <div class="form-group" *ngFor="let stop of data.line.stopsInbound; let i = index">
+      <input #box type="checkbox" [ngModel]="isChecked(stop)" (change)="includeStop(stop, box.checked)">
+      <label>{{stop.commonName}}</label>
+    </div>
+  </div>
+
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
+  <button type="button" class="btn btn-outline-success" (click)="confirm()">Okay</button>
+</div>
