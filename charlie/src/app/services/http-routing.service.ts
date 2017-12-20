@@ -1,12 +1,11 @@
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
 import { LineData } from '../shared/line-data';
 import { Observable } from 'rxjs/Observable';
 import { UrlBuilderService } from './url-builder.service';
-import { catchError, tap } from 'rxjs/operators';
-import { empty } from 'rxjs/observable/empty';
+import { tap } from 'rxjs/operators';
 import { TripData } from '../shared/trip-data';
 import {VehicleData} from '../shared/vehicle-data';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class HttpRoutingService {
@@ -21,19 +20,17 @@ export class HttpRoutingService {
     return this.http.get<TripData[]>(this.urlBuilder.getTripsUrl())
       .pipe(
         tap(trips => console.log(`Fetched Trips.`))
-        // TODO: Error Handling!
       );
   }
 
   /**
-   * Gets all trip data from backend
+   * Gets data for trip with tripId from backend
    * @returns {Observable<TripData[]>}
    */
   public getTripDetails (tripId: string): Observable<TripData> {
     return this.http.get<TripData>(this.urlBuilder.getTripDetailsUrl(tripId))
       .pipe(
-        tap(trips => console.log(`Fetched Trip Details.`))
-        // TODO: Error Handling!
+        tap(trip => console.log(`Fetched Trip Details.`))
       );
   }
 
@@ -45,7 +42,38 @@ export class HttpRoutingService {
     return this.http.get<LineData[]>(this.urlBuilder.getNetworkUrl())
       .pipe(
         tap(lines => console.log(`Fetched Lines.`))
-        // TODO: Error Handling!
+      );
+  }
+
+  /**
+   * Gets data for line with lineId from backend
+   * @returns {Observable<LineData[]>}
+   */
+  public getLineDetails (lineId: string): Observable<LineData> {
+    return this.http.get<LineData>(this.urlBuilder.getLineDetailsUrl(lineId))
+      .pipe(
+        tap(line => console.log(`Fetched Line Details.`))
+      );
+  }
+
+  public getMapDataStations (): Observable<any> {
+    return this.http.get<any>(this.urlBuilder.getMapStationsUrl())
+      .pipe(
+        tap(data => console.log(`Fetched Map-Data for Stations.`))
+      );
+  }
+
+  public getMapDataLines (): Observable<any> {
+    return this.http.get<any>(this.urlBuilder.getMapLinesUrl())
+      .pipe(
+        tap(data => console.log(`Fetched Map-Data for Lines.`))
+      );
+  }
+
+  public getMapDataConnections (): Observable<any> {
+    return this.http.get<any>(this.urlBuilder.getMapConnectionsUrl())
+      .pipe(
+        tap(data => console.log(`Fetched Map-Data for Connections.`))
       );
   }
 

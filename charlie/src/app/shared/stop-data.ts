@@ -1,8 +1,8 @@
 export class StopData {
   id: string;
   commonName: string;
-  longitude: number;
-  latitude: number;
+  apiId: string;
   peopleWaiting: number;
-  apiIp: string;
+  lat: number;
+  lon: number;
 }

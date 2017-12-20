@@ -7,6 +7,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {TripEditComponent} from '../trip-edit/trip-edit.component';
 
 
+
 @Component({
   selector: 'app-trip-detail-view',
   templateUrl: './trip-detail.component.html',

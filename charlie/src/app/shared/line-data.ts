@@ -1,4 +1,3 @@
-
 import {StopData} from './stop-data';
 
 export class LineData {

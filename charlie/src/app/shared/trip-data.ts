@@ -4,7 +4,6 @@ import { LineData } from './line-data';
 import { TripStopData } from './trip-stop-data';
 
 export class TripData {
-
   id: string;
   isInbound: boolean;
   vehicle: VehicleData;
