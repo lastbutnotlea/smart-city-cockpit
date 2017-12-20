@@ -69,7 +69,7 @@ public class TpDataConnector {
         travelTimeOutbound = getTravelTimes(node_travelTime, stopsOutbound.size());
         lines.add(
             new Line(node.get("lineName").asText(), stopsInbound,
-                stopsOutbound, travelTimeInbound, travelTimeOutbound, new Color(0, 0,1)));
+                stopsOutbound, travelTimeInbound, travelTimeOutbound, new Color((float) Math.random(), (float) Math.random(), (float) Math.random())));
       } catch (Exception e) {
         LoggerFactory.getLogger(getClass()).error("Loading line failed: " + e.getMessage());
       }
