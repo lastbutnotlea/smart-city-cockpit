@@ -11,6 +11,8 @@ import { TripComponent } from './view/trip/trip.component';
 import { TripDetailComponent } from './view/trip-detail/trip-detail.component';
 import {FilterComponent} from './view/filter/filter.component';
 import {MenuComponent} from './menu/menu.component';
+import { TripEditComponent } from './view/trip-edit/trip-edit.component';
+import { FormsModule } from '@angular/forms';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -20,13 +22,15 @@ describe('AppComponent', () => {
         NetworkComponent,
         TripComponent,
         TripDetailComponent,
+        TripEditComponent,
         FilterComponent,
         MenuComponent
       ],
       imports: [
         BrowserModule,
         HttpClientModule,
-        AppRoutingModule
+        AppRoutingModule,
+        FormsModule
       ],
       providers: [UrlBuilderService, HttpRoutingService, {provide: APP_BASE_HREF, useValue : '/' }]
     }).compileComponents();
