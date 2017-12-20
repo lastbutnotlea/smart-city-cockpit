@@ -31,7 +31,7 @@ public class Vehicle extends IdentifiableObject implements Serializable {
   @Column
   private EVehicleType type;
 
-  public Vehicle() {}
+  public Vehicle() { super(); }
 
   public Vehicle(int capacity, int delay, int temperature, Set<String> defects,
       EVehicleType type) {
