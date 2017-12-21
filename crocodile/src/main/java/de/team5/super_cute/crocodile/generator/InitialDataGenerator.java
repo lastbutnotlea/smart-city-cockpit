@@ -91,32 +91,23 @@ public class InitialDataGenerator {
         outboundPointer = initializePointer(outboundPointer - 1, node_outbound, nextTripOutbound,
             from);
 
-        while (true) {
+        do {
           //determines if the next departure is inbound or outbound
           if (nextTripInbound.compareTo(nextTripOutbound) < 1) {
             inboundPointer = generateTrip(iterator, nextTripInbound, queueInbound, queueOutbound,
                 line, node_inbound, inboundPointer, inboundTravelTime);
-            if (inboundPointer == -1) {
-              continue lines;
-            }
           } else {
             outboundPointer = generateTrip(iterator, nextTripOutbound, queueOutbound, queueInbound,
                 line, node_outbound, outboundPointer, outboundTravelTime);
-            if (outboundPointer == -1) {
-              continue lines;
-            }
           }
-          //if from > to
-          if (iterator.compareTo(to) == 1) {
-            break;
-          }
-        }
+          //if iterator > to break
+        } while (iterator.compareTo(to) != 1 && inboundPointer != -1 && outboundPointer != -1);
       } catch (RestClientException e) {
-        LoggerFactory.getLogger(getClass()).error("Error while accessing Transport-API while creating trips: " + e.getMessage());
+        LoggerFactory.getLogger(getClass())
+            .error("Error while accessing Transport-API while creating trips: " + e.getMessage());
       } catch (NullPointerException e) {
-        LoggerFactory.getLogger(getClass()).error("Error while accessing JsonNode while creating trips: " + e.getMessage());
-      } catch (Exception e) {
-        LoggerFactory.getLogger(getClass()).error("Error while creating trips: " + e.getMessage());
+        LoggerFactory.getLogger(getClass())
+            .error("Error while accessing JsonNode while creating trips: " + e.getMessage());
       }
     }
   }
@@ -155,18 +146,14 @@ public class InitialDataGenerator {
     ready.add(Calendar.MINUTE, travelTime);
     queueTo.add(new Pair<>(vehicle, ready));
     pointer++;
-    if (pointer == node.get("timetable").get("routes").get(0).get("schedules")
-        .get(0)
-        .get("knownJourneys").size()) {
+    JsonNode knownJourneys = node.get("timetable").get("routes").get(0).get("schedules").get(0)
+        .get("knownJourneys");
+    if (pointer == knownJourneys.size()) {
       return -1;
     }
     //get next departure
-    nextTrip.set(Calendar.HOUR, node.get("timetable").get("routes").get(0).get("schedules")
-        .get(0)
-        .get("knownJourneys").get(pointer).get("hour").asInt());
-    nextTrip.set(Calendar.MINUTE, node.get("timetable").get("routes").get(0).get("schedules")
-        .get(0)
-        .get("knownJourneys").get(pointer).get("minute").asInt());
+    nextTrip.set(Calendar.HOUR, knownJourneys.get(pointer).get("hour").asInt());
+    nextTrip.set(Calendar.MINUTE, knownJourneys.get(pointer).get("minute").asInt());
     return pointer;
   }
 }

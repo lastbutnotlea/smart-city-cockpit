@@ -31,25 +31,28 @@ public class TpDataConnector {
             .getForObject("https://api.tfl.gov.uk/Line/{id}/Route/Sequence/all", JsonNode.class,
                 params);
         getStopsFromNode(node, stopsInbound, stopsOutbound);
-        travelTimeInbound = getTravelTimes(node, stopsInbound, rt);
-        travelTimeOutbound = getTravelTimes(node, stopsOutbound, rt);
+        travelTimeInbound = getTravelTimes(node, stopsInbound);
+        travelTimeOutbound = getTravelTimes(node, stopsOutbound);
         lines.add(
             new Line(node.get("lineName").asText(), stopsInbound,
                 stopsOutbound, travelTimeInbound, travelTimeOutbound, new Color(0)));
       } catch (RestClientException e) {
-        LoggerFactory.getLogger(getClass()).error("Error while accessing Transport-API while creating lines: " + e.getMessage());
+        LoggerFactory.getLogger(getClass())
+            .error("Error while accessing Transport-API while creating lines: " + e.getMessage());
       } catch (NullPointerException e) {
-        LoggerFactory.getLogger(getClass()).error("Error while accessing JsonNode while creating lines: " + e.getMessage());
-      } catch (Exception e) {
-        LoggerFactory.getLogger(getClass()).error("Error while creating lines: " + e.getMessage());
+        LoggerFactory.getLogger(getClass())
+            .error("Error while accessing JsonNode while creating lines: " + e.getMessage());
+      } catch (IllegalArgumentException e) {
+        LoggerFactory.getLogger(getClass())
+            .error("Error while accessing JsonNode while creating lines: " + e.getMessage());
       }
     }
     return lines;
   }
 
   //maps stops to their delay from start-stop
-  private Map<String, Integer> getTravelTimes(JsonNode node, ArrayList<Stop> stops,
-      RestTemplate rt) {
+  private Map<String, Integer> getTravelTimes(JsonNode node, ArrayList<Stop> stops) {
+    RestTemplate rt = new RestTemplate();
     Map<String, Object> params = new HashMap<>();
     params.put("id", node.get("lineId").asText());
     params.put("fromStopPointId", stops.get(0).getId());
@@ -64,20 +67,18 @@ public class TpDataConnector {
       if (travelTime.size() == stops.size()) {
         break;
       }
-      for (int i = 0;
-          i < stationIntervals.get(x).get("intervals").size(); i++) {
-        travelTime.put(
-            stationIntervals.get(x).get("intervals").get(i).get("stopId").asText(),
-            stationIntervals.get(x).get("intervals").get(i).get("timeToArrival").asInt());
+      JsonNode intervals = stationIntervals.get(x).get("intervals");
+      for (int i = 0; i < intervals.size(); i++) {
+        travelTime.put(intervals.get(i).get("stopId").asText(),
+            intervals.get(i).get("timeToArrival").asInt());
       }
-      travelTime
-          .put(node_travelTime.get("timetable").get("departureStopId").asText(), 0);
+      travelTime.put(node_travelTime.get("timetable").get("departureStopId").asText(), 0);
     }
     return travelTime;
   }
 
   private void getStopsFromNode(JsonNode node, ArrayList<Stop> stopsInbound,
-      ArrayList<Stop> stopsOutbound) throws Exception {
+      ArrayList<Stop> stopsOutbound) throws IllegalArgumentException {
     for (int i = 0; i < node.get("stopPointSequences").size(); i++) {
       //first sequence is inbound, second is outbound
       for (int x = 0; x < node.get("stopPointSequences").get(i).get("stopPoint").size(); x++) {
@@ -95,7 +96,7 @@ public class TpDataConnector {
             .equals("outbound")) {
           stopsOutbound.add(stop);
         } else {
-          throw new Exception("Invalid direction in JsonNode");
+          throw new IllegalArgumentException("Invalid direction in JsonNode");
         }
       }
     }
