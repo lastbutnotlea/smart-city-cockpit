@@ -4,6 +4,7 @@ import de.team5.super_cute.crocodile.data.LineData;
 import de.team5.super_cute.crocodile.data.StopData;
 import de.team5.super_cute.crocodile.data.TripData;
 import de.team5.super_cute.crocodile.data.VehicleData;
+import de.team5.super_cute.crocodile.generator.InitialDataGenerator;
 import de.team5.super_cute.crocodile.model.EVehicleType;
 import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Stop;
@@ -35,6 +36,9 @@ public class ManualTestController {
   @Autowired
   private TripData tripData;
 
+  @Autowired
+  private InitialDataGenerator initialDataGenerator;
+
   @GetMapping
   public List<Trip> testTrips() {
     Stop s1 = new Stop("ApiId1", "Marienplatz", 10, 3.5, 50);
@@ -56,5 +60,10 @@ public class ManualTestController {
         true);
     tripData.addObject(testTrip);
     return tripData.getData();
+  }
+
+  @GetMapping("/getData")
+  public void initializeData() {
+    initialDataGenerator.generateInitialPrototypeSetup();
   }
 }
