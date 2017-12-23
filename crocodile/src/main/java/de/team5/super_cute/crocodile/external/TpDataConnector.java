@@ -1,5 +1,8 @@
 package de.team5.super_cute.crocodile.external;
 
+import static de.team5.super_cute.crocodile.config.TfLApiConfig.app_id;
+import static de.team5.super_cute.crocodile.config.TfLApiConfig.app_key;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Stop;
@@ -26,8 +29,10 @@ public class TpDataConnector {
       try {
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
+        params.put("app_id", app_id);
+        params.put("app_key", app_key);
         JsonNode node = rt
-            .getForObject("https://api.tfl.gov.uk/Line/{id}/Route/Sequence/all", JsonNode.class,
+            .getForObject("https://api.tfl.gov.uk/Line/{id}/Route/Sequence/all?app_id={app_id}&app_key={app_key}", JsonNode.class,
                 params);
         for (int i = 0; i < node.get("stopPointSequences").size(); i++) {
           for (int x = 0; x < node.get("stopPointSequences").get(i).get("stopPoint").size(); x++) {
@@ -52,8 +57,10 @@ public class TpDataConnector {
         Map<String, Object> paramsTravelTimeInbound = new HashMap<>();
         paramsTravelTimeInbound.put("id", node.get("lineId").asText());
         paramsTravelTimeInbound.put("fromStopPointId", stopsInbound.get(0).getId());
+        paramsTravelTimeInbound.put("app_id", app_id);
+        paramsTravelTimeInbound.put("app_key", app_key);
         JsonNode node_travelTime = rt
-            .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}",
+            .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}?app_id={app_id}&app_key={app_key}",
                 JsonNode.class,
                 paramsTravelTimeInbound);
         travelTimeInbound = getTravelTimes(node_travelTime, stopsInbound.size());
@@ -62,8 +69,10 @@ public class TpDataConnector {
         Map<String, Object> paramsTravelTimeOutbound = new HashMap<>();
         paramsTravelTimeOutbound.put("id", node.get("lineId").asText());
         paramsTravelTimeOutbound.put("fromStopPointId", stopsOutbound.get(0).getId());
+        paramsTravelTimeOutbound.put("app_id", app_id);
+        paramsTravelTimeOutbound.put("app_key", app_key);
         node_travelTime = rt
-            .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}",
+            .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}?app_id={app_id}&app_key={app_key}",
                 JsonNode.class,
                 paramsTravelTimeOutbound);
         travelTimeOutbound = getTravelTimes(node_travelTime, stopsOutbound.size());
