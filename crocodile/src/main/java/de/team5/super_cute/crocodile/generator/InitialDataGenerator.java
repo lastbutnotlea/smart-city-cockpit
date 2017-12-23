@@ -1,5 +1,6 @@
 package de.team5.super_cute.crocodile.generator;
 
+
 import static de.team5.super_cute.crocodile.config.InitialSetupConfig.fromHour;
 import static de.team5.super_cute.crocodile.config.InitialSetupConfig.fromMinute;
 import static de.team5.super_cute.crocodile.config.InitialSetupConfig.lineIds;
@@ -24,7 +25,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.PriorityQueue;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -107,7 +109,7 @@ public class InitialDataGenerator {
             networkDataBuilder.addTrip(vehicle, line, (Calendar) iterator.clone(), true);
             Calendar ready = (Calendar) iterator.clone();
             ready.add(Calendar.MINUTE, inboundTravelTime);
-            queueOutbound.add(new Pair<>(vehicle, ready));
+            queueOutbound.add(new ImmutablePair<>(vehicle, ready));
             inboundPointer++;
             if(inboundPointer == node_inbound.get("timetable").get("routes").get(0).get("schedules")
                 .get(0)
@@ -134,7 +136,7 @@ public class InitialDataGenerator {
             networkDataBuilder.addTrip(vehicle, line, (Calendar) iterator.clone(), false);
             Calendar ready = (Calendar) iterator.clone();
             ready.add(Calendar.MINUTE, outboundTravelTime);
-            queueInbound.add(new Pair<>(vehicle, ready));
+            queueInbound.add(new ImmutablePair<>(vehicle, ready));
             outboundPointer++;
             if(outboundPointer == node_outbound.get("timetable").get("routes").get(0).get("schedules")
                 .get(0)
