@@ -1,6 +1,13 @@
 package de.team5.super_cute.crocodile.generator;
 
+
+import static de.team5.super_cute.crocodile.config.InitialSetupConfig.fromHour;
+import static de.team5.super_cute.crocodile.config.InitialSetupConfig.fromMinute;
 import static de.team5.super_cute.crocodile.config.InitialSetupConfig.lineIds;
+import static de.team5.super_cute.crocodile.config.InitialSetupConfig.toHour;
+import static de.team5.super_cute.crocodile.config.InitialSetupConfig.toMinute;
+import static de.team5.super_cute.crocodile.config.TfLApiConfig.app_id;
+import static de.team5.super_cute.crocodile.config.TfLApiConfig.app_key;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import de.team5.super_cute.crocodile.data.LineData;
@@ -47,10 +54,10 @@ public class InitialDataGenerator {
     ArrayList<Line> lines = new TpDataConnector().getLines(lineIds);
     Calendar from = Calendar.getInstance();
     Calendar to = Calendar.getInstance();
-    from.set(Calendar.HOUR, 12);
-    from.set(Calendar.MINUTE, 0);
-    to.set(Calendar.HOUR, 12);
-    to.set(Calendar.MINUTE,10);
+    from.set(Calendar.HOUR, fromHour);
+    from.set(Calendar.MINUTE, fromMinute);
+    to.set(Calendar.HOUR, toHour);
+    to.set(Calendar.MINUTE,toMinute);
     generateTripsAndVehicles(from, to, lines);
   }
 
@@ -75,12 +82,14 @@ public class InitialDataGenerator {
         outboundPointer = 0;
         params.put("id", lineIds.get(x));
         params.put("fromStopPointId", lines.get(x).getStopsInbound().get(0).getId());
+        params.put("app_id", app_id);
+        params.put("app_key", app_key);
         JsonNode node_inbound = rt
-            .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}", JsonNode.class,
+            .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}?app_id={app_id}&app_key={app_key}", JsonNode.class,
                 params);
         params.put("fromStopPointId", lines.get(x).getStopsOutbound().get(0).getId());
         JsonNode node_outbound = rt
-            .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}", JsonNode.class,
+            .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}?app_id={app_id}&app_key={app_key}", JsonNode.class,
                 params);
         inboundPointer = initializePointer(inboundPointer, node_inbound, nextTripInbound, from);
         outboundPointer = initializePointer(outboundPointer, node_outbound, nextTripOutbound, from);
