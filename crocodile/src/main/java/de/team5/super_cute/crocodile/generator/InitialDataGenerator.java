@@ -1,6 +1,13 @@
 package de.team5.super_cute.crocodile.generator;
 
-import static de.team5.super_cute.crocodile.util.InitialSetupConfig.lineIds;
+
+import static de.team5.super_cute.crocodile.config.InitialSetupConfig.fromHour;
+import static de.team5.super_cute.crocodile.config.InitialSetupConfig.fromMinute;
+import static de.team5.super_cute.crocodile.config.InitialSetupConfig.lineIds;
+import static de.team5.super_cute.crocodile.config.InitialSetupConfig.toHour;
+import static de.team5.super_cute.crocodile.config.InitialSetupConfig.toMinute;
+import static de.team5.super_cute.crocodile.config.TfLApiConfig.app_id;
+import static de.team5.super_cute.crocodile.config.TfLApiConfig.app_key;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import de.team5.super_cute.crocodile.data.LineData;
@@ -18,7 +25,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.PriorityQueue;
-import javafx.util.Pair;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +45,6 @@ public class InitialDataGenerator {
   @Autowired
   private TripData tripData;
 
-
   private NetworkDataBuilder networkDataBuilder;
 
   public void generateInitialPrototypeSetup() {
@@ -46,10 +53,10 @@ public class InitialDataGenerator {
     ArrayList<Line> lines = new TpDataConnector().getLines(lineIds);
     Calendar from = Calendar.getInstance();
     Calendar to = Calendar.getInstance();
-    from.set(Calendar.HOUR, 0);
-    from.set(Calendar.MINUTE, 0);
-    to.set(Calendar.HOUR, 23);
-    to.set(Calendar.MINUTE, 59);
+    from.set(Calendar.HOUR, fromHour);
+    from.set(Calendar.MINUTE, fromMinute);
+    to.set(Calendar.HOUR, toHour);
+    to.set(Calendar.MINUTE,toMinute);
     generateTripsAndVehicles(from, to, lines);
   }
 
@@ -78,19 +85,19 @@ public class InitialDataGenerator {
         outboundPointer = 0;
         params.put("id", lineIds.get(x));
         params.put("fromStopPointId", lines.get(x).getStopsInbound().get(0).getId());
+        params.put("app_id", app_id);
+        params.put("app_key", app_key);
         JsonNode node_inbound = rt
-            .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}",
-                JsonNode.class,
+            .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}?app_id={app_id}&app_key={app_key}", JsonNode.class,
                 params);
         params.put("fromStopPointId", lines.get(x).getStopsOutbound().get(0).getId());
         JsonNode node_outbound = rt
-            .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}",
-                JsonNode.class,
+            .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}?app_id={app_id}&app_key={app_key}", JsonNode.class,
                 params);
         inboundPointer = initializePointer(inboundPointer - 1, node_inbound, nextTripInbound, from);
         outboundPointer = initializePointer(outboundPointer - 1, node_outbound, nextTripOutbound,
             from);
-
+        
         do {
           //determines if the next departure is inbound or outbound
           if (nextTripInbound.compareTo(nextTripOutbound) < 1) {

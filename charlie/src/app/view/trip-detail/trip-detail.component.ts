@@ -1,8 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { HttpRoutingService } from '../../services/http-routing.service';
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
+import {Component, OnInit} from '@angular/core';
 import {TripData} from '../../shared/trip-data';
+import {HttpRoutingService} from '../../services/http-routing.service';
+import {ActivatedRoute} from '@angular/router';
+import {Location} from '@angular/common';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {TripEditComponent} from '../trip-edit/trip-edit.component';
+
 
 
 @Component({
@@ -17,7 +20,9 @@ export class TripDetailComponent implements OnInit {
 
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
-              private location: Location) { }
+              private location: Location,
+              private modalService: NgbModal) {
+  }
 
   ngOnInit(): void {
     this.getTrip();
@@ -26,7 +31,9 @@ export class TripDetailComponent implements OnInit {
   getTrip(): void {
     const tripId = this.route.snapshot.paramMap.get('id');
     this.http.getTripDetails(tripId).subscribe(
-      trip => this.trip = trip,
+      trip => {
+        this.trip = trip;
+      },
       err => console.log('Could not fetch trip data!')
     );
   }
@@ -35,11 +42,14 @@ export class TripDetailComponent implements OnInit {
     this.location.back();
   }
 
+  edit(): void {
+    const modal = this.modalService.open(TripEditComponent);
+    modal.componentInstance.data = this.trip;
+    modal.componentInstance.initData();
+  }
+
   isLoaded(): boolean {
-    if (this.trip != null) {
-      return true;
-    }
-    return false;
+    return this.trip != null;
   }
 
 }

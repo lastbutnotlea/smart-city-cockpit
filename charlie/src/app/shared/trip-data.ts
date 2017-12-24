@@ -1,11 +1,12 @@
 
 import { VehicleData } from './vehicle-data';
 import { LineData } from './line-data';
-import { StopData } from './stop-data';
+import { TripStopData } from './trip-stop-data';
 
 export class TripData {
   id: string;
+  isInbound: boolean;
   vehicle: VehicleData;
   line: LineData;
-  stops: StopData[] = [];
+  stops: TripStopData[];
 }
