@@ -153,7 +153,7 @@ public class InitialDataGenerator {
     //determines when the vehicle is available again and puts vehicle in queue
     Calendar ready = (Calendar) iterator.clone();
     ready.add(Calendar.MINUTE, travelTime);
-    queueTo.add(new Pair<>(vehicle, ready));
+    queueTo.add(new ImmutablePair<>(vehicle, ready));
     pointer++;
     JsonNode knownJourneys = node.get("timetable").get("routes").get(0).get("schedules").get(0)
         .get("knownJourneys");
