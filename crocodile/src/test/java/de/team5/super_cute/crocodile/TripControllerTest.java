@@ -15,7 +15,6 @@ import de.team5.super_cute.crocodile.util.NetworkDataBuilder;
 import java.awt.Color;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.Calendar;
 import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;

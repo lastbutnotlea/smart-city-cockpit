@@ -9,7 +9,6 @@ import de.team5.super_cute.crocodile.model.Stop;
 import de.team5.super_cute.crocodile.model.Trip;
 import de.team5.super_cute.crocodile.model.Vehicle;
 import java.time.LocalDateTime;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,7 +94,7 @@ public class NetworkDataBuilder {
   private static void addStopsForOneDirection(Map<String, LocalDateTime> tripStops, List<Stop> lineStops, Map<String, Integer> travelTime, LocalDateTime startTime) {
     for (Stop currentStop : lineStops) {
       LocalDateTime currentStopTime = startTime;
-      currentStopTime = currentStopTime.withMinute(travelTime.get(currentStop.getId()));
+      currentStopTime = currentStopTime.plusMinutes(travelTime.get(currentStop.getId()));
       tripStops.put(currentStop.getId(), currentStopTime);
     }
   }

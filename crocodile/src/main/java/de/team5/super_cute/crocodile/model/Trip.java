@@ -43,7 +43,7 @@ public class Trip extends IdentifiableObject implements Serializable {
    **/
   @ElementCollection(fetch = FetchType.EAGER)
   @MapKeyColumn(name = "stop_id")
-  @Temporal(DATE)
+  //@Temporal(DATE)
   @Basic
   @JsonIgnore
   private Map<String, LocalDateTime> stops;
