@@ -45,7 +45,6 @@ public class InitialDataGenerator {
   @Autowired
   private TripData tripData;
 
-  
 
   private NetworkDataBuilder networkDataBuilder;
 
@@ -99,7 +98,6 @@ public class InitialDataGenerator {
         inboundPointer = initializePointer(inboundPointer - 1, node_inbound, nextTripInbound, from);
         outboundPointer = initializePointer(outboundPointer - 1, node_outbound, nextTripOutbound,
             from);
-
         do {
           //determines if the next departure is inbound or outbound
           if (nextTripInbound.compareTo(nextTripOutbound) < 1) {
