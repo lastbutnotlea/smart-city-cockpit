@@ -61,6 +61,8 @@ public class TpDataConnector {
     Map<String, Object> params = new HashMap<>();
     params.put("id", node.get("lineId").asText());
     params.put("fromStopPointId", stops.get(0).getId());
+    params.put("app_id", app_id);
+    params.put("app_key", app_key);
     JsonNode node_travelTime = rt
         .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}?app_id={app_id}&app_key={app_key}",
             JsonNode.class,
