@@ -13,6 +13,8 @@ import de.team5.super_cute.crocodile.model.Vehicle;
 import de.team5.super_cute.crocodile.util.LineBuilder;
 import de.team5.super_cute.crocodile.util.NetworkDataBuilder;
 import java.awt.Color;
+import java.time.LocalDateTime;
+import java.time.Month;
 import java.util.Calendar;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +58,7 @@ public class ManualTestController {
         .build();
 
     Trip testTrip = NetworkDataBuilder.assembleWholeLineTrip(v1, l1,
-        new Calendar.Builder().setDate(2017, Calendar.AUGUST, 12).setTimeOfDay(11, 30, 0).build(),
+        LocalDateTime.of(2017, Month.AUGUST, 12, 11, 30),
         true);
     tripData.addObject(testTrip);
     return tripData.getData();

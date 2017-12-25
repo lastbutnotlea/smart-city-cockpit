@@ -19,8 +19,8 @@ import de.team5.super_cute.crocodile.model.EVehicleType;
 import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Vehicle;
 import de.team5.super_cute.crocodile.util.NetworkDataBuilder;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -52,16 +52,16 @@ public class InitialDataGenerator {
     networkDataBuilder = new NetworkDataBuilder(lineData, vehicleData, stopData,
         tripData);
     ArrayList<Line> lines = new TpDataConnector().getLines(lineIds);
-    Calendar from = Calendar.getInstance();
-    Calendar to = Calendar.getInstance();
-    from.set(Calendar.HOUR, fromHour);
-    from.set(Calendar.MINUTE, fromMinute);
-    to.set(Calendar.HOUR, toHour);
-    to.set(Calendar.MINUTE,toMinute);
+    LocalDateTime from = LocalDateTime.now();
+    LocalDateTime to = LocalDateTime.now();
+    from = from.withHour(fromHour);
+    from = from.withMinute(fromMinute);
+    to = to.withHour(fromHour);
+    to = to.withMinute(fromMinute);
     generateTripsAndVehicles(from, to, lines);
   }
 
-  public void generateTripsAndVehicles(Calendar from, Calendar to, ArrayList<Line> lines) {
+  public void generateTripsAndVehicles(LocalDateTime from, LocalDateTime to, ArrayList<Line> lines) {
     int inboundPointer;
     int outboundPointer;
     RestTemplate rt = new RestTemplate();
@@ -75,13 +75,13 @@ public class InitialDataGenerator {
             .max(Integer::compareTo).orElse(-1);
         int outboundTravelTime = line.getTravelTimeOutbound().values().stream()
             .max(Integer::compareTo).orElse(-1);
-        PriorityQueue<Pair<Vehicle, Calendar>> queueInbound = new PriorityQueue<>(
+        PriorityQueue<Pair<Vehicle, LocalDateTime>> queueInbound = new PriorityQueue<>(
             (a, b) -> a.getValue().compareTo(b.getValue()));
-        PriorityQueue<Pair<Vehicle, Calendar>> queueOutbound = new PriorityQueue<>(
+        PriorityQueue<Pair<Vehicle, LocalDateTime>> queueOutbound = new PriorityQueue<>(
             (a, b) -> a.getValue().compareTo(b.getValue()));
-        Calendar iterator = (Calendar) from.clone();
-        Calendar nextTripInbound = (Calendar) from.clone();
-        Calendar nextTripOutbound = (Calendar) from.clone();
+        LocalDateTime iterator = LocalDateTime.from(from);
+        LocalDateTime nextTripInbound = LocalDateTime.from(from);
+        LocalDateTime nextTripOutbound = LocalDateTime.from(from);
         inboundPointer = 0;
         outboundPointer = 0;
         params.put("id", lineIds.get(x));
@@ -98,17 +98,33 @@ public class InitialDataGenerator {
         inboundPointer = initializePointer(inboundPointer - 1, node_inbound, nextTripInbound, from);
         outboundPointer = initializePointer(outboundPointer - 1, node_outbound, nextTripOutbound,
             from);
-        do {
+        System.out.println("FROM " + from);
+        System.out.println("TO " + to);
+        System.out.println("IN " + nextTripInbound);
+        System.out.println("OUT " + nextTripOutbound);
+        if (nextTripInbound.compareTo(nextTripOutbound) < 1) {
+          iterator = LocalDateTime.from(nextTripInbound);
+        } else {
+          iterator = LocalDateTime.from(nextTripOutbound);
+        }
+        while (iterator.compareTo(to) != 1 && inboundPointer != -1 && outboundPointer != -1) {
           //determines if the next departure is inbound or outbound
-          if (nextTripInbound.compareTo(nextTripOutbound) < 1) {
+          if (nextTripInbound.compareTo(iterator) == 0) {
             inboundPointer = generateTrip(iterator, nextTripInbound, queueInbound, queueOutbound,
                 line, node_inbound, inboundPointer, inboundTravelTime);
           } else {
             outboundPointer = generateTrip(iterator, nextTripOutbound, queueOutbound, queueInbound,
                 line, node_outbound, outboundPointer, outboundTravelTime);
           }
+          if (nextTripInbound.compareTo(nextTripOutbound) < 1) {
+            iterator = LocalDateTime.from(nextTripInbound);
+          } else {
+            iterator = LocalDateTime.from(nextTripOutbound);
+          }
+          System.out.println("TO " + to);
+          System.out.println("IT " + iterator);
           //if iterator > to break
-        } while (iterator.compareTo(to) != 1 && inboundPointer != -1 && outboundPointer != -1);
+        }
       } catch (RestClientException e) {
         LoggerFactory.getLogger(getClass())
             .error("Error while accessing Transport-API while creating trips: " + e.getMessage());
@@ -120,13 +136,13 @@ public class InitialDataGenerator {
   }
 
   //sets the pointer to the first departure after from
-  private int initializePointer(int pointer, JsonNode node, Calendar actual, Calendar from) {
+  private int initializePointer(int pointer, JsonNode node, LocalDateTime actual, LocalDateTime from) {
     do {
       pointer++;
-      actual.set(Calendar.HOUR, node.get("timetable").get("routes").get(0).get("schedules")
+      actual = actual.withHour(node.get("timetable").get("routes").get(0).get("schedules")
           .get(0)
           .get("knownJourneys").get(pointer).get("hour").asInt());
-      actual.set(Calendar.MINUTE, node.get("timetable").get("routes").get(0).get("schedules")
+      actual = actual.withMinute(node.get("timetable").get("routes").get(0).get("schedules")
           .get(0)
           .get("knownJourneys").get(pointer).get("minute").asInt());
     } while (from.compareTo(actual) == 1);
@@ -134,11 +150,10 @@ public class InitialDataGenerator {
   }
 
   //returns the pointer to the next departure in JsonNode or -1 if iterated over all departures
-  private int generateTrip(Calendar iterator, Calendar nextTrip,
-      PriorityQueue<Pair<Vehicle, Calendar>> queueFrom,
-      PriorityQueue<Pair<Vehicle, Calendar>> queueTo, Line line, JsonNode node, int pointer,
+  private int generateTrip(LocalDateTime iterator, LocalDateTime nextTrip,
+      PriorityQueue<Pair<Vehicle, LocalDateTime>> queueFrom,
+      PriorityQueue<Pair<Vehicle, LocalDateTime>> queueTo, Line line, JsonNode node, int pointer,
       int travelTime) {
-    iterator = (Calendar) nextTrip.clone();
     Vehicle vehicle;
     if (queueFrom.peek() == null || queueFrom.peek().getValue().compareTo(iterator) == 1) {
       //If no (or no available) vehicle exists: create new one
@@ -147,10 +162,10 @@ public class InitialDataGenerator {
     } else {
       vehicle = queueFrom.poll().getKey();
     }
-    networkDataBuilder.addTrip(vehicle, line, (Calendar) iterator.clone(), true);
+    networkDataBuilder.addTrip(vehicle, line, LocalDateTime.from(iterator), true);
     //determines when the vehicle is available again and puts vehicle in queue
-    Calendar ready = (Calendar) iterator.clone();
-    ready.add(Calendar.MINUTE, travelTime);
+    LocalDateTime ready = LocalDateTime.from(iterator);
+    ready = ready.plusMinutes(travelTime);
     queueTo.add(new ImmutablePair<>(vehicle, ready));
     pointer++;
     JsonNode knownJourneys = node.get("timetable").get("routes").get(0).get("schedules").get(0)
@@ -159,8 +174,8 @@ public class InitialDataGenerator {
       return -1;
     }
     //get next departure
-    nextTrip.set(Calendar.HOUR, knownJourneys.get(pointer).get("hour").asInt());
-    nextTrip.set(Calendar.MINUTE, knownJourneys.get(pointer).get("minute").asInt());
+    nextTrip = nextTrip.withHour(knownJourneys.get(pointer).get("hour").asInt());
+    nextTrip = nextTrip.withMinute(knownJourneys.get(pointer).get("minute").asInt());
     return pointer;
   }
 }
