@@ -4,14 +4,14 @@ import { toInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 @Injectable()
 export class MapCreatorService {
 
-  public createMap(testStations: any, testLines: any, testConnections: any): any {
+  public createMap(stationData: any, lineData: any, connectionData: any): any {
     // Define the size of the raster, the larger the higher the resolution
     const rasterWidth = 150;
     const rasterHeight = 150;
     // Convert the relevant data to the right format
     // TODO this is running on test data, do this with the real data
-    const generatedStations = this.calcStations(testStations, rasterWidth, rasterHeight);
-    const generatedLines = this.calcLines(generatedStations, testLines, testConnections, rasterWidth, rasterHeight);
+    const generatedStations = this.calcStations(stationData, rasterWidth, rasterHeight);
+    const generatedLines = this.calcLines(generatedStations, lineData, connectionData, rasterWidth, rasterHeight);
     const generatedRiver = this.calcRiver(rasterWidth, rasterHeight);
     const generatedData = this.calcGraph(generatedStations, generatedLines, generatedRiver);
     return generatedData;
@@ -69,7 +69,6 @@ export class MapCreatorService {
     let linecounter = 0;
     // This iterates through the connections
     for (const i in connections) {
-      debugger;
       // Gather relevant info for the current line, this will be drawn
       const currentLine = {
         'name': lines[i].id,

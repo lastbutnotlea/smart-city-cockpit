@@ -2,9 +2,14 @@ package de.team5.super_cute.crocodile.model;
 
 import static javax.persistence.TemporalType.DATE;
 
+import com.fasterxml.jackson.annotation.*;
+
 import java.io.Serializable;
-import java.util.Calendar;
-import java.util.Map;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.util.*;
+import java.util.stream.Collectors;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -15,6 +20,7 @@ import javax.persistence.MapKeyColumn;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
+
 import org.hibernate.annotations.Proxy;
 
 
@@ -41,6 +47,7 @@ public class Trip extends IdentifiableObject implements Serializable {
   @MapKeyColumn(name = "stop_id")
   @Temporal(DATE)
   @Basic
+  @JsonIgnore
   private Map<String, Calendar> stops;
 
   public Trip() {}
@@ -69,12 +76,45 @@ public class Trip extends IdentifiableObject implements Serializable {
     this.line = line;
   }
 
+  @JsonIgnore
   public Map<String, Calendar> getStops() {
     return stops;
   }
 
-  public void setStops(
-      Map<String, Calendar> stops) {
+  @JsonIgnore
+  public void setStops(Map<String, Calendar> stops) {
     this.stops = stops;
+  }
+
+  @JsonGetter("stops")
+  public List<?> getStopsAsList() {
+    return stops.entrySet().stream().map(entry -> {
+      StopDepartureData data = new StopDepartureData();
+      data.id = entry.getKey();
+      data.departureTime = LocalDateTime.ofInstant(entry.getValue().toInstant(), ZoneId.systemDefault()).toString();
+      return data;
+    }).collect(Collectors.toList());
+  }
+
+  @JsonSetter("stops")
+  public void setStopsAsList(List<StopDepartureData> list) {
+    try {
+      stops = new HashMap<>(list.size());
+      list.forEach(data -> {
+        Calendar c = Calendar.getInstance();
+        c.setTime(Date.from(LocalDateTime.parse(data.departureTime).toInstant(ZoneOffset.UTC)));
+        stops.put(data.id, c);
+      });
+    } catch (Exception e) {
+      e.printStackTrace();
+      throw e;
+    }
+  }
+
+  public static class StopDepartureData {
+    @JsonProperty
+    public String id;
+    @JsonProperty
+    public String departureTime;
   }
 }

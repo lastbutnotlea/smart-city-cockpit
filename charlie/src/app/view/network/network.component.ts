@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import {HttpRoutingService} from '../../services/http-routing.service';
 import { LineData } from '../../shared/line-data';
 import { MapComponent } from '../map/map.component';
@@ -13,8 +13,10 @@ export class NetworkComponent implements OnInit {
   title: String;
   lines: LineData[] = [];
 
-  constructor(private http: HttpRoutingService,
-              private networkMap: MapComponent) { }
+  @ViewChild(MapComponent)
+  networkMap: MapComponent;
+
+  constructor(private http: HttpRoutingService) { }
 
   ngOnInit(): void {
     this.title = 'Network View';

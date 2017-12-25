@@ -1,10 +1,11 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
 import { LineData } from '../shared/line-data';
 import { Observable } from 'rxjs/Observable';
 import { UrlBuilderService } from './url-builder.service';
 import { tap } from 'rxjs/operators';
 import { TripData } from '../shared/trip-data';
+import {VehicleData} from '../shared/vehicle-data';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class HttpRoutingService {
@@ -74,5 +75,22 @@ export class HttpRoutingService {
       .pipe(
         tap(data => console.log(`Fetched Map-Data for Connections.`))
       );
+  }
+
+  public getVehicles (): Observable<VehicleData[]> {
+    return this.http.get<VehicleData[]>(this.urlBuilder.getVehiclesUrl()).
+      pipe(
+        tap(vehicles => console.log('Fetches vehicles.'))
+    );
+  }
+
+  public addTrip(trip: TripData): void {
+    console.log('ADD TRIP, lineID: ' + trip.line.id + ' vehicleID: ' + trip.vehicle.id);
+    this.http.post(this.urlBuilder.getTripsUrl(), trip).subscribe();
+  }
+
+  public editTrip(trip: TripData): void {
+    console.log('EDIT TRIP, lineID: ' + trip.line.id + ' vehicleID: ' + trip.vehicle.id);
+    this.http.put(this.urlBuilder.getTripsUrl(), trip).subscribe(() => console.log('TRIP EDIT OK'));
   }
 }

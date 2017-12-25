@@ -4,7 +4,16 @@
 
 <div *ngIf="isLoaded()">
 
-  <h3>{{trip.id}}</h3>
+  <h3>Trip Details</h3>
+  <h5>Trip ID: {{trip.id}}</h5>
+  <h5>Line ID: {{trip.line.id}}</h5>
+  <h5>Vehicle ID: {{trip.vehicle.id}}</h5>
+
+  <h5>Stops: </h5>
+  <div *ngFor="let stop of trip.stops">
+    {{stop.id}}
+  </div>
 
   <button (click)="goBack()">Back To Trips</button>
+  <button (click)="edit()">Edit</button>
 </div>
