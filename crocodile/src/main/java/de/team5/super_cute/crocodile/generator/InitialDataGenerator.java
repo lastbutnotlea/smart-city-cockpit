@@ -33,22 +33,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
-class MyLocalDateTime{
-  private LocalDateTime localDateTime;
-
-  public MyLocalDateTime(LocalDateTime localDateTime) {
-    this.localDateTime = localDateTime;
-  }
-
-  public LocalDateTime getLocalDateTime() {
-    return localDateTime;
-  }
-
-  public void setLocalDateTime(LocalDateTime localDateTime) {
-    this.localDateTime = localDateTime;
-  }
-}
-
 @Service
 public class InitialDataGenerator {
 
@@ -68,14 +52,13 @@ public class InitialDataGenerator {
     networkDataBuilder = new NetworkDataBuilder(lineData, vehicleData, stopData,
         tripData);
     ArrayList<Line> lines = new TpDataConnector().getLines(lineIds);
-    LocalDateTime from = LocalDateTime.now();
-    LocalDateTime to = LocalDateTime.now();
-    from = from.withHour(fromHour).withMinute(fromMinute);
-    to = to.withHour(toHour).withMinute(toMinute);
+    LocalDateTime from = LocalDateTime.now().withHour(fromHour).withMinute(fromMinute);
+    LocalDateTime to = LocalDateTime.now().withHour(toHour).withMinute(toMinute);
     generateTripsAndVehicles(from, to, lines);
   }
 
-  public void generateTripsAndVehicles(LocalDateTime from, LocalDateTime to, ArrayList<Line> lines) {
+  public void generateTripsAndVehicles(LocalDateTime from, LocalDateTime to,
+      ArrayList<Line> lines) {
     int inboundPointer;
     int outboundPointer;
     RestTemplate rt = new RestTemplate();
@@ -103,40 +86,42 @@ public class InitialDataGenerator {
         params.put("app_id", app_id);
         params.put("app_key", app_key);
         JsonNode node_inbound = rt
-            .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}?app_id={app_id}&app_key={app_key}", JsonNode.class,
+            .getForObject(
+                "https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}?app_id={app_id}&app_key={app_key}",
+                JsonNode.class,
                 params);
         params.put("fromStopPointId", lines.get(x).getStopsOutbound().get(0).getId());
         JsonNode node_outbound = rt
-            .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}?app_id={app_id}&app_key={app_key}", JsonNode.class,
+            .getForObject(
+                "https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}?app_id={app_id}&app_key={app_key}",
+                JsonNode.class,
                 params);
         inboundPointer = initializePointer(inboundPointer - 1, node_inbound, nextTripInbound, from);
         outboundPointer = initializePointer(outboundPointer - 1, node_outbound, nextTripOutbound,
             from);
-        System.out.println("FROM " + from);
-        System.out.println("TO " + to);
-        System.out.println("IN " + nextTripInbound);
-        System.out.println("OUT " + nextTripOutbound);
         if (nextTripInbound.getLocalDateTime().compareTo(nextTripOutbound.getLocalDateTime()) < 1) {
           iterator.setLocalDateTime(LocalDateTime.from(nextTripInbound.getLocalDateTime()));
         } else {
           iterator.setLocalDateTime(LocalDateTime.from(nextTripOutbound.getLocalDateTime()));
         }
-        while (iterator.getLocalDateTime().compareTo(to) != 1 && inboundPointer != -1 && outboundPointer != -1) {
+        while (iterator.getLocalDateTime().compareTo(to) != 1 && inboundPointer != -1
+            && outboundPointer != -1) {
           //determines if the next departure is inbound or outbound
           if (nextTripInbound.getLocalDateTime().compareTo(iterator.getLocalDateTime()) == 0) {
-            inboundPointer = generateTrip(iterator.getLocalDateTime(), nextTripInbound, queueInbound, queueOutbound,
+            inboundPointer = generateTrip(iterator.getLocalDateTime(), nextTripInbound,
+                queueInbound, queueOutbound,
                 line, node_inbound, inboundPointer, inboundTravelTime);
           } else {
-            outboundPointer = generateTrip(iterator.getLocalDateTime(), nextTripOutbound, queueOutbound, queueInbound,
+            outboundPointer = generateTrip(iterator.getLocalDateTime(), nextTripOutbound,
+                queueOutbound, queueInbound,
                 line, node_outbound, outboundPointer, outboundTravelTime);
           }
-          if (nextTripInbound.getLocalDateTime().compareTo(nextTripOutbound.getLocalDateTime()) < 1) {
+          if (nextTripInbound.getLocalDateTime().compareTo(nextTripOutbound.getLocalDateTime())
+              < 1) {
             iterator.setLocalDateTime(LocalDateTime.from(nextTripInbound.getLocalDateTime()));
           } else {
             iterator.setLocalDateTime(LocalDateTime.from(nextTripOutbound.getLocalDateTime()));
           }
-          System.out.println("TO " + to);
-          System.out.println("IT " + iterator);
           //if iterator > to break
         }
       } catch (RestClientException e) {
@@ -150,12 +135,14 @@ public class InitialDataGenerator {
   }
 
   //sets the pointer to the first departure after from
-  private int initializePointer(int pointer, JsonNode node, MyLocalDateTime actual, LocalDateTime from) {
+  private int initializePointer(int pointer, JsonNode node, MyLocalDateTime actual,
+      LocalDateTime from) {
     do {
       pointer++;
-      actual.setLocalDateTime(actual.getLocalDateTime().withHour(node.get("timetable").get("routes").get(0).get("schedules")
-          .get(0)
-          .get("knownJourneys").get(pointer).get("hour").asInt())
+      actual.setLocalDateTime(actual.getLocalDateTime()
+          .withHour(node.get("timetable").get("routes").get(0).get("schedules")
+              .get(0)
+              .get("knownJourneys").get(pointer).get("hour").asInt())
           .withMinute(node.get("timetable").get("routes").get(0).get("schedules")
               .get(0)
               .get("knownJourneys").get(pointer).get("minute").asInt()));
@@ -187,8 +174,27 @@ public class InitialDataGenerator {
       return -1;
     }
     //get next departure
-    nextTrip.setLocalDateTime(nextTrip.getLocalDateTime().withHour(knownJourneys.get(pointer).get("hour").asInt()).withMinute(knownJourneys.get(pointer).get("minute").asInt()));
+    nextTrip.setLocalDateTime(
+        nextTrip.getLocalDateTime().withHour(knownJourneys.get(pointer).get("hour").asInt())
+            .withMinute(knownJourneys.get(pointer).get("minute").asInt()));
     return pointer;
+  }
+}
+
+class MyLocalDateTime {
+
+  private LocalDateTime localDateTime;
+
+  public MyLocalDateTime(LocalDateTime localDateTime) {
+    this.localDateTime = localDateTime;
+  }
+
+  public LocalDateTime getLocalDateTime() {
+    return localDateTime;
+  }
+
+  public void setLocalDateTime(LocalDateTime localDateTime) {
+    this.localDateTime = localDateTime;
   }
 }
 

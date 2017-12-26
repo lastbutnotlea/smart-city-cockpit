@@ -5,12 +5,12 @@ import java.util.ArrayList;
 public class InitialSetupConfig {
   public static final int fromHour = 12;
   public static final int fromMinute = 0;
-  public static final int toHour = 12;
-  public static final int toMinute = 5;
+  public static final int toHour = 14;
+  public static final int toMinute = 0;
 
   public static final ArrayList<String> lineIds = new ArrayList<String>() {{
     add("10");
-    /*add("283");
+    add("283");
     add("46");
     add("228");
     add("7");
@@ -18,6 +18,6 @@ public class InitialSetupConfig {
     add("hammersmith-city");
     add("jubilee");
     add("victoria");
-    add("waterloo-city");*/
+    add("waterloo-city");
   }};
 }
