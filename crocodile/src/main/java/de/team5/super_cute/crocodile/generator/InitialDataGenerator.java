@@ -112,10 +112,6 @@ public class InitialDataGenerator {
         inboundPointer = initializePointer(inboundPointer - 1, node_inbound, nextTripInbound, from);
         outboundPointer = initializePointer(outboundPointer - 1, node_outbound, nextTripOutbound,
             from);
-        System.out.println("FROM " + from);
-        System.out.println("TO " + to);
-        System.out.println("IN " + nextTripInbound);
-        System.out.println("OUT " + nextTripOutbound);
         if (nextTripInbound.getLocalDateTime().compareTo(nextTripOutbound.getLocalDateTime()) < 1) {
           iterator.setLocalDateTime(LocalDateTime.from(nextTripInbound.getLocalDateTime()));
         } else {
@@ -135,8 +131,6 @@ public class InitialDataGenerator {
           } else {
             iterator.setLocalDateTime(LocalDateTime.from(nextTripOutbound.getLocalDateTime()));
           }
-          System.out.println("TO " + to);
-          System.out.println("IT " + iterator);
           //if iterator > to break
         }
       } catch (RestClientException e) {

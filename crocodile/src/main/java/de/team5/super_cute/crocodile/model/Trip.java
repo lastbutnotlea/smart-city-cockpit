@@ -1,15 +1,14 @@
 package de.team5.super_cute.crocodile.model;
 
-import static javax.persistence.TemporalType.DATE;
-
 import com.fasterxml.jackson.annotation.*;
 
+import de.team5.super_cute.crocodile.util.LocalDateTimeAttributeConverter;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
-import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,7 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
 
 import org.hibernate.annotations.Proxy;
 
@@ -30,25 +28,24 @@ public class Trip extends IdentifiableObject implements Serializable {
   @Column
   private boolean isInbound;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @PrimaryKeyJoinColumn
   private Vehicle vehicle;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @PrimaryKeyJoinColumn
   private Line line;
 
   /**
   maps stopIds to departureTimes
    **/
-  @ElementCollection(fetch = FetchType.EAGER)
-  @MapKeyColumn(name = "stop_id")
-  //@Temporal(DATE)
-  @Basic
   @JsonIgnore
+  @ElementCollection(fetch = FetchType.LAZY)
+  @MapKeyColumn(name = "stop_id")
+  @Convert(converter = LocalDateTimeAttributeConverter.class, attributeName = "value")
   private Map<String, LocalDateTime> stops;
 
-  public Trip() {}
+  public Trip() {super();}
 
   public Trip(Vehicle vehicle, Line line,
       Map<String, LocalDateTime> stops) {
