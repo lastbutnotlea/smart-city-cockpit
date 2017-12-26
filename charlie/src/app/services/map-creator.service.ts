@@ -9,16 +9,15 @@ export class MapCreatorService {
   private minY: number;
   private maxY: number;
 
-  private rasterWidth: number;
-  private rasterHeight: number;
-
-  private lastCoords = null;
-  private lastDir = null;
+  private mapWidth: number; // in x direction
+  private mapHeight: number; // in y direction
+  private rasterizationFactor: number; // I think how many coordinate points shold fall into one
 
   public createMap(stationData: any, lineData: any, connectionData: any): any {
     // Define the size of the raster, the larger the higher the resolution
-    this.rasterWidth = 150;
-    this.rasterHeight = 150;
+    this.mapWidth = 500;
+    this.mapHeight = 500;
+    this.rasterizationFactor = 0.25;
     // Convert the relevant data to the right format
     const generatedStations = this.calcStations(stationData);
     const generatedLines = this.calcLines(generatedStations, lineData, connectionData);
@@ -36,14 +35,14 @@ export class MapCreatorService {
 
   private calcMinMaxPos(stations){
     this.minX = 100;
-    this.maxX = 0;
+    this.maxX = -100;
     this.minY = 100;
-    this.maxY = 0;
-    // Transform Geocoords into map coords, store max and min
+    this.maxY = -100;
+    // find Max and Min of geocoordinates
     for (const i in stations) {
       const pos = stations[i]['position'];
-      const posX = (this.rasterWidth) * (180 + pos['lat']) / 360;
-      const posY = (this.rasterHeight) * (90 - pos['lon']) / 180;
+      const posX = pos['lon'];
+      const posY = pos['lat'];
       this.maxX = posX > this.maxX ? posX : this.maxX;
       this.minX = posX < this.minX ? posX : this.minX;
       this.maxY = posY > this.maxY ? posY : this.maxY;
@@ -58,10 +57,11 @@ export class MapCreatorService {
     // Clip Map to relevant area by max and min, calculate middle area
     for (const i in stations) {
       const pos = stations[i]['position'];
-      let posX = (this.rasterWidth) * (180 + pos['lat']) / 360;
-      let posY = (this.rasterHeight) * (90 - pos['lon']) / 180;
-      posX = toInteger((posX - this.minX) * this.rasterWidth / (this.maxX - this.minX));
-      posY = toInteger((posY - this.minY) * this.rasterHeight / (this.maxY - this.minY));
+      let posX = pos['lon'];
+      let posY = pos['lat'];
+      // calculate map positions by normalizing geo location relative to min/max and multiplying with desired map dimensions
+      posX = toInteger(toInteger((posX - this.minX) / (this.maxX - this.minX) * (this.mapWidth * this.rasterizationFactor)) / (this.mapWidth * this.rasterizationFactor) * this.mapWidth);
+      posY = toInteger(toInteger((posY - this.minY) / (this.maxY - this.minY) * (this.mapHeight * this.rasterizationFactor)) / (this.mapHeight * this.rasterizationFactor) * this.mapHeight);
       stationDataPoints[i] = {};
       stationDataPoints[i]['title'] = stations[i]['title'];
       stationDataPoints[i]['coords'] = [posX, posY];
@@ -79,16 +79,13 @@ export class MapCreatorService {
     let linecounter = 0;
     // This iterates through the connections
     for (const i in connections) {
-      // reset lastCoors and lastDir when looking at a new line
-      this.lastCoords = null;
-      this.lastDir = null;
       // Gather relevant info for the current line, this will be drawn
       const currentLine = {
         'name': lines[i].id,
         'label': i,
         'color': lines[i].color,
-        'shiftCoords': [linecounter, linecounter],
-        'nodes':  this.calcNodes(connections[i], stationDataPoints, linecounter)
+        'shiftCoords': [0, 0],
+        'nodes':  this.calcNodes(connections[i], stationDataPoints)
       };
       // Insert the line into the list of all lines
       lineDataPoints.push(currentLine);
@@ -97,42 +94,43 @@ export class MapCreatorService {
     return lineDataPoints;
   }
 
-  private calcNodes(connections, stationDataPoints, linecounter ) {
+  private calcNodes(connections, stationDataPoints) {
     let nodes = [];
+    let lastDir = null;
+    let lastCoords = null;
     // Iterate over all stops
     for (const j in connections) {
       // Get all relevant data
-      const coords = stationDataPoints[connections[j].station].coords;
-      const shiftCoords = [linecounter, linecounter];
+      const nextCoords = stationDataPoints[connections[j].station].coords;
+      const shiftCoords = [0, 0];
       let curDir;
       // Only update the directions starting from the second station
-      if (this.lastCoords != null) {
-        curDir = this.calcCurDirLine(coords);
-        // if lastDir was not set, set it here --> orthogonal to the current dir
-        if (this.lastDir == null) {
-          this.calcLastDir(coords);
+      if (lastCoords != null) {
+        if (lastDir == null) {
+          lastDir = this.calcLastDir(nextCoords, lastCoords);
         }
+        curDir = this.calcNextDirection(nextCoords, lastDir, lastCoords);
         // Create current between node
         const betweenNode1 = {
-          'coords': this.calcBetweenCoords1(coords),
+          'coords': this.calcBetweenCoords1(nextCoords, lastCoords, lastDir),
           'shiftCoords': shiftCoords
         };
         const betweenNode2 = {
-          'coords': this.calcBetweenCoords2(curDir, coords),
+          'coords': this.calcBetweenCoords2(curDir, nextCoords, lastCoords),
           'shiftCoords': shiftCoords,
-          'dir': this.lastDir
+          'dir': lastDir
         };
         // Insert node into the final array
         nodes.push(betweenNode1);
         nodes.push(betweenNode2);
       }
       // Store current coords and dir for next iteration
-      this.lastCoords = coords;
-      this.lastDir = curDir;
+      lastCoords = nextCoords;
+      lastDir = curDir;
 
       // Create current station node
       const currentStationNode = {
-        'coords': coords,
+        'coords': nextCoords,
         'name': connections[j].station,
         'labelPos': this.calcLabelPos(curDir),
         'shiftCoords': this.calcShiftCoords(curDir, shiftCoords),
@@ -144,34 +142,36 @@ export class MapCreatorService {
       // Just important for the end parts, insert points to elongate
       const currentStationPositionNode = {
         'coords': [
-          coords[0] - currentStationNode['shiftCoords'][1],
-          coords[1] -  currentStationNode['shiftCoords'][0]
+          nextCoords[0] - currentStationNode['shiftCoords'][1],
+          nextCoords[1] -  currentStationNode['shiftCoords'][0]
         ]};
-      nodes.push(currentStationPositionNode);
+      //nodes.push(currentStationPositionNode);
     }
     return nodes;
   }
 
-  private calcCurDirLine(coords) {
+  // In which direction do we have to go next?
+  // TODO build in staying in the same direction?
+  private calcNextDirection(coords, lastDir, lastCoords) {
+    // First we go horizontal/vertical in the direction of the biggest difference
     let curDir;
-    switch (this.lastDir) {
+    switch (lastDir) {
       case 'N':
-      // case N equals case Sthis.
+      // case N equals case S
       case 'S':
-        (this.lastCoords[0] > coords [0]) ? curDir = 'W' : curDir = 'E';
+        if (lastCoords[0] == coords[0]) {
+          curDir = lastDir;
+        } else {
+          (lastCoords[0] > coords [0]) ? curDir = 'W' : curDir = 'E';
+        }
         break;
       case 'E':
       // case E equals case W
       case 'W':
-        (this.lastCoords[1] > coords[1]) ? curDir = 'S' : curDir = 'N';
-        break;
-      default:
-        if (Math.abs(this.lastCoords[0] - coords[0]) > Math.abs(this.lastCoords[1] - coords[1])) {
-          // More horizontal movement
-          (this.lastCoords[0] > coords[0]) ? curDir = 'W' : curDir = 'E';
+        if (lastCoords[1] == coords[1]) {
+          curDir = lastDir;
         } else {
-          // More vertical movement
-          (this.lastCoords[1] > coords[1]) ? curDir = 'S' : curDir = 'N';
+          (lastCoords[1] > coords[1]) ? curDir = 'S' : curDir = 'N';
         }
         break;
     }
@@ -191,40 +191,49 @@ export class MapCreatorService {
     }
   }
 
-  private calcLastDir(coords) {
-    if (Math.abs(this.lastCoords[0] - coords[0]) < Math.abs(this.lastCoords[1] - coords[1])) {
+  // "in which direction did we go last", used to initialize for start of line
+  private calcLastDir(coords, lastCoords) {
+    if (Math.abs(lastCoords[0] - coords[0]) > Math.abs(lastCoords[1] - coords[1])) {
       // More horizontal movement
-      (this.lastCoords[0] > coords[0]) ? this.lastDir = 'W' : this.lastDir = 'E';
+      if (lastCoords[0] > coords[0]) {
+        return 'W';
+      } else {
+        return 'E';
+      }
     } else {
       // More vertical movement
-      (this.lastCoords[1] > coords[1]) ? this.lastDir = 'S' : this.lastDir = 'N';
+      if (lastCoords[1] > coords[1]) {
+        return 'S';
+      } else {
+        return 'N';
+      }
     }
   }
 
   // Calculate the betweenpoint coordinates, so there is a nice curve
-  private calcBetweenCoords1(coords) {
-    if (this.lastDir === 'N') {
-      return [this.lastCoords[0], coords[1] - 1];
-    } else if (this.lastDir === 'S') {
-      return [this.lastCoords[0], coords[1] + 1];
-    } else if (this.lastDir === 'E') {
-      return [coords[0] - 1, this.lastCoords[1]];
-    } else if (this.lastDir === 'W') {
-      return [coords[0] + 1, this.lastCoords[1]];
+  private calcBetweenCoords1(coords, lastCoords, lastDir) {
+    if (lastDir === 'N') {
+      return [lastCoords[0], coords[1] - 1];
+    } else if (lastDir === 'S') {
+      return [lastCoords[0], coords[1] + 1];
+    } else if (lastDir === 'E') {
+      return [coords[0] - 1, lastCoords[1]];
+    } else if (lastDir === 'W') {
+      return [coords[0] + 1, lastCoords[1]];
     }
   }
 
   // Calculate the betweenpoint coordinates, so there is a nice curve
-  private calcBetweenCoords2(curDir, coords) {
+  private calcBetweenCoords2(curDir, coords, lastCoords) {
     // Set coordinates of the second point
     if (curDir === 'N') {
-      return [coords[0], this.lastCoords[1] + 1];
+      return [coords[0], lastCoords[1] + 1];
     } else if (curDir === 'S') {
-      return [coords[0], this.lastCoords[1] - 1];
+      return [coords[0], lastCoords[1] - 1];
     } else if (curDir === 'E') {
-      return [this.lastCoords[0] + 1, coords[1]];
+      return [lastCoords[0] + 1, coords[1]];
     } else if (curDir === 'W') {
-      return [this.lastCoords[0] - 1, coords[1]];
+      return [lastCoords[0] - 1, coords[1]];
     }
   }
 
@@ -246,15 +255,15 @@ export class MapCreatorService {
       'nodes': [{
         'coords': [0, 0]
       }, {
-        'coords': [0, this.rasterHeight / 2]
+        'coords': [0, 50]
       }, {
-        'coords': [1, this.rasterHeight / 2 + 2]
+        'coords': [1, 52]
       }, {
-        'coords': [this.rasterWidth / 2 - 2, this.rasterHeight - 1]
+        'coords': [48, 99]
       }, {
-        'coords': [this.rasterWidth / 2, this.rasterHeight]
+        'coords': [50, 100]
       }, {
-        'coords': [this.rasterWidth, this.rasterHeight]
+        'coords': [100, 100]
       }]
     };
   }

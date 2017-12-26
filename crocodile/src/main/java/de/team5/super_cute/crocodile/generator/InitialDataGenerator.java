@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.PriorityQueue;
+import javax.annotation.PostConstruct;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.LoggerFactory;
@@ -44,10 +45,9 @@ public class InitialDataGenerator {
   @Autowired
   private TripData tripData;
 
-  
-
   private NetworkDataBuilder networkDataBuilder;
 
+  @PostConstruct
   public void generateInitialPrototypeSetup() {
     networkDataBuilder = new NetworkDataBuilder(lineData, vehicleData, stopData,
         tripData);
