@@ -28,11 +28,11 @@ public class Trip extends IdentifiableObject implements Serializable {
   @Column
   private boolean isInbound;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @PrimaryKeyJoinColumn
   private Vehicle vehicle;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.EAGER)
   @PrimaryKeyJoinColumn
   private Line line;
 
@@ -40,7 +40,7 @@ public class Trip extends IdentifiableObject implements Serializable {
   maps stopIds to departureTimes
    **/
   @JsonIgnore
-  @ElementCollection(fetch = FetchType.LAZY)
+  @ElementCollection(fetch = FetchType.EAGER)
   @MapKeyColumn(name = "stop_id")
   @Convert(converter = LocalDateTimeAttributeConverter.class, attributeName = "value")
   private Map<String, LocalDateTime> stops;

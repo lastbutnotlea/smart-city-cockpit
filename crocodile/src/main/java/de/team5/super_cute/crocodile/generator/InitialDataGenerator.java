@@ -72,7 +72,11 @@ public class InitialDataGenerator {
     LocalDateTime to = LocalDateTime.now();
     from = from.withHour(fromHour).withMinute(fromMinute);
     to = to.withHour(toHour).withMinute(toMinute);
+    LoggerFactory.getLogger(getClass())
+        .info("Started initialization");
     generateTripsAndVehicles(from, to, lines);
+    LoggerFactory.getLogger(getClass())
+        .info("Finished initialization");
   }
 
   public void generateTripsAndVehicles(LocalDateTime from, LocalDateTime to, ArrayList<Line> lines) {

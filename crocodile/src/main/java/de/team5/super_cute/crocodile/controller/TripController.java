@@ -30,14 +30,12 @@ public class TripController extends BaseController<Trip> {
   public List<Trip> getAllTrips(@RequestParam(defaultValue = "") String vehicleId,
       @RequestParam(defaultValue = "") String lineId,
       @RequestParam(defaultValue = "") String stopId) {
-        List <Trip> list = data.getData();
-
-        list = list.stream().filter(t -> StringUtils.isEmpty(lineId) || t.getLine().getId().equals(lineId))
+    return data.getData().stream()
+        .filter(t -> StringUtils.isEmpty(lineId) || t.getLine().getId().equals(lineId))
         .filter(t -> StringUtils.isEmpty(stopId) || t.getStops().get(stopId) != null)
         .filter(t -> StringUtils.isEmpty(vehicleId) || t.getVehicle().getId().equals(vehicleId))
         .collect(
             Collectors.toList());
-        return list;
   }
 
   @GetMapping("/{id}")

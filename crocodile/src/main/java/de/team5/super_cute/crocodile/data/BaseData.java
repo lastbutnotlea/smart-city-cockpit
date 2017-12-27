@@ -4,6 +4,7 @@ import de.team5.super_cute.crocodile.model.IdentifiableObject;
 import de.team5.super_cute.crocodile.model.Trip;
 import java.util.List;
 import javax.transaction.Transactional;
+import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties.Hibernate;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 
 /**
@@ -13,6 +14,10 @@ import org.springframework.orm.hibernate5.HibernateTemplate;
 public abstract class BaseData<T extends IdentifiableObject> {
 
   private final HibernateTemplate hibernateTemplate;
+
+  public HibernateTemplate getHibernateTemplate() {
+    return hibernateTemplate;
+  }
 
   final Class<T> clazz;
 
@@ -25,10 +30,8 @@ public abstract class BaseData<T extends IdentifiableObject> {
    * @return all Objects of Type T currently in the system
    */
   public List<T> getData() {
-    List <T> list = (List<T>) hibernateTemplate.getSessionFactory().getCurrentSession()
+    return (List<T>) hibernateTemplate.getSessionFactory().getCurrentSession()
         .createQuery("from " + clazz.getName()).list();
-
-    return list;
   }
 
   public boolean addObject(T obj) {
