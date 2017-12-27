@@ -18,8 +18,7 @@ public class LineData extends BaseData<Line> {
    * @return all Objects of Type T currently in the system
    */
   public List<Line> getData() {
-    List <Line> list = (List<Line>) getHibernateTemplate().getSessionFactory().getCurrentSession()
-        .createQuery("from " + clazz.getName()).list();
+    List <Line> list = super.getData();
     for (Line l:list) {
       getHibernateTemplate().initialize(l.getStopsInbound());
       getHibernateTemplate().initialize(l.getStopsOutbound());

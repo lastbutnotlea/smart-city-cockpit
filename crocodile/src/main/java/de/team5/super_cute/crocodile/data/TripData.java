@@ -19,8 +19,7 @@ public class TripData extends BaseData<Trip> {
    */
   @Override
   public List<Trip> getData() {
-    List <Trip> list = (List<Trip>) getHibernateTemplate().getSessionFactory().getCurrentSession()
-        .createQuery("from " + Trip.class.getName()).list();
+    List <Trip> list = super.getData();
     for (Trip t:list) {
       getHibernateTemplate().initialize(t.getLine().getStopsInbound());
       getHibernateTemplate().initialize(t.getLine().getStopsOutbound());

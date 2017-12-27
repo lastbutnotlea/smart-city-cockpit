@@ -1,10 +1,8 @@
 package de.team5.super_cute.crocodile.data;
 
 import de.team5.super_cute.crocodile.model.IdentifiableObject;
-import de.team5.super_cute.crocodile.model.Trip;
 import java.util.List;
 import javax.transaction.Transactional;
-import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties.Hibernate;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 
 /**
