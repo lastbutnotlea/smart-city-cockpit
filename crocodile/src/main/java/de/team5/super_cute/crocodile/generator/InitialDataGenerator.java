@@ -139,14 +139,25 @@ public class InitialDataGenerator {
       LocalDateTime from) {
     do {
       pointer++;
+      int oldHour = actual.getLocalDateTime().getHour();
+      int newHour = node.get("timetable").get("routes").get(0).get("schedules")
+          .get(0)
+          .get("knownJourneys").get(pointer).get("hour").asInt();
+      if (newHour == 24) {
+        newHour = 0;
+      }
       actual.setLocalDateTime(actual.getLocalDateTime()
-          .withHour(node.get("timetable").get("routes").get(0).get("schedules")
-              .get(0)
-              .get("knownJourneys").get(pointer).get("hour").asInt())
+          .withHour(newHour)
           .withMinute(node.get("timetable").get("routes").get(0).get("schedules")
               .get(0)
               .get("knownJourneys").get(pointer).get("minute").asInt()));
-    } while (from.compareTo(actual.getLocalDateTime()) == 1);
+      if (oldHour > actual.getLocalDateTime().getHour() && pointer > 0) {
+        actual.setLocalDateTime(actual.getLocalDateTime().plusDays(1));
+      }
+    } while (from.compareTo(actual.getLocalDateTime()) == 1 && pointer + 1 < node.get("timetable")
+        .get("routes").get(0).get("schedules")
+        .get(0)
+        .get("knownJourneys").size());
     return pointer;
   }
 
@@ -174,8 +185,13 @@ public class InitialDataGenerator {
       return -1;
     }
     //get next departure
+    int hour = knownJourneys.get(pointer).get("hour").asInt();
+    if (hour == 24) {
+      nextTrip.setLocalDateTime(nextTrip.getLocalDateTime().plusDays(1));
+      hour = 0;
+    }
     nextTrip.setLocalDateTime(
-        nextTrip.getLocalDateTime().withHour(knownJourneys.get(pointer).get("hour").asInt())
+        nextTrip.getLocalDateTime().withHour(hour)
             .withMinute(knownJourneys.get(pointer).get("minute").asInt()));
     return pointer;
   }
