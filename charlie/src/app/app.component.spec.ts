@@ -5,7 +5,7 @@ import { TripComponent } from './view/trip/trip.component';
 import { MenuComponent } from './menu/menu.component';
 import { TripDetailComponent } from './view/trip-detail/trip-detail.component';
 import { TripEditComponent } from './view/trip-edit/trip-edit.component';
-import { FilterComponent } from './view/filter/filter.component';
+import { FilterComponent } from './shared/components/filter/filter.component';
 import { MapComponent } from './view/map/map.component';
 import { LineDetailComponent } from './view/line-detail/line-detail.component';
 import { BrowserModule } from '@angular/platform-browser';
