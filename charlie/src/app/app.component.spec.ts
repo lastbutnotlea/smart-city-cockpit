@@ -19,6 +19,8 @@ import { APP_BASE_HREF } from '@angular/common';
 import {DropdownComponent} from './shared/components/dropdown/dropdown.component';
 import {EmbeddedLineComponent} from './shared/components/embedded-line/embedded-line.component';
 import {EmbeddedVehicleComponent} from './shared/components/embedded-vehicle/embedded-vehicle.component';
+import {TickerComponent} from './view/ticker/ticker.component';
+import {TickerItemComponent} from './view/ticker-item/ticker-item.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -35,7 +37,9 @@ describe('AppComponent', () => {
         LineDetailComponent,
         DropdownComponent,
         EmbeddedLineComponent,
-        EmbeddedVehicleComponent
+        EmbeddedVehicleComponent,
+        TickerComponent,
+        TickerItemComponent,
       ],
       imports: [
         BrowserModule,
