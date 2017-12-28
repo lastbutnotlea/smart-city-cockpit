@@ -1,6 +1,7 @@
 <div class="modal-header">
   <h4 class="modal-title">
-    Edit trip {{data.id}} on line {{data.line.name}}
+    Edit trip {{data.id}} on line
+    <label class="text-primary">{{data.line.name}}</label>
   </h4>
   <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
     <span aria-hidden="true">&times;</span>
@@ -8,8 +9,9 @@
 </div>
 <div class="modal-body">
 
-  <label>Vehicle: </label>
-  <div ngbDropdown class="d-inline-block">
+  <div class="spacing">
+  <label>Vehicle:</label>
+  <div ngbDropdown class="d-inline-block padding-left">
     <button class="btn btn-outline-primary" ngbDropdownToggle>{{selected.vehicle.id}}</button>
     <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
       <div *ngFor="let vehicle of availVehicles">
@@ -17,17 +19,18 @@
       </div>
     </div>
   </div>
+  </div>
 
   <div class="d-block">
     <label>Stops:</label>
-    <div class="form-group" *ngFor="let stop of data.line.stopsInbound; let i = index">
+    <div class="" *ngFor="let stop of data.line.stopsInbound; let i = index">
       <input #box type="checkbox" [ngModel]="isChecked(stop)" (change)="includeStop(stop, box.checked)">
-      <label>{{stop.commonName}}</label>
+      <label class="padding-left">{{stop.commonName}}</label>
     </div>
   </div>
 
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Close</button>
-  <button type="button" class="btn btn-outline-success" (click)="confirm()">Okay</button>
+  <button type="button" class="btn btn-outline-secondary" (click)="activeModal.close('Close click')">Close</button>
+  <button type="button" class="btn btn-outline-primary" (click)="confirm()">Okay</button>
 </div>
