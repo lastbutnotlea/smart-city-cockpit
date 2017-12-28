@@ -79,7 +79,7 @@ public class NetworkDataBuilder {
   }
 
   public static Trip assembleWholeLineTrip(Vehicle vehicle, Line line, LocalDateTime startTime, boolean inbound) {
-    Trip trip = new Trip(vehicle, line, null);
+    Trip trip = new Trip(vehicle, line, null, inbound);
     Map<String, LocalDateTime> stops = new HashMap<>();
     if (inbound) {
       addStopsForOneDirection(stops, line.getStopsInbound(), line.getTravelTimeInbound(), startTime);
