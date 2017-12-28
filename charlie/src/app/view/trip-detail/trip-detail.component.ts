@@ -7,6 +7,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {TripEditComponent} from '../trip-edit/trip-edit.component';
 import {ConfirmDeletionComponent} from '../../shared/components/confirm-popup/confirm-deletion.component';
 import {TripStopData} from '../../shared/data/trip-stop-data';
+import {StopSortService} from '../../services/stop-sort.service';
 
 
 
@@ -24,7 +25,8 @@ export class TripDetailComponent implements OnInit {
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
               private location: Location,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private stopSortService: StopSortService) {
   }
 
   ngOnInit(): void {
@@ -36,23 +38,10 @@ export class TripDetailComponent implements OnInit {
     this.http.getTripDetails(tripId).subscribe(
       trip => {
         this.trip = trip;
-        this.trip.stops = this.sortStops(this.trip.stops);
+        this.trip.stops = this.stopSortService.sortStops(this.trip.stops);
       },
       err => console.log('Could not fetch trip data!')
     );
-  }
-
-  sortStops(array: TripStopData[]): TripStopData[] {
-      array.sort((a: any, b: any) => {
-      if (a.departureTime < b.departureTime) {
-        return -1;
-      } else if (a.departureTime > b.departureTime) {
-        return 1;
-      } else {
-        return 0;
-      }
-    });
-    return array;
   }
 
   goBack(): void {

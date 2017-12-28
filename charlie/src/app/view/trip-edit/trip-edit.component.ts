@@ -7,11 +7,12 @@ import {VehicleData} from '../../shared/data/vehicle-data';
 import {StopData} from '../../shared/data/stop-data';
 import { TripStopData } from '../../shared/data/trip-stop-data';
 import {DropdownValue} from '../../shared/components/dropdown/dropdown.component';
+import {StopSortService} from '../../services/stop-sort.service';
 
 @Component({
   selector: 'app-trip-edit',
   templateUrl: './trip-edit.component.html',
-  styleUrls: ['./trip-edit.component.css']
+  styleUrls: ['./trip-edit.component.css',  '../../shared/styling/global-styling.css']
 })
 
 export class TripEditComponent implements OnInit {
@@ -23,7 +24,9 @@ export class TripEditComponent implements OnInit {
   availLines: LineData[] = [];
   availVehicles: VehicleData[] = [];
 
-  constructor(public activeModal: NgbActiveModal, private http: HttpRoutingService) { }
+  constructor(public activeModal: NgbActiveModal,
+              private http: HttpRoutingService,
+              private stopSortService: StopSortService) { }
 
   ngOnInit(): void {
     this.http.getLines().subscribe(
@@ -64,9 +67,10 @@ export class TripEditComponent implements OnInit {
 
   includeStop(stop: StopData, included: boolean): void {
     if (included) {
-      this.selected.stops.push(new TripStopData(stop.id, '2017-08-12T00:00'));
+      this.selected.stops.push(new TripStopData(stop.id, '2017-08-12T00:00', ''));
     } else {
       this.selected.stops = this.selected.stops.filter(filteredStop => filteredStop.id !== stop.id);
+      this.selected.stops = this.stopSortService.sortStops(this.selected.stops);
     }
     console.log(JSON.stringify(this.selected.stops));
   }

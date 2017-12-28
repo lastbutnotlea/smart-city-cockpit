@@ -9,9 +9,13 @@
 </div>
 <div class="modal-body">
 
-  <div class="spacing">
+  <div class="margin-bottom">
     <label>Vehicle: </label>
     <app-dropdown [values]="toDropdownItems(availVehicles)" [(selected)]="selectedVehicle"></app-dropdown>
+  </div>
+
+  <div class="margin-bottom">
+    <label>Departure Time: {{selected.stops[0].departureTime}}</label>
   </div>
 
   <div class="d-block">

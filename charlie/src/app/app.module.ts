@@ -20,6 +20,7 @@ import { DropdownComponent } from './shared/components/dropdown/dropdown.compone
 import {EmbeddedLineComponent} from './shared/components/embedded-line/embedded-line.component';
 import {EmbeddedVehicleComponent} from './shared/components/embedded-vehicle/embedded-vehicle.component';
 import {ConfirmDeletionComponent} from './shared/components/confirm-popup/confirm-deletion.component';
+import {StopSortService} from './services/stop-sort.service';
 
 
 @NgModule({
@@ -45,7 +46,12 @@ import {ConfirmDeletionComponent} from './shared/components/confirm-popup/confir
     FormsModule,
     NgbModule.forRoot()
   ],
-  providers: [UrlBuilderService, HttpRoutingService, MapCreatorService],
+  providers: [
+    UrlBuilderService,
+    HttpRoutingService,
+    MapCreatorService,
+    StopSortService
+  ],
   bootstrap: [AppComponent],
   // modal dialogs:
   entryComponents: [
