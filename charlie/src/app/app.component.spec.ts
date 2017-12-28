@@ -16,6 +16,7 @@ import { UrlBuilderService } from './services/url-builder.service';
 import { HttpRoutingService } from './services/http-routing.service';
 import { MapCreatorService } from './services/map-creator.service';
 import { APP_BASE_HREF } from '@angular/common';
+import { LineMapComponent } from './view/line-map/line-map.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -29,6 +30,7 @@ describe('AppComponent', () => {
         TripEditComponent,
         FilterComponent,
         MapComponent,
+        LineMapComponent,
         LineDetailComponent,
       ],
       imports: [

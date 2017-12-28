@@ -1,5 +1,4 @@
-import {Component, Injectable, OnInit, ViewEncapsulation} from '@angular/core';
-import {HttpRoutingService} from '../../services/http-routing.service';
+import {Component, Injectable} from '@angular/core';
 
 import * as d3 from 'd3-selection';
 import * as d3Tube from 'd3-tube-map';
@@ -9,7 +8,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-network-map',
   templateUrl: './map.component.html',
-  styleUrls: ['./map.component.css']
+  styleUrls: ['../../shared/styling/map.css']
 })
 @Injectable()
 export class MapComponent {
@@ -26,7 +25,6 @@ export class MapComponent {
   }
 
   private drawTubeMap(jsonData: any) {
-
     console.log(jsonData);
 
     // Get element where map should be placed
@@ -68,10 +66,10 @@ export class MapComponent {
       // TODO: look for a solution where we don't need to select this lineSvg
 
       const lineSvg =  d3.select('path#' + line.name);
-      lineSvg.attr('stroke-width', lineSvg.attr('stroke-width') * 1.4);
+      lineSvg.attr('stroke-width', lineSvg.attr('stroke-width') * 1.6);
     }).on('mouseout', line => {
       const lineSvg =  d3.select('path#' + line.name);
-      lineSvg.attr('stroke-width', lineSvg.attr('stroke-width') / 1.4);
+      lineSvg.attr('stroke-width', lineSvg.attr('stroke-width') / 1.6);
     });
   }
 }

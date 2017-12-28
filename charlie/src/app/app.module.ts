@@ -16,6 +16,7 @@ import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MapCreatorService } from './services/map-creator.service';
 import { NgModule } from '@angular/core';
+import { LineMapComponent } from './view/line-map/line-map.component';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { NgModule } from '@angular/core';
     TripEditComponent,
     FilterComponent,
     MapComponent,
+    LineMapComponent,
     LineDetailComponent,
   ],
   imports: [

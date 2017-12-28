@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { LineData } from '../../shared/line-data';
 import { HttpRoutingService } from '../../services/http-routing.service';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { LineMapComponent } from '../line-map/line-map.component';
 
 @Component({
-  selector: 'app-trip-detail-view',
+  selector: 'app-line-detail-view',
   templateUrl: './line-detail.component.html',
   styleUrls: ['./line-detail.component.css']
 })
@@ -13,6 +14,9 @@ import { Location } from '@angular/common';
 export class LineDetailComponent implements OnInit {
 
   line: LineData;
+
+  @ViewChild(LineMapComponent)
+  lineMap: LineMapComponent;
 
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
@@ -27,6 +31,7 @@ export class LineDetailComponent implements OnInit {
     this.http.getLineDetails(lineId).subscribe(
       line => {
         this.line = line;
+        this.lineMap.getLineMap(line);
       },
           err => {
         console.log('Could not fetch line data!')
@@ -40,5 +45,4 @@ export class LineDetailComponent implements OnInit {
   isLoaded(): boolean {
     return (this.line != null);
   }
-
 }

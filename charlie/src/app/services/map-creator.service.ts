@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { toInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
+import { LineData } from '../shared/line-data';
+import { StopData } from '../shared/stop-data';
 
 @Injectable()
 export class MapCreatorService {
@@ -24,6 +26,19 @@ export class MapCreatorService {
     const generatedRiver = this.calcDummyRiver();
     const generatedData = this.calcGraph(generatedStations, generatedLines, generatedRiver);
     return generatedData;
+  }
+
+  public createSingleLineMap(lineData: LineData): any {
+    this.mapWidth = 500;
+    this.mapHeight = 250;
+    this.rasterizationFactor = 0.25;
+    const stations = this.calcStationsOfSingleLine(lineData.stopsInbound);
+    const line = this.calcSingleLine(lineData, stations);
+    return {
+      'stations' : stations,
+      'lines' : line,
+      'river' : this.calcDummyRiver()
+    };
   }
 
   // Converts the station data from a given json to map format
@@ -70,6 +85,23 @@ export class MapCreatorService {
     return stationDataPoints;
   }
 
+  private calcStationsOfSingleLine(stopDataList: StopData[]) {
+    let counter = 0;
+    const stationDataPoints = {};
+    for (const stopIndex in stopDataList) {
+      const id = stopDataList[stopIndex].id;
+      stationDataPoints[id] = {};
+      stationDataPoints[id]['title'] = stopDataList[stopIndex].commonName;
+      stationDataPoints[id]['coords'] = [counter, 0];
+      counter += 25;
+    }
+    stationDataPoints['dummy'] = {};
+    stationDataPoints['dummy']['title'] = 'dummy-title';
+    stationDataPoints['dummy']['coords'] = [-25, 25];
+
+    return stationDataPoints;
+  }
+
   // Converts the connection data from a given json to map format
   // JSONs for connections, lines and Stations must look like testLines and testConnections
   private calcLines(stationDataPoints, lines, connections): any {
@@ -91,6 +123,18 @@ export class MapCreatorService {
       lineDataPoints.push(currentLine);
       linecounter ++;
     }
+    return lineDataPoints;
+  }
+
+  private calcSingleLine(lineData: LineData, stationDataPoints: any) : any {
+    const lineDataPoints = [];
+    lineDataPoints.push({
+        'name': lineData.id,
+        'label': lineData.name,
+        'color': lineData.color,
+        'shiftCoords': [0, 0],
+        'nodes':  this.calcNodesForSingleLine(stationDataPoints)
+      });
     return lineDataPoints;
   }
 
@@ -134,7 +178,7 @@ export class MapCreatorService {
         'name': connections[j].station,
         'labelPos': this.calcLabelPos(curDir),
         'shiftCoords': this.calcShiftCoords(curDir, shiftCoords),
-        // 'marker': 'interchange',
+        'marker': 'interchange',
         'canonical': true
       };
       // Insert node into the final array
@@ -146,6 +190,21 @@ export class MapCreatorService {
           nextCoords[1] -  currentStationNode['shiftCoords'][0]
         ]};
       //nodes.push(currentStationPositionNode);
+    }
+    return nodes;
+  }
+
+  private calcNodesForSingleLine(stationDataPoints: any) {
+    let nodes = [];
+    for (const stationIndex in stationDataPoints) {
+      nodes.push({
+        'coords': stationDataPoints[stationIndex].coords,
+        'name': stationIndex,
+        'labelPos': 'S',
+        'shiftCoords': [0,0],
+        'marker': 'interchange',
+        'canonical': true
+      });
     }
     return nodes;
   }
