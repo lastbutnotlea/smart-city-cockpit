@@ -89,6 +89,7 @@ public class TripControllerTest {
     assert(tripAfterAdding != null);
     LocalDateTime correctTime = ldt1.plusMinutes(testTrip.getLine().getTravelTimeInbound().get(s1.getId()));
     assert(tripAfterAdding.getStops().get(s1.getId()).equals(correctTime));
+    System.out.println(testTrip.getStops());
   }
 
 }

@@ -60,6 +60,7 @@ public class TripController extends BaseController<Trip> {
 
   @PutMapping
   public ResponseEntity editTrip(@RequestBody Trip tripInput) {
+    insertCorrectTimesForTrip(tripInput);
     return editObject(tripInput);
   }
 
