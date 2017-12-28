@@ -1,11 +1,12 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {TripData} from '../../shared/trip-data';
+import {TripData} from '../../shared/data/trip-data';
 import {HttpRoutingService} from '../../services/http-routing.service';
-import {LineData} from '../../shared/line-data';
-import {VehicleData} from '../../shared/vehicle-data';
-import {StopData} from '../../shared/stop-data';
-import { TripStopData } from '../../shared/trip-stop-data';
+import {LineData} from '../../shared/data/line-data';
+import {VehicleData} from '../../shared/data/vehicle-data';
+import {StopData} from '../../shared/data/stop-data';
+import { TripStopData } from '../../shared/data/trip-stop-data';
+import {DropdownValue} from '../../shared/components/dropdown/dropdown.component';
 
 @Component({
   selector: 'app-trip-edit',
@@ -16,6 +17,8 @@ import { TripStopData } from '../../shared/trip-stop-data';
 export class TripEditComponent implements OnInit {
   @Input() data: TripData;
   selected: TripData;
+
+  selectedVehicle: DropdownValue;
 
   availLines: LineData[] = [];
   availVehicles: VehicleData[] = [];
@@ -34,10 +37,8 @@ export class TripEditComponent implements OnInit {
 
   confirm(): void {
     this.data.line = this.selected.line;
-    this.data.vehicle = this.selected.vehicle;
+    this.data.vehicle = this.selectedVehicle.value;
     this.data.stops = this.selected.stops;
-    console.log('Confirm trip editing: selected line: ' + this.data.line.id +
-      ' selected vehicle: ' + this.data.vehicle.id + ' selected stops: ' + JSON.stringify(this.data.stops));
     this.activeModal.close('Close click');
     this.http.editTrip(this.data);
   }
@@ -51,6 +52,8 @@ export class TripEditComponent implements OnInit {
       for (const stop of this.data.stops) {
         this.selected.stops.push(stop);
       }
+
+      this.selectedVehicle = TripEditComponent.toDropdownItem(this.selected.vehicle);
     }
   }
 
@@ -66,5 +69,13 @@ export class TripEditComponent implements OnInit {
       this.selected.stops = this.selected.stops.filter(filteredStop => filteredStop.id !== stop.id);
     }
     console.log(JSON.stringify(this.selected.stops));
+  }
+
+  static toDropdownItem(item: VehicleData): DropdownValue {
+    return new DropdownValue(item, item.id);
+  }
+
+  static toDropdownItems(items: VehicleData[]): DropdownValue[] {
+    return items.map(item => TripEditComponent.toDropdownItem(item));
   }
 }

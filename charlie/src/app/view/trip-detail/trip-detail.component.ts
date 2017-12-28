@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {TripData} from '../../shared/trip-data';
+import {TripData} from '../../shared/data/trip-data';
 import {HttpRoutingService} from '../../services/http-routing.service';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';

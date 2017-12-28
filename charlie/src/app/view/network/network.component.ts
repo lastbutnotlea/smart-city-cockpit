@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import {HttpRoutingService} from '../../services/http-routing.service';
-import { LineData } from '../../shared/line-data';
+import { LineData } from '../../shared/data/line-data';
 import { MapComponent } from '../map/map.component';
 
 @Component({

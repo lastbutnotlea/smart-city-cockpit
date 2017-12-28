@@ -26,7 +26,7 @@ public class Line extends IdentifiableObject implements Serializable {
   @Column
   private String name;
 
-  @ManyToMany(fetch = FetchType.EAGER)
+  @ManyToMany(fetch = FetchType.LAZY)
   @OrderColumn
   @JoinTable(
       name="Line_Stops_InB",
@@ -35,7 +35,8 @@ public class Line extends IdentifiableObject implements Serializable {
   )
   private List<Stop> stopsInbound;
 
-  @ManyToMany(fetch = FetchType.EAGER)
+  @ManyToMany(fetch = FetchType.LAZY)
+  @OrderColumn
   @JoinTable(
       name="Line_Stops_OutB",
       joinColumns=@JoinColumn(name="line_id"),
@@ -43,11 +44,12 @@ public class Line extends IdentifiableObject implements Serializable {
   )
   private List<Stop> stopsOutbound;
 
-  @ElementCollection(fetch = FetchType.EAGER)
+  @OrderColumn
+  @ElementCollection(fetch = FetchType.LAZY)
   @MapKeyColumn(name = "stop_id_travel_time_inbound")
   private Map<String, Integer> travelTimeInbound;
 
-  @ElementCollection(fetch = FetchType.EAGER)
+  @ElementCollection(fetch = FetchType.LAZY)
   @MapKeyColumn(name = "stop_id_travel_time_outbound")
   private Map<String, Integer> travelTimeOutbound;
 
