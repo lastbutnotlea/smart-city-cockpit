@@ -32,8 +32,8 @@ export class MapComponent {
     // Get element where map should be placed
     const el = document.getElementById('tube-map');
 
-    const width = 1600;
-    const height = 1024;
+    const width = 1400;
+    const height = 700;
 
     // Add svg to element
     const canvas = d3.select(el)
