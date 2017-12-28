@@ -58,7 +58,6 @@ export class MapComponent {
     const mapLines = d3.selectAll('.lines').selectAll('path');
     // add click-event to lines
     mapLines.on('click', line => {
-      // TODO this should lead to a line-details-view
       this.router.navigate(['/network/detail/' + line.name]);
     }).on('mouseover', line => {
       // line does not contain some attributes of the svg (like stroke-width)

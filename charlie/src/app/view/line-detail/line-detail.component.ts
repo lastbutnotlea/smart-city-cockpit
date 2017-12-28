@@ -24,6 +24,8 @@ export class LineDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.getLine();
+    // TODO: route to stop-details view
+    // TODO: add live-data (status, vehicle positions)
   }
 
   getLine(): void {

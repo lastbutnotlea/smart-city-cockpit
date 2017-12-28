@@ -5,7 +5,7 @@ import * as d3Zoom from 'd3-zoom';
 import * as d3Tube from 'd3-tube-map';
 import { MapCreatorService } from '../../services/map-creator.service';
 import { Router } from '@angular/router';
-import { LineData } from '../../shared/line-data';
+import { LineData } from '../../shared/data/line-data';
 
 @Component({
   selector: 'app-line-map',
@@ -20,6 +20,8 @@ export class LineMapComponent {
 
   public getLineMap(lineData: LineData) {
     this.drawLineMap(this.mapCreator.createSingleLineMap(lineData));
+    this.addIntersectionEvents();
+
   }
 
   private drawLineMap(lineJson: any) {
@@ -34,7 +36,6 @@ export class LineMapComponent {
       .append('svg')
       .style('width', width + 'px')
       .style('height', height + 'px');
-
     // create new tube map
     const map = d3Tube.tubeMap()
       .width(width)
@@ -47,6 +48,14 @@ export class LineMapComponent {
       });
     // draw objects according to jsonData into map
     canvas.datum(lineJson).call(map);
-    debugger;
+  }
+
+  private addIntersectionEvents(): void {
+    const interchanges = d3.selectAll('.interchanges').selectAll('g');
+    const labels = d3.selectAll('.labels');
+    interchanges.on('click', interchange => {
+      // TODO: Routing to stop-detail-view (only name of stop available?);
+      console.log(interchange);
+    });
   }
 }
