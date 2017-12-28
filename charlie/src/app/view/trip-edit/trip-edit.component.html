@@ -10,15 +10,8 @@
 <div class="modal-body">
 
   <div class="spacing">
-  <label>Vehicle:</label>
-  <div ngbDropdown class="d-inline-block padding-left">
-    <button class="btn btn-outline-primary" ngbDropdownToggle>{{selected.vehicle.id}}</button>
-    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-      <div *ngFor="let vehicle of availVehicles">
-        <button class="dropdown-item" (click)="selected.vehicle=vehicle">{{vehicle.id}}</button>
-      </div>
-    </div>
-  </div>
+    <label>Vehicle: </label>
+    <app-dropdown [values]="toDropdownItems(availVehicles)" [(selected)]="selectedVehicle"></app-dropdown>
   </div>
 
   <div class="d-block">

@@ -1,17 +1,14 @@
 package de.team5.super_cute.crocodile.model;
 
-import static javax.persistence.TemporalType.DATE;
-
 import com.fasterxml.jackson.annotation.*;
 
+import de.team5.super_cute.crocodile.util.LocalDateTimeAttributeConverter;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
 import java.util.*;
 import java.util.stream.Collectors;
-import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -19,7 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
 
 import org.hibernate.annotations.Proxy;
 
@@ -32,28 +28,27 @@ public class Trip extends IdentifiableObject implements Serializable {
   @Column
   private boolean isInbound;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.EAGER)
   @PrimaryKeyJoinColumn
   private Vehicle vehicle;
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.EAGER)
   @PrimaryKeyJoinColumn
   private Line line;
 
   /**
   maps stopIds to departureTimes
    **/
+  @JsonIgnore
   @ElementCollection(fetch = FetchType.EAGER)
   @MapKeyColumn(name = "stop_id")
-  @Temporal(DATE)
-  @Basic
-  @JsonIgnore
-  private Map<String, Calendar> stops;
+  @Convert(converter = LocalDateTimeAttributeConverter.class, attributeName = "value")
+  private Map<String, LocalDateTime> stops;
 
-  public Trip() {}
+  public Trip() {super();}
 
   public Trip(Vehicle vehicle, Line line,
-      Map<String, Calendar> stops) {
+      Map<String, LocalDateTime> stops) {
     super();
     this.vehicle = vehicle;
     this.line = line;
@@ -77,12 +72,12 @@ public class Trip extends IdentifiableObject implements Serializable {
   }
 
   @JsonIgnore
-  public Map<String, Calendar> getStops() {
+  public Map<String, LocalDateTime> getStops() {
     return stops;
   }
 
   @JsonIgnore
-  public void setStops(Map<String, Calendar> stops) {
+  public void setStops(Map<String, LocalDateTime> stops) {
     this.stops = stops;
   }
 
@@ -91,7 +86,7 @@ public class Trip extends IdentifiableObject implements Serializable {
     return stops.entrySet().stream().map(entry -> {
       StopDepartureData data = new StopDepartureData();
       data.id = entry.getKey();
-      data.departureTime = LocalDateTime.ofInstant(entry.getValue().toInstant(), ZoneId.systemDefault()).toString();
+      data.departureTime = entry.getValue().toString();
       return data;
     }).collect(Collectors.toList());
   }
@@ -101,9 +96,7 @@ public class Trip extends IdentifiableObject implements Serializable {
     try {
       stops = new HashMap<>(list.size());
       list.forEach(data -> {
-        Calendar c = Calendar.getInstance();
-        c.setTime(Date.from(LocalDateTime.parse(data.departureTime).toInstant(ZoneOffset.UTC)));
-        stops.put(data.id, c);
+        stops.put(data.id, LocalDateTime.parse(data.departureTime));
       });
     } catch (Exception e) {
       e.printStackTrace();
