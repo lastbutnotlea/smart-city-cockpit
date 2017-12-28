@@ -18,6 +18,8 @@ import { MapCreatorService } from './services/map-creator.service';
 import { NgModule } from '@angular/core';
 import { LineMapComponent } from './view/line-map/line-map.component';
 import { DropdownComponent } from './shared/components/dropdown/dropdown.component';
+import {EmbeddedLineComponent} from './shared/components/embedded-line/embedded-line.component';
+import {EmbeddedVehicleComponent} from './shared/components/embedded-vehicle/embedded-vehicle.component';
 
 
 @NgModule({
@@ -33,6 +35,8 @@ import { DropdownComponent } from './shared/components/dropdown/dropdown.compone
     LineMapComponent,
     LineDetailComponent,
     DropdownComponent,
+    EmbeddedLineComponent,
+    EmbeddedVehicleComponent
   ],
   imports: [
     BrowserModule,
