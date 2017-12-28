@@ -137,27 +137,29 @@ public class InitialDataGenerator {
   //sets the pointer to the first departure after from
   private int initializePointer(int pointer, JsonNode node, MyLocalDateTime actual,
       LocalDateTime from) {
-    do {
-      pointer++;
-      int oldHour = actual.getLocalDateTime().getHour();
-      int newHour = node.get("timetable").get("routes").get(0).get("schedules")
-          .get(0)
-          .get("knownJourneys").get(pointer).get("hour").asInt();
-      if (newHour == 24) {
-        newHour = 0;
-      }
-      actual.setLocalDateTime(actual.getLocalDateTime()
-          .withHour(newHour)
-          .withMinute(node.get("timetable").get("routes").get(0).get("schedules")
-              .get(0)
-              .get("knownJourneys").get(pointer).get("minute").asInt()));
-      if (oldHour > actual.getLocalDateTime().getHour() && pointer > 0) {
-        actual.setLocalDateTime(actual.getLocalDateTime().plusDays(1));
-      }
-    } while (from.compareTo(actual.getLocalDateTime()) == 1 && pointer + 1 < node.get("timetable")
-        .get("routes").get(0).get("schedules")
-        .get(0)
-        .get("knownJourneys").size());
+    try {
+      do {
+        pointer++;
+        int oldHour = actual.getLocalDateTime().getHour();
+        int newHour = node.get("timetable").get("routes").get(0).get("schedules")
+            .get(0)
+            .get("knownJourneys").get(pointer).get("hour").asInt();
+        if (newHour == 24) {
+          newHour = 0;
+        }
+        actual.setLocalDateTime(actual.getLocalDateTime()
+            .withHour(newHour)
+            .withMinute(node.get("timetable").get("routes").get(0).get("schedules")
+                .get(0)
+                .get("knownJourneys").get(pointer).get("minute").asInt()));
+        if (oldHour > actual.getLocalDateTime().getHour() && pointer > 0) {
+          actual.setLocalDateTime(actual.getLocalDateTime().plusDays(1));
+          break;
+        }
+      } while (from.compareTo(actual.getLocalDateTime()) == 1);
+    }catch(NullPointerException e){
+      actual.setLocalDateTime(actual.getLocalDateTime().plusDays(1));
+    }
     return pointer;
   }
 
