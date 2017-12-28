@@ -19,6 +19,8 @@ import { NgModule } from '@angular/core';
 import { DropdownComponent } from './shared/components/dropdown/dropdown.component';
 import {EmbeddedLineComponent} from './shared/components/embedded-line/embedded-line.component';
 import {EmbeddedVehicleComponent} from './shared/components/embedded-vehicle/embedded-vehicle.component';
+import { TickerComponent } from './view/ticker/ticker.component';
+import { TickerItemComponent } from './view/ticker-item/ticker-item.component';
 
 
 @NgModule({
@@ -34,7 +36,9 @@ import {EmbeddedVehicleComponent} from './shared/components/embedded-vehicle/emb
     LineDetailComponent,
     DropdownComponent,
     EmbeddedLineComponent,
-    EmbeddedVehicleComponent
+    EmbeddedVehicleComponent,
+    TickerComponent,
+    TickerItemComponent
   ],
   imports: [
     BrowserModule,
