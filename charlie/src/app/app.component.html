@@ -1,7 +1,9 @@
-<div>
-  <app-menu></app-menu>
-  <app-ticker></app-ticker>
-  <div class="main-margin">
-    <router-outlet></router-outlet>
+<div class="charlie-row">
+  <div class="column" id="main-view">
+    <app-menu></app-menu>
+    <div class="main-margin">
+      <router-outlet></router-outlet>
+    </div>
   </div>
+  <app-ticker class="column" id="ticker"></app-ticker>
 </div>
