@@ -1,9 +1,9 @@
-import { LineData } from '../shared/line-data';
+import { LineData } from '../shared/data/line-data';
 import { Observable } from 'rxjs/Observable';
 import { UrlBuilderService } from './url-builder.service';
 import { tap } from 'rxjs/operators';
-import { TripData } from '../shared/trip-data';
-import {VehicleData} from '../shared/vehicle-data';
+import { TripData } from '../shared/data/trip-data';
+import {VehicleData} from '../shared/data/vehicle-data';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 

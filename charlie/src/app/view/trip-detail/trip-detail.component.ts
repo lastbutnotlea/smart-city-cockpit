@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {TripData} from '../../shared/trip-data';
+import {TripData} from '../../shared/data/trip-data';
 import {HttpRoutingService} from '../../services/http-routing.service';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
@@ -11,7 +11,7 @@ import {TripEditComponent} from '../trip-edit/trip-edit.component';
 @Component({
   selector: 'app-trip-detail-view',
   templateUrl: './trip-detail.component.html',
-  styleUrls: ['./trip-detail.component.css']
+  styleUrls: ['./trip-detail.component.css', '../../shared/styling/embedded-components.css']
 })
 
 export class TripDetailComponent implements OnInit {
