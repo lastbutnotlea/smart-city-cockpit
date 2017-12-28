@@ -115,11 +115,11 @@ public class InitialDataGenerator {
           if (nextTripInbound.getLocalDateTime().compareTo(iterator.getLocalDateTime()) == 0) {
             inboundPointer = generateTrip(iterator.getLocalDateTime(), nextTripInbound,
                 queueInbound, queueOutbound,
-                line, node_inbound, inboundPointer, inboundTravelTime);
+                line, node_inbound, inboundPointer, inboundTravelTime, true);
           } else {
             outboundPointer = generateTrip(iterator.getLocalDateTime(), nextTripOutbound,
                 queueOutbound, queueInbound,
-                line, node_outbound, outboundPointer, outboundTravelTime);
+                line, node_outbound, outboundPointer, outboundTravelTime, false);
           }
           if (nextTripInbound.getLocalDateTime().compareTo(nextTripOutbound.getLocalDateTime())
               < 1) {
@@ -172,7 +172,7 @@ public class InitialDataGenerator {
   private int generateTrip(LocalDateTime iterator, MyLocalDateTime nextTrip,
       PriorityQueue<Pair<Vehicle, LocalDateTime>> queueFrom,
       PriorityQueue<Pair<Vehicle, LocalDateTime>> queueTo, Line line, JsonNode node, int pointer,
-      int travelTime) {
+      int travelTime, boolean isInbound) {
     Vehicle vehicle;
     if (queueFrom.peek() == null || queueFrom.peek().getValue().compareTo(iterator) == 1) {
       //If no (or no available) vehicle exists: create new one
@@ -181,7 +181,7 @@ public class InitialDataGenerator {
     } else {
       vehicle = queueFrom.poll().getKey();
     }
-    networkDataBuilder.addTrip(vehicle, line, LocalDateTime.from(iterator), true);
+    networkDataBuilder.addTrip(vehicle, line, LocalDateTime.from(iterator), isInbound);
     //determines when the vehicle is available again and puts vehicle in queue
     LocalDateTime ready = iterator.plusMinutes(travelTime);
     queueTo.add(new ImmutablePair<>(vehicle, ready));
