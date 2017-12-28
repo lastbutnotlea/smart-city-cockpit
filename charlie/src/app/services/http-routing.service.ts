@@ -94,7 +94,8 @@ export class HttpRoutingService {
     this.http.put(this.urlBuilder.getTripsUrl(), trip).subscribe(() => console.log('TRIP EDIT OK'));
   }
 
-  public deleteTrip(tripId: string): void {
-    this.http.delete(this.urlBuilder.getTripDetailsUrl(tripId)).subscribe(() => console.log('DELETE TRIP'));
+  public deleteTrip(tripId: string): Observable<any> {
+    return this.http.delete(this.urlBuilder.getTripDetailsUrl(tripId)).pipe(tap(data =>
+      console.log('DELETE TRIP')));
   }
 }

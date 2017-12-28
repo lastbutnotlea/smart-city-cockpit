@@ -12,7 +12,8 @@ import {ConfirmDeletionComponent} from '../../shared/components/confirm-popup/co
 @Component({
   selector: 'app-trip-detail-view',
   templateUrl: './trip-detail.component.html',
-  styleUrls: ['./trip-detail.component.css', '../../shared/styling/embedded-components.css']
+  styleUrls: ['./trip-detail.component.css', '../../shared/styling/embedded-components.css',
+              '../../shared/styling/global-styling.css']
 })
 
 export class TripDetailComponent implements OnInit {
@@ -57,8 +58,9 @@ export class TripDetailComponent implements OnInit {
   }
 
   deleteTrip(event) : void {
-    this.http.deleteTrip(this.trip.id);
-    this.location.back();
+    this.http.deleteTrip(this.trip.id).subscribe(
+      data => this.location.back(),
+      err => console.log("Could not delete trip."));
   }
 
   isLoaded(): boolean {
