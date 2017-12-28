@@ -2,6 +2,6 @@ import { StopData } from './stop-data';
 
 export class TripStopData {
 
-  constructor(public id: string, public departureTime: string) {  }
+  constructor(public id: string, public departureTime: string, public name: string) {  }
 
 }

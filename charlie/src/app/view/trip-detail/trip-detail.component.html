@@ -17,9 +17,9 @@
   <!-- stops -->
   <div class="bounding-box bg-light">
     <h5>Stops</h5>
-    <ul *ngFor="let stop of trip.stops">
-      <li>{{stop.id}}</li>
-    </ul>
+    <p *ngFor="let stop of trip.stops">
+      {{stop.departureTime}} {{stop.name}}
+    </p>
   </div>
 
   <div class="no-float big-padding-top">
