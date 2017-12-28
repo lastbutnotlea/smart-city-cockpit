@@ -1,9 +1,7 @@
-<div class="charlie-row">
-  <div class="column" id="main-view">
-    <app-menu></app-menu>
-    <div class="main-margin">
-      <router-outlet></router-outlet>
-    </div>
+<app-menu></app-menu>
+<div style="display: flex">
+  <div id="main-view" class="main-margin">
+    <router-outlet></router-outlet>
   </div>
-  <app-ticker class="column" id="ticker"></app-ticker>
+  <app-ticker id="ticker"></app-ticker>
 </div>

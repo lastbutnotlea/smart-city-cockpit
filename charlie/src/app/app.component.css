@@ -2,23 +2,19 @@
   margin: 20px;
 }
 
-.column {
-  float: left;
-}
-
-.charlie-row:after {
-  content:"";
-  display: table;
-  clear: both;
-}
-
 #ticker {
-  width: 20%;
-  height: 100vh;
+  flex-basis: 20%;
+  flex-grow: 1;
   display: flex;
 }
 
 #main-view {
-  width: 80%;
+  flex-basis: 80%;
+  flex-grow: 1;
+}
+
+:host {
+  display: flex;
+  flex-direction: column;
   height: 100vh;
 }
