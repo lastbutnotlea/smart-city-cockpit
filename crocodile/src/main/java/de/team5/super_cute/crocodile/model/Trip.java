@@ -95,14 +95,6 @@ public class Trip extends IdentifiableObject implements Serializable {
     this.stops = stops;
   }
 
-  public boolean isInbound() {
-    return isInbound;
-  }
-
-  public void setInbound(boolean inbound) {
-    isInbound = inbound;
-  }
-
   @JsonGetter("stops")
   public List<?> getStopsAsList() {
     return stops.entrySet().stream().map(entry -> {
