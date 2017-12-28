@@ -3,6 +3,7 @@ package de.team5.super_cute.crocodile.config;
 import java.util.ArrayList;
 
 public class InitialSetupConfig {
+
   public static final int fromHour = 0;
   public static final int fromMinute = 0;
   public static final int toHour = 23;
