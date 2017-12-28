@@ -162,7 +162,7 @@ public class InitialDataGenerator {
           break;
         }
       } while (from.compareTo(actual.getLocalDateTime()) == 1);
-    }catch(NullPointerException e){
+    } catch(NullPointerException e) {
       actual.setLocalDateTime(actual.getLocalDateTime().plusDays(1));
     }
     return pointer;
