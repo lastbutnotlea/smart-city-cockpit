@@ -19,6 +19,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import {DropdownComponent} from './shared/components/dropdown/dropdown.component';
 import {EmbeddedLineComponent} from './shared/components/embedded-line/embedded-line.component';
 import {EmbeddedVehicleComponent} from './shared/components/embedded-vehicle/embedded-vehicle.component';
+import {ConfirmDeletionComponent} from './shared/components/confirm-popup/confirm-deletion.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -35,7 +36,8 @@ describe('AppComponent', () => {
         LineDetailComponent,
         DropdownComponent,
         EmbeddedLineComponent,
-        EmbeddedVehicleComponent
+        EmbeddedVehicleComponent,
+        ConfirmDeletionComponent
       ],
       imports: [
         BrowserModule,

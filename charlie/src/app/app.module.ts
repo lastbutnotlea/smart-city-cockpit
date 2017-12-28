@@ -19,6 +19,7 @@ import { NgModule } from '@angular/core';
 import { DropdownComponent } from './shared/components/dropdown/dropdown.component';
 import {EmbeddedLineComponent} from './shared/components/embedded-line/embedded-line.component';
 import {EmbeddedVehicleComponent} from './shared/components/embedded-vehicle/embedded-vehicle.component';
+import {ConfirmDeletionComponent} from './shared/components/confirm-popup/confirm-deletion.component';
 
 
 @NgModule({
@@ -34,7 +35,8 @@ import {EmbeddedVehicleComponent} from './shared/components/embedded-vehicle/emb
     LineDetailComponent,
     DropdownComponent,
     EmbeddedLineComponent,
-    EmbeddedVehicleComponent
+    EmbeddedVehicleComponent,
+    ConfirmDeletionComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +49,8 @@ import {EmbeddedVehicleComponent} from './shared/components/embedded-vehicle/emb
   bootstrap: [AppComponent],
   // modal dialogs:
   entryComponents: [
-    TripEditComponent
+    TripEditComponent,
+    ConfirmDeletionComponent
   ]
 })
 export class AppModule { }

@@ -5,6 +5,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {TripEditComponent} from '../trip-edit/trip-edit.component';
+import {ConfirmDeletionComponent} from '../../shared/components/confirm-popup/confirm-deletion.component';
 
 
 
@@ -46,6 +47,18 @@ export class TripDetailComponent implements OnInit {
     const modal = this.modalService.open(TripEditComponent);
     modal.componentInstance.data = this.trip;
     modal.componentInstance.initData();
+  }
+
+  showConfirmModal(): void {
+    const modal = this.modalService.open(ConfirmDeletionComponent);
+    modal.componentInstance.objectToDelete = 'trip ' + this.trip.id;
+    modal.componentInstance.deletionEvent.subscribe(($event) => {
+      this.deleteTrip($event);});
+  }
+
+  deleteTrip(event) : void {
+    this.http.deleteTrip(this.trip.id);
+    this.location.back();
   }
 
   isLoaded(): boolean {

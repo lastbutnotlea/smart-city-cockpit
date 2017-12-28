@@ -93,4 +93,8 @@ export class HttpRoutingService {
     console.log('EDIT TRIP, lineID: ' + trip.line.id + ' vehicleID: ' + trip.vehicle.id);
     this.http.put(this.urlBuilder.getTripsUrl(), trip).subscribe(() => console.log('TRIP EDIT OK'));
   }
+
+  public deleteTrip(tripId: string): void {
+    this.http.delete(this.urlBuilder.getTripDetailsUrl(tripId)).subscribe(() => console.log('DELETE TRIP'));
+  }
 }
