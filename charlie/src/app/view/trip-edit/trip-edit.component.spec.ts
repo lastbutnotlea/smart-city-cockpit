@@ -1,6 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TripEditComponent } from './trip-edit.component';
+import {DropdownComponent} from '../../shared/components/dropdown/dropdown.component';
 
 describe('TripEditComponent', () => {
   let component: TripEditComponent;
@@ -8,7 +9,10 @@ describe('TripEditComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ TripEditComponent ]
+      declarations: [
+        TripEditComponent,
+        DropdownComponent,
+      ]
     })
     .compileComponents();
   }));
