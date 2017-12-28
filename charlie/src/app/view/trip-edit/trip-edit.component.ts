@@ -53,7 +53,7 @@ export class TripEditComponent implements OnInit {
         this.selected.stops.push(stop);
       }
 
-      this.selectedVehicle = TripEditComponent.toDropdownItem(this.selected.vehicle);
+      this.selectedVehicle = this.toDropdownItem(this.selected.vehicle);
     }
   }
 
@@ -71,11 +71,11 @@ export class TripEditComponent implements OnInit {
     console.log(JSON.stringify(this.selected.stops));
   }
 
-  static toDropdownItem(item: VehicleData): DropdownValue {
+  toDropdownItem(item: VehicleData): DropdownValue {
     return new DropdownValue(item, item.id);
   }
 
-  static toDropdownItems(items: VehicleData[]): DropdownValue[] {
-    return items.map(item => TripEditComponent.toDropdownItem(item));
+  toDropdownItems(items: VehicleData[]): DropdownValue[] {
+    return items.map(item => this.toDropdownItem(item));
   }
 }
