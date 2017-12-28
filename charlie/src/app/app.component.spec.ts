@@ -17,6 +17,8 @@ import { HttpRoutingService } from './services/http-routing.service';
 import { MapCreatorService } from './services/map-creator.service';
 import { APP_BASE_HREF } from '@angular/common';
 import {DropdownComponent} from './shared/components/dropdown/dropdown.component';
+import {EmbeddedLineComponent} from './shared/components/embedded-line/embedded-line.component';
+import {EmbeddedVehicleComponent} from './shared/components/embedded-vehicle/embedded-vehicle.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -32,6 +34,8 @@ describe('AppComponent', () => {
         MapComponent,
         LineDetailComponent,
         DropdownComponent,
+        EmbeddedLineComponent,
+        EmbeddedVehicleComponent
       ],
       imports: [
         BrowserModule,

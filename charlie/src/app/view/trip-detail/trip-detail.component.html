@@ -4,16 +4,25 @@
 
 <div *ngIf="isLoaded()">
 
-  <h3>Trip Details</h3>
-  <h5>Trip ID: {{trip.id}}</h5>
-  <h5>Line ID: {{trip.line.id}}</h5>
-  <h5>Vehicle ID: {{trip.vehicle.id}}</h5>
+  <h3 class="text-center">Trip Details</h3>
+  <h6 class="text-center margin-bottom">Trip ID: {{trip.id}}</h6>
 
-  <h5>Stops: </h5>
-  <div *ngFor="let stop of trip.stops">
-    {{stop.id}}
+  <div class="no-float margin-bottom">
+    <button class="btn btn-outline-primary" (click)="edit()">Edit</button>
+    <button class="btn btn-outline-primary" (click)="edit()">Delete</button>
   </div>
 
-  <button (click)="goBack()">Back To Trips</button>
-  <button (click)="edit()">Edit</button>
+  <app-embedded-line [line]="trip.line"></app-embedded-line>
+  <app-embedded-vehicle [vehicle]="trip.vehicle"></app-embedded-vehicle>
+  <!-- stops -->
+  <div class="bounding-box bg-light">
+    <h5>Stops</h5>
+    <ul *ngFor="let stop of trip.stops">
+      <li>{{stop.id}}</li>
+    </ul>
+  </div>
+
+  <div class="no-float big-padding-top">
+    <button class="btn btn-outline-secondary" (click)="goBack()">Back To Trips</button>
+  </div>
 </div>

@@ -11,7 +11,7 @@ import {TripEditComponent} from '../trip-edit/trip-edit.component';
 @Component({
   selector: 'app-trip-detail-view',
   templateUrl: './trip-detail.component.html',
-  styleUrls: ['./trip-detail.component.css']
+  styleUrls: ['./trip-detail.component.css', '../../shared/styling/embedded-components.css']
 })
 
 export class TripDetailComponent implements OnInit {
