@@ -6,7 +6,7 @@ public class InitialSetupConfig {
 
   public static final int fromHour = 0;
   public static final int fromMinute = 0;
-  public static final int toHour = 23;
+  public static final int toHour = 0;
   public static final int toMinute = 59;
 
   public static final ArrayList<String> lineIds = new ArrayList<String>() {{
