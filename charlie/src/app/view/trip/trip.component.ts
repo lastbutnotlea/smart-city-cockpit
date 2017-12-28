@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import { HttpRoutingService } from '../../services/http-routing.service';
-import {FilterComponent} from '../filter/filter.component';
-import { TripData } from '../../shared/trip-data';
+import {FilterComponent} from '../../shared/components/filter/filter.component';
+import { TripData } from '../../shared/data/trip-data';
 
 @Component({
   selector: 'app-trip-view',
@@ -18,7 +18,7 @@ export class TripComponent implements OnInit {
   constructor(private http: HttpRoutingService) { }
 
   public ngOnInit(): void {
-    this.title = 'trip view';
+    this.title = 'Trip View';
 
     // get trip data
     this.http.getTrips().subscribe(

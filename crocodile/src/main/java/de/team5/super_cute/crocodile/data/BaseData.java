@@ -6,13 +6,16 @@ import javax.transaction.Transactional;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 
 /**
- * Base class for all "...Data" classes.
- * Responsible for Database persistence.
+ * Base class for all "...Data" classes. Responsible for Database persistence.
  */
 @Transactional
 public abstract class BaseData<T extends IdentifiableObject> {
 
   private final HibernateTemplate hibernateTemplate;
+
+  public HibernateTemplate getHibernateTemplate() {
+    return hibernateTemplate;
+  }
 
   final Class<T> clazz;
 
@@ -25,7 +28,8 @@ public abstract class BaseData<T extends IdentifiableObject> {
    * @return all Objects of Type T currently in the system
    */
   public List<T> getData() {
-    return (List<T>) hibernateTemplate.getSessionFactory().getCurrentSession().createQuery("from " + clazz.getName()).list();
+    return (List<T>) hibernateTemplate.getSessionFactory().getCurrentSession()
+        .createQuery("from " + clazz.getName()).list();
   }
 
   public boolean addObject(T obj) {
