@@ -1,23 +1,19 @@
 plugins {
-  id "com.moowork.node" version "0.12"
+  id "com.moowork.node" version "1.2.0"
 }
 
 version '0.0.1'
 
 node {
   version = '8.7.0'
-  npmVersion = '5.5.1'
-  download = true
   workDir = file("${project.buildDir}/node")
   nodeModulesDir = file("${project.projectDir}")
 }
 
-task build(type: NpmTask) {
+task build(type: NpmTask, dependsOn: yarn) {
   args = ['run', 'build-prod']
 }
 
-task check(type: NpmTask, dependsOn: npmInstall) {
+task check(type: NpmTask, dependsOn: yarn) {
   args = ['run', 'test-headless-prod']
 }
-
-build.dependsOn(npm_install)
