@@ -3,10 +3,11 @@ package de.team5.super_cute.crocodile.config;
 import java.util.ArrayList;
 
 public class InitialSetupConfig {
+
   public static final int fromHour = 0;
   public static final int fromMinute = 0;
-  public static final int toHour = 0;
-  public static final int toMinute = 15;
+  public static final int toHour = 12;
+  public static final int toMinute = 00;
 
   public static final ArrayList<String> lineIds = new ArrayList<String>() {{
     add("10");

@@ -8,7 +8,7 @@ import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Stop;
 import de.team5.super_cute.crocodile.model.Trip;
 import de.team5.super_cute.crocodile.model.Vehicle;
-import java.util.Calendar;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -72,15 +72,15 @@ public class NetworkDataBuilder {
    * @param line
    * @return
    */
-  public NetworkDataBuilder addTrip(Vehicle vehicle, Line line, Calendar startTime, boolean inbound) {
+  public NetworkDataBuilder addTrip(Vehicle vehicle, Line line, LocalDateTime startTime, boolean inbound) {
     Trip trip = assembleWholeLineTrip(vehicle, line, startTime, inbound);
     tripData.addObject(trip);
     return this;
   }
 
-  public static Trip assembleWholeLineTrip(Vehicle vehicle, Line line, Calendar startTime, boolean inbound) {
+  public static Trip assembleWholeLineTrip(Vehicle vehicle, Line line, LocalDateTime startTime, boolean inbound) {
     Trip trip = new Trip(vehicle, line, null);
-    Map<String, Calendar> stops = new HashMap<>();
+    Map<String, LocalDateTime> stops = new HashMap<>();
     if (inbound) {
       addStopsForOneDirection(stops, line.getStopsInbound(), line.getTravelTimeInbound(), startTime);
     } else {
@@ -91,10 +91,10 @@ public class NetworkDataBuilder {
   }
 
   @SuppressWarnings("UnnecessaryLocalVariable")
-  private static void addStopsForOneDirection(Map<String, Calendar> tripStops, List<Stop> lineStops, Map<String, Integer> travelTime, Calendar startTime) {
+  private static void addStopsForOneDirection(Map<String, LocalDateTime> tripStops, List<Stop> lineStops, Map<String, Integer> travelTime, LocalDateTime startTime) {
     for (Stop currentStop : lineStops) {
-      Calendar currentStopTime = startTime;
-      currentStopTime.add(Calendar.MINUTE, travelTime.get(currentStop.getId()));
+      LocalDateTime currentStopTime = startTime;
+      currentStopTime = currentStopTime.plusMinutes(travelTime.get(currentStop.getId()));
       tripStops.put(currentStop.getId(), currentStopTime);
     }
   }
