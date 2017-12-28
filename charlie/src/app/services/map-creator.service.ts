@@ -185,13 +185,13 @@ export class MapCreatorService {
   private addDummyLine(lineDataPoints) {
     const size = lineDataPoints.length * 25;
     const nodes = [
-      //lower left boarder point
+      //lower left border point
       {
         'coords': [-size*2.5, 0],
         'shiftCoords': [0,0],
         'hide': true
       },
-      //upper left boarder point
+      //upper left border point
       {
         'coords': [-size * 2.5, 20],
         'shiftCoords': [0, 0],
