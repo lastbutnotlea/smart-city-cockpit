@@ -52,9 +52,13 @@ public class InitialDataGenerator {
     networkDataBuilder = new NetworkDataBuilder(lineData, vehicleData, stopData,
         tripData);
     ArrayList<Line> lines = new TpDataConnector().getLines(lineIds);
+    LoggerFactory.getLogger(getClass())
+        .info("Started initialization");
     LocalDateTime from = LocalDateTime.now().withHour(fromHour).withMinute(fromMinute);
     LocalDateTime to = LocalDateTime.now().withHour(toHour).withMinute(toMinute);
     generateTripsAndVehicles(from, to, lines);
+    LoggerFactory.getLogger(getClass())
+        .info("Finished initialization");
   }
 
   public void generateTripsAndVehicles(LocalDateTime from, LocalDateTime to,
