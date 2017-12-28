@@ -1,12 +1,14 @@
 package de.team5.super_cute.crocodile.model;
 
-import static javax.persistence.TemporalType.DATE;
-
-import com.fasterxml.jackson.annotation.*;
-
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -17,8 +19,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-
 import org.hibernate.annotations.Proxy;
 
 
@@ -51,11 +51,12 @@ public class Trip extends IdentifiableObject implements Serializable {
   public Trip() {}
 
   public Trip(Vehicle vehicle, Line line,
-      Map<String, LocalDateTime> stops) {
+      Map<String, LocalDateTime> stops, boolean isInbound) {
     super();
     this.vehicle = vehicle;
     this.line = line;
     this.stops = stops;
+    this.isInbound = isInbound;
   }
 
   public Vehicle getVehicle() {
@@ -82,6 +83,14 @@ public class Trip extends IdentifiableObject implements Serializable {
   @JsonIgnore
   public void setStops(Map<String, LocalDateTime> stops) {
     this.stops = stops;
+  }
+
+  public boolean isInbound() {
+    return isInbound;
+  }
+
+  public void setInbound(boolean inbound) {
+    isInbound = inbound;
   }
 
   @JsonGetter("stops")
