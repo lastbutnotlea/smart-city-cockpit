@@ -16,6 +16,7 @@ import { UrlBuilderService } from './services/url-builder.service';
 import { HttpRoutingService } from './services/http-routing.service';
 import { MapCreatorService } from './services/map-creator.service';
 import { APP_BASE_HREF } from '@angular/common';
+import {DropdownComponent} from './shared/components/dropdown/dropdown.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -30,6 +31,7 @@ describe('AppComponent', () => {
         FilterComponent,
         MapComponent,
         LineDetailComponent,
+        DropdownComponent,
       ],
       imports: [
         BrowserModule,

@@ -39,8 +39,6 @@ export class TripEditComponent implements OnInit {
     this.data.line = this.selected.line;
     this.data.vehicle = this.selectedVehicle.value;
     this.data.stops = this.selected.stops;
-    console.log('Confirm trip editing: selected line: ' + this.data.line.id +
-      ' selected vehicle: ' + this.data.vehicle.id + ' selected stops: ' + JSON.stringify(this.data.stops));
     this.activeModal.close('Close click');
     this.http.editTrip(this.data);
   }
@@ -55,7 +53,7 @@ export class TripEditComponent implements OnInit {
         this.selected.stops.push(stop);
       }
 
-      this.selectedVehicle = this.toDropdownItem(this.selected.vehicle);
+      this.selectedVehicle = TripEditComponent.toDropdownItem(this.selected.vehicle);
     }
   }
 
@@ -73,14 +71,11 @@ export class TripEditComponent implements OnInit {
     console.log(JSON.stringify(this.selected.stops));
   }
 
-  toDropdownItem(item: VehicleData): DropdownValue {
-    console.log(item);
-    let i: DropdownValue = new DropdownValue(item, item.id);
-    console.log(i);
-    return i;
+  static toDropdownItem(item: VehicleData): DropdownValue {
+    return new DropdownValue(item, item.id);
   }
 
-  toDropdownItems(items: VehicleData[]): DropdownValue[] {
-    return items.map(item => this.toDropdownItem(item));
+  static toDropdownItems(items: VehicleData[]): DropdownValue[] {
+    return items.map(item => TripEditComponent.toDropdownItem(item));
   }
 }

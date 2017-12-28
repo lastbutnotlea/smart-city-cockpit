@@ -15,9 +15,6 @@ export class DropdownValue {
   styleUrls: ['./dropdown.component.css']
 })
 export class DropdownComponent implements OnInit {
-  ngOnInit(): void {
-    console.log(this.values);
-  }
   @Input()
   values: DropdownValue[];
 
@@ -27,7 +24,7 @@ export class DropdownComponent implements OnInit {
   @Output()
   selectedChange: EventEmitter<DropdownValue> = new EventEmitter<DropdownValue>();
 
-
+  ngOnInit(): void {}
 
   constructor() {
     this.selectedChange.subscribe(value => this.selected = value);

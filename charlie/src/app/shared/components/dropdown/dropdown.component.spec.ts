@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DropdownComponent } from './dropdown.component';
+import {DropdownComponent, DropdownValue} from './dropdown.component';
 
 describe('DropdownComponent', () => {
   let component: DropdownComponent;
@@ -16,6 +16,8 @@ describe('DropdownComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(DropdownComponent);
     component = fixture.componentInstance;
+    component.values = [];
+    component.selected = new DropdownValue(null, "test");
     fixture.detectChanges();
   });
 
