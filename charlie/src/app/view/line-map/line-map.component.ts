@@ -16,10 +16,13 @@ import { StopData } from '../../shared/data/stop-data';
 @Injectable()
 export class LineMapComponent {
 
+  private line: LineData;
+
   constructor(private router: Router,
               private mapCreator: MapCreatorService) { }
 
   public getLineMap(lineData: LineData, stopData: StopData[]) {
+    this.line = lineData;
     this.drawLineMap(this.mapCreator.createSingleLineMap(lineData, stopData));
     this.addIntersectionEvents();
 
@@ -58,6 +61,7 @@ export class LineMapComponent {
       // TODO: Routing to stop-detail-view (only name of stop available?);
       console.log(interchange);
       console.log(interchange.name);
+      this.router.navigate(['/network/detail/' + this.line.id + '/stop/' + interchange.name])
     });
   }
 }

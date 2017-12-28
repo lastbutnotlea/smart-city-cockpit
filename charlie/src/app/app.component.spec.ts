@@ -20,6 +20,7 @@ import { LineMapComponent } from './view/line-map/line-map.component';
 import {DropdownComponent} from './shared/components/dropdown/dropdown.component';
 import {EmbeddedLineComponent} from './shared/components/embedded-line/embedded-line.component';
 import {EmbeddedVehicleComponent} from './shared/components/embedded-vehicle/embedded-vehicle.component';
+import { StopDetailComponent } from './view/stop-detail/stop-detail.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -35,6 +36,7 @@ describe('AppComponent', () => {
         MapComponent,
         LineMapComponent,
         LineDetailComponent,
+        StopDetailComponent,
         DropdownComponent,
         EmbeddedLineComponent,
         EmbeddedVehicleComponent
