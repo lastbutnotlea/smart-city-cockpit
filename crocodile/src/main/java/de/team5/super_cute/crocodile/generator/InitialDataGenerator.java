@@ -72,7 +72,7 @@ public class InitialDataGenerator {
     for (int x = 0; x < lines.size(); x++) {
       try {
         Line line = lines.get(x);
-        if(lineData.checkLine(line.getName())){
+        if(lineData.exists(line.getName())){
           continue;
         }
         networkDataBuilder.addLinesWithStops(line);

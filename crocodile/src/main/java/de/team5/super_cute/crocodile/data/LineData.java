@@ -28,14 +28,8 @@ public class LineData extends BaseData<Line> {
     return list;
   }
 
-  public boolean checkLine(String lineName){
-    List<Line> lines = super.getData();
-    for (Line l:lines) {
-      if(l.getName().equals(lineName)){
-        return true;
-      }
-    }
-    return false;
+  public boolean exists(String lineName){
+    return super.getData().stream().anyMatch(l -> l.getName().equals(lineName));
   }
 
 }
