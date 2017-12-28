@@ -6,10 +6,8 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.team5.super_cute.crocodile.data.LineData;
 import de.team5.super_cute.crocodile.data.StopData;
-import de.team5.super_cute.crocodile.external.TpDataConnector;
 import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Stop;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,75 +22,51 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/map")
 public class MapController {
 
-  List<String> LINES_WE_USE = new ArrayList<String>() {{
-    add("10");
-    add("283");
-    add("46");
-    add("228");
-    add("7");
-    add("bakerloo");
-    add("hammersmith-city");
-    add("jubilee");
-    add("victoria");
-    add("waterloo-city");
-  }};
-
   private Logger logger = LoggerFactory.getLogger(this.getClass());
   private LineData lineData;
   private StopData stopData;
   private boolean gotDataFromTpConnector = false;
   private ObjectMapper mapper;
-  private ManualTestController manualTestController;
 
   @Autowired
-  public MapController(LineData lineData, StopData stopData,
-      ManualTestController manualTestController) {
+  public MapController(LineData lineData, StopData stopData) {
     this.lineData = lineData;
     this.stopData = stopData;
-    this.manualTestController = manualTestController;
     mapper = new ObjectMapper();
   }
 
   @GetMapping("/stations")
   public ObjectNode getMapStations() throws JsonProcessingException {
-    insertLines();
-
     ObjectNode stations = mapper.createObjectNode();
-    List<Stop> stopData = this.lineData.getData().subList(0, 5).stream().map(Line::getStopsInbound).flatMap(Collection::stream)
+    List<Stop> stopData = this.lineData.getData().stream().map(Line::getStopsInbound).flatMap(Collection::stream)
         .collect(
             Collectors.toList());
     for (Stop s : stopData) {
       ObjectNode stop = stations.putObject(s.getCommonName());
       stop.put("title", s.getCommonName());
       ObjectNode position = stop.putObject("position");
-      position.put("lat", Math.round(s.getLatitude() * 100000) / 100000.0);
-      position.put("lon", Math.round(s.getLongitude() * 100000) / 100000.0);
+      position.put("lat", s.getLatitude());
+      position.put("lon", s.getLongitude());
     }
-    //return mapper.writeValueAsString(stations);
     return stations;
   }
 
   @GetMapping("/lines")
   public ObjectNode getMapLines() throws JsonProcessingException {
-    insertLines();
-
     ObjectNode lines = mapper.createObjectNode();
-    List<Line> lineData = this.lineData.getData().subList(0, 5);
+    List<Line> lineData = this.lineData.getData();
     for (Line l : lineData) {
       ObjectNode line = lines.putObject(l.getName());
       line.put("id", l.getId());
       line.put("color", "#" + Integer.toHexString(l.getColor().getRGB()).substring(2));
     }
-    //return mapper.writeValueAsString(lines);
     return lines;
   }
 
   @GetMapping("/connections")
   public ObjectNode getMapConnections() throws JsonProcessingException {
-    insertLines();
-
     ObjectNode connections = mapper.createObjectNode();
-    List<Line> lineData = this.lineData.getData().subList(0, 5);
+    List<Line> lineData = this.lineData.getData();
     for (Line l : lineData) {
       ArrayNode line = connections.putArray(l.getName());
       // TODO replace with consolidated getStops() when it exists
@@ -103,27 +77,6 @@ public class MapController {
         connection.put("number", i);
       }
     }
-    //return mapper.writeValueAsString(connections);
     return connections;
   }
-
-  private void insertLines() {
-    if (gotDataFromTpConnector || !stopData.getData().isEmpty() || !lineData.getData().isEmpty()) {
-      return;
-    }
-    List<Line> lines = new TpDataConnector().getLines(LINES_WE_USE);
-    List<Stop> stops = lines.stream().map(Line::getStopsInbound).flatMap(Collection::stream)
-        .collect(
-            Collectors.toList());
-    stops.addAll(lines.stream().map(Line::getStopsOutbound).flatMap(Collection::stream).collect(
-        Collectors.toList()));
-    for (Stop s : stops) {
-      stopData.addObject(s);
-    }
-    for (Line l : lines) {
-      lineData.addObject(l);
-    }
-    gotDataFromTpConnector = true;
-  }
-
 }
