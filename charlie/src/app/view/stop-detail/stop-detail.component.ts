@@ -26,19 +26,13 @@ export class StopDetailComponent implements OnInit {
 
   getStop(): void {
     const stopId = this.route.snapshot.paramMap.get('stopId');
-    // TODO: Replace dummy data with actual data from backend (once stop controller is merged)
     // TODO: add live data once live data generator from backend works
-    /*this.http.getStopDetails(stopId).subscribe(
+    this.http.getStopDetails(stopId).subscribe(
       stop => {
         this.stop = stop;
       },
       err => console.log('Could not fetch stop data!')
-    );*/
-    this.stop = new StopData;
-    this.stop.id = 'stop-id';
-    this.stop.commonName = 'stop.name';
-    this.stop.apiId = 'api-id';
-    this.stop.peopleWaiting = -4;
+    );
   }
 
   goBack(): void {

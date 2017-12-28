@@ -25,7 +25,6 @@ export class LineMapComponent {
     this.line = lineData;
     this.drawLineMap(this.mapCreator.createSingleLineMap(lineData, stopData));
     this.addIntersectionEvents();
-
   }
 
   private drawLineMap(lineJson: any) {
@@ -56,11 +55,7 @@ export class LineMapComponent {
 
   private addIntersectionEvents(): void {
     const interchanges = d3.selectAll('.interchanges').selectAll('g');
-    const labels = d3.selectAll('.labels');
     interchanges.on('click', interchange => {
-      // TODO: Routing to stop-detail-view (only name of stop available?);
-      console.log(interchange);
-      console.log(interchange.name);
       this.router.navigate(['/network/detail/' + this.line.id + '/stop/' + interchange.name])
     });
   }

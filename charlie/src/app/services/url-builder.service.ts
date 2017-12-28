@@ -25,7 +25,7 @@ export class UrlBuilderService {
   }
 
   public getStopDetailsUrl(stopId: string): string {
-    return this.stopBaseUrl + stopId;
+    return this.stopBaseUrl + '/' + stopId;
   }
 
   public getVehiclesUrl(): string {
