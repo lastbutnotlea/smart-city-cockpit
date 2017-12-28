@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {VehicleData} from '../../vehicle-data';
+import {VehicleData} from '../../data/vehicle-data';
 
 @Component({
   selector: 'app-embedded-vehicle',
