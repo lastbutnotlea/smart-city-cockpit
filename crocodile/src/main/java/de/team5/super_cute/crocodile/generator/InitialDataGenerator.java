@@ -115,11 +115,11 @@ public class InitialDataGenerator {
           if (nextTripInbound.getLocalDateTime().compareTo(iterator.getLocalDateTime()) == 0) {
             inboundPointer = generateTrip(iterator.getLocalDateTime(), nextTripInbound,
                 queueInbound, queueOutbound,
-                line, node_inbound, inboundPointer, inboundTravelTime);
+                line, node_inbound, inboundPointer, inboundTravelTime, true);
           } else {
             outboundPointer = generateTrip(iterator.getLocalDateTime(), nextTripOutbound,
                 queueOutbound, queueInbound,
-                line, node_outbound, outboundPointer, outboundTravelTime);
+                line, node_outbound, outboundPointer, outboundTravelTime, false);
           }
           if (nextTripInbound.getLocalDateTime().compareTo(nextTripOutbound.getLocalDateTime())
               < 1) {
@@ -142,27 +142,29 @@ public class InitialDataGenerator {
   //sets the pointer to the first departure after from
   private int initializePointer(int pointer, JsonNode node, MyLocalDateTime actual,
       LocalDateTime from) {
-    do {
-      pointer++;
-      int oldHour = actual.getLocalDateTime().getHour();
-      int newHour = node.get("timetable").get("routes").get(0).get("schedules")
-          .get(0)
-          .get("knownJourneys").get(pointer).get("hour").asInt();
-      if (newHour == 24) {
-        newHour = 0;
-      }
-      actual.setLocalDateTime(actual.getLocalDateTime()
-          .withHour(newHour)
-          .withMinute(node.get("timetable").get("routes").get(0).get("schedules")
-              .get(0)
-              .get("knownJourneys").get(pointer).get("minute").asInt()));
-      if (oldHour > actual.getLocalDateTime().getHour() && pointer > 0) {
-        actual.setLocalDateTime(actual.getLocalDateTime().plusDays(1));
-      }
-    } while (from.compareTo(actual.getLocalDateTime()) == 1 && pointer + 1 < node.get("timetable")
-        .get("routes").get(0).get("schedules")
-        .get(0)
-        .get("knownJourneys").size());
+    try {
+      do {
+        pointer++;
+        int oldHour = actual.getLocalDateTime().getHour();
+        int newHour = node.get("timetable").get("routes").get(0).get("schedules")
+            .get(0)
+            .get("knownJourneys").get(pointer).get("hour").asInt();
+        if (newHour == 24) {
+          newHour = 0;
+        }
+        actual.setLocalDateTime(actual.getLocalDateTime()
+            .withHour(newHour)
+            .withMinute(node.get("timetable").get("routes").get(0).get("schedules")
+                .get(0)
+                .get("knownJourneys").get(pointer).get("minute").asInt()));
+        if (oldHour > actual.getLocalDateTime().getHour() && pointer > 0) {
+          actual.setLocalDateTime(actual.getLocalDateTime().plusDays(1));
+          break;
+        }
+      } while (from.compareTo(actual.getLocalDateTime()) == 1);
+    } catch(NullPointerException e) {
+      actual.setLocalDateTime(actual.getLocalDateTime().plusDays(1));
+    }
     return pointer;
   }
 
@@ -170,7 +172,7 @@ public class InitialDataGenerator {
   private int generateTrip(LocalDateTime iterator, MyLocalDateTime nextTrip,
       PriorityQueue<Pair<Vehicle, LocalDateTime>> queueFrom,
       PriorityQueue<Pair<Vehicle, LocalDateTime>> queueTo, Line line, JsonNode node, int pointer,
-      int travelTime) {
+      int travelTime, boolean isInbound) {
     Vehicle vehicle;
     if (queueFrom.peek() == null || queueFrom.peek().getValue().compareTo(iterator) == 1) {
       //If no (or no available) vehicle exists: create new one
@@ -179,7 +181,7 @@ public class InitialDataGenerator {
     } else {
       vehicle = queueFrom.poll().getKey();
     }
-    networkDataBuilder.addTrip(vehicle, line, LocalDateTime.from(iterator), true);
+    networkDataBuilder.addTrip(vehicle, line, LocalDateTime.from(iterator), isInbound);
     //determines when the vehicle is available again and puts vehicle in queue
     LocalDateTime ready = iterator.plusMinutes(travelTime);
     queueTo.add(new ImmutablePair<>(vehicle, ready));
