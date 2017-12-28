@@ -16,6 +16,8 @@ import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MapCreatorService } from './services/map-creator.service';
 import { NgModule } from '@angular/core';
+import {EmbeddedLineComponent} from './shared/components/embedded-line/embedded-line.component';
+import {EmbeddedVehicleComponent} from './shared/components/embedded-vehicle/embedded-vehicle.component';
 
 
 @NgModule({
@@ -29,6 +31,8 @@ import { NgModule } from '@angular/core';
     FilterComponent,
     MapComponent,
     LineDetailComponent,
+    EmbeddedLineComponent,
+    EmbeddedVehicleComponent
   ],
   imports: [
     BrowserModule,

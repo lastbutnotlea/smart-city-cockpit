@@ -1,0 +1,9 @@
+.bounding-box {
+  float: left;
+  margin: 20px 20px 20px 0;
+  padding: 10px;
+  width: 200px;
+  height: 200px;
+  border: 1px solid lightgray;
+  border-radius: 5px;
+}

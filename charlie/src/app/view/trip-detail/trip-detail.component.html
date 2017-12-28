@@ -5,7 +5,11 @@
 <div *ngIf="isLoaded()">
 
   <h3>Trip Details</h3>
-  <h5>Trip ID: {{trip.id}}</h5>
+  <h6>Trip ID: {{trip.id}}</h6>
+
+  <app-embedded-line></app-embedded-line>
+  <app-embedded-vehicle></app-embedded-vehicle>
+
   <h5>Line ID: {{trip.line.id}}</h5>
   <h5>Vehicle ID: {{trip.vehicle.id}}</h5>
 
@@ -14,6 +18,8 @@
     {{stop.id}}
   </div>
 
-  <button (click)="goBack()">Back To Trips</button>
-  <button (click)="edit()">Edit</button>
+  <div class="no-float">
+    <button class="btn btn-outline-primary" (click)="goBack()">Back To Trips</button>
+    <button class="btn btn-outline-secondary" (click)="edit()">Edit</button>
+  </div>
 </div>
