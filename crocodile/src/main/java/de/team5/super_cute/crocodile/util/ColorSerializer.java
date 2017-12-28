@@ -15,4 +15,3 @@ public class ColorSerializer extends JsonSerializer<Color> {
     gen.writeEndObject();
   }
 }
-
