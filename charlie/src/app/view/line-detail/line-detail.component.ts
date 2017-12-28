@@ -15,8 +15,11 @@ export class LineDetailComponent implements OnInit {
 
   line: LineData;
 
-  @ViewChild(LineMapComponent)
-  lineMap: LineMapComponent;
+  @ViewChild('inbound')
+  lineMapInbound: LineMapComponent;
+
+  @ViewChild('outbound')
+  lineMapOutbound: LineMapComponent;
 
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
@@ -33,7 +36,8 @@ export class LineDetailComponent implements OnInit {
     this.http.getLineDetails(lineId).subscribe(
       line => {
         this.line = line;
-        this.lineMap.getLineMap(line);
+        this.lineMapInbound.getLineMap(line, line.stopsInbound);
+        this.lineMapOutbound.getLineMap(line, line.stopsOutbound);
       },
           err => {
         console.log('Could not fetch line data!')

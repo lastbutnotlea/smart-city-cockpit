@@ -6,6 +6,7 @@ import * as d3Tube from 'd3-tube-map';
 import { MapCreatorService } from '../../services/map-creator.service';
 import { Router } from '@angular/router';
 import { LineData } from '../../shared/data/line-data';
+import { StopData } from '../../shared/data/stop-data';
 
 @Component({
   selector: 'app-line-map',
@@ -18,8 +19,8 @@ export class LineMapComponent {
   constructor(private router: Router,
               private mapCreator: MapCreatorService) { }
 
-  public getLineMap(lineData: LineData) {
-    this.drawLineMap(this.mapCreator.createSingleLineMap(lineData));
+  public getLineMap(lineData: LineData, stopData: StopData[]) {
+    this.drawLineMap(this.mapCreator.createSingleLineMap(lineData, stopData));
     this.addIntersectionEvents();
 
   }
@@ -56,6 +57,7 @@ export class LineMapComponent {
     interchanges.on('click', interchange => {
       // TODO: Routing to stop-detail-view (only name of stop available?);
       console.log(interchange);
+      console.log(interchange.name);
     });
   }
 }

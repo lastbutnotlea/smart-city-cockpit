@@ -33,10 +33,10 @@ export class MapCreatorService {
    * @param {LineData} lineData data of line to be drawn
    * @returns data for tube map
    */
-  public createSingleLineMap(lineData: LineData): any {
+  public createSingleLineMap(lineData: LineData, stopData: StopData[]): any {
     this.mapWidth = 1200;
     this.mapHeight = 250;
-    let stations = this.calcStationsOfSingleLine(lineData.stopsInbound);
+    let stations = this.calcStationsOfSingleLine(stopData);
     let line = this.calcSingleLine(lineData, stations);
     line = this.addDummyLine(line);
     return {
@@ -102,7 +102,7 @@ export class MapCreatorService {
     let counter = 0;
     const stationDataPoints = {};
     for (const stopIndex in stopDataList) {
-      const id = stopDataList[stopIndex].commonName;
+      const id = stopDataList[stopIndex].id;
       stationDataPoints[id] = {};
       stationDataPoints[id]['title'] = stopDataList[stopIndex].commonName;
       stationDataPoints[id]['coords'] = [counter, 0];
