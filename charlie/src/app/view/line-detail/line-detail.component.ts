@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LineData } from '../../shared/line-data';
+import { LineData } from '../../shared/data/line-data';
 import { HttpRoutingService } from '../../services/http-routing.service';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';

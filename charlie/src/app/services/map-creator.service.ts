@@ -4,65 +4,75 @@ import { toInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
 @Injectable()
 export class MapCreatorService {
 
+  private minX: number;
+  private maxX: number;
+  private minY: number;
+  private maxY: number;
+
+  private mapWidth: number; // in x direction
+  private mapHeight: number; // in y direction
+  private rasterizationFactor: number; // I think how many coordinate points shold fall into one
+
   public createMap(stationData: any, lineData: any, connectionData: any): any {
     // Define the size of the raster, the larger the higher the resolution
-    const rasterWidth = 150;
-    const rasterHeight = 150;
+    this.mapWidth = 500;
+    this.mapHeight = 500;
+    this.rasterizationFactor = 0.25;
     // Convert the relevant data to the right format
-    // TODO this is running on test data, do this with the real data
-    const generatedStations = this.calcStations(stationData, rasterWidth, rasterHeight);
-    const generatedLines = this.calcLines(generatedStations, lineData, connectionData, rasterWidth, rasterHeight);
-    const generatedRiver = this.calcRiver(rasterWidth, rasterHeight);
+    const generatedStations = this.calcStations(stationData);
+    const generatedLines = this.calcLines(generatedStations, lineData, connectionData);
+    const generatedRiver = this.calcDummyRiver();
     const generatedData = this.calcGraph(generatedStations, generatedLines, generatedRiver);
     return generatedData;
   }
 
   // Converts the station data from a given json to map format
   // JSON must look like testStations
-  private calcStations(stations, rasterWidth, rasterHeight): any {
-    // Variable initiation
-    let counter = 0;
-    let cumPosX = 0;
-    let cumPosY = 0;
-    let minX = 100;
-    let maxX = 0;
-    let minY = 100;
-    let maxY = 0;
-    // Transform Geocoords into map coords, store max and min
+  private calcStations(stations): any {
+    this.calcMinMaxPos(stations);
+    return this.calcStationPositions(stations);
+  }
+
+  private calcMinMaxPos(stations){
+    this.minX = 100;
+    this.maxX = -100;
+    this.minY = 100;
+    this.maxY = -100;
+    // find Max and Min of geocoordinates
     for (const i in stations) {
       const pos = stations[i]['position'];
-      const posX = (rasterWidth) * (180 + pos['lat']) / 360;
-      const posY = (rasterHeight) * (90 - pos['lon']) / 180;
-      maxX = posX > maxX ? posX : maxX;
-      minX = posX < minX ? posX : minX;
-      maxY = posY > maxY ? posY : maxY;
-      minY = posY < minY ? posY : minY;
+      const posX = pos['lon'];
+      const posY = pos['lat'];
+      this.maxX = posX > this.maxX ? posX : this.maxX;
+      this.minX = posX < this.minX ? posX : this.minX;
+      this.maxY = posY > this.maxY ? posY : this.maxY;
+      this.minY = posY < this.minY ? posY : this.minY;
     }
+  }
+
+  private calcStationPositions(stations): any{
+    let counter = 0;
     // This will be the data for all the stations that will be drawn and referenced later
     const stationDataPoints = {};
     // Clip Map to relevant area by max and min, calculate middle area
     for (const i in stations) {
       const pos = stations[i]['position'];
-      let posX = (rasterWidth) * (180 + pos['lat']) / 360;
-      let posY = (rasterHeight) * (90 - pos['lon']) / 180;
-      posX = toInteger((posX - minX) * rasterWidth / (maxX - minX));
-      posY = toInteger((posY - minY) * rasterHeight / (maxY - minY));
+      let posX = pos['lon'];
+      let posY = pos['lat'];
+      // calculate map positions by normalizing geo location relative to min/max and multiplying with desired map dimensions
+      posX = toInteger(toInteger((posX - this.minX) / (this.maxX - this.minX) * (this.mapWidth * this.rasterizationFactor)) / (this.mapWidth * this.rasterizationFactor) * this.mapWidth);
+      posY = toInteger(toInteger((posY - this.minY) / (this.maxY - this.minY) * (this.mapHeight * this.rasterizationFactor)) / (this.mapHeight * this.rasterizationFactor) * this.mapHeight);
       stationDataPoints[i] = {};
       stationDataPoints[i]['title'] = stations[i]['title'];
       stationDataPoints[i]['coords'] = [posX, posY];
-      cumPosX += posX;
-      cumPosY += posY;
       counter ++;
     }
-    // Calculate middle area, not needed now but in the future
-    // cumPosX /= counter;
-    // cumPosY /= counter;
     return stationDataPoints;
   }
 
   // Converts the connection data from a given json to map format
   // JSONs for connections, lines and Stations must look like testLines and testConnections
-  private calcLines(stationDataPoints, lines, connections, rasterWidth, rasterHeight): any {
+  private calcLines(stationDataPoints, lines, connections): any {
     // This will be the line points which will be drawn
     const lineDataPoints = [];
     // Counts up which line we are, for correct offsets
@@ -74,182 +84,170 @@ export class MapCreatorService {
         'name': lines[i].id,
         'label': i,
         'color': lines[i].color,
-        'shiftCoords': [linecounter, linecounter]
+        'shiftCoords': [0, 0],
+        'nodes':  this.calcNodes(connections[i], stationDataPoints)
       };
-      // This will be used to store all the subsections
-      const nodes = [];
-
-      let lastCoords = null;
-      let lastDir = null;
-
-      // Iterate over all stops
-      for (const j in connections[i]) {
-        // Get all relevant data
-        const coords = stationDataPoints[connections[i][j].station].coords;
-        const name = connections[i][j].station;
-        let curDir;
-        let labelPos;
-        // Only update the directions starting from the second station
-        if (lastCoords != null) {
-          switch (lastDir) {
-            case 'N':
-              if (lastCoords[0] > coords[0]) {
-                curDir = 'W';
-              } else {
-                curDir = 'E';
-              }
-              break;
-            case 'S':
-              if (lastCoords[0] > coords[0]) {
-                curDir = 'W';
-              } else {
-                curDir = 'E';
-              }
-              break;
-            case 'E':
-              if (lastCoords[1] > coords[1]) {
-                curDir = 'S';
-              } else {
-                curDir = 'N';
-              }
-              break;
-            case 'W':
-              if (lastCoords[1] > coords[1]) {
-                curDir = 'S';
-              } else {
-                curDir = 'N';
-              }
-              break;
-            default:
-              if (Math.abs(lastCoords[0] - coords[0]) > Math.abs(lastCoords[1] - coords[1])) {
-                // More horizontal movement
-                if (lastCoords[0] > coords[0]) {
-                  curDir = 'W';
-                } else {
-                  curDir = 'E';
-                }
-              } else {
-                // More vertical movement
-                if (lastCoords[1] > coords[1]) {
-                  curDir = 'S';
-                } else {
-                  curDir = 'N';
-                }
-              }
-              break;
-          }
-        }
-        // Update Label Position
-        switch (curDir) {
-          case 'N':
-          case 'S':
-            labelPos = 'E';
-            break;
-          case 'E':
-          case 'W':
-            labelPos = 'S';
-            break;
-          default:
-            labelPos = 'N';
-        }
-        const shiftCoords = [linecounter, linecounter];
-
-        // Insert optional betweenpoint
-        if (lastCoords != null) {
-          // if lastDir was not set, set it here --> orthogonal to the current dir
-          if (lastDir == null) {
-            if (Math.abs(lastCoords[0] - coords[0]) < Math.abs(lastCoords[1] - coords[1])) {
-              // More horizontal movement
-              if (lastCoords[0] > coords[0]) {
-                lastDir = 'W';
-              } else {
-                lastDir = 'E';
-              }
-            } else {
-              // More vertical movement
-              if (lastCoords[1] > coords[1]) {
-                lastDir = 'S';
-              } else {
-                lastDir = 'N';
-              }
-            }
-          }
-          // Calculate the betweenpoint coordinates, so there is a nice curve
-          let betweencoords1;
-          let betweencoords2;
-          if (lastDir === 'N') {
-            betweencoords1 = [lastCoords[0], coords[1] - 1];
-          } else if (lastDir === 'S') {
-            betweencoords1 = [lastCoords[0], coords[1] + 1];
-          } else if (lastDir === 'E') {
-            betweencoords1 = [coords[0] - 1, lastCoords[1]];
-          } else if (lastDir === 'W') {
-            betweencoords1 = [coords[0] + 1, lastCoords[1]];
-          }
-          // Set coordinates of the second point
-          if (curDir === 'N') {
-            betweencoords2 = [coords[0], lastCoords[1] + 1];
-          } else if (curDir === 'S') {
-            betweencoords2 = [coords[0], lastCoords[1] - 1];
-          } else if (curDir === 'E') {
-            betweencoords2 = [lastCoords[0] + 1, coords[1]];
-          } else if (curDir === 'W') {
-            betweencoords2 = [lastCoords[0] - 1, coords[1]];
-          }
-          // Create current between node
-          const betweenNode1 = {
-            'coords': betweencoords1,
-            'shiftCoords': shiftCoords
-          };
-          const betweenNode2 = {
-            'coords': betweencoords2,
-            'shiftCoords': shiftCoords,
-            'dir': lastDir
-          };
-          // Insert node into the final array
-          nodes.push(betweenNode1);
-          nodes.push(betweenNode2);
-        }
-        // Store current coords and dir for next iteration
-        lastCoords = coords;
-        lastDir = curDir;
-
-        let currShiftCoords;
-        if (curDir === 'N' || curDir === 'S') {
-          currShiftCoords = [shiftCoords[0], 0];
-        } else {
-          currShiftCoords = [0, shiftCoords[1]];
-        }
-        // Create current station node
-        const currentStationNode = {
-          'coords': coords,
-          'name': name,
-          'labelPos': labelPos,
-          'shiftCoords': currShiftCoords,
-          // "marker": "interchange",
-          'canonical': true
-        };
-        // Insert node into the final array
-        nodes.push(currentStationNode);
-        // Just important for the end parts, insert points to elongate
-        const currentStationPositionNode = {
-          'coords': [coords[0] - currShiftCoords[1], coords[1] -  currShiftCoords[0]]
-        };
-        nodes.push(currentStationPositionNode);
-      }
-      // Insert the stops into the line
-      currentLine['nodes'] = nodes;
       // Insert the line into the list of all lines
       lineDataPoints.push(currentLine);
-
       linecounter ++;
     }
     return lineDataPoints;
   }
 
+  private calcNodes(connections, stationDataPoints) {
+    let nodes = [];
+    let lastDir = null;
+    let lastCoords = null;
+    // Iterate over all stops
+    for (const j in connections) {
+      // Get all relevant data
+      const nextCoords = stationDataPoints[connections[j].station].coords;
+      const shiftCoords = [0, 0];
+      let curDir;
+      // Only update the directions starting from the second station
+      if (lastCoords != null) {
+        if (lastDir == null) {
+          lastDir = this.calcLastDir(nextCoords, lastCoords);
+        }
+        curDir = this.calcNextDirection(nextCoords, lastDir, lastCoords);
+        // Create current between node
+        const betweenNode1 = {
+          'coords': this.calcBetweenCoords1(nextCoords, lastCoords, lastDir),
+          'shiftCoords': shiftCoords
+        };
+        const betweenNode2 = {
+          'coords': this.calcBetweenCoords2(curDir, nextCoords, lastCoords),
+          'shiftCoords': shiftCoords,
+          'dir': lastDir
+        };
+        // Insert node into the final array
+        nodes.push(betweenNode1);
+        nodes.push(betweenNode2);
+      }
+      // Store current coords and dir for next iteration
+      lastCoords = nextCoords;
+      lastDir = curDir;
+
+      // Create current station node
+      const currentStationNode = {
+        'coords': nextCoords,
+        'name': connections[j].station,
+        'labelPos': this.calcLabelPos(curDir),
+        'shiftCoords': this.calcShiftCoords(curDir, shiftCoords),
+        // 'marker': 'interchange',
+        'canonical': true
+      };
+      // Insert node into the final array
+      nodes.push(currentStationNode);
+      // Just important for the end parts, insert points to elongate
+      const currentStationPositionNode = {
+        'coords': [
+          nextCoords[0] - currentStationNode['shiftCoords'][1],
+          nextCoords[1] -  currentStationNode['shiftCoords'][0]
+        ]};
+      //nodes.push(currentStationPositionNode);
+    }
+    return nodes;
+  }
+
+  // In which direction do we have to go next?
+  // TODO build in staying in the same direction?
+  private calcNextDirection(coords, lastDir, lastCoords) {
+    // First we go horizontal/vertical in the direction of the biggest difference
+    let curDir;
+    switch (lastDir) {
+      case 'N':
+      // case N equals case S
+      case 'S':
+        if (lastCoords[0] == coords[0]) {
+          curDir = lastDir;
+        } else {
+          (lastCoords[0] > coords [0]) ? curDir = 'W' : curDir = 'E';
+        }
+        break;
+      case 'E':
+      // case E equals case W
+      case 'W':
+        if (lastCoords[1] == coords[1]) {
+          curDir = lastDir;
+        } else {
+          (lastCoords[1] > coords[1]) ? curDir = 'S' : curDir = 'N';
+        }
+        break;
+    }
+    return curDir;
+  }
+
+  private calcLabelPos(curDir) {
+    switch (curDir) {
+      case 'N':
+      case 'S':
+        return 'E';
+      case 'E':
+      case 'W':
+        return 'S';
+      default:
+        return 'N';
+    }
+  }
+
+  // "in which direction did we go last", used to initialize for start of line
+  private calcLastDir(coords, lastCoords) {
+    if (Math.abs(lastCoords[0] - coords[0]) > Math.abs(lastCoords[1] - coords[1])) {
+      // More horizontal movement
+      if (lastCoords[0] > coords[0]) {
+        return 'W';
+      } else {
+        return 'E';
+      }
+    } else {
+      // More vertical movement
+      if (lastCoords[1] > coords[1]) {
+        return 'S';
+      } else {
+        return 'N';
+      }
+    }
+  }
+
+  // Calculate the betweenpoint coordinates, so there is a nice curve
+  private calcBetweenCoords1(coords, lastCoords, lastDir) {
+    if (lastDir === 'N') {
+      return [lastCoords[0], coords[1] - 1];
+    } else if (lastDir === 'S') {
+      return [lastCoords[0], coords[1] + 1];
+    } else if (lastDir === 'E') {
+      return [coords[0] - 1, lastCoords[1]];
+    } else if (lastDir === 'W') {
+      return [coords[0] + 1, lastCoords[1]];
+    }
+  }
+
+  // Calculate the betweenpoint coordinates, so there is a nice curve
+  private calcBetweenCoords2(curDir, coords, lastCoords) {
+    // Set coordinates of the second point
+    if (curDir === 'N') {
+      return [coords[0], lastCoords[1] + 1];
+    } else if (curDir === 'S') {
+      return [coords[0], lastCoords[1] - 1];
+    } else if (curDir === 'E') {
+      return [lastCoords[0] + 1, coords[1]];
+    } else if (curDir === 'W') {
+      return [lastCoords[0] - 1, coords[1]];
+    }
+  }
+
+  private calcShiftCoords(curDir, shiftCoords) {
+    if (curDir === 'N' || curDir === 'S') {
+      return [shiftCoords[0], 0];
+    } else {
+      return [0, shiftCoords[1]];
+    }
+  }
+
   // d3-tube-map crashes if there is no river object
   // so we just create one and place it outside of the shown part of the map
-  private calcRiver(rasterWidth, rasterHeight): any {
+  private calcDummyRiver(): any {
     return {
       'name': 'River',
       'label': 'River',
@@ -257,15 +255,15 @@ export class MapCreatorService {
       'nodes': [{
         'coords': [0, 0]
       }, {
-        'coords': [0, rasterHeight / 2]
+        'coords': [0, 50]
       }, {
-        'coords': [1, rasterHeight / 2 + 2]
+        'coords': [1, 52]
       }, {
-        'coords': [rasterWidth / 2 - 2, rasterHeight - 1]
+        'coords': [48, 99]
       }, {
-        'coords': [rasterWidth / 2, rasterHeight]
+        'coords': [50, 100]
       }, {
-        'coords': [rasterWidth, rasterHeight]
+        'coords': [100, 100]
       }]
     };
   }
