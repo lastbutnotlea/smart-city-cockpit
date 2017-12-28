@@ -1,3 +1,15 @@
 .no-float {
   clear: both;
 }
+
+.margin-bottom {
+  margin-bottom: 30px;
+}
+
+.big-padding-top {
+  padding-top: 50px;
+}
+
+.stop-list {
+  list-style-type: circle;
+}

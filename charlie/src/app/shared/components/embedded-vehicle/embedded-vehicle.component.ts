@@ -1,4 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {VehicleData} from '../../vehicle-data';
 
 @Component({
   selector: 'app-embedded-vehicle',
@@ -8,6 +9,7 @@ import {Component, OnInit} from '@angular/core';
 
 export class EmbeddedVehicleComponent implements OnInit {
 
+  @Input() vehicle: VehicleData;
 
   public ngOnInit(): void {
   }

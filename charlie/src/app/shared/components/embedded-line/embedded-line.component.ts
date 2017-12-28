@@ -1,4 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {LineData} from '../../line-data';
+
 
 @Component({
   selector: 'app-embedded-line',
@@ -8,6 +10,7 @@ import {Component, OnInit} from '@angular/core';
 
 export class EmbeddedLineComponent implements OnInit {
 
+  @Input() line: LineData;
 
   public ngOnInit(): void {
   }

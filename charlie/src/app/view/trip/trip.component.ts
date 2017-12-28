@@ -18,7 +18,7 @@ export class TripComponent implements OnInit {
   constructor(private http: HttpRoutingService) { }
 
   public ngOnInit(): void {
-    this.title = 'trip view';
+    this.title = 'Trip View';
 
     // get trip data
     this.http.getTrips().subscribe(
