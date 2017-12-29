@@ -112,4 +112,11 @@ export class HttpRoutingService {
     return this.http.delete(this.urlBuilder.getTripDetailsUrl(tripId)).pipe(tap(data =>
       console.log('DELETE TRIP OK')));
   }
+
+  public getFilterData(): Observable<any> {
+    return this.http.get<any>(this.urlBuilder.getFilterInfosUrl()).
+      pipe(
+        tap(data => console.log('Data for filters: ' + data))
+    );
+  }
 }

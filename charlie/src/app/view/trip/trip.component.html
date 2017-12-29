@@ -6,7 +6,7 @@
   <h3 class="text-center margin-bottom">{{title}}</h3>
 <button class="btn btn-outline-primary no-float margin-bottom" (click)="addTrip()">Add</button>
 
-<app-filter-view></app-filter-view>
+<app-filter-group-view></app-filter-group-view>
 
 <div class="scrollable">
   <table class="table table-width">
@@ -20,7 +20,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let trip of (compFilter.getFiltered(trips))">
+    <tr *ngFor="let trip of filterGroup.getFiltered(trips)">
         <td>
           <a routerLink="detail/{{trip.id}}">
             {{ trip.id }}
@@ -29,7 +29,7 @@
         <td>{{ trip.vehicle.id }}</td>
         <td>{{ trip.vehicle.type }}</td>
         <td>{{ trip.line.name }}</td>
-        <td>Delete</td>
+        <td><i class="fa fa-trash fa-2x text-primary"></i></td>
     </tr>
     </tbody>
   </table>

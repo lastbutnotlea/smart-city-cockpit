@@ -14,7 +14,8 @@ import {TripEditDepartureComponent} from '../trip-edit-departure/trip-edit-depar
 @Component({
   selector: 'app-trip-detail-view',
   templateUrl: './trip-detail.component.html',
-  styleUrls: ['./trip-detail.component.css', '../../shared/styling/embedded-components.css',
+  styleUrls: ['./trip-detail.component.css',
+              '../../shared/styling/embedded-components.css',
               '../../shared/styling/global-styling.css']
 })
 

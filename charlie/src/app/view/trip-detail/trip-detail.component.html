@@ -13,15 +13,21 @@
     <button class="btn btn-outline-danger" (click)="showConfirmModal()">Delete</button>
   </div>
 
-  <app-embedded-line [line]="trip.line"></app-embedded-line>
-  <app-embedded-vehicle [vehicle]="trip.vehicle"></app-embedded-vehicle>
   <!-- stops -->
   <div class="bounding-box bg-light">
-    <h5>Stops</h5>
+    <h5 class="text-lg-left"><i class="fa fa-map-marker fa-2x float-left small-padding-left text-primary"></i>
+      <label class="padding-emb-box-headline">Stops</label>
+    </h5>
     <p *ngFor="let stop of trip.stops">
-      <label class="text-secondary">{{stop.departureTime |  date:'MM/dd/yyyy HH:mm'}}</label> <br> {{stop.name}}
+      <label class="text-secondary">{{stop.departureTime |  date:'MM/dd/yyyy HH:mm'}}</label>  {{stop.name}}
     </p>
   </div>
+
+  <!-- line -->
+  <app-embedded-line [line]="trip.line"></app-embedded-line>
+
+  <!-- vehicle -->
+  <app-embedded-vehicle [vehicle]="trip.vehicle"></app-embedded-vehicle>
 
   <div class="no-float big-padding-top">
     <button class="btn btn-outline-secondary" (click)="goBack()">Back To Trips</button>

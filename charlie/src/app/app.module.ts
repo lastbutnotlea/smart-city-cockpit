@@ -29,6 +29,7 @@ import { TickerComponent } from './view/ticker/ticker.component';
 import { TickerItemComponent } from './view/ticker-item/ticker-item.component';
 import { StopDetailComponent } from './view/stop-detail/stop-detail.component';
 import {TripAddComponent} from './view/trip-add/trip-add.component';
+import { FilterGroupComponent } from './shared/components/filter-group/filter-group.component';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import {TripAddComponent} from './view/trip-add/trip-add.component';
     TripEditComponent,
     TripEditDepartureComponent,
     FilterComponent,
+    FilterGroupComponent,
     MapComponent,
     LineMapComponent,
     LineDetailComponent,

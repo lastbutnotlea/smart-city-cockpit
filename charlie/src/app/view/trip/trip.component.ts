@@ -4,6 +4,7 @@ import {FilterComponent} from '../../shared/components/filter/filter.component';
 import { TripData } from '../../shared/data/trip-data';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {TripAddComponent} from '../trip-add/trip-add.component';
+import { FilterGroupComponent } from '../../shared/components/filter-group/filter-group.component';
 
 @Component({
   selector: 'app-trip-view',
@@ -15,22 +16,20 @@ export class TripComponent implements OnInit {
   title: String;
   trips: TripData[] = [];
 
-  @ViewChild(FilterComponent) compFilter: FilterComponent;
+  @ViewChild(FilterGroupComponent)
+  filterGroup: FilterGroupComponent;
 
   constructor(private http: HttpRoutingService,
               private modalService: NgbModal) { }
 
   public ngOnInit(): void {
     this.title = 'Trip View';
-
+    this.addFilter();
     // get trip data
     this.http.getTrips().subscribe(
       data => this.trips = data,
       err => console.log('Could not fetch trips.')
     );
-
-    this.compFilter.addFilter('Line', trip => trip.line.id === '1');
-    this.compFilter.addFilter('Vehicle Type', trip => trip.vehicle.type === 'Bus');
   }
 
   public isLoaded(): boolean {
@@ -43,5 +42,33 @@ export class TripComponent implements OnInit {
   addTrip(): void {
     const modal = this.modalService.open(TripAddComponent);
     modal.componentInstance.initData();
+  }
+
+  private addFilter(): void {
+    this.http.getFilterData().subscribe(
+      data => {
+        // add filters for vehicles
+        let vehicleFilter = new FilterComponent();
+        for(let val in data.types){
+          let name = data.types[val];
+          vehicleFilter.addFilter(name, trip => trip.vehicle.type === name);
+        }
+        this.filterGroup.addFilterComponent(vehicleFilter);
+        // add filters for lines
+        let lineFilter = new FilterComponent();
+        for(let val in data.lineNames){
+          let name = data.lineNames[val];
+          lineFilter.addFilter(name, trip => trip.line.name === name);
+        }
+        this.filterGroup.addFilterComponent(lineFilter);
+      },
+      err => {
+        console.log('Could not fetch filter data!');
+      }
+    )
+
+
+/*    this.filterCreator.addVehicleFilters(this.filterGroup.getFilter('vehicleFilter'));
+    this.filterCreator.addLineFilters(this.filterGroup.getFilter('lineFilter'));*/
   }
 }
