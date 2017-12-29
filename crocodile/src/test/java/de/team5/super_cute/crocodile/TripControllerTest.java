@@ -30,7 +30,7 @@ import org.springframework.test.web.servlet.MockMvc;
 @WebMvcTest
 public class TripControllerTest {
 
-  private Stop s1, s2, s3;
+  private Stop s1, s2, s3, s4;
   private Vehicle v1, v2;
   private Line l1, l2;
   private LocalDateTime ldt1;
@@ -53,13 +53,14 @@ public class TripControllerTest {
     s1 = new Stop("ApiId1", "Marienplatz", 10, 3.5, 50);
     s2 = new Stop("ApiId2", "Odeonsplatz", 11, 3.7, 43);
     s3 = new Stop("ApiId3", "Stachus", 10.2, 2, 61);
+    s4 = new Stop("ApiId4", "Sendlinger Tor", 12.2, 3, 41);
     v1 = new Vehicle(300, 0, 28, EVehicleType.Subway, "Motorschaden");
     v2 = new Vehicle(340, 2, 31, EVehicleType.Train, "Fenster gebrochen");
-    l1 = new LineBuilder().name("U6").color(Color.blue).stops(s2, s1).travelTime(0, 2).build();
+    l1 = new LineBuilder().name("U6").color(Color.blue).stops(s2, s1, s4).travelTime(0, 2, 5).build();
     l2 = new LineBuilder().name("S1").color(Color.cyan).stops(s3, s1).travelTime(0, 3).build();
     ldt1 = LocalDateTime.of(2017, Month.AUGUST, 12, 11, 30);
     new NetworkDataBuilder(lineData, vehicleData, stopData, tripData)
-        .addStops(s1, s2, s3)
+        .addStops(s1, s2, s3, s4)
         .addLines(l1, l2)
         .addVehicles(v1, v2)
         .build();
@@ -80,15 +81,20 @@ public class TripControllerTest {
   public void testTripAdding() throws Exception {
     initTestObjects();
     Map<String, LocalDateTime> stops = new HashMap<>();
-    stops.put(s2.getId(), ldt1);
-    stops.put(s1.getId(), Helpers.DUMMY_TIME);
+    stops.put(s2.getId(), Helpers.DUMMY_TIME);
+    stops.put(s1.getId(), ldt1);
+    stops.put(s4.getId(), Helpers.DUMMY_TIME);
     Trip testTrip = new Trip(v2, l1, stops, true);
     tripControllerTestHelper.testAdd(testTrip);
     Trip tripAfterAdding = tripControllerTestHelper.getObjects().stream()
         .filter(t -> t.getId().equals(testTrip.getId())).findAny().orElse(null);
     assert(tripAfterAdding != null);
-    LocalDateTime correctTime = ldt1.plusMinutes(testTrip.getLine().getTravelTimeInbound().get(s1.getId()));
-    assert(tripAfterAdding.getStops().get(s1.getId()).equals(correctTime));
+    int diffMinutesS1ToS4 = testTrip.getLine().getTravelTimeInbound().get(s4.getId()) - testTrip.getLine().getTravelTimeInbound().get(s1.getId());
+    LocalDateTime correctTimeS4 = ldt1.plusMinutes(diffMinutesS1ToS4);
+    assert(tripAfterAdding.getStops().get(s4.getId()).equals(correctTimeS4));
+    int diffMinutesS1ToS2 = testTrip.getLine().getTravelTimeInbound().get(s2.getId()) - testTrip.getLine().getTravelTimeInbound().get(s1.getId());
+    LocalDateTime correctTimeS2 = ldt1.plusMinutes(diffMinutesS1ToS2);
+    assert(tripAfterAdding.getStops().get(s2.getId()).equals(correctTimeS2));
   }
 
 }
