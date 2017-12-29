@@ -1,5 +1,6 @@
 package de.team5.super_cute.crocodile.model;
 
+import de.team5.super_cute.crocodile.config.LiveDataConfig;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -34,7 +35,9 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
   @Column
   private EVehicleType type;
 
-  public Vehicle() { super(); }
+  public Vehicle() {
+    super();
+  }
 
   public Vehicle(int capacity, int load, int delay, int temperature, Set<String> defects,
       EVehicleType type) {
@@ -96,7 +99,7 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
     this.defects = defects;
   }
 
-  public void addDefect(String defect){
+  public void addDefect(String defect) {
     for (String d:this.defects) {
       if(d.equals(defect)){
         return;
@@ -105,7 +108,7 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
     this.defects.add(defect);
   }
 
-  public boolean removeDefect(String defect){
+  public boolean removeDefect(String defect) {
     return this.defects.remove(defect);
   }
 
@@ -115,5 +118,36 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
 
   public void setType(EVehicleType type) {
     this.type = type;
+  }
+
+  public int getLoadSeverity() {
+    if (getLoad() / getCapacity() <= 0.5) {
+      return LiveDataConfig.LOAD_SEVERITY[0];
+    } else if (getLoad() / getCapacity() <= 1.5) {
+      return LiveDataConfig.LOAD_SEVERITY[1];
+    } else {
+      return LiveDataConfig.LOAD_SEVERITY[2];
+    }
+  }
+
+  public int getTemperatureSeverity() {
+    if (getTemperature() <= 30 && getTemperature() >= 25) {
+      return LiveDataConfig.TEMPERATURE_SEVERITY[0];
+    } else if ((getTemperature() <= 24 && getTemperature() >= 15) || (getTemperature() <= 40
+        && getTemperature() >= 31)) {
+      return LiveDataConfig.TEMPERATURE_SEVERITY[1];
+    } else {
+      return LiveDataConfig.TEMPERATURE_SEVERITY[2];
+    }
+  }
+
+  public int getDelaySeverity() {
+    if (getDelay() <= 5) {
+      return LiveDataConfig.DELAY_SEVERITY[0];
+    } else if (getDelay() <= 15) {
+      return LiveDataConfig.DELAY_SEVERITY[1];
+    } else {
+      return LiveDataConfig.DELAY_SEVERITY[2];
+    }
   }
 }
