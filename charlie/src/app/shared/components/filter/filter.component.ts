@@ -9,8 +9,6 @@ export class FilterComponent {
 
   @Input()
   filters: [string, boolean, (any) => boolean][] = [];
-  @Input()
-  id: string;
 
   addFilter(text: string, predicate: (any) => boolean) {
     this.filters.push([text, true, predicate]);

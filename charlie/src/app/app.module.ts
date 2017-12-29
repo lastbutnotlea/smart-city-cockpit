@@ -23,7 +23,6 @@ import {EmbeddedVehicleComponent} from './shared/components/embedded-vehicle/emb
 import { TickerComponent } from './view/ticker/ticker.component';
 import { TickerItemComponent } from './view/ticker-item/ticker-item.component';
 import { StopDetailComponent } from './view/stop-detail/stop-detail.component';
-import { FilterCreatorService } from './services/filter-creator.service';
 import { FilterGroupComponent } from './shared/components/filter-group/filter-group.component';
 
 
@@ -57,8 +56,7 @@ import { FilterGroupComponent } from './shared/components/filter-group/filter-gr
   providers: [
     UrlBuilderService,
     HttpRoutingService,
-    MapCreatorService,
-    FilterCreatorService
+    MapCreatorService
   ],
   bootstrap: [AppComponent],
   // modal dialogs:

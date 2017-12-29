@@ -10,19 +10,8 @@ export class FilterGroupComponent {
 
   filters: FilterComponent[] = [];
 
-  public addFilterComponent(id: string): void {
-    let filter = new FilterComponent();
-    filter.id = id;
+  public addFilterComponent(filter: FilterComponent): void {
     this.filters.push(filter);
-  }
-
-  public getFilter(id: string): FilterComponent {
-    for(let filter of this.filters) {
-      if(filter.id === id){
-        return filter;
-      }
-    }
-    return null;
   }
 
   getFiltered(list: any[]): any[] {

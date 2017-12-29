@@ -107,4 +107,11 @@ export class HttpRoutingService {
     console.log('EDIT TRIP, lineID: ' + trip.line.id + ' vehicleID: ' + trip.vehicle.id);
     this.http.put(this.urlBuilder.getTripsUrl(), trip).subscribe(() => console.log('TRIP EDIT OK'));
   }
+
+  public getFilterData(): Observable<any> {
+    return this.http.get<any>(this.urlBuilder.getFilterInfosUrl()).
+      pipe(
+        tap(data => console.log('Data for filters: ' + data))
+    );
+  }
 }
