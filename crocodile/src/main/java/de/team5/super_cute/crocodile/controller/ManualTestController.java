@@ -42,7 +42,6 @@ public class ManualTestController {
 
   @GetMapping
   public List<Trip> testTrips() {
-    // TODO make Code duplication go away (after merges)
     Stop s1 = new Stop("ApiId1", "Marienplatz", 10, 3.5, 50);
     Stop s2 = new Stop("ApiId2", "Odeonsplatz", 11, 3.7, 43);
     Stop s3 = new Stop("ApiId3", "Stachus", 10.2, 2, 61);

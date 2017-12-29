@@ -56,7 +56,7 @@ public class TripControllerTest {
     s4 = new Stop("ApiId4", "Sendlinger Tor", 12.2, 3, 41);
     v1 = new Vehicle(300, 0, 28, EVehicleType.SUBWAY, "Motorschaden");
     v2 = new Vehicle(340, 2, 31, EVehicleType.SUBWAY, "Fenster gebrochen");
-    l1 = new LineBuilder().name("U6").color(Color.blue).stops(s2, s1).travelTime(0, 2).type(EVehicleType.SUBWAY).build();
+    l1 = new LineBuilder().name("U6").color(Color.blue).stops(s2, s1, s4).travelTime(0, 2, 5).type(EVehicleType.SUBWAY).build();
     l2 = new LineBuilder().name("S1").color(Color.cyan).stops(s3, s1).travelTime(0, 3).type(EVehicleType.SUBWAY).build();
     ldt1 = LocalDateTime.of(2017, Month.AUGUST, 12, 11, 30);
     new NetworkDataBuilder(lineData, vehicleData, stopData, tripData)
