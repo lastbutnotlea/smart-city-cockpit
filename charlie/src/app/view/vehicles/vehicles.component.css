@@ -1,0 +1,21 @@
+:host {
+  height: 100%;
+  display: block;
+}
+
+.scrollable {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.bodycontainer {
+  max-height: 100%;
+  width: 100%;
+  margin: 0;
+  overflow-y: auto;
+}
+
+.table-scrollable {
+  margin: 0;
+  padding: 0;
+}

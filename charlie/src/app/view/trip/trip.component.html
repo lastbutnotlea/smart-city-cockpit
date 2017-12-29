@@ -1,7 +1,3 @@
-<div *ngIf="!isLoaded()">
-  <h3>Loading...</h3>
-</div>
-
 <h3 class="text-center">{{title}}</h3>
 
 <app-filter-view></app-filter-view>
@@ -29,4 +25,8 @@
     </tr>
     </tbody>
   </table>
+
+  <div *ngIf="!isLoaded()">
+    <h3>Loading...</h3>
+  </div>
 </div>
