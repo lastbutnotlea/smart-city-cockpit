@@ -21,6 +21,8 @@ import {DropdownComponent} from './shared/components/dropdown/dropdown.component
 import {EmbeddedLineComponent} from './shared/components/embedded-line/embedded-line.component';
 import {EmbeddedVehicleComponent} from './shared/components/embedded-vehicle/embedded-vehicle.component';
 import { StopDetailComponent } from './view/stop-detail/stop-detail.component';
+import {TickerComponent} from './view/ticker/ticker.component';
+import {TickerItemComponent} from './view/ticker-item/ticker-item.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -39,7 +41,9 @@ describe('AppComponent', () => {
         StopDetailComponent,
         DropdownComponent,
         EmbeddedLineComponent,
-        EmbeddedVehicleComponent
+        EmbeddedVehicleComponent,
+        TickerComponent,
+        TickerItemComponent,
       ],
       imports: [
         BrowserModule,

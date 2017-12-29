@@ -2,12 +2,11 @@
   <h3>Loading...</h3>
 </div>
 
-<div>
+<h3 class="text-center">{{title}}</h3>
 
-  <h3 class="text-center">{{title}}</h3>
+<app-filter-view></app-filter-view>
 
-  <app-filter-view></app-filter-view>
-
+<div class="scrollable">
   <table class="table">
     <thead>
     <tr>
@@ -19,16 +18,15 @@
     </thead>
     <tbody>
     <tr *ngFor="let trip of (compFilter.getFiltered(trips))">
-        <td>
-          <a routerLink="detail/{{trip.id}}">
-            {{ trip.id }}
-          </a>
-        </td>
-        <td>{{ trip.vehicle.id }}</td>
-        <td>{{ trip.vehicle.type }}</td>
-        <td>{{ trip.line.name }}</td>
+      <td>
+        <a routerLink="detail/{{trip.id}}">
+          {{ trip.id }}
+        </a>
+      </td>
+      <td>{{ trip.vehicle.id }}</td>
+      <td>{{ trip.vehicle.type }}</td>
+      <td>{{ trip.line.name }}</td>
     </tr>
     </tbody>
   </table>
-
 </div>
