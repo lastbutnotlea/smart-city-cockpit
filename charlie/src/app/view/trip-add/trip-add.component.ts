@@ -20,6 +20,7 @@ export class TripAddComponent implements OnInit {
 
   selectedVehicle: DropdownValue;
   selectedLine: DropdownValue;
+  selectedDirection: DropdownValue;
 
   availLines: LineData[] = [];
   availVehicles: VehicleData[] = [];
@@ -31,6 +32,7 @@ export class TripAddComponent implements OnInit {
   ngOnInit(): void {
     this.selectedVehicle = new DropdownValue(0, 'loading');
     this.selectedLine = new DropdownValue(0, 'loading');
+    this.selectedDirection = this.directionItem();
   }
 
   initData(): void {
@@ -43,7 +45,7 @@ export class TripAddComponent implements OnInit {
 
     this.http.getVehicles().subscribe(
       data => {
-        this.availVehicles = data
+        this.availVehicles = data;
         this.selectedVehicle = this.toDropdownItemV(this.availVehicles[0]);
       },
       err => console.log('Err'));
@@ -52,7 +54,29 @@ export class TripAddComponent implements OnInit {
   }
 
   showStops(): void {
+    this.selected.vehicle = this.selectedVehicle.value;
+    this.selected.line = this.selectedLine.value;
+    this.selected.isInbound = this.selectedDirection.value;
+
+    let stops = [];
+    let selectedStops = [];
+    if(this.selectedDirection.value) {
+      selectedStops = this.selected.line.stopsInbound;
+    }
+    else {
+      selectedStops = this.selected.line.stopsOutbound;
+    }
+    for(const stop of selectedStops) {
+      stops.push(new TripStopData(stop.id, '0000-01-01T00:00', stop.commonName));
+    }
+    debugger;
+
+    this.selected.stops = stops;
     console.log("show stops works");
+  }
+
+  stopsVisible(): boolean {
+    return this.selected.stops !== null;
   }
 
   confirm(): void {
@@ -107,5 +131,16 @@ export class TripAddComponent implements OnInit {
 
   toDropdownItemsL(items: LineData[]): DropdownValue[] {
     return items.map(item => this.toDropdownItemL(item));
+  }
+
+  directionItem(): DropdownValue {
+    return new DropdownValue(true, 'Inbound');
+  }
+
+  directionItems(): DropdownValue[] {
+    let directionItems: DropdownValue[] = [];
+    directionItems.push(new DropdownValue(true, 'Inbound'));
+    directionItems.push(new DropdownValue(false, 'Outbound'));
+    return directionItems;
   }
 }

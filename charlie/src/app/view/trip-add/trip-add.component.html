@@ -15,18 +15,23 @@
 
   <div class="margin-bottom">
     <label>Line: </label>
-    <app-dropdown [values]="toDropdownItemsL(availLines)" [(selected)]="selectedLine" (selected)="showStops()"></app-dropdown>
+    <app-dropdown [values]="toDropdownItemsL(availLines)" [(selected)]="selectedLine"></app-dropdown>
   </div>
 
-  <!--
-  <div class="d-block">
+  <div class="margin-bottom">
+    <label>Direction: </label>
+    <app-dropdown [values]="directionItems()" [(selected)]="selectedDirection"></app-dropdown>
+  </div>
+
+  <button type="button margin-bottom" class="btn btn-outline-primary" (click)="showStops()">Edit Stops</button>
+
+  <div *ngIf="stopsVisible()" class="d-block">
     <label>Stops:</label>
-    <div class="" *ngFor="let stop of selected; let i = index">
+    <div class="" *ngFor="let stop of selected.stops; let i = index">
       <input #box type="checkbox" [ngModel]="isChecked(stop)" (change)="includeStop(stop, box.checked)">
-      <label class="padding-left">{{stop.commonName}}</label>
+      <label class="padding-left">{{stop.name}}</label>
     </div>
   </div>
-  -->
 
 </div>
 <div class="modal-footer">
