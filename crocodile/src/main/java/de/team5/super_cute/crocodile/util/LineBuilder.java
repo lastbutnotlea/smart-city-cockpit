@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Hashtable;
+import java.util.List;
 import java.util.Map;
 
 public class LineBuilder {
@@ -34,8 +35,9 @@ public class LineBuilder {
   public LineBuilder stops(Stop... stops) {
     ArrayList<Stop> stopsList = new ArrayList<>(Arrays.asList(stops));
     line.setStopsInbound(stopsList);
-    Collections.reverse(stopsList);
-    line.setStopsOutbound(stopsList);
+    List<Stop> stopsOutbound = (List<Stop>) stopsList.clone();
+    Collections.reverse(stopsOutbound);
+    line.setStopsOutbound(stopsOutbound);
     return this;
   }
 

@@ -6,6 +6,7 @@ import { TripData } from '../shared/data/trip-data';
 import {VehicleData} from '../shared/data/vehicle-data';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { StopData } from '../shared/data/stop-data';
 
 @Injectable()
 export class HttpRoutingService {
@@ -53,6 +54,19 @@ export class HttpRoutingService {
     return this.http.get<LineData>(this.urlBuilder.getLineDetailsUrl(lineId))
       .pipe(
         tap(line => console.log(`Fetched Line Details.`))
+      );
+  }
+
+  /**
+   * Gets data for stop with line
+   * @param {string} lineId
+   * @param {string} stopId
+   * @returns {Observable<StopData>}
+   */
+  public getStopDetails (stopId: string): Observable<StopData> {
+    return this.http.get<StopData>(this.urlBuilder.getStopDetailsUrl(stopId))
+      .pipe(
+        tap(stop => console.log('Fetched Stop Details'))
       );
   }
 

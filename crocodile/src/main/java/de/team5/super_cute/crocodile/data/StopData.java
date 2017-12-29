@@ -12,5 +12,4 @@ public class StopData extends BaseData<Stop> {
   public StopData(HibernateTemplate template) {
     super(Stop.class, template);
   }
-
 }

@@ -26,7 +26,7 @@ abstract class BaseController<T extends IdentifiableObject> {
     if (removed) {
       return ResponseEntity.ok().build();
     }
-    return  ResponseEntity.badRequest().build();
+    return ResponseEntity.badRequest().build();
   }
 
   ResponseEntity editObject(T input) {

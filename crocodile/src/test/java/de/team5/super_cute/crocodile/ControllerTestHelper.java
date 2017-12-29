@@ -19,33 +19,40 @@ import org.springframework.test.web.servlet.MockMvc;
 class ControllerTestHelper<T extends IdentifiableObject> {
 
   private ObjectMapper mapper;
-
   private MockMvc mockMvc;
+  private String baseUri;
+  private TypeReference typeReference;
 
-  public ControllerTestHelper(MockMvc mockMvc) {
+  public ControllerTestHelper(MockMvc mockMvc, String baseUri, TypeReference typeReference) {
     this.mockMvc = mockMvc;
     mapper = new ObjectMapper();
     SimpleModule module = new SimpleModule();
     module.addSerializer(Color.class, new ColorSerializer());
     module.addDeserializer(Color.class, new ColorDeserializer());
     mapper.registerModule(module);
+    this.baseUri = baseUri;
+    this.typeReference = typeReference;
   }
 
-  void testAddAndDelete(String baseUri, T object, TypeReference typeReference) throws Exception{
-    assert(!getObjects(baseUri, typeReference).contains(object));
+  void testAddAndDelete(T object) throws Exception {
+    assert(!getObjects().contains(object));
 
-    this.mockMvc.perform(post(baseUri).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(object))).andExpect(status().isCreated());
+    testAdd(object);
 
-    assert(getObjects(baseUri, typeReference).contains(object));
+    assert(getObjects().contains(object));
 
     this.mockMvc.perform(delete(baseUri + "/" + object.getId())).andExpect(status().isOk());
 
-    assert(!getObjects(baseUri, typeReference).contains(object));
+    assert(!getObjects().contains(object));
   }
 
-  List<T> getObjects(String baseUri, TypeReference typeReference) throws Exception{
+  List<T> getObjects() throws Exception{
     String o = this.mockMvc.perform(get(baseUri)).andReturn().getResponse().getContentAsString();
     return mapper.readValue(o, typeReference);
+  }
+
+  void testAdd(T object) throws Exception {
+    this.mockMvc.perform(post(baseUri).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(object))).andExpect(status().isCreated());
   }
 
 }
