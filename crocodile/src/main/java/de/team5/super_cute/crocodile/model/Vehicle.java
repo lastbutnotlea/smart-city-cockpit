@@ -1,6 +1,5 @@
 package de.team5.super_cute.crocodile.model;
 
-import static de.team5.super_cute.crocodile.config.LiveDataConfig.STOP_DEFECTS_SEVERITY;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.VEHICLE_DEFECTS_SEVERITY;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -106,8 +105,8 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
   }
 
   public void addDefect(String defect) {
-    for (String d:this.defects) {
-      if(d.equals(defect)){
+    for (String d : this.defects) {
+      if (d.equals(defect)) {
         return;
       }
     }
@@ -170,9 +169,9 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
   }
 
   @JsonIgnore
-  public int getSeverity(){
+  public int getSeverity() {
     int severity = 0;
-    for (String defect:defects) {
+    for (String defect : defects) {
       severity += VEHICLE_DEFECTS_SEVERITY.get(defect);
     }
     return severity + getLoadSeverity() + getTemperatureSeverity() + getDelaySeverity();

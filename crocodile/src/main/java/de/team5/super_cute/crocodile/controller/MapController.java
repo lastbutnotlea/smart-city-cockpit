@@ -38,7 +38,8 @@ public class MapController {
   @GetMapping("/stations")
   public ObjectNode getMapStations() throws JsonProcessingException {
     ObjectNode stations = mapper.createObjectNode();
-    List<Stop> stopData = this.lineData.getData().stream().map(Line::getStopsInbound).flatMap(Collection::stream)
+    List<Stop> stopData = this.lineData.getData().stream().map(Line::getStopsInbound)
+        .flatMap(Collection::stream)
         .collect(
             Collectors.toList());
     for (Stop s : stopData) {

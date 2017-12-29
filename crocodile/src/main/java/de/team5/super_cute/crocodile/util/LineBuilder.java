@@ -30,7 +30,6 @@ public class LineBuilder {
 
   /**
    * @param stops the inbound stops for this line. They are reversed and used for outbound.
-   * @return
    */
   public LineBuilder stops(Stop... stops) {
     ArrayList<Stop> stopsList = new ArrayList<>(Arrays.asList(stops));
@@ -42,8 +41,8 @@ public class LineBuilder {
   }
 
   /**
-   * @param travelTime the inbound travel times from the start stop. Times are reversed for outbound travel time.
-   * @return
+   * @param travelTime the inbound travel times from the start stop. Times are reversed for outbound
+   * travel time.
    */
   public LineBuilder travelTime(Integer... travelTime) {
     if (line.getStopsInbound().isEmpty()) {
@@ -55,7 +54,8 @@ public class LineBuilder {
     Map<String, Integer> travelTimeOutbound = new Hashtable<>();
     for (int i = 0; i < numStops; i++) {
       travelTimeInbound.put(line.getStopsInbound().get(i).getId(), travelTime[i]);
-      travelTimeOutbound.put(line.getStopsOutbound().get(numStops - i - 1).getId(), max - travelTime[i]);
+      travelTimeOutbound
+          .put(line.getStopsOutbound().get(numStops - i - 1).getId(), max - travelTime[i]);
     }
     line.setTravelTimeInbound(travelTimeInbound);
     line.setTravelTimeOutbound(travelTimeOutbound);

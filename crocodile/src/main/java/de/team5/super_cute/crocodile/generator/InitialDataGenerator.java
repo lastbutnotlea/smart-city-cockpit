@@ -53,7 +53,7 @@ public class InitialDataGenerator {
     networkDataBuilder = new NetworkDataBuilder(lineData, vehicleData, stopData,
         tripData);
     LoggerFactory.getLogger(getClass())
-            .info("Started initialization");
+        .info("Started initialization");
     ArrayList<Line> lines = new TpDataConnector().getLines(lineIds);
     LocalDateTime from = LocalDateTime.now().withHour(fromHour).withMinute(fromMinute);
     LocalDateTime to = LocalDateTime.now().withHour(toHour).withMinute(toMinute);
@@ -72,7 +72,7 @@ public class InitialDataGenerator {
     for (int x = 0; x < lines.size(); x++) {
       try {
         Line line = lines.get(x);
-        if(lineData.exists(line.getName())){
+        if (lineData.exists(line.getName())) {
           continue;
         }
         networkDataBuilder.addLinesWithStops(line);
@@ -165,7 +165,7 @@ public class InitialDataGenerator {
           break;
         }
       } while (from.compareTo(actual.getLocalDateTime()) == 1);
-    } catch(NullPointerException e) {
+    } catch (NullPointerException e) {
       actual.setLocalDateTime(actual.getLocalDateTime().plusDays(1));
     }
     return pointer;

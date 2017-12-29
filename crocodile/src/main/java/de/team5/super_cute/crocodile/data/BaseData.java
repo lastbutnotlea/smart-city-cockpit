@@ -34,7 +34,7 @@ public abstract class BaseData<T extends IdentifiableObject> {
 
   public T getObjectForId(String Id) {
     List<T> objects = (List<T>) hibernateTemplate.getSessionFactory().getCurrentSession()
-            .createQuery("from " + clazz.getName() + " C where C.id='" + Id + "'").list();
+        .createQuery("from " + clazz.getName() + " C where C.id='" + Id + "'").list();
     return objects.size() == 0 ? null : objects.get(0);
   }
 

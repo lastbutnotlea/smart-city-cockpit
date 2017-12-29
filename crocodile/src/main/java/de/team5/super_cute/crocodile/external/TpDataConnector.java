@@ -7,7 +7,6 @@ import static de.team5.super_cute.crocodile.util.ColorMapping.lineColors;
 import com.fasterxml.jackson.databind.JsonNode;
 import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Stop;
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,14 +34,17 @@ public class TpDataConnector {
         params.put("app_id", app_id);
         params.put("app_key", app_key);
         JsonNode node = rt
-            .getForObject("https://api.tfl.gov.uk/Line/{id}/Route/Sequence/all?app_id={app_id}&app_key={app_key}", JsonNode.class,
+            .getForObject(
+                "https://api.tfl.gov.uk/Line/{id}/Route/Sequence/all?app_id={app_id}&app_key={app_key}",
+                JsonNode.class,
                 params);
         getStopsFromNode(node, stopsInbound, stopsOutbound);
         travelTimeInbound = getTravelTimes(node, stopsInbound);
         travelTimeOutbound = getTravelTimes(node, stopsOutbound);
         lines.add(
             new Line(node.get("lineName").asText(), stopsInbound,
-                stopsOutbound, travelTimeInbound, travelTimeOutbound, lineColors.get(node.get("lineName").asText())));
+                stopsOutbound, travelTimeInbound, travelTimeOutbound,
+                lineColors.get(node.get("lineName").asText())));
       } catch (RestClientException e) {
         LoggerFactory.getLogger(getClass())
             .error("Error while accessing Transport-API while creating lines: " + e.getMessage());
@@ -66,7 +68,8 @@ public class TpDataConnector {
     params.put("app_id", app_id);
     params.put("app_key", app_key);
     JsonNode node_travelTime = rt
-        .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}?app_id={app_id}&app_key={app_key}",
+        .getForObject(
+            "https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}?app_id={app_id}&app_key={app_key}",
             JsonNode.class,
             params);
     Map<String, Integer> travelTime = new HashMap<>();

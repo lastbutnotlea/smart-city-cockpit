@@ -120,13 +120,13 @@ public class LiveDataGenerator {
     Random r = new Random(System.currentTimeMillis());
     if (forStop) {
       if (((Stop) feedbackable).getDefects().size() != 0) {
-        if(r.nextInt(99) + 1 <= REMOVE_STOP_DEFECT_PERCENTAGE){
+        if (r.nextInt(99) + 1 <= REMOVE_STOP_DEFECT_PERCENTAGE) {
           ((Stop) feedbackable).removeDefect(((Stop) feedbackable).getDefects().iterator().next());
         }
       }
     } else {
       if (((Vehicle) feedbackable).getDefects().size() != 0) {
-        if(r.nextInt(99) + 1 <= REMOVE_VEHICLE_DEFECT_PERCENTAGE) {
+        if (r.nextInt(99) + 1 <= REMOVE_VEHICLE_DEFECT_PERCENTAGE) {
           ((Vehicle) feedbackable)
               .removeDefect(((Vehicle) feedbackable).getDefects().iterator().next());
         }

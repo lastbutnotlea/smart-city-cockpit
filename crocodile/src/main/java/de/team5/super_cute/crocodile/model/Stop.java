@@ -7,7 +7,11 @@ import de.team5.super_cute.crocodile.config.LiveDataConfig;
 import de.team5.super_cute.crocodile.util.StateCalculator;
 import java.io.Serializable;
 import java.util.Set;
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "stop")
@@ -28,9 +32,12 @@ public class Stop extends IdentifiableObject implements Serializable, Feedbackab
   @ElementCollection(fetch = FetchType.EAGER)
   private Set<String> defects;
 
-  public Stop() { super(); }
+  public Stop() {
+    super();
+  }
 
-  public Stop(String id, String commonName, double longitude, double latitude, int peopleWaiting, Set<String> defects) {
+  public Stop(String id, String commonName, double longitude, double latitude, int peopleWaiting,
+      Set<String> defects) {
     super();
     setId(id);
     this.commonName = commonName;
@@ -48,16 +55,16 @@ public class Stop extends IdentifiableObject implements Serializable, Feedbackab
     this.defects = defects;
   }
 
-  public void addDefect(String defect){
-    for (String d:this.defects) {
-      if(d.equals(defect)){
+  public void addDefect(String defect) {
+    for (String d : this.defects) {
+      if (d.equals(defect)) {
         return;
       }
     }
     this.defects.add(defect);
   }
 
-  public boolean removeDefect(String defect){
+  public boolean removeDefect(String defect) {
     return this.defects.remove(defect);
   }
 
@@ -95,13 +102,11 @@ public class Stop extends IdentifiableObject implements Serializable, Feedbackab
 
   @JsonIgnore
   public int getPeopleWaitingSeverity() {
-    if(getPeopleWaiting() <= 300){
+    if (getPeopleWaiting() <= 300) {
       return LiveDataConfig.PEOPLE_WAITING_SEVERITY[0];
-    }
-    else if(getPeopleWaiting() <= 700){
+    } else if (getPeopleWaiting() <= 700) {
       return LiveDataConfig.PEOPLE_WAITING_SEVERITY[1];
-    }
-    else{
+    } else {
       return LiveDataConfig.PEOPLE_WAITING_SEVERITY[2];
     }
   }
@@ -116,9 +121,9 @@ public class Stop extends IdentifiableObject implements Serializable, Feedbackab
   }
 
   @JsonIgnore
-  public int getSeverity(){
+  public int getSeverity() {
     int severity = 0;
-    for (String defect:defects) {
+    for (String defect : defects) {
       severity += STOP_DEFECTS_SEVERITY.get(defect);
     }
     return severity + getPeopleWaitingSeverity();

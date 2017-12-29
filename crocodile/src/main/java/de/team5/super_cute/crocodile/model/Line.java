@@ -30,18 +30,18 @@ public class Line extends IdentifiableObject implements Serializable, Feedbackab
   @ManyToMany(fetch = FetchType.LAZY)
   @OrderColumn
   @JoinTable(
-      name="Line_Stops_InB",
-      joinColumns=@JoinColumn(name="line_id"),
-      inverseJoinColumns=@JoinColumn(name="stop_id")
+      name = "Line_Stops_InB",
+      joinColumns = @JoinColumn(name = "line_id"),
+      inverseJoinColumns = @JoinColumn(name = "stop_id")
   )
   private List<Stop> stopsInbound;
 
   @ManyToMany(fetch = FetchType.LAZY)
   @OrderColumn
   @JoinTable(
-      name="Line_Stops_OutB",
-      joinColumns=@JoinColumn(name="line_id"),
-      inverseJoinColumns=@JoinColumn(name="stop_id")
+      name = "Line_Stops_OutB",
+      joinColumns = @JoinColumn(name = "line_id"),
+      inverseJoinColumns = @JoinColumn(name = "stop_id")
   )
   private List<Stop> stopsOutbound;
 
@@ -133,7 +133,7 @@ public class Line extends IdentifiableObject implements Serializable, Feedbackab
     return state;
   }
 
-  public void setState(EState state){
+  public void setState(EState state) {
     this.state = state;
   }
 }

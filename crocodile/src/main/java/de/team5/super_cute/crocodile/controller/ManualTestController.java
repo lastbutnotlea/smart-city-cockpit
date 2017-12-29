@@ -1,13 +1,10 @@
 package de.team5.super_cute.crocodile.controller;
 
-import static de.team5.super_cute.crocodile.model.EState.FINE;
-
 import de.team5.super_cute.crocodile.data.LineData;
 import de.team5.super_cute.crocodile.data.StopData;
 import de.team5.super_cute.crocodile.data.TripData;
 import de.team5.super_cute.crocodile.data.VehicleData;
 import de.team5.super_cute.crocodile.generator.InitialDataGenerator;
-import de.team5.super_cute.crocodile.model.EState;
 import de.team5.super_cute.crocodile.model.EVehicleType;
 import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Stop;

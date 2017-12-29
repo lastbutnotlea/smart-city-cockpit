@@ -30,7 +30,7 @@ public class LineController extends BaseController<Line> {
   @GetMapping
   public List<Line> getAllLines() {
     List<Line> lines = data.getData();
-    for (Line line:lines) {
+    for (Line line : lines) {
       line.setState(calculateLineState(line));
     }
     return lines;
@@ -44,23 +44,24 @@ public class LineController extends BaseController<Line> {
   }
 
   public EState calculateLineState(Line line) {
-    List<Trip> trips = tripData.getActiveTrips().stream().filter(t -> t.getLine().getId() == line.getId())
+    List<Trip> trips = tripData.getActiveTrips().stream()
+        .filter(t -> t.getLine().getId() == line.getId())
         .collect(Collectors.toList());
     int severity = 0;
     int divisor = 0;
-    for (Trip trip:trips) {
-      if(trip.getVehicle() != null){
+    for (Trip trip : trips) {
+      if (trip.getVehicle() != null) {
         severity += trip.getVehicle().getSeverity();
-        divisor ++;
+        divisor++;
       }
     }
-    for (Stop stop:line.getStopsInbound()) {
+    for (Stop stop : line.getStopsInbound()) {
       severity += stop.getSeverity();
-      divisor ++;
+      divisor++;
     }
-    for (Stop stop:line.getStopsOutbound()) {
+    for (Stop stop : line.getStopsOutbound()) {
       severity += stop.getSeverity();
-      divisor ++;
+      divisor++;
     }
     return StateCalculator.getState(severity / divisor);
   }
