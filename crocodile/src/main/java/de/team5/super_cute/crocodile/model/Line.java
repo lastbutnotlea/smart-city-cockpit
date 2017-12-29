@@ -16,12 +16,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import org.hibernate.annotations.Proxy;
 
 @Entity
 @Table(name = "line")
 @Proxy(lazy = false)
-public class Line extends IdentifiableObject implements Serializable, Feedbackable {
+public class Line extends IdentifiableObject implements Serializable, Feedbackable, Stateable {
 
   @Column
   private String name;
@@ -56,6 +57,9 @@ public class Line extends IdentifiableObject implements Serializable, Feedbackab
   @Column
   @Convert(converter = ColorConverter.class)
   private Color color;
+
+  @Transient
+  private EState state;
 
   public Line() {
     super();
@@ -122,5 +126,14 @@ public class Line extends IdentifiableObject implements Serializable, Feedbackab
   public void setTravelTimeOutbound(
       Map<String, Integer> travelTimeOutbound) {
     this.travelTimeOutbound = travelTimeOutbound;
+  }
+
+  @Override
+  public EState getState() {
+    return state;
+  }
+
+  public void setState(EState state){
+    this.state = state;
   }
 }

@@ -2,7 +2,6 @@ package de.team5.super_cute.crocodile.external;
 
 import static de.team5.super_cute.crocodile.config.TfLApiConfig.app_id;
 import static de.team5.super_cute.crocodile.config.TfLApiConfig.app_key;
-import static de.team5.super_cute.crocodile.util.ColorMapping.girlyColors;
 import static de.team5.super_cute.crocodile.util.ColorMapping.lineColors;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -11,6 +10,7 @@ import de.team5.super_cute.crocodile.model.Stop;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import javax.validation.constraints.NotNull;

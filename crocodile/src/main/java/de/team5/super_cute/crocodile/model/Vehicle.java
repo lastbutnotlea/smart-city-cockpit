@@ -1,6 +1,11 @@
 package de.team5.super_cute.crocodile.model;
 
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.STOP_DEFECTS_SEVERITY;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.VEHICLE_DEFECTS_SEVERITY;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.team5.super_cute.crocodile.config.LiveDataConfig;
+import de.team5.super_cute.crocodile.util.StateCalculator;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -15,7 +20,7 @@ import org.hibernate.annotations.Proxy;
 @Entity
 @Table(name = "vehicle")
 @Proxy(lazy = false)
-public class Vehicle extends IdentifiableObject implements Serializable, Feedbackable {
+public class Vehicle extends IdentifiableObject implements Serializable, Feedbackable, Stateable {
 
   @Column
   private Integer capacity;
@@ -120,6 +125,7 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
     this.type = type;
   }
 
+  @JsonIgnore
   public int getLoadSeverity() {
     if (getLoad() / getCapacity() <= 0.5) {
       return LiveDataConfig.LOAD_SEVERITY[0];
@@ -130,6 +136,7 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
     }
   }
 
+  @JsonIgnore
   public int getTemperatureSeverity() {
     if (getTemperature() <= 30 && getTemperature() >= 25) {
       return LiveDataConfig.TEMPERATURE_SEVERITY[0];
@@ -141,6 +148,7 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
     }
   }
 
+  @JsonIgnore
   public int getDelaySeverity() {
     if (getDelay() <= 5) {
       return LiveDataConfig.DELAY_SEVERITY[0];
@@ -149,5 +157,20 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
     } else {
       return LiveDataConfig.DELAY_SEVERITY[2];
     }
+  }
+
+  @Override
+  public EState getState() {
+
+    return StateCalculator.getState(getSeverity());
+  }
+
+  @JsonIgnore
+  public int getSeverity(){
+    int severity = 0;
+    for (String defect:defects) {
+      severity += VEHICLE_DEFECTS_SEVERITY.get(defect);
+    }
+    return severity + getLoadSeverity() + getTemperatureSeverity() + getDelaySeverity();
   }
 }

@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 public class LiveDataConfig {
-    public static final int CREATE_STOP_DEFECT_PERCENTAGE = 5;
-    public static final int CREATE_VEHICLE_DEFECT_PERCENTAGE = 5;
-    public static final int REMOVE_STOP_DEFECT_PERCENTAGE = 25;
-    public static final int REMOVE_VEHICLE_DEFECT_PERCENTAGE = 25;
+    public static final int CREATE_STOP_DEFECT_PERCENTAGE = 60;
+    public static final int CREATE_VEHICLE_DEFECT_PERCENTAGE = 60;
+    public static final int REMOVE_STOP_DEFECT_PERCENTAGE = 10;
+    public static final int REMOVE_VEHICLE_DEFECT_PERCENTAGE = 10;
     public static final int DEFECT_FEEDBACK_PERCENTAGE = 10;
     public static final int VALUE_FEEDBACK_PERCENTAGE = 1;
 
@@ -69,7 +69,7 @@ public class LiveDataConfig {
         put("elevator not working", new ArrayList<String>(){{add(""); add(""); add("");}});
         put("escalator not working", new ArrayList<String>(){{add(""); add(""); add("");}});
         put("ticket-machine not working", new ArrayList<String>(){{add(""); add(""); add("");}});
-    }}
+    }};
 
     public static  final Map<String, List<String>> VEHICLE_DEFECT_FEEDBACK = new HashMap<String, List<String>>(){{
         put("dirty", new ArrayList<String>(){{add(""); add(""); add("");}});

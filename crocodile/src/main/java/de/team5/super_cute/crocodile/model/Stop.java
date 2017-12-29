@@ -1,13 +1,17 @@
 package de.team5.super_cute.crocodile.model;
 
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.STOP_DEFECTS_SEVERITY;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.team5.super_cute.crocodile.config.LiveDataConfig;
+import de.team5.super_cute.crocodile.util.StateCalculator;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.*;
 
 @Entity
 @Table(name = "stop")
-public class Stop extends IdentifiableObject implements Serializable, Feedbackable {
+public class Stop extends IdentifiableObject implements Serializable, Feedbackable, Stateable {
 
   @Column
   private String commonName;
@@ -89,6 +93,7 @@ public class Stop extends IdentifiableObject implements Serializable, Feedbackab
     this.peopleWaiting = peopleWaiting;
   }
 
+  @JsonIgnore
   public int getPeopleWaitingSeverity() {
     if(getPeopleWaiting() <= 300){
       return LiveDataConfig.PEOPLE_WAITING_SEVERITY[0];
@@ -99,5 +104,19 @@ public class Stop extends IdentifiableObject implements Serializable, Feedbackab
     else{
       return LiveDataConfig.PEOPLE_WAITING_SEVERITY[2];
     }
+  }
+
+  @Override
+  public EState getState() {
+    return StateCalculator.getState(getSeverity());
+  }
+
+  @JsonIgnore
+  public int getSeverity(){
+    int severity = 0;
+    for (String defect:defects) {
+      severity += STOP_DEFECTS_SEVERITY.get(defect);
+    }
+    return severity + getPeopleWaitingSeverity();
   }
 }
