@@ -111,6 +111,10 @@ public class Stop extends IdentifiableObject implements Serializable, Feedbackab
     return StateCalculator.getState(getSeverity());
   }
 
+  public void setState(EState state) {
+    // do nothing, fool the json mapper!
+  }
+
   @JsonIgnore
   public int getSeverity(){
     int severity = 0;

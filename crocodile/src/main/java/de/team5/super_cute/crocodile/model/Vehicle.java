@@ -55,12 +55,13 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
     this.type = type;
   }
 
-  public Vehicle(int capacity, int delay, int temperature,
+  public Vehicle(int capacity, int load, int delay, int temperature,
       EVehicleType type, String... defects) {
     this.capacity = capacity;
     this.delay = delay;
     this.temperature = temperature;
     this.type = type;
+    this.load = load;
     this.defects = new HashSet<String>(Arrays.asList(defects));
   }
 
@@ -161,8 +162,11 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
 
   @Override
   public EState getState() {
-
     return StateCalculator.getState(getSeverity());
+  }
+
+  public void setState(EState state) {
+    // do nothing, fool the json mapper!
   }
 
   @JsonIgnore
