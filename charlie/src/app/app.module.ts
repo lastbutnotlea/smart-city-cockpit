@@ -24,6 +24,7 @@ import {ConfirmDeletionComponent} from './shared/components/confirm-popup/confir
 import {StopSortService} from './services/stop-sort.service';
 import {TripEditDepartureComponent} from './view/trip-edit-departure/trip-edit-departure.component';
 import {DateParserService} from './services/date-parser.service';
+import { Angular2FontawesomeModule } from 'angular2-fontawesome';
 import { TickerComponent } from './view/ticker/ticker.component';
 import { TickerItemComponent } from './view/ticker-item/ticker-item.component';
 import { StopDetailComponent } from './view/stop-detail/stop-detail.component';
@@ -55,6 +56,7 @@ import { StopDetailComponent } from './view/stop-detail/stop-detail.component';
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
+    Angular2FontawesomeModule,
     NgbModule.forRoot()
   ],
   providers: [
