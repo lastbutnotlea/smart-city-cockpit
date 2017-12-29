@@ -1,13 +1,12 @@
 package de.team5.super_cute.crocodile.model;
 
 import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import java.util.Set;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "stop")
-public class Stop extends IdentifiableObject implements Serializable {
+public class Stop extends IdentifiableObject implements Serializable, Feedbackable {
 
   @Column
   private String commonName;
@@ -21,15 +20,27 @@ public class Stop extends IdentifiableObject implements Serializable {
   @Column
   private Integer peopleWaiting;
 
+  @ElementCollection(fetch = FetchType.EAGER)
+  private Set<String> defects;
+
   public Stop() { super(); }
 
-  public Stop(String id, String commonName, double longitude, double latitude, int peopleWaiting) {
+  public Stop(String id, String commonName, double longitude, double latitude, int peopleWaiting, Set<String> defects) {
     super();
     setId(id);
     this.commonName = commonName;
     this.longitude = longitude;
     this.latitude = latitude;
     this.peopleWaiting = peopleWaiting;
+    this.defects = defects;
+  }
+
+  public Set<String> getDefects() {
+    return defects;
+  }
+
+  public void setDefects(Set<String> defects) {
+    this.defects = defects;
   }
 
   public String getCommonName() {

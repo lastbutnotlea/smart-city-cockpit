@@ -14,13 +14,13 @@ import org.hibernate.annotations.Proxy;
 @Entity
 @Table(name = "vehicle")
 @Proxy(lazy = false)
-public class Vehicle extends IdentifiableObject implements Serializable {
+public class Vehicle extends IdentifiableObject implements Serializable, Feedbackable {
 
   @Column
   private Integer capacity;
 
   @Column
-  private Integer delay;
+  private Integer load;
 
   @Column
   private Integer temperature;
@@ -29,14 +29,18 @@ public class Vehicle extends IdentifiableObject implements Serializable {
   private Set<String> defects;
 
   @Column
+  private Integer delay;
+
+  @Column
   private EVehicleType type;
 
   public Vehicle() { super(); }
 
-  public Vehicle(int capacity, int delay, int temperature, Set<String> defects,
+  public Vehicle(int capacity, int load, int delay, int temperature, Set<String> defects,
       EVehicleType type) {
     super();
     this.capacity = capacity;
+    this.load = load;
     this.delay = delay;
     this.temperature = temperature;
     this.defects = defects;
@@ -58,6 +62,14 @@ public class Vehicle extends IdentifiableObject implements Serializable {
 
   public void setCapacity(int capacity) {
     this.capacity = capacity;
+  }
+
+  public Integer getLoad() {
+    return load;
+  }
+
+  public void setLoad(Integer load) {
+    this.load = load;
   }
 
   public Integer getDelay() {

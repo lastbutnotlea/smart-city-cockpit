@@ -21,7 +21,7 @@ import org.hibernate.annotations.Proxy;
 @Entity
 @Table(name = "line")
 @Proxy(lazy = false)
-public class Line extends IdentifiableObject implements Serializable {
+public class Line extends IdentifiableObject implements Serializable, Feedbackable {
 
   @Column
   private String name;

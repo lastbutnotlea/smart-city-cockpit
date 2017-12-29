@@ -7,10 +7,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Stop;
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.LoggerFactory;
@@ -96,7 +93,7 @@ public class TpDataConnector {
             node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("name").asText(),
             node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("lon").asDouble(),
             node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("lat").asDouble(),
-            0);
+            0, new HashSet<>());
         if (node.get("stopPointSequences").get(i).get("direction").asText().equals("inbound")) {
           stopsInbound.add(stop);
         } else if (node.get("stopPointSequences").get(i).get("direction").asText()

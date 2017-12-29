@@ -15,6 +15,7 @@ import de.team5.super_cute.crocodile.util.NetworkDataBuilder;
 import java.awt.Color;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.HashSet;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,9 +43,9 @@ public class ManualTestController {
 
   @GetMapping
   public List<Trip> testTrips() {
-    Stop s1 = new Stop("ApiId1", "Marienplatz", 10, 3.5, 50);
-    Stop s2 = new Stop("ApiId2", "Odeonsplatz", 11, 3.7, 43);
-    Stop s3 = new Stop("ApiId3", "Stachus", 10.2, 2, 61);
+    Stop s1 = new Stop("ApiId1", "Marienplatz", 10, 3.5, 50, new HashSet<>());
+    Stop s2 = new Stop("ApiId2", "Odeonsplatz", 11, 3.7, 43, new HashSet<>());
+    Stop s3 = new Stop("ApiId3", "Stachus", 10.2, 2, 61, new HashSet<>());
     Vehicle v1 = new Vehicle(300, 0, 28, EVehicleType.Subway, "Motorschaden");
     Vehicle v2 = new Vehicle(340, 2, 31, EVehicleType.Train, "Fenster gebrochen");
     Line l1 = new LineBuilder().name("U6").color(Color.blue).stops(s2, s1).travelTime(0, 2).build();

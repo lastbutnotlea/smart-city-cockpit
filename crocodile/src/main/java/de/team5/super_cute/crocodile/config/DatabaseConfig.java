@@ -1,10 +1,7 @@
 package de.team5.super_cute.crocodile.config;
 
-import de.team5.super_cute.crocodile.model.IdentifiableObject;
-import de.team5.super_cute.crocodile.model.Line;
-import de.team5.super_cute.crocodile.model.Stop;
-import de.team5.super_cute.crocodile.model.Trip;
-import de.team5.super_cute.crocodile.model.Vehicle;
+import de.team5.super_cute.crocodile.model.*;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import javax.sql.DataSource;
@@ -34,7 +31,7 @@ public class DatabaseConfig {
   @Bean
   public SessionFactory getSessionFactory() {
     return new LocalSessionFactoryBuilder(getDataSource())
-        .addAnnotatedClasses(IdentifiableObject.class, Line.class, Stop.class, Trip.class, Vehicle.class)
+        .addAnnotatedClasses(IdentifiableObject.class, Line.class, Stop.class, Trip.class, Vehicle.class, Feedback.class)
         .setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect")
         .setProperty("hibernate.hbm2ddl.auto", "create")
         .setProperty("packagesToScan", "de.team5.super_cute.crocodile.model")
