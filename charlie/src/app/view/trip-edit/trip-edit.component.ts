@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {TripData} from '../../shared/data/trip-data';
 import {HttpRoutingService} from '../../services/http-routing.service';
@@ -16,7 +16,7 @@ import {StopSortService} from '../../services/stop-sort.service';
 })
 
 export class TripEditComponent implements OnInit {
-  @Input() data: TripData;
+  @Input() @Output() data: TripData;
   selected: TripData;
 
   selectedVehicle: DropdownValue;
@@ -42,7 +42,23 @@ export class TripEditComponent implements OnInit {
     this.data.vehicle = this.selectedVehicle.value;
     this.data.stops = this.selected.stops;
     this.activeModal.close('Close click');
-    this.http.editTrip(this.data);
+    this.http.editTrip(this.data).subscribe(
+      data => {
+        this.http.getTripDetails(this.data.id).subscribe(
+          trip => {
+            this.data.line = Object.assign(new LineData(), trip.line);
+            this.data.vehicle = Object.assign(new VehicleData, trip.vehicle);
+            this.data.stops = [];
+            for(const stop of trip.stops) {
+              this.data.stops.push(stop);
+            }
+            this.data.stops = this.stopSortService.sortStops(this.data.stops);
+          },
+          err => console.log('Could not fetch trip data!')
+        );
+      },
+      err => console.log('Could not edit trip.')
+    );
   }
 
   initData(): void {

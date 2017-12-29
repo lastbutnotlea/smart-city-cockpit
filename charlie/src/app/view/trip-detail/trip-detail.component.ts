@@ -6,7 +6,6 @@ import {Location} from '@angular/common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {TripEditComponent} from '../trip-edit/trip-edit.component';
 import {ConfirmDeletionComponent} from '../../shared/components/confirm-popup/confirm-deletion.component';
-import {TripStopData} from '../../shared/data/trip-stop-data';
 import {StopSortService} from '../../services/stop-sort.service';
 import {TripEditDepartureComponent} from '../trip-edit-departure/trip-edit-departure.component';
 

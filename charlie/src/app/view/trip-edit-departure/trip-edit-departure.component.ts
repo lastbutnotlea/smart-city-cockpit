@@ -1,11 +1,14 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output} from '@angular/core';
 import {NgbActiveModal, NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 import {TripData} from '../../shared/data/trip-data';
 import {HttpRoutingService} from '../../services/http-routing.service';
 import { TripStopData } from '../../shared/data/trip-stop-data';
 import {DropdownValue} from '../../shared/components/dropdown/dropdown.component';
-import {forEach} from '@angular/router/src/utils/collection';
 import {DateParserService} from '../../services/date-parser.service';
+import {StopSortService} from '../../services/stop-sort.service';
+import {TripDetailComponent} from '../trip-detail/trip-detail.component';
+import {VehicleData} from '../../shared/data/vehicle-data';
+import {LineData} from '../../shared/data/line-data';
 
 @Component({
   selector: 'app-trip-edit-departure',
@@ -14,7 +17,7 @@ import {DateParserService} from '../../services/date-parser.service';
 })
 
 export class TripEditDepartureComponent implements OnInit {
-  @Input() data: TripData;
+  @Input() @Output() data: TripData;
 
   selectedStop: DropdownValue;
   copiedStops: TripStopData[];
@@ -23,7 +26,8 @@ export class TripEditDepartureComponent implements OnInit {
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
-              private dateParser: DateParserService) { }
+              private dateParser: DateParserService,
+              private stopSortService: StopSortService) { }
 
   ngOnInit(): void {
     this.time = {hour: 0, minute: 0, second: 0};
@@ -42,7 +46,23 @@ export class TripEditDepartureComponent implements OnInit {
     }
 
     this.activeModal.close('Close click');
-    this.http.editTrip(this.data);
+    this.http.editTrip(this.data).subscribe(
+      data => {
+        this.http.getTripDetails(this.data.id).subscribe(
+          trip => {
+            this.data.line = Object.assign(new LineData(), trip.line);
+            this.data.vehicle = Object.assign(new VehicleData, trip.vehicle);
+            this.data.stops = [];
+            for(const stop of trip.stops) {
+              this.data.stops.push(stop);
+            }
+            this.data.stops = this.stopSortService.sortStops(this.data.stops);
+          },
+          err => console.log('Could not fetch trip data!')
+        );
+      },
+      err => console.log('Could not edit trip.')
+    );
   }
 
   initData(): void {
