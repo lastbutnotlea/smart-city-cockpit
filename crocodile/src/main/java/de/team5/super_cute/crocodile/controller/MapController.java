@@ -6,11 +6,11 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.team5.super_cute.crocodile.data.LineData;
 import de.team5.super_cute.crocodile.data.StopData;
+import de.team5.super_cute.crocodile.model.EVehicleType;
 import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Stop;
 import java.util.Collection;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,34 +37,45 @@ public class MapController {
 
   @GetMapping("/stations")
   public ObjectNode getMapStations() throws JsonProcessingException {
+    logger.info("Got Request for Stations in Map.");
     ObjectNode stations = mapper.createObjectNode();
-    List<Stop> stopData = this.lineData.getData().stream().map(Line::getStopsInbound).flatMap(Collection::stream)
-        .collect(
-            Collectors.toList());
-    for (Stop s : stopData) {
-      ObjectNode stop = stations.putObject(s.getCommonName());
-      stop.put("title", s.getCommonName());
-      ObjectNode position = stop.putObject("position");
-      position.put("lat", s.getLatitude());
-      position.put("lon", s.getLongitude());
+
+    for (EVehicleType type : EVehicleType.values()) {
+      this.lineData.getData().stream()
+          .filter(l -> l.getType() == type)
+          .map(Line::getStopsInbound)
+          .flatMap(Collection::stream)
+          .forEach(s -> putStop(stations, s, type));
     }
     return stations;
   }
 
+  private void putStop(ObjectNode stations, Stop s, EVehicleType lineType) {
+    ObjectNode stop = stations.putObject(s.getCommonName());
+    stop.put("title", s.getCommonName());
+    stop.put("type", lineType.toString());
+    ObjectNode position = stop.putObject("position");
+    position.put("lat", s.getLatitude());
+    position.put("lon", s.getLongitude());
+  }
+
   @GetMapping("/lines")
   public ObjectNode getMapLines() throws JsonProcessingException {
+    logger.info("Got Request for Lines in Map.");
     ObjectNode lines = mapper.createObjectNode();
     List<Line> lineData = this.lineData.getData();
     for (Line l : lineData) {
       ObjectNode line = lines.putObject(l.getName());
       line.put("id", l.getId());
       line.put("color", "#" + Integer.toHexString(l.getColor().getRGB()).substring(2));
+      line.put("type", l.getType().toString());
     }
     return lines;
   }
 
   @GetMapping("/connections")
   public ObjectNode getMapConnections() throws JsonProcessingException {
+    logger.info("Got Request for Connections in Map.");
     ObjectNode connections = mapper.createObjectNode();
     List<Line> lineData = this.lineData.getData();
     for (Line l : lineData) {
