@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { toInteger } from '@ng-bootstrap/ng-bootstrap/util/util';
+import { LineData } from '../shared/data/line-data';
+import { StopData } from '../shared/data/stop-data';
 
 @Injectable()
 export class MapCreatorService {
@@ -11,7 +13,7 @@ export class MapCreatorService {
 
   private mapWidth: number; // in x direction
   private mapHeight: number; // in y direction
-  private rasterizationFactor: number; // I think how many coordinate points shold fall into one
+  private rasterizationFactor: number; // I think how many coordinate points should fall into one
 
   public createMap(stationData: any, lineData: any, connectionData: any): any {
     // Define the size of the raster, the larger the higher the resolution
@@ -24,6 +26,24 @@ export class MapCreatorService {
     const generatedRiver = this.calcDummyRiver();
     const generatedData = this.calcGraph(generatedStations, generatedLines, generatedRiver);
     return generatedData;
+  }
+
+  /**
+   * Computes map data for tube map with only one line that is displayed horizontally (for line-details view)
+   * @param {LineData} lineData data of line to be drawn
+   * @returns data for tube map
+   */
+  public createSingleLineMap(lineData: LineData, stopData: StopData[]): any {
+    this.mapWidth = 1200;
+    this.mapHeight = 250;
+    let stations = this.calcStationsOfSingleLine(stopData);
+    let line = this.calcSingleLine(lineData, stations);
+    line = this.addDummyLine(line);
+    return {
+      'stations' : stations,
+      'lines' : line,
+      'river' : this.calcDummyRiver()
+    };
   }
 
   // Converts the station data from a given json to map format
@@ -70,6 +90,27 @@ export class MapCreatorService {
     return stationDataPoints;
   }
 
+  /**
+   * To create map showing only one line (for line-details view)
+   * creates station for every stop of line
+   *
+   * @param {StopData[]} stopDataList stops of line
+   * @returns stations to be drawn in tube map
+   */
+  private calcStationsOfSingleLine(stopDataList: StopData[]) {
+    const stepSize = 25;
+    let counter = 0;
+    const stationDataPoints = {};
+    for (const stopIndex in stopDataList) {
+      const id = stopDataList[stopIndex].id;
+      stationDataPoints[id] = {};
+      stationDataPoints[id]['title'] = stopDataList[stopIndex].commonName;
+      stationDataPoints[id]['coords'] = [counter, 0];
+      counter += stepSize;
+    }
+    return stationDataPoints;
+  }
+
   // Converts the connection data from a given json to map format
   // JSONs for connections, lines and Stations must look like testLines and testConnections
   private calcLines(stationDataPoints, lines, connections): any {
@@ -91,6 +132,80 @@ export class MapCreatorService {
       lineDataPoints.push(currentLine);
       linecounter ++;
     }
+    return lineDataPoints;
+  }
+
+  /**
+   * To create map showing only one line (for line-details view)
+   * creates one line with lineData containing all stations from stationDataPoints
+   *
+   * @param {LineData} lineData
+   * @param stationDataPoints
+   * @returns line to be drawn in tube map
+   */
+  private calcSingleLine(lineData: LineData, stationDataPoints: any) : any {
+    const lineDataPoints = [];
+    lineDataPoints.push({
+        'name': lineData.id,
+        'label': lineData.name,
+        'color': this.convertRGBtoHEX(lineData.color),
+        'shiftCoords': [0, 0],
+        'nodes':  this.calcNodesForSingleLine(stationDataPoints)
+      });
+    return lineDataPoints;
+  }
+
+  /**
+   * Converts rbg to hex-value
+   * needed when drawing line from line-data for line-details-view
+   * tube map needs line color as hex-value instead of rbg
+   *
+   * @param lineColor color-object of line
+   * @returns color as hex-value
+   */
+  private convertRGBtoHEX(lineColor): string {
+    var r = lineColor.red.toString(16);
+    var g = lineColor.green.toString(16);
+    var b = lineColor.blue.toString(16);
+    // add padding if value only has one digit (because of leading 0)
+    const red = (1e2 + r).substr(r.length + 1);
+    const green = (1e2 + g).substr(g.length + 1);
+    const blue = (1e2 + b).substr(b.length + 1);
+    return '#' + red + green + blue;
+  }
+  /**
+   * To center map showing only one line (for line-details view)
+   * tube map always places the leftmost nodes on the very left of the map, halfway out of view
+   * in our case, this result in the entire line being cut off at the top
+   * to avoid this, we add an invisible dummy-line that makes the visible line appear somewhat centered
+   *
+   * @param lineDataPoints
+   * @returns {any}
+   */
+  private addDummyLine(lineDataPoints) {
+    const size = lineDataPoints.length * 25;
+    const nodes = [
+      //lower left border point
+      {
+        'coords': [-size*2.5, 0],
+        'shiftCoords': [0,0],
+        'hide': true
+      },
+      //upper left border point
+      {
+        'coords': [-size * 2.5, 20],
+        'shiftCoords': [0, 0],
+        'hide': true
+      }
+    ];
+
+    lineDataPoints.push({
+      'name': 'dummy-line-name',
+      'label': 'dummy-line-label',
+      'color': "#FFFFFF",
+      'shiftCoords': [0, 0],
+      'nodes': nodes
+    });
     return lineDataPoints;
   }
 
@@ -134,7 +249,7 @@ export class MapCreatorService {
         'name': connections[j].station,
         'labelPos': this.calcLabelPos(curDir),
         'shiftCoords': this.calcShiftCoords(curDir, shiftCoords),
-        // 'marker': 'interchange',
+        'marker': 'interchange',
         'canonical': true
       };
       // Insert node into the final array
@@ -146,6 +261,29 @@ export class MapCreatorService {
           nextCoords[1] -  currentStationNode['shiftCoords'][0]
         ]};
       //nodes.push(currentStationPositionNode);
+    }
+    return nodes;
+  }
+
+  /**
+   * To create map showing only one line (for line-details view)
+   * creates corresponding node-object for every station
+   * nodes can then be added to line and drawn in tube map
+   *
+   * @param stationDataPoints
+   * @returns nodes for line
+   */
+  private calcNodesForSingleLine(stationDataPoints: any) {
+    let nodes = [];
+    for (const stationIndex in stationDataPoints) {
+      nodes.push({
+        'coords': stationDataPoints[stationIndex].coords,
+        'name': stationIndex,
+        'labelPos': 'S',
+        'shiftCoords': [0,0],
+        'marker': 'interchange',
+        'canonical': true
+      });
     }
     return nodes;
   }
