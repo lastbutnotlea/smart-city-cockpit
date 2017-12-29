@@ -38,14 +38,30 @@ export class TripEditComponent implements OnInit {
       err => console.log('Err'));
   }
 
+  initData(): void {
+    if (this.data != null) {
+      this.selected = new TripData;
+      this.selected.line = Object.assign(new LineData(), this.data.line);
+      this.selected.vehicle = Object.assign(new VehicleData(), this.data.vehicle);
+      this.selected.stops = [];
+      for (const stop of this.data.stops) {
+        this.selected.stops.push(stop);
+      }
+
+      this.selectedVehicle = this.toDropdownItem(this.selected.vehicle);
+    }
+  }
+
   confirm(): void {
     this.data.vehicle = this.selectedVehicle.value;
     this.data.stops = this.selected.stops;
     this.activeModal.close('Close click');
     this.http.editTrip(this.data).subscribe(
       data => {
+        // get trips to refresh the trip detail data in trip detail view
         this.http.getTripDetails(this.data.id).subscribe(
           trip => {
+            // copy new data into data object
             this.data.line = Object.assign(new LineData(), trip.line);
             this.data.vehicle = Object.assign(new VehicleData, trip.vehicle);
             this.data.stops = [];
@@ -59,20 +75,6 @@ export class TripEditComponent implements OnInit {
       },
       err => console.log('Could not edit trip.')
     );
-  }
-
-  initData(): void {
-    if (this.data != null) {
-      this.selected = new TripData;
-      this.selected.line = Object.assign(new LineData(), this.data.line);
-      this.selected.vehicle = Object.assign(new VehicleData(), this.data.vehicle);
-      this.selected.stops = [];
-      for (const stop of this.data.stops) {
-        this.selected.stops.push(stop);
-      }
-
-      this.selectedVehicle = this.toDropdownItem(this.selected.vehicle);
-    }
   }
 
   isChecked(stop: StopData): boolean {

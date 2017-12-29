@@ -4,6 +4,11 @@ import {NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 @Injectable()
 export class DateParserService {
 
+  /**
+   * @param {string} dateString: input string, holds the old date
+   * @param {NgbDateStruct} dateStruct: holds a new year, month and day
+   * @returns {string} output string, holds the new date
+   */
   parseDate(dateString: string, dateStruct: NgbDateStruct): string {
     let currentDate = new Date(dateString);
     currentDate.setUTCFullYear(dateStruct.year);
@@ -18,6 +23,11 @@ export class DateParserService {
     return newDate;
   }
 
+  /**
+   * @param {string} timeString: input string, holds the old date
+   * @param {NgbTimeStruct} timeStruct: holds a new time
+   * @returns {string} output string, holds the new date
+   */
   parseTime(timeString: string, timeStruct: NgbTimeStruct): string {
     let currentDate = new Date(timeString);
     currentDate.setUTCHours(timeStruct.hour);

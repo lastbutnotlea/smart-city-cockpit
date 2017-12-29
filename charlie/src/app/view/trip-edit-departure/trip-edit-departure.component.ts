@@ -33,6 +33,20 @@ export class TripEditDepartureComponent implements OnInit {
     this.time = {hour: 0, minute: 0, second: 0};
   }
 
+  initData(): void {
+    if (this.data.stops != null) {
+      this.copiedStops = [];
+      for(const stop of this.data.stops) {
+        this.copiedStops.push(Object.assign(new TripStopData(
+          stop.id,
+          stop.departureTime,
+          stop.name
+        )));
+      }
+      this.selectedStop = this.toDropdownItem(this.copiedStops[0]);
+    }
+  }
+
   confirm(): void {
     for(const stop of this.data.stops) {
       if(stop.id != this.selectedStop.value.id) {
@@ -48,8 +62,10 @@ export class TripEditDepartureComponent implements OnInit {
     this.activeModal.close('Close click');
     this.http.editTrip(this.data).subscribe(
       data => {
+        // get trips to refresh the trip detail data in trip detail view
         this.http.getTripDetails(this.data.id).subscribe(
           trip => {
+            // copy new data into data object
             this.data.line = Object.assign(new LineData(), trip.line);
             this.data.vehicle = Object.assign(new VehicleData, trip.vehicle);
             this.data.stops = [];
@@ -63,20 +79,6 @@ export class TripEditDepartureComponent implements OnInit {
       },
       err => console.log('Could not edit trip.')
     );
-  }
-
-  initData(): void {
-    if (this.data.stops != null) {
-      this.copiedStops = [];
-      for(const stop of this.data.stops) {
-        this.copiedStops.push(Object.assign(new TripStopData(
-          stop.id,
-          stop.departureTime,
-          stop.name
-        )));
-      }
-      this.selectedStop = this.toDropdownItem(this.copiedStops[0]);
-    }
   }
 
   toDropdownItem(item: TripStopData): DropdownValue {
