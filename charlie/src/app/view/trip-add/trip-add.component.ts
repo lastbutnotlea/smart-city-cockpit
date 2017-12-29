@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, Output} from '@angular/core';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbActiveModal, NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 import {TripData} from '../../shared/data/trip-data';
 import {HttpRoutingService} from '../../services/http-routing.service';
 import {LineData} from '../../shared/data/line-data';
@@ -24,6 +24,9 @@ export class TripAddComponent implements OnInit {
 
   availLines: LineData[] = [];
   availVehicles: VehicleData[] = [];
+
+  date: NgbDateStruct;
+  time: NgbTimeStruct;
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
