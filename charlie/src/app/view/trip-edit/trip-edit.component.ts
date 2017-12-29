@@ -39,7 +39,6 @@ export class TripEditComponent implements OnInit {
   }
 
   confirm(): void {
-    this.data.line = this.selected.line;
     this.data.vehicle = this.selectedVehicle.value;
     this.data.stops = this.selected.stops;
     this.activeModal.close('Close click');

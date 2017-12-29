@@ -1,6 +1,6 @@
 <div class="modal-header">
   <h4 class="modal-title">
-    Edit stops and vehicle of trip {{data.id}} on line
+    Edit departure time of trip {{data.id}} on line
     <label class="text-primary">{{data.line.name}}</label>
   </h4>
   <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
@@ -10,16 +10,12 @@
 <div class="modal-body">
 
   <div class="margin-bottom">
-    <label>Vehicle: </label>
-    <app-dropdown [values]="toDropdownItems(availVehicles)" [(selected)]="selectedVehicle"></app-dropdown>
+    <label>Stop: </label>
+    <app-dropdown [values]="toDropdownItems(data.stops)" [(selected)]="selectedStop"></app-dropdown>
   </div>
 
-  <div class="d-block">
-    <label>Stops:</label>
-    <div class="" *ngFor="let stop of data.line.stopsInbound; let i = index">
-      <input #box type="checkbox" [ngModel]="isChecked(stop)" (change)="includeStop(stop, box.checked)">
-      <label class="padding-left">{{stop.commonName}}</label>
-    </div>
+  <div>
+    <label>Departure time: {{selectedStop.value.departureTime}}</label>
   </div>
 
 </div>

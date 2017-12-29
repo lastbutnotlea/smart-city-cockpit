@@ -8,6 +8,7 @@ import {TripEditComponent} from '../trip-edit/trip-edit.component';
 import {ConfirmDeletionComponent} from '../../shared/components/confirm-popup/confirm-deletion.component';
 import {TripStopData} from '../../shared/data/trip-stop-data';
 import {StopSortService} from '../../services/stop-sort.service';
+import {TripEditDepartureComponent} from '../trip-edit-departure/trip-edit-departure.component';
 
 
 
@@ -48,8 +49,14 @@ export class TripDetailComponent implements OnInit {
     this.location.back();
   }
 
-  edit(): void {
+  editStops(): void {
     const modal = this.modalService.open(TripEditComponent);
+    modal.componentInstance.data = this.trip;
+    modal.componentInstance.initData();
+  }
+
+  editDepartureTime(): void {
+    const modal = this.modalService.open(TripEditDepartureComponent);
     modal.componentInstance.data = this.trip;
     modal.componentInstance.initData();
   }

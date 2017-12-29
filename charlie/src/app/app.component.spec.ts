@@ -21,6 +21,7 @@ import {EmbeddedLineComponent} from './shared/components/embedded-line/embedded-
 import {EmbeddedVehicleComponent} from './shared/components/embedded-vehicle/embedded-vehicle.component';
 import {ConfirmDeletionComponent} from './shared/components/confirm-popup/confirm-deletion.component';
 import {StopSortService} from './services/stop-sort.service';
+import {TripEditDepartureComponent} from './view/trip-edit-departure/trip-edit-departure.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -32,6 +33,7 @@ describe('AppComponent', () => {
         MenuComponent,
         TripDetailComponent,
         TripEditComponent,
+        TripEditDepartureComponent,
         FilterComponent,
         MapComponent,
         LineDetailComponent,
