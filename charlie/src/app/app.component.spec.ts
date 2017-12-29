@@ -23,6 +23,7 @@ import {EmbeddedVehicleComponent} from './shared/components/embedded-vehicle/emb
 import { StopDetailComponent } from './view/stop-detail/stop-detail.component';
 import {TickerComponent} from './view/ticker/ticker.component';
 import {TickerItemComponent} from './view/ticker-item/ticker-item.component';
+import { FilterGroupComponent } from './shared/components/filter-group/filter-group.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -35,6 +36,7 @@ describe('AppComponent', () => {
         TripDetailComponent,
         TripEditComponent,
         FilterComponent,
+        FilterGroupComponent,
         MapComponent,
         LineMapComponent,
         LineDetailComponent,

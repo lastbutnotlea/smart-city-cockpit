@@ -3,6 +3,7 @@ import { HttpRoutingService } from '../../services/http-routing.service';
 import {FilterComponent} from '../../shared/components/filter/filter.component';
 import { TripData } from '../../shared/data/trip-data';
 import { FilterCreatorService } from '../../services/filter-creator.service';
+import { FilterGroupComponent } from '../../shared/components/filter-group/filter-group.component';
 
 @Component({
   selector: 'app-trip-view',
@@ -14,10 +15,8 @@ export class TripComponent implements OnInit {
   title: String;
   trips: TripData[] = [];
 
-  @ViewChild('vehicleFilter')
-  vehicleFilter: FilterComponent;
-  @ViewChild('lineFilter')
-  lineFilter: FilterComponent;
+  @ViewChild(FilterGroupComponent)
+  filterGroup: FilterGroupComponent;
 
   constructor(private http: HttpRoutingService,
               private filterCreator: FilterCreatorService) { }
@@ -26,10 +25,12 @@ export class TripComponent implements OnInit {
     this.title = 'Trip View';
     this.addFilter();
 
+
+
     // get trip data
     this.http.getTrips().subscribe(
       data => this.trips = data,
-          err => console.log('Could not fetch trips.')
+      err => console.log('Could not fetch trips.')
     );
   }
 
@@ -41,7 +42,9 @@ export class TripComponent implements OnInit {
   }
 
   private addFilter(): void {
-    this.filterCreator.addVehicleFilters(this.vehicleFilter);
-    this.filterCreator.addLineFilters(this.lineFilter);
+    this.filterGroup.addFilterComponent('vehicleFilter');
+    this.filterGroup.addFilterComponent('lineFilter');
+    this.filterCreator.addVehicleFilters(this.filterGroup.getFilter('vehicleFilter'));
+    this.filterCreator.addLineFilters(this.filterGroup.getFilter('lineFilter'));
   }
 }
