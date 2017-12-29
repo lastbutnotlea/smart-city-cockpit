@@ -1,0 +1,21 @@
+.no-float {
+  clear: both;
+}
+
+.margin-bottom {
+  margin-bottom: 30px;
+}
+
+.big-padding-top {
+  padding-top: 50px;
+}
+
+.small-padding-left {
+  padding-left: 5px;
+}
+
+.padding-emb-box-headline {
+  padding-left: 30px;
+  padding-top: 10px;
+  padding-bottom: 20px;
+}

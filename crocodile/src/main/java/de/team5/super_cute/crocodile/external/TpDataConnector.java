@@ -5,6 +5,7 @@ import static de.team5.super_cute.crocodile.config.TfLApiConfig.app_key;
 import static de.team5.super_cute.crocodile.util.ColorMapping.lineColors;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import de.team5.super_cute.crocodile.model.EVehicleType;
 import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Stop;
 import java.util.ArrayList;
@@ -41,6 +42,8 @@ public class TpDataConnector {
         getStopsFromNode(node, stopsInbound, stopsOutbound);
         travelTimeInbound = getTravelTimes(node, stopsInbound);
         travelTimeOutbound = getTravelTimes(node, stopsOutbound);
+        // Bus line ids are always only numbers
+        EVehicleType type = id.matches("\\d+") ? EVehicleType.BUS : EVehicleType.SUBWAY;
         lines.add(
             new Line(node.get("lineName").asText(), stopsInbound,
                 stopsOutbound, travelTimeInbound, travelTimeOutbound,
@@ -48,10 +51,7 @@ public class TpDataConnector {
       } catch (RestClientException e) {
         LoggerFactory.getLogger(getClass())
             .error("Error while accessing Transport-API while creating lines: " + e.getMessage());
-      } catch (NullPointerException e) {
-        LoggerFactory.getLogger(getClass())
-            .error("Error while accessing JsonNode while creating lines: " + e.getMessage());
-      } catch (IllegalArgumentException e) {
+      } catch (NullPointerException | IllegalArgumentException e) {
         LoggerFactory.getLogger(getClass())
             .error("Error while accessing JsonNode while creating lines: " + e.getMessage());
       }
