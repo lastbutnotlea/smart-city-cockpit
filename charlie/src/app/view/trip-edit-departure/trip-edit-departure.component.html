@@ -11,15 +11,17 @@
 
   <div class="margin-bottom">
     <label>Stop: </label>
-    <app-dropdown [values]="toDropdownItems(data.stops)" [(selected)]="selectedStop"></app-dropdown>
+    <app-dropdown [values]="toDropdownItems(copiedStops)" [(selected)]="selectedStop"></app-dropdown>
   </div>
 
   <div>
-    <label>Departure time: {{selectedStop.value.departureTime}}</label>
+    <label>Departure time: {{selectedStop.value.departureTime |  date:'MM/dd/yyyy HH:mm'}}</label>
+    <ngb-datepicker [(ngModel)]="model" (select)="updateDate()" class="float-left"></ngb-datepicker>
+    <ngb-timepicker [(ngModel)]="time" (click)="updateTime()"></ngb-timepicker>
   </div>
 
 </div>
-<div class="modal-footer">
+<div class="modal-footer no-float">
   <button type="button" class="btn btn-outline-secondary" (click)="activeModal.close('Close click')">Close</button>
   <button type="button" class="btn btn-outline-primary" (click)="confirm()">Okay</button>
 </div>
