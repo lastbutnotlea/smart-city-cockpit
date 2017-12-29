@@ -52,9 +52,9 @@ public class InitialDataGenerator {
   public void generateInitialPrototypeSetup() {
     networkDataBuilder = new NetworkDataBuilder(lineData, vehicleData, stopData,
         tripData);
-    ArrayList<Line> lines = new TpDataConnector().getLines(lineIds);
     LoggerFactory.getLogger(getClass())
-        .info("Started initialization");
+            .info("Started initialization");
+    ArrayList<Line> lines = new TpDataConnector().getLines(lineIds);
     LocalDateTime from = LocalDateTime.now().withHour(fromHour).withMinute(fromMinute);
     LocalDateTime to = LocalDateTime.now().withHour(toHour).withMinute(toMinute);
     generateTripsAndVehicles(from, to, lines);
@@ -176,7 +176,7 @@ public class InitialDataGenerator {
     Vehicle vehicle;
     if (queueFrom.peek() == null || queueFrom.peek().getValue().compareTo(iterator) == 1) {
       //If no (or no available) vehicle exists: create new one
-      vehicle = new Vehicle(100, 50, 0, 42, new HashSet<>(), EVehicleType.Bus);
+      vehicle = new Vehicle(100, 50, 0, 42, new HashSet<>(), EVehicleType.BUS);
       networkDataBuilder.addVehicles(vehicle);
     } else {
       vehicle = queueFrom.poll().getKey();

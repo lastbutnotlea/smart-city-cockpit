@@ -43,6 +43,14 @@ public class Stop extends IdentifiableObject implements Serializable, Feedbackab
     this.defects = defects;
   }
 
+  public void addDefect(String defect){
+    this.defects.add(defect);
+  }
+
+  public boolean removeDefect(String defect){
+    return this.defects.remove(defect);
+  }
+
   public String getCommonName() {
     return commonName;
   }

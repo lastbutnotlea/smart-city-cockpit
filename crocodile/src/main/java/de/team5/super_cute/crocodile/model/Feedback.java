@@ -26,18 +26,22 @@ public class Feedback extends IdentifiableObject implements Serializable {
     private Feedbackable objective;
 
     @Column
-    private FeedbackType feedbackType;
+    private EFeedbackType feedbackType;
+
+    @Column
+    private EState rating;
 
     public Feedback() {
         super();
     }
 
-    public Feedback(String message, LocalDateTime timestamp, Feedbackable objective, FeedbackType feedbackType) {
+    public Feedback(String message, LocalDateTime timestamp, Feedbackable objective, EFeedbackType feedbackType, EState rating) {
         super();
         this.message = message;
         this.timestamp = timestamp;
         this.objective = objective;
         this.feedbackType = feedbackType;
+        this.rating = rating;
     }
 
     public String getMessage() {
@@ -64,11 +68,19 @@ public class Feedback extends IdentifiableObject implements Serializable {
         this.objective = objective;
     }
 
-    public FeedbackType getFeedbackType() {
+    public EFeedbackType getFeedbackType() {
         return feedbackType;
     }
 
-    public void setFeedbackType(FeedbackType feedbackType) {
+    public void setFeedbackType(EFeedbackType feedbackType) {
         this.feedbackType = feedbackType;
+    }
+
+    public EState getRating() {
+        return rating;
+    }
+
+    public void setRating(EState rating) {
+        this.rating = rating;
     }
 }

@@ -28,16 +28,16 @@ public class FeedbackController extends BaseController<Feedback> {
 
     @GetMapping("/{vehicleId}")
     public List<Feedback> getVehicleFeedbacks(@PathVariable String vehicleId) {
-        return data.getData().stream().filter(f -> f.getFeedbackType() == FeedbackType.VehicleFeedback).filter(f -> ((Vehicle)f.getObjective()).getId() == vehicleId).collect(Collectors.toList());
+        return data.getData().stream().filter(f -> f.getFeedbackType() == EFeedbackType.VEHICLE_FEEDBACK).filter(f -> ((Vehicle)f.getObjective()).getId() == vehicleId).collect(Collectors.toList());
     }
 
     @GetMapping("/{stopId}")
     public List<Feedback> getStopFeedbacks(@PathVariable String stopId) {
-        return data.getData().stream().filter(f -> f.getFeedbackType() == FeedbackType.StopFeedback).filter(f -> ((Stop)f.getObjective()).getId() == stopId).collect(Collectors.toList());
+        return data.getData().stream().filter(f -> f.getFeedbackType() == EFeedbackType.STOP_FEEDBACK).filter(f -> ((Stop)f.getObjective()).getId() == stopId).collect(Collectors.toList());
     }
 
     @GetMapping("/{lineId}")
     public List<Feedback> getLineFeedbacks(@PathVariable String lineId) {
-        return data.getData().stream().filter(f -> f.getFeedbackType() == FeedbackType.LineFeedback).filter(f -> ((Line)f.getObjective()).getId() == lineId).collect(Collectors.toList());
+        return data.getData().stream().filter(f -> f.getFeedbackType() == EFeedbackType.LINE_FEEDBACK).filter(f -> ((Line)f.getObjective()).getId() == lineId).collect(Collectors.toList());
     }
 }

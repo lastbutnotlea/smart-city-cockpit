@@ -96,6 +96,14 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
     this.defects = defects;
   }
 
+  public void addDefect(String defect){
+    this.defects.add(defect);
+  }
+
+  public boolean removeDefect(String defect){
+    return this.defects.remove(defect);
+  }
+
   public EVehicleType getType() {
     return type;
   }
