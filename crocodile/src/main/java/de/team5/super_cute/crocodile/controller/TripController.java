@@ -81,8 +81,7 @@ public class TripController extends BaseController<Trip> {
     LocalDateTime departureAtFirstStopOfTrip = tripInput.getStops().get(firstStopIdOfTrip);
 
     // Find offset from first stop to line start
-    Map<String, Integer> travelTime;
-    travelTime = tripInput.isInbound() ? tripInput.getLine().getTravelTimeInbound()
+    Map<String, Integer> travelTime = tripInput.isInbound() ? tripInput.getLine().getTravelTimeInbound()
         : tripInput.getLine().getTravelTimeOutbound();
 
     int tripToLineOffset = travelTime.get(firstStopIdOfTrip);
