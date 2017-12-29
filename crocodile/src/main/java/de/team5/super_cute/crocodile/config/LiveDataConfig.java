@@ -6,9 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 public class LiveDataConfig {
-    public static final int STOP_DEFECT_PERCENTAGE = 5;
-    public static final int VEHICLE_DEFECT_PERCENTAGE = 5;
-    public static final int DEFECT_FEEDBACK_PERCENTAGE = 50;
+    public static final int CREATE_STOP_DEFECT_PERCENTAGE = 5;
+    public static final int CREATE_VEHICLE_DEFECT_PERCENTAGE = 5;
+    public static final int REMOVE_STOP_DEFECT_PERCENTAGE = 25;
+    public static final int REMOVE_VEHICLE_DEFECT_PERCENTAGE = 25;
+    public static final int DEFECT_FEEDBACK_PERCENTAGE = 10;
     public static final int VALUE_FEEDBACK_PERCENTAGE = 1;
 
 

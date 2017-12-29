@@ -51,6 +51,7 @@ public class LiveDataGenerator {
         //increase or decrease people waiting by 0-5%
         stop.setPeopleWaiting(max(min(stop.getPeopleWaiting() + (r.nextInt(300) - 150), 1000), 0));
         generateValueFeedback(stop, "peopleWaiting");
+        removeDefect(stop, true);
         String defect = generateDefect(stop, true);
         if (defect != null) {
             stop.addDefect(defect);
@@ -67,6 +68,7 @@ public class LiveDataGenerator {
         generateValueFeedback(vehicle, "temperature");
         vehicle.setDelay(max(min((int) (vehicle.getDelay() + (r.nextInt(10) - 5)), 60), -5));
         generateValueFeedback(vehicle, "delay");
+        removeDefect(vehicle, false);
         String defect = generateDefect(vehicle, false);
         if (defect != null) {
             vehicle.addDefect(defect);
@@ -77,7 +79,7 @@ public class LiveDataGenerator {
     private String generateDefect(Feedbackable feedbackable, boolean forStop) {
         Random r = new Random(System.currentTimeMillis());
         String defect = null;
-        if (r.nextInt(99) + 1 <= (forStop ? STOP_DEFECT_PERCENTAGE : VEHICLE_DEFECT_PERCENTAGE)) {
+        if (r.nextInt(99) + 1 <= (forStop ? CREATE_STOP_DEFECT_PERCENTAGE : CREATE_STOP_DEFECT_PERCENTAGE)) {
             defect = (forStop ? STOP_DEFECTS.get(r.nextInt(STOP_DEFECTS.size() - 1)) : VEHICLE_DEFECTS.get(r.nextInt(VEHICLE_DEFECTS.size() - 1)));
             if (r.nextInt(99) + 1 <= DEFECT_FEEDBACK_PERCENTAGE) {
                 feedbackData.addObject(new Feedback((
@@ -90,6 +92,19 @@ public class LiveDataGenerator {
             }
         }
         return defect;
+    }
+
+    private void removeDefect(Feedbackable feedbackable, boolean forStop){
+        if(forStop){
+          if(((Stop) feedbackable).getDefects().size() != 0){
+              ((Stop) feedbackable).removeDefect(((Stop) feedbackable).getDefects().iterator().next());
+          }
+        }
+        else{
+            if(((Vehicle) feedbackable).getDefects().size() != 0){
+                ((Vehicle) feedbackable).removeDefect(((Vehicle) feedbackable).getDefects().iterator().next());
+            }
+        }
     }
 
     private void generateValueFeedback(Feedbackable feedbackable, String attribute){

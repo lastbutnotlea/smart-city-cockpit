@@ -44,6 +44,11 @@ public class Stop extends IdentifiableObject implements Serializable, Feedbackab
   }
 
   public void addDefect(String defect){
+    for (String d:this.defects) {
+      if(d.equals(defect)){
+        return;
+      }
+    }
     this.defects.add(defect);
   }
 
