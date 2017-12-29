@@ -28,6 +28,7 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { StopDetailComponent } from './view/stop-detail/stop-detail.component';
 import {TickerComponent} from './view/ticker/ticker.component';
 import {TickerItemComponent} from './view/ticker-item/ticker-item.component';
+import { FilterGroupComponent } from './shared/components/filter-group/filter-group.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -41,6 +42,7 @@ describe('AppComponent', () => {
         TripEditComponent,
         TripEditDepartureComponent,
         FilterComponent,
+        FilterGroupComponent,
         MapComponent,
         LineMapComponent,
         LineDetailComponent,
