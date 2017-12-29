@@ -37,6 +37,7 @@ public class MapController {
 
   @GetMapping("/stations")
   public ObjectNode getMapStations() throws JsonProcessingException {
+    logger.info("Got Request for Stations in Map.");
     ObjectNode stations = mapper.createObjectNode();
 
     for (EVehicleType type : EVehicleType.values()) {
@@ -60,6 +61,7 @@ public class MapController {
 
   @GetMapping("/lines")
   public ObjectNode getMapLines() throws JsonProcessingException {
+    logger.info("Got Request for Lines in Map.");
     ObjectNode lines = mapper.createObjectNode();
     List<Line> lineData = this.lineData.getData();
     for (Line l : lineData) {
@@ -73,6 +75,7 @@ public class MapController {
 
   @GetMapping("/connections")
   public ObjectNode getMapConnections() throws JsonProcessingException {
+    logger.info("Got Request for Connections in Map.");
     ObjectNode connections = mapper.createObjectNode();
     List<Line> lineData = this.lineData.getData();
     for (Line l : lineData) {
