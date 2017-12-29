@@ -5,6 +5,7 @@ import {HttpRoutingService} from '../../services/http-routing.service';
 import { TripStopData } from '../../shared/data/trip-stop-data';
 import {DropdownValue} from '../../shared/components/dropdown/dropdown.component';
 import {forEach} from '@angular/router/src/utils/collection';
+import {DateParserService} from '../../services/date-parser.service';
 
 @Component({
   selector: 'app-trip-edit-departure',
@@ -17,11 +18,12 @@ export class TripEditDepartureComponent implements OnInit {
 
   selectedStop: DropdownValue;
   copiedStops: TripStopData[];
-  model: NgbDateStruct;
+  date: NgbDateStruct;
   time: NgbTimeStruct;
 
   constructor(public activeModal: NgbActiveModal,
-              private http: HttpRoutingService) { }
+              private http: HttpRoutingService,
+              private dateParser: DateParserService) { }
 
   ngOnInit(): void {
     this.time = {hour: 0, minute: 0, second: 0};
@@ -59,26 +61,20 @@ export class TripEditDepartureComponent implements OnInit {
   }
 
   updateDate(): void {
-    let currentDate = new Date(this.selectedStop.value.departureTime);
-    currentDate.setUTCFullYear(this.model.year);
-    currentDate.setUTCMonth(this.model.month - 1);
-    currentDate.setUTCDate(this.model.day);
-    currentDate.setHours(currentDate.getHours() + 1);
+    this.selectedStop.value.departureTime = this.dateParser.parseDate(
+      this.selectedStop.value.departureTime,
+      this.date
+    );
 
-    let newDate = currentDate.toISOString();
-    newDate = newDate.substr(0, newDate.length - 2);
-    this.selectedStop.value.departureTime = newDate;
     console.log(this.selectedStop.value.departureTime);
   }
 
   updateTime(): void {
-    let currentDate = new Date(this.selectedStop.value.departureTime);
-    currentDate.setUTCHours(this.time.hour);
-    currentDate.setUTCMinutes(this.time.minute);
+    this.selectedStop.value.departureTime = this.dateParser.parseTime(
+      this.selectedStop.value.departureTime,
+      this.time
+    );
 
-    let newDate = currentDate.toISOString();
-    newDate = newDate.substr(0, newDate.length - 2);
-    this.selectedStop.value.departureTime = newDate;
     console.log(this.selectedStop.value.departureTime);
   }
 }

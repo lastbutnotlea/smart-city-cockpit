@@ -22,6 +22,7 @@ import {EmbeddedVehicleComponent} from './shared/components/embedded-vehicle/emb
 import {ConfirmDeletionComponent} from './shared/components/confirm-popup/confirm-deletion.component';
 import {StopSortService} from './services/stop-sort.service';
 import {TripEditDepartureComponent} from './view/trip-edit-departure/trip-edit-departure.component';
+import {DateParserService} from './services/date-parser.service';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -53,6 +54,7 @@ describe('AppComponent', () => {
         HttpRoutingService,
         MapCreatorService,
         StopSortService,
+        DateParserService,
         {provide: APP_BASE_HREF, useValue: '/'}
       ]
     }).compileComponents();
