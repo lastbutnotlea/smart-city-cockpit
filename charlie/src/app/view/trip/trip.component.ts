@@ -2,6 +2,8 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import { HttpRoutingService } from '../../services/http-routing.service';
 import {FilterComponent} from '../../shared/components/filter/filter.component';
 import { TripData } from '../../shared/data/trip-data';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {TripAddComponent} from '../trip-add/trip-add.component';
 
 @Component({
   selector: 'app-trip-view',
@@ -15,7 +17,8 @@ export class TripComponent implements OnInit {
 
   @ViewChild(FilterComponent) compFilter: FilterComponent;
 
-  constructor(private http: HttpRoutingService) { }
+  constructor(private http: HttpRoutingService,
+              private modalService: NgbModal) { }
 
   public ngOnInit(): void {
     this.title = 'Trip View';
@@ -35,5 +38,10 @@ export class TripComponent implements OnInit {
       return true;
     }
     return false;
+  }
+
+  addTrip(): void {
+    const modal = this.modalService.open(TripAddComponent);
+    modal.componentInstance.initData();
   }
 }

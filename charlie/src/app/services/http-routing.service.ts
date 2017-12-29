@@ -98,9 +98,9 @@ export class HttpRoutingService {
     );
   }
 
-  public addTrip(trip: TripData): void {
-    console.log('ADD TRIP, lineID: ' + trip.line.id + ' vehicleID: ' + trip.vehicle.id);
-    this.http.post(this.urlBuilder.getTripsUrl(), trip).subscribe();
+  public addTrip(trip: TripData): Observable<any> {
+    return this.http.post(this.urlBuilder.getTripsUrl(), trip).pipe(tap(data =>
+      console.log('ADD TRIP OK')));
   }
 
   public editTrip(trip: TripData): Observable<any> {

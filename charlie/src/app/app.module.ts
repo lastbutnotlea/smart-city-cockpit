@@ -28,6 +28,7 @@ import { Angular2FontawesomeModule } from 'angular2-fontawesome';
 import { TickerComponent } from './view/ticker/ticker.component';
 import { TickerItemComponent } from './view/ticker-item/ticker-item.component';
 import { StopDetailComponent } from './view/stop-detail/stop-detail.component';
+import {TripAddComponent} from './view/trip-add/trip-add.component';
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import { StopDetailComponent } from './view/stop-detail/stop-detail.component';
     ConfirmDeletionComponent,
     TickerComponent,
     TickerItemComponent,
+    TripAddComponent
   ],
   imports: [
     BrowserModule,
@@ -71,7 +73,8 @@ import { StopDetailComponent } from './view/stop-detail/stop-detail.component';
   entryComponents: [
     TripEditComponent,
     TripEditDepartureComponent,
-    ConfirmDeletionComponent
+    ConfirmDeletionComponent,
+    TripAddComponent
   ]
 })
 export class AppModule { }
