@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import { HttpRoutingService } from '../../services/http-routing.service';
 import {FilterComponent} from '../../shared/components/filter/filter.component';
 import { TripData } from '../../shared/data/trip-data';
+import { FilterCreatorService } from '../../services/filter-creator.service';
 
 @Component({
   selector: 'app-trip-view',
@@ -13,21 +14,23 @@ export class TripComponent implements OnInit {
   title: String;
   trips: TripData[] = [];
 
-  @ViewChild(FilterComponent) compFilter: FilterComponent;
+  @ViewChild('vehicleFilter')
+  vehicleFilter: FilterComponent;
+  @ViewChild('lineFilter')
+  lineFilter: FilterComponent;
 
-  constructor(private http: HttpRoutingService) { }
+  constructor(private http: HttpRoutingService,
+              private filterCreator: FilterCreatorService) { }
 
   public ngOnInit(): void {
     this.title = 'Trip View';
+    this.addFilter();
 
     // get trip data
     this.http.getTrips().subscribe(
       data => this.trips = data,
-      err => console.log('Could not fetch trips.')
+          err => console.log('Could not fetch trips.')
     );
-
-    this.compFilter.addFilter('Line', trip => trip.line.id === '1');
-    this.compFilter.addFilter('Vehicle Type', trip => trip.vehicle.type === 'Bus');
   }
 
   public isLoaded(): boolean {
@@ -35,5 +38,10 @@ export class TripComponent implements OnInit {
       return true;
     }
     return false;
+  }
+
+  private addFilter(): void {
+    this.filterCreator.addVehicleFilters(this.vehicleFilter);
+    this.filterCreator.addLineFilters(this.lineFilter);
   }
 }

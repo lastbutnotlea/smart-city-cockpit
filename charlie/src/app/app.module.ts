@@ -21,6 +21,7 @@ import { DropdownComponent } from './shared/components/dropdown/dropdown.compone
 import {EmbeddedLineComponent} from './shared/components/embedded-line/embedded-line.component';
 import {EmbeddedVehicleComponent} from './shared/components/embedded-vehicle/embedded-vehicle.component';
 import { StopDetailComponent } from './view/stop-detail/stop-detail.component';
+import { FilterCreatorService } from './services/filter-creator.service';
 
 
 @NgModule({
@@ -47,7 +48,12 @@ import { StopDetailComponent } from './view/stop-detail/stop-detail.component';
     FormsModule,
     NgbModule.forRoot()
   ],
-  providers: [UrlBuilderService, HttpRoutingService, MapCreatorService],
+  providers: [
+    UrlBuilderService,
+    HttpRoutingService,
+    MapCreatorService,
+    FilterCreatorService
+  ],
   bootstrap: [AppComponent],
   // modal dialogs:
   entryComponents: [
