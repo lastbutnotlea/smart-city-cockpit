@@ -4,7 +4,10 @@ import de.team5.super_cute.crocodile.external.TpDataConnector;
 import de.team5.super_cute.crocodile.model.Line;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import org.slf4j.Logger;
 
 public class Helpers {
 
@@ -23,5 +26,10 @@ public class Helpers {
   }});
 
   public static LocalDateTime DUMMY_TIME = LocalDateTime.MIN.withYear(0).withHour(0).withMinute(0);
+
+  public static void logException(Logger logger , Exception e) {
+    logger.error(e.getMessage() + Arrays.stream(e.getStackTrace()).map(Object::toString)
+        .collect(Collectors.joining("\n")));
+  }
 
 }
