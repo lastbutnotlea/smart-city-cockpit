@@ -27,9 +27,9 @@
 
   <div *ngIf="stopsVisible()" class="d-block">
     <label>Stops:</label>
-    <div class="" *ngFor="let stop of selected.stops; let i = index">
+    <div class="" *ngFor="let stop of selectedLineStops; let i = index">
       <input #box type="checkbox" [ngModel]="isChecked(stop)" (change)="includeStop(stop, box.checked)">
-      <label class="padding-left">{{stop.name}}</label>
+      <label class="padding-left">{{stop.commonName}}</label>
     </div>
   </div>
 

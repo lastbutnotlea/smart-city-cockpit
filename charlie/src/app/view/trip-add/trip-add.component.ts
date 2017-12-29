@@ -8,6 +8,7 @@ import {StopData} from '../../shared/data/stop-data';
 import { TripStopData } from '../../shared/data/trip-stop-data';
 import {DropdownValue} from '../../shared/components/dropdown/dropdown.component';
 import {StopSortService} from '../../services/stop-sort.service';
+import { DateParserService } from '../../services/date-parser.service';
 
 @Component({
   selector: 'app-trip-add',
@@ -17,6 +18,9 @@ import {StopSortService} from '../../services/stop-sort.service';
 
 export class TripAddComponent implements OnInit {
   selected: TripData;
+  selectedLineStops: StopData[];
+  selectedTime: string = '0000-01-01T00:00';
+  displayStops: boolean = false;
 
   selectedVehicle: DropdownValue;
   selectedLine: DropdownValue;
@@ -30,7 +34,8 @@ export class TripAddComponent implements OnInit {
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
-              private stopSortService: StopSortService) { }
+              private stopSortService: StopSortService,
+              private dateParser: DateParserService) { }
 
   ngOnInit(): void {
     this.selectedVehicle = new DropdownValue(0, 'loading');
@@ -39,10 +44,12 @@ export class TripAddComponent implements OnInit {
   }
 
   initData(): void {
+    this.selected = new TripData();
     this.http.getLines().subscribe(
       data => {
         this.availLines = data;
         this.selectedLine = this.toDropdownItemL(this.availLines[0]);
+        this.selectedLineStops = this.selectedLine.value.stopsInbound;
       },
       err => console.log('Err'));
 
@@ -52,38 +59,44 @@ export class TripAddComponent implements OnInit {
         this.selectedVehicle = this.toDropdownItemV(this.availVehicles[0]);
       },
       err => console.log('Err'));
+  }
 
-    this.selected = new TripData();
+  getStopsForSelectedDirection(): void {
+    if(this.selectedDirection.value) {
+      this.selectedLineStops = this.selected.line.stopsInbound;
+    }
+    else {
+      this.selectedLineStops = this.selected.line.stopsOutbound;
+    }
   }
 
   showStops(): void {
-    this.selected.vehicle = this.selectedVehicle.value;
-    this.selected.line = this.selectedLine.value;
-    this.selected.isInbound = this.selectedDirection.value;
-
-    let stops = [];
-    let selectedStops = [];
-    if(this.selectedDirection.value) {
-      selectedStops = this.selected.line.stopsInbound;
-    }
-    else {
-      selectedStops = this.selected.line.stopsOutbound;
-    }
-    for(const stop of selectedStops) {
-      stops.push(new TripStopData(stop.id, '0000-01-01T00:00', stop.commonName));
-    }
-    debugger;
-
-    this.selected.stops = stops;
-    console.log("show stops works");
+    this.addDataToSelected();
+    this.displayStops = true;
   }
 
   stopsVisible(): boolean {
-    return this.selected.stops !== null;
+    return this.displayStops;
+  }
+
+  addDataToSelected(): void {
+    this.selected.vehicle = this.selectedVehicle.value;
+    this.selected.line = this.selectedLine.value;
+    this.selected.isInbound = this.selectedDirection.value;
+    this.getStopsForSelectedDirection();
+    this.selected.stops = [];
+    for(const stop of this.selectedLineStops){
+      this.selected.stops.push(new TripStopData(stop.id, '0000-01-01T00:00', stop.commonName));
+    }
+    this.selected.stops[0].departureTime = this.selectedTime;
   }
 
   confirm(): void {
+    this.addDataToSelected();
+    console.log(this.selected);
     this.activeModal.close('Close click');
+    // TODO: addTrip should return id of added trip (id is generated in backend)
+    // after receiving this id, the trip can be used to get updated data from backend
     this.http.addTrip(this.selected).subscribe(
       data => {
         // get trips to refresh the trip detail data in trip detail view
@@ -112,7 +125,7 @@ export class TripAddComponent implements OnInit {
 
   includeStop(stop: StopData, included: boolean): void {
     if (included) {
-      this.selected.stops.push(new TripStopData(stop.id, '0000-01-01T00:00', ''));
+      this.selected.stops.push(new TripStopData(stop.id, '0000-01-01T00:00', stop.commonName));
     } else {
       this.selected.stops = this.selected.stops.filter(filteredStop => filteredStop.id !== stop.id);
       this.selected.stops = this.stopSortService.sortStops(this.selected.stops);
@@ -145,5 +158,23 @@ export class TripAddComponent implements OnInit {
     directionItems.push(new DropdownValue(true, 'Inbound'));
     directionItems.push(new DropdownValue(false, 'Outbound'));
     return directionItems;
+  }
+
+  updateDate(): void {
+    this.addDataToSelected();
+    this.selectedTime = this.dateParser.parseDate(
+      this.selectedTime,
+      this.date
+    );
+    console.log(this.selected.stops[0].departureTime);
+  }
+
+  updateTime(): void {
+    this.addDataToSelected();
+    this.selectedTime = this.dateParser.parseTime(
+      this.selectedTime,
+      this.time
+    );
+    console.log(this.selected.stops[0].departureTime);
   }
 }

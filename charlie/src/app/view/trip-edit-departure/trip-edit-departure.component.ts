@@ -6,7 +6,6 @@ import { TripStopData } from '../../shared/data/trip-stop-data';
 import {DropdownValue} from '../../shared/components/dropdown/dropdown.component';
 import {DateParserService} from '../../services/date-parser.service';
 import {StopSortService} from '../../services/stop-sort.service';
-import {TripDetailComponent} from '../trip-detail/trip-detail.component';
 import {VehicleData} from '../../shared/data/vehicle-data';
 import {LineData} from '../../shared/data/line-data';
 
