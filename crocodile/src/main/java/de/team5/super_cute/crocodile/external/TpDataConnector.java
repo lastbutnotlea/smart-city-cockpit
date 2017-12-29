@@ -2,12 +2,17 @@ package de.team5.super_cute.crocodile.external;
 
 import static de.team5.super_cute.crocodile.config.TfLApiConfig.app_id;
 import static de.team5.super_cute.crocodile.config.TfLApiConfig.app_key;
+import static de.team5.super_cute.crocodile.util.ColorMapping.girlyColors;
+import static de.team5.super_cute.crocodile.util.ColorMapping.lineColors;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Stop;
 import java.awt.Color;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.LoggerFactory;
@@ -37,7 +42,7 @@ public class TpDataConnector {
         travelTimeOutbound = getTravelTimes(node, stopsOutbound);
         lines.add(
             new Line(node.get("lineName").asText(), stopsInbound,
-                stopsOutbound, travelTimeInbound, travelTimeOutbound, new Color(0)));
+                stopsOutbound, travelTimeInbound, travelTimeOutbound, lineColors.get(node.get("lineName").asText())));
       } catch (RestClientException e) {
         LoggerFactory.getLogger(getClass())
             .error("Error while accessing Transport-API while creating lines: " + e.getMessage());

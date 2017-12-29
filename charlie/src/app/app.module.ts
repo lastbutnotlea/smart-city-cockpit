@@ -16,9 +16,14 @@ import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MapCreatorService } from './services/map-creator.service';
 import { NgModule } from '@angular/core';
+import { LineMapComponent } from './view/line-map/line-map.component';
 import { DropdownComponent } from './shared/components/dropdown/dropdown.component';
 import {EmbeddedLineComponent} from './shared/components/embedded-line/embedded-line.component';
 import {EmbeddedVehicleComponent} from './shared/components/embedded-vehicle/embedded-vehicle.component';
+import { Angular2FontawesomeModule } from 'angular2-fontawesome';
+import { TickerComponent } from './view/ticker/ticker.component';
+import { TickerItemComponent } from './view/ticker-item/ticker-item.component';
+import { StopDetailComponent } from './view/stop-detail/stop-detail.component';
 
 
 @NgModule({
@@ -31,16 +36,21 @@ import {EmbeddedVehicleComponent} from './shared/components/embedded-vehicle/emb
     TripEditComponent,
     FilterComponent,
     MapComponent,
+    LineMapComponent,
     LineDetailComponent,
+    StopDetailComponent,
     DropdownComponent,
     EmbeddedLineComponent,
-    EmbeddedVehicleComponent
+    EmbeddedVehicleComponent,
+    TickerComponent,
+    TickerItemComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
+    Angular2FontawesomeModule,
     NgbModule.forRoot()
   ],
   providers: [UrlBuilderService, HttpRoutingService, MapCreatorService],
