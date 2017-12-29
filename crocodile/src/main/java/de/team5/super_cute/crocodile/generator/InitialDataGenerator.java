@@ -15,7 +15,6 @@ import de.team5.super_cute.crocodile.data.StopData;
 import de.team5.super_cute.crocodile.data.TripData;
 import de.team5.super_cute.crocodile.data.VehicleData;
 import de.team5.super_cute.crocodile.external.TpDataConnector;
-import de.team5.super_cute.crocodile.model.EVehicleType;
 import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Vehicle;
 import de.team5.super_cute.crocodile.util.NetworkDataBuilder;
@@ -179,7 +178,7 @@ public class InitialDataGenerator {
     Vehicle vehicle;
     if (queueFrom.peek() == null || queueFrom.peek().getValue().compareTo(iterator) == 1) {
       //If no (or no available) vehicle exists: create new one
-      vehicle = new Vehicle(100, 0, 42, new HashSet<>(), EVehicleType.Bus);
+      vehicle = new Vehicle(100, 0, 42, new HashSet<>(), line.getType());
       networkDataBuilder.addVehicles(vehicle);
     } else {
       vehicle = queueFrom.poll().getKey();
