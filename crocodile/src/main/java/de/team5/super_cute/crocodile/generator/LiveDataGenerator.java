@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import sun.util.resources.cldr.lag.LocaleNames_lag;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -46,33 +47,35 @@ public class LiveDataGenerator {
     }
 
     private void generateLiveDataForStop(Stop stop) {
-        Random r = new Random();
+        Random r = new Random(System.currentTimeMillis());
         //increase or decrease people waiting by 0-5%
-        stop.setPeopleWaiting(min(max((int) (stop.getPeopleWaiting() + stop.getPeopleWaiting() * (0.01 * (r.nextInt(10) - 5))), 1000), 0));
+        stop.setPeopleWaiting(max(min(stop.getPeopleWaiting() + (r.nextInt(300) - 150), 1000), 0));
         generateValueFeedback(stop, "peopleWaiting");
         String defect = generateDefect(stop, true);
         if (defect != null) {
             stop.addDefect(defect);
         }
+        stopData.editObject(stop);
     }
 
     private void generateLiveDataForVehicle(Vehicle vehicle) {
-        Random r = new Random();
+        Random r = new Random(System.currentTimeMillis());
         //increase or decrease values by 0-5%
-        vehicle.setLoad(min(max((int) (vehicle.getLoad() + vehicle.getLoad() * (0.01 * (r.nextInt(10) - 5))), vehicle.getCapacity() * 2), 0));
+        vehicle.setLoad(max(min((int) (vehicle.getLoad() + (r.nextInt(50) - 25)), vehicle.getCapacity() * 2), 0));
         generateValueFeedback(vehicle, "load");
-        vehicle.setTemperature(min(max((int) (vehicle.getTemperature() + vehicle.getTemperature() * (0.01 * (r.nextInt(10) - 5))), 40), 5));
+        vehicle.setTemperature(max(min((int) (vehicle.getTemperature() + (r.nextInt(10) - 5)), 40), 5));
         generateValueFeedback(vehicle, "temperature");
-        vehicle.setDelay(min(max((int) (vehicle.getDelay() + vehicle.getDelay() * (0.01 * (r.nextInt(10) - 5))), 60), -5));
+        vehicle.setDelay(max(min((int) (vehicle.getDelay() + (r.nextInt(10) - 5)), 60), -5));
         generateValueFeedback(vehicle, "delay");
         String defect = generateDefect(vehicle, false);
         if (defect != null) {
             vehicle.addDefect(defect);
         }
+        vehicleData.editObject(vehicle);
     }
 
     private String generateDefect(Feedbackable feedbackable, boolean forStop) {
-        Random r = new Random();
+        Random r = new Random(System.currentTimeMillis());
         String defect = null;
         if (r.nextInt(99) + 1 <= (forStop ? STOP_DEFECT_PERCENTAGE : VEHICLE_DEFECT_PERCENTAGE)) {
             defect = (forStop ? STOP_DEFECTS.get(r.nextInt(STOP_DEFECTS.size() - 1)) : VEHICLE_DEFECTS.get(r.nextInt(VEHICLE_DEFECTS.size() - 1)));
@@ -90,7 +93,7 @@ public class LiveDataGenerator {
     }
 
     private void generateValueFeedback(Feedbackable feedbackable, String attribute){
-        Random r = new Random();
+        Random r = new Random(System.currentTimeMillis());
         if(r.nextInt(99) + 1 <= VALUE_FEEDBACK_PERCENTAGE){
             String message = "";
             EState rating = null;

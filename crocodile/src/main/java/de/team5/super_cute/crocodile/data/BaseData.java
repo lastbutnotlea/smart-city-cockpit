@@ -45,8 +45,8 @@ public abstract class BaseData<T extends IdentifiableObject> {
     return true;
   }
 
-  public boolean editObject(T newObj) {
-    hibernateTemplate.update(newObj);
+  public boolean editObject(T Obj) {
+    hibernateTemplate.update(Obj);
     return true;
   }
 

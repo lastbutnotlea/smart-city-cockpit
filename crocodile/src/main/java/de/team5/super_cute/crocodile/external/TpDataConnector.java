@@ -93,7 +93,7 @@ public class TpDataConnector {
             node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("name").asText(),
             node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("lon").asDouble(),
             node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("lat").asDouble(),
-            0, new HashSet<>());
+            300, new HashSet<>());
         if (node.get("stopPointSequences").get(i).get("direction").asText().equals("inbound")) {
           stopsInbound.add(stop);
         } else if (node.get("stopPointSequences").get(i).get("direction").asText()
