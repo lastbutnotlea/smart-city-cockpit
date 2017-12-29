@@ -1,24 +1,38 @@
 package de.team5.super_cute.crocodile.generator;
 
-import de.team5.super_cute.crocodile.data.*;
-import de.team5.super_cute.crocodile.model.*;
-import de.team5.super_cute.crocodile.util.NetworkDataBuilder;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
-import sun.util.resources.cldr.lag.LocaleNames_lag;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Random;
-
-import static de.team5.super_cute.crocodile.config.LiveDataConfig.*;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.DEFECT_FEEDBACK_PERCENTAGE;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.STOP_DEFECTS;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.STOP_DEFECTS_SEVERITY;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.STOP_DEFECT_FEEDBACK;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.STOP_DEFECT_PERCENTAGE;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.VALUE_FEEDBACK;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.VALUE_FEEDBACK_PERCENTAGE;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.VEHICLE_DEFECTS;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.VEHICLE_DEFECTS_SEVERITY;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.VEHICLE_DEFECT_FEEDBACK;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.VEHICLE_DEFECT_PERCENTAGE;
 import static de.team5.super_cute.crocodile.model.EFeedbackType.STOP_FEEDBACK;
 import static de.team5.super_cute.crocodile.model.EFeedbackType.VEHICLE_FEEDBACK;
 import static de.team5.super_cute.crocodile.util.StateCalculator.getState;
 import static org.apache.commons.lang3.math.NumberUtils.max;
 import static org.apache.commons.lang3.math.NumberUtils.min;
+
+import de.team5.super_cute.crocodile.data.FeedbackData;
+import de.team5.super_cute.crocodile.data.StopData;
+import de.team5.super_cute.crocodile.data.VehicleData;
+import de.team5.super_cute.crocodile.model.EFeedbackType;
+import de.team5.super_cute.crocodile.model.EState;
+import de.team5.super_cute.crocodile.model.Feedback;
+import de.team5.super_cute.crocodile.model.Feedbackable;
+import de.team5.super_cute.crocodile.model.Stop;
+import de.team5.super_cute.crocodile.model.Vehicle;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Random;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 
 @Service
 public class LiveDataGenerator {
@@ -110,76 +124,32 @@ public class LiveDataGenerator {
     private void generateValueFeedback(Feedbackable feedbackable, String attribute){
         Random r = new Random(System.currentTimeMillis());
         if(r.nextInt(99) + 1 <= VALUE_FEEDBACK_PERCENTAGE){
-            String message = "";
-            EState rating = null;
-            EFeedbackType feedbackType = null;
-            int severity;
-            Stop stop;
-            Vehicle vehicle;
+            EState rating;
             switch(attribute){
                 case("peopleWaiting"):
-                    stop = (Stop) feedbackable;
-                    if(stop.getPeopleWaiting() <= 300){
-                        severity = 0;
-                    }
-                    else if(stop.getPeopleWaiting() <= 700){
-                        severity = 1;
-                    }
-                    else{
-                        severity = 2;
-                    }
-                    message = VALUE_FEEDBACK.get("peopleWaiting").get(severity).get(r.nextInt(VALUE_FEEDBACK.get("peopleWaiting").get(severity).size() - 1));
-                    rating = getState(PEOPLE_WAITING_SEVERITY[severity]);
-                    feedbackType = STOP_FEEDBACK;
+                    rating = getState(((Stop) feedbackable).getPeopleWaitingSeverity());
+                    feedbackData.addObject(getValueFeedbackForField(feedbackable, "peopleWaiting", rating, r));
                     break;
                 case("load"):
-                    vehicle = (Vehicle) feedbackable;
-                    if(vehicle.getLoad() / vehicle.getCapacity() <= 0.5){
-                        severity = 0;
-                    }
-                    else if(vehicle.getLoad() / vehicle.getCapacity() <= 1.5){
-                        severity = 1;
-                    }
-                    else{
-                        severity = 2;
-                    }
-                    message = VALUE_FEEDBACK.get("load").get(severity).get(r.nextInt(VALUE_FEEDBACK.get("load").get(severity).size() - 1));
-                    rating = getState(LOAD_SEVERITY[severity]);
-                    feedbackType = VEHICLE_FEEDBACK;
+                    rating = getState(((Vehicle) feedbackable).getLoadSeverity());
+                    feedbackData.addObject(getValueFeedbackForField(feedbackable, "load", rating, r));
                     break;
                 case("temperature"):
-                    vehicle = (Vehicle) feedbackable;
-                    if(vehicle.getTemperature() <= 30 && vehicle.getTemperature() >= 25){
-                        severity = 0;
-                    }
-                    else if((vehicle.getTemperature() <= 24 && vehicle.getTemperature() >= 15) || (vehicle.getTemperature() <= 40 && vehicle.getTemperature() >= 31)){
-                        severity = 1;
-                    }
-                    else{
-                        severity = 2;
-                    }
-                    message = VALUE_FEEDBACK.get("temperature").get(severity).get(r.nextInt(VALUE_FEEDBACK.get("temperature").get(severity).size() - 1));
-                    rating = getState(TEMPERATURE_SEVERITY[severity]);
-                    feedbackType = VEHICLE_FEEDBACK;
+                    rating = getState(((Vehicle) feedbackable).getTemperatureSeverity());
+                    feedbackData.addObject(getValueFeedbackForField(feedbackable, "temperature", rating, r));
                     break;
                 case("delay"):
-                    vehicle = (Vehicle) feedbackable;
-                    if(vehicle.getDelay() <= 5){
-                        severity = 0;
-                    }
-                    else if(vehicle.getDelay() <= 15){
-                        severity = 1;
-                    }
-                    else{
-                        severity = 2;
-                    }
-                    message = VALUE_FEEDBACK.get("delay").get(severity).get(r.nextInt(VALUE_FEEDBACK.get("delay").get(severity).size() - 1));
-                    rating = getState(DELAY_SEVERITY[severity]);
-                    feedbackType = VEHICLE_FEEDBACK;
+                    rating = getState(((Vehicle) feedbackable).getDelaySeverity());
+                    feedbackData.addObject(getValueFeedbackForField(feedbackable, "delay", rating, r));
                     break;
             }
-            feedbackData.addObject(new Feedback(message, LocalDateTime.now(), feedbackable, feedbackType, rating));
         }
+    }
+
+    private Feedback getValueFeedbackForField(Feedbackable objective, String fieldname, EState rating, Random random) {
+        String message = VALUE_FEEDBACK.get(fieldname).get(rating.ordinal()).get(random.nextInt(VALUE_FEEDBACK.get(fieldname).get(rating.ordinal()).size() - 1));
+        EFeedbackType feedbackType = VEHICLE_FEEDBACK;
+        return new Feedback(message, LocalDateTime.now(), objective, feedbackType, rating);
     }
 }
 

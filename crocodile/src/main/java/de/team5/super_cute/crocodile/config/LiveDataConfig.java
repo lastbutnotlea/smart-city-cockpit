@@ -69,7 +69,7 @@ public class LiveDataConfig {
         put("elevator not working", new ArrayList<String>(){{add(""); add(""); add("");}});
         put("escalator not working", new ArrayList<String>(){{add(""); add(""); add("");}});
         put("ticket-machine not working", new ArrayList<String>(){{add(""); add(""); add("");}});
-    }};
+    }}
 
     public static  final Map<String, List<String>> VEHICLE_DEFECT_FEEDBACK = new HashMap<String, List<String>>(){{
         put("dirty", new ArrayList<String>(){{add(""); add(""); add("");}});
@@ -83,11 +83,11 @@ public class LiveDataConfig {
     public static  final Map<String, List<List<String>>> VALUE_FEEDBACK = new HashMap<String, List<List<String>>>(){{
         put("peopleWaiting", new ArrayList<List<String>>(){{
             //messages for low peopleWaiting
-            add(new ArrayList<String>(){{add(""); add(""); add(""); }});
+            add(new ArrayList<String>(){{add(""); add(""); add(""); }}); // fine
             //messages for medium peopleWaiting
-            add(new ArrayList<String>(){{add(""); add(""); add(""); }});
+            add(new ArrayList<String>(){{add(""); add(""); add(""); }}); // problematic
             //messages for high peopleWaiting
-            add(new ArrayList<String>(){{add(""); add(""); add(""); }});
+            add(new ArrayList<String>(){{add(""); add(""); add(""); }}); // critical
         }});
         put("load", new ArrayList<List<String>>(){{
             add(new ArrayList<String>(){{add(""); add(""); add(""); }});

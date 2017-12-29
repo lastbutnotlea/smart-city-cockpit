@@ -1,5 +1,6 @@
 package de.team5.super_cute.crocodile.model;
 
+import de.team5.super_cute.crocodile.config.LiveDataConfig;
 import java.io.Serializable;
 import java.util.Set;
 import javax.persistence.*;
@@ -86,5 +87,17 @@ public class Stop extends IdentifiableObject implements Serializable, Feedbackab
 
   public void setPeopleWaiting(int peopleWaiting) {
     this.peopleWaiting = peopleWaiting;
+  }
+
+  public int getPeopleWaitingSeverity() {
+    if(getPeopleWaiting() <= 300){
+      return LiveDataConfig.PEOPLE_WAITING_SEVERITY[0];
+    }
+    else if(getPeopleWaiting() <= 700){
+      return LiveDataConfig.PEOPLE_WAITING_SEVERITY[1];
+    }
+    else{
+      return LiveDataConfig.PEOPLE_WAITING_SEVERITY[2];
+    }
   }
 }
