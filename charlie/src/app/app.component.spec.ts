@@ -16,9 +16,13 @@ import { UrlBuilderService } from './services/url-builder.service';
 import { HttpRoutingService } from './services/http-routing.service';
 import { MapCreatorService } from './services/map-creator.service';
 import { APP_BASE_HREF } from '@angular/common';
+import { LineMapComponent } from './view/line-map/line-map.component';
 import {DropdownComponent} from './shared/components/dropdown/dropdown.component';
 import {EmbeddedLineComponent} from './shared/components/embedded-line/embedded-line.component';
 import {EmbeddedVehicleComponent} from './shared/components/embedded-vehicle/embedded-vehicle.component';
+import { StopDetailComponent } from './view/stop-detail/stop-detail.component';
+import {TickerComponent} from './view/ticker/ticker.component';
+import {TickerItemComponent} from './view/ticker-item/ticker-item.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -32,10 +36,14 @@ describe('AppComponent', () => {
         TripEditComponent,
         FilterComponent,
         MapComponent,
+        LineMapComponent,
         LineDetailComponent,
+        StopDetailComponent,
         DropdownComponent,
         EmbeddedLineComponent,
-        EmbeddedVehicleComponent
+        EmbeddedVehicleComponent,
+        TickerComponent,
+        TickerItemComponent,
       ],
       imports: [
         BrowserModule,
