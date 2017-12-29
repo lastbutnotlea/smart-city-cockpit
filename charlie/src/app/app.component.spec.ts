@@ -1,25 +1,30 @@
-import { async, TestBed } from '@angular/core/testing';
-import { AppComponent } from './app.component';
-import { NetworkComponent } from './view/network/network.component';
-import { TripComponent } from './view/trip/trip.component';
-import { MenuComponent } from './menu/menu.component';
-import { TripDetailComponent } from './view/trip-detail/trip-detail.component';
-import { TripEditComponent } from './view/trip-edit/trip-edit.component';
-import { FilterComponent } from './shared/components/filter/filter.component';
-import { MapComponent } from './view/map/map.component';
-import { LineDetailComponent } from './view/line-detail/line-detail.component';
-import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
-import { AppRoutingModule } from './app-routing.module';
-import { FormsModule } from '@angular/forms';
-import { UrlBuilderService } from './services/url-builder.service';
-import { HttpRoutingService } from './services/http-routing.service';
-import { MapCreatorService } from './services/map-creator.service';
-import { APP_BASE_HREF } from '@angular/common';
+import {async, TestBed} from '@angular/core/testing';
+import {AppComponent} from './app.component';
+import {NetworkComponent} from './view/network/network.component';
+import {TripComponent} from './view/trip/trip.component';
+import {MenuComponent} from './menu/menu.component';
+import {TripDetailComponent} from './view/trip-detail/trip-detail.component';
+import {TripEditComponent} from './view/trip-edit/trip-edit.component';
+import {FilterComponent} from './shared/components/filter/filter.component';
+import {MapComponent} from './view/map/map.component';
+import {LineDetailComponent} from './view/line-detail/line-detail.component';
+import {BrowserModule} from '@angular/platform-browser';
+import {HttpClientModule} from '@angular/common/http';
+import {AppRoutingModule} from './app-routing.module';
+import {FormsModule} from '@angular/forms';
+import {UrlBuilderService} from './services/url-builder.service';
+import {HttpRoutingService} from './services/http-routing.service';
+import {MapCreatorService} from './services/map-creator.service';
+import {APP_BASE_HREF} from '@angular/common';
 import { LineMapComponent } from './view/line-map/line-map.component';
 import {DropdownComponent} from './shared/components/dropdown/dropdown.component';
 import {EmbeddedLineComponent} from './shared/components/embedded-line/embedded-line.component';
 import {EmbeddedVehicleComponent} from './shared/components/embedded-vehicle/embedded-vehicle.component';
+import {ConfirmDeletionComponent} from './shared/components/confirm-popup/confirm-deletion.component';
+import {StopSortService} from './services/stop-sort.service';
+import {TripEditDepartureComponent} from './view/trip-edit-departure/trip-edit-departure.component';
+import {DateParserService} from './services/date-parser.service';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { StopDetailComponent } from './view/stop-detail/stop-detail.component';
 import {TickerComponent} from './view/ticker/ticker.component';
 import {TickerItemComponent} from './view/ticker-item/ticker-item.component';
@@ -35,6 +40,7 @@ describe('AppComponent', () => {
         MenuComponent,
         TripDetailComponent,
         TripEditComponent,
+        TripEditDepartureComponent,
         FilterComponent,
         FilterGroupComponent,
         MapComponent,
@@ -44,6 +50,7 @@ describe('AppComponent', () => {
         DropdownComponent,
         EmbeddedLineComponent,
         EmbeddedVehicleComponent,
+        ConfirmDeletionComponent,
         TickerComponent,
         TickerItemComponent,
       ],
@@ -53,7 +60,17 @@ describe('AppComponent', () => {
         AppRoutingModule,
         FormsModule
       ],
-      providers: [UrlBuilderService, HttpRoutingService, MapCreatorService, {provide: APP_BASE_HREF, useValue : '/' }]
+      providers: [
+        UrlBuilderService,
+        HttpRoutingService,
+        MapCreatorService,
+        StopSortService,
+        DateParserService,
+        {provide: APP_BASE_HREF, useValue: '/'}
+      ],
+      schemas: [
+        CUSTOM_ELEMENTS_SCHEMA
+      ]
     }).compileComponents();
   }));
 

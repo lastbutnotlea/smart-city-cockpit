@@ -7,7 +7,7 @@ import { FilterGroupComponent } from '../../shared/components/filter-group/filte
 @Component({
   selector: 'app-trip-view',
   templateUrl: './trip.component.html',
-  styleUrls: ['./trip.component.css']
+  styleUrls: ['./trip.component.css', '../../shared/styling/global-styling.css']
 })
 
 export class TripComponent implements OnInit {

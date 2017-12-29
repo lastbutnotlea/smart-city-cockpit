@@ -1,4 +1,7 @@
+<div class="filter-component">
+
 <div *ngFor="let item of (filters); let i = index">
   <label>{{filters[i][0]}}</label>
   <input #elem type="checkbox" checked="true" (change)="filters[i][1]=elem.checked">
+</div>
 </div>

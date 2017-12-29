@@ -20,6 +20,10 @@ import { LineMapComponent } from './view/line-map/line-map.component';
 import { DropdownComponent } from './shared/components/dropdown/dropdown.component';
 import {EmbeddedLineComponent} from './shared/components/embedded-line/embedded-line.component';
 import {EmbeddedVehicleComponent} from './shared/components/embedded-vehicle/embedded-vehicle.component';
+import {ConfirmDeletionComponent} from './shared/components/confirm-popup/confirm-deletion.component';
+import {StopSortService} from './services/stop-sort.service';
+import {TripEditDepartureComponent} from './view/trip-edit-departure/trip-edit-departure.component';
+import {DateParserService} from './services/date-parser.service';
 import { Angular2FontawesomeModule } from 'angular2-fontawesome';
 import { TickerComponent } from './view/ticker/ticker.component';
 import { TickerItemComponent } from './view/ticker-item/ticker-item.component';
@@ -35,6 +39,7 @@ import { FilterGroupComponent } from './shared/components/filter-group/filter-gr
     MenuComponent,
     TripDetailComponent,
     TripEditComponent,
+    TripEditDepartureComponent,
     FilterComponent,
     FilterGroupComponent,
     MapComponent,
@@ -44,6 +49,7 @@ import { FilterGroupComponent } from './shared/components/filter-group/filter-gr
     DropdownComponent,
     EmbeddedLineComponent,
     EmbeddedVehicleComponent,
+    ConfirmDeletionComponent,
     TickerComponent,
     TickerItemComponent,
   ],
@@ -58,12 +64,16 @@ import { FilterGroupComponent } from './shared/components/filter-group/filter-gr
   providers: [
     UrlBuilderService,
     HttpRoutingService,
-    MapCreatorService
+    MapCreatorService,
+    StopSortService,
+    DateParserService
   ],
   bootstrap: [AppComponent],
   // modal dialogs:
   entryComponents: [
-    TripEditComponent
+    TripEditComponent,
+    TripEditDepartureComponent,
+    ConfirmDeletionComponent
   ]
 })
 export class AppModule { }

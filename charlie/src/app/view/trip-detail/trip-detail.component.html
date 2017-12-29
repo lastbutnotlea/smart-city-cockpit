@@ -8,8 +8,9 @@
   <h6 class="text-center margin-bottom">Trip ID: {{trip.id}}</h6>
 
   <div class="no-float margin-bottom">
-    <button class="btn btn-outline-primary" (click)="edit()">Edit</button>
-    <button class="btn btn-outline-primary" (click)="edit()">Delete</button>
+    <button class="btn btn-outline-primary" (click)="editStops()">Edit Stops or Vehicle</button>
+    <button class="btn btn-outline-primary" (click)="editDepartureTime()">Edit Departure Time</button>
+    <button class="btn btn-outline-danger" (click)="showConfirmModal()">Delete</button>
   </div>
 
   <app-embedded-line [line]="trip.line"></app-embedded-line>
@@ -17,9 +18,9 @@
   <!-- stops -->
   <div class="bounding-box bg-light">
     <h5>Stops</h5>
-    <ul *ngFor="let stop of trip.stops">
-      <li>{{stop.id}}</li>
-    </ul>
+    <p *ngFor="let stop of trip.stops">
+      <label class="text-secondary">{{stop.departureTime |  date:'MM/dd/yyyy HH:mm'}}</label> <br> {{stop.name}}
+    </p>
   </div>
 
   <div class="no-float big-padding-top">
