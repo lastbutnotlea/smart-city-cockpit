@@ -23,6 +23,7 @@ import {ConfirmDeletionComponent} from './shared/components/confirm-popup/confir
 import {StopSortService} from './services/stop-sort.service';
 import {TripEditDepartureComponent} from './view/trip-edit-departure/trip-edit-departure.component';
 import {DateParserService} from './services/date-parser.service';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -56,6 +57,9 @@ describe('AppComponent', () => {
         StopSortService,
         DateParserService,
         {provide: APP_BASE_HREF, useValue: '/'}
+      ],
+      schemas: [
+        CUSTOM_ELEMENTS_SCHEMA
       ]
     }).compileComponents();
   }));

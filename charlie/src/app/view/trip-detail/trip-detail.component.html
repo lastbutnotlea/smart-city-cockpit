@@ -19,7 +19,7 @@
   <div class="bounding-box bg-light">
     <h5>Stops</h5>
     <p *ngFor="let stop of trip.stops">
-      <label class="text-secondary">{{stop.departureTime |  date:'MM/dd/yyyy h:mm'}}</label> <br> {{stop.name}}
+      <label class="text-secondary">{{stop.departureTime |  date:'MM/dd/yyyy HH:mm'}}</label> <br> {{stop.name}}
     </p>
   </div>
 

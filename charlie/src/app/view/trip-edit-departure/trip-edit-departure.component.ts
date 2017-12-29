@@ -30,7 +30,17 @@ export class TripEditDepartureComponent implements OnInit {
   }
 
   confirm(): void {
-   // this.data.vehicle = this.selectedVehicle.value;
+    for(const stop of this.data.stops) {
+      if(stop.id != this.selectedStop.value.id) {
+        //                   dummy date
+        stop.departureTime = '0000-01-01T00:00';
+      }
+      else {
+        stop.departureTime = this.selectedStop.value.departureTime;
+      }
+        console.log(stop.departureTime);
+    }
+
     this.activeModal.close('Close click');
     this.http.editTrip(this.data);
   }
@@ -44,9 +54,6 @@ export class TripEditDepartureComponent implements OnInit {
           stop.departureTime,
           stop.name
         )));
-      }
-      for(let stop of this.copiedStops) {
-        stop.departureTime = stop.departureTime;
       }
       this.selectedStop = this.toDropdownItem(this.copiedStops[0]);
     }
@@ -65,7 +72,6 @@ export class TripEditDepartureComponent implements OnInit {
       this.selectedStop.value.departureTime,
       this.date
     );
-
     console.log(this.selectedStop.value.departureTime);
   }
 
@@ -74,7 +80,6 @@ export class TripEditDepartureComponent implements OnInit {
       this.selectedStop.value.departureTime,
       this.time
     );
-
     console.log(this.selectedStop.value.departureTime);
   }
 }
