@@ -28,4 +28,8 @@ public class LineData extends BaseData<Line> {
     return list;
   }
 
+  public boolean exists(String lineName){
+    return super.getData().stream().anyMatch(l -> l.getName().equals(lineName));
+  }
+
 }
