@@ -20,6 +20,10 @@ import { LineMapComponent } from './view/line-map/line-map.component';
 import { DropdownComponent } from './shared/components/dropdown/dropdown.component';
 import {EmbeddedLineComponent} from './shared/components/embedded-line/embedded-line.component';
 import {EmbeddedVehicleComponent} from './shared/components/embedded-vehicle/embedded-vehicle.component';
+import {ConfirmDeletionComponent} from './shared/components/confirm-popup/confirm-deletion.component';
+import {StopSortService} from './services/stop-sort.service';
+import {TripEditDepartureComponent} from './view/trip-edit-departure/trip-edit-departure.component';
+import {DateParserService} from './services/date-parser.service';
 import { Angular2FontawesomeModule } from 'angular2-fontawesome';
 import { TickerComponent } from './view/ticker/ticker.component';
 import { TickerItemComponent } from './view/ticker-item/ticker-item.component';
@@ -34,6 +38,7 @@ import { StopDetailComponent } from './view/stop-detail/stop-detail.component';
     MenuComponent,
     TripDetailComponent,
     TripEditComponent,
+    TripEditDepartureComponent,
     FilterComponent,
     MapComponent,
     LineMapComponent,
@@ -42,6 +47,7 @@ import { StopDetailComponent } from './view/stop-detail/stop-detail.component';
     DropdownComponent,
     EmbeddedLineComponent,
     EmbeddedVehicleComponent,
+    ConfirmDeletionComponent,
     TickerComponent,
     TickerItemComponent,
   ],
@@ -53,11 +59,19 @@ import { StopDetailComponent } from './view/stop-detail/stop-detail.component';
     Angular2FontawesomeModule,
     NgbModule.forRoot()
   ],
-  providers: [UrlBuilderService, HttpRoutingService, MapCreatorService],
+  providers: [
+    UrlBuilderService,
+    HttpRoutingService,
+    MapCreatorService,
+    StopSortService,
+    DateParserService
+  ],
   bootstrap: [AppComponent],
   // modal dialogs:
   entryComponents: [
-    TripEditComponent
+    TripEditComponent,
+    TripEditDepartureComponent,
+    ConfirmDeletionComponent
   ]
 })
 export class AppModule { }
