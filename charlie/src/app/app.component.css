@@ -1,3 +1,17 @@
-.main-margin {
+#ticker {
+  flex-basis: 20%;
+  flex-grow: 1;
+  display: flex;
+}
+
+#main-view {
+  flex-basis: 80%;
+  flex-grow: 1;
   margin: 20px;
+}
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }

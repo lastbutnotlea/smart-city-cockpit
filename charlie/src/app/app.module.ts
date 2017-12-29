@@ -20,6 +20,8 @@ import { LineMapComponent } from './view/line-map/line-map.component';
 import { DropdownComponent } from './shared/components/dropdown/dropdown.component';
 import {EmbeddedLineComponent} from './shared/components/embedded-line/embedded-line.component';
 import {EmbeddedVehicleComponent} from './shared/components/embedded-vehicle/embedded-vehicle.component';
+import { TickerComponent } from './view/ticker/ticker.component';
+import { TickerItemComponent } from './view/ticker-item/ticker-item.component';
 import { StopDetailComponent } from './view/stop-detail/stop-detail.component';
 import { FilterCreatorService } from './services/filter-creator.service';
 
@@ -39,7 +41,9 @@ import { FilterCreatorService } from './services/filter-creator.service';
     StopDetailComponent,
     DropdownComponent,
     EmbeddedLineComponent,
-    EmbeddedVehicleComponent
+    EmbeddedVehicleComponent,
+    TickerComponent,
+    TickerItemComponent,
   ],
   imports: [
     BrowserModule,
