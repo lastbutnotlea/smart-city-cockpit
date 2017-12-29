@@ -57,14 +57,17 @@ public class Line extends IdentifiableObject implements Serializable {
   @Convert(converter = ColorConverter.class)
   private Color color;
 
+  @Column
+  private EVehicleType type;
+
   public Line() {
     super();
   }
 
   public Line(String name, List<Stop> stopsInbound,
-      List<Stop> stopsOutbound,
-      Map<String, Integer> travelTimeInbound,
-      Map<String, Integer> travelTimeOutbound, Color color) {
+      List<Stop> stopsOutbound, Map<String, Integer> travelTimeInbound,
+      Map<String, Integer> travelTimeOutbound, Color color,
+      EVehicleType type) {
     super();
     this.name = name;
     this.stopsInbound = stopsInbound;
@@ -72,6 +75,7 @@ public class Line extends IdentifiableObject implements Serializable {
     this.travelTimeInbound = travelTimeInbound;
     this.travelTimeOutbound = travelTimeOutbound;
     this.color = color;
+    this.type = type;
   }
 
   public String getName() {
@@ -104,6 +108,14 @@ public class Line extends IdentifiableObject implements Serializable {
 
   public void setColor(Color color) {
     this.color = color;
+  }
+
+  public EVehicleType getType() {
+    return type;
+  }
+
+  public void setType(EVehicleType type) {
+    this.type = type;
   }
 
   public Map<String, Integer> getTravelTimeInbound() {

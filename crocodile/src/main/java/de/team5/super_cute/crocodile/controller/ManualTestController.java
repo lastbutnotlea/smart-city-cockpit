@@ -42,11 +42,12 @@ public class ManualTestController {
 
   @GetMapping
   public List<Trip> testTrips() {
+    // TODO make Code duplication go away (after merges)
     Stop s1 = new Stop("ApiId1", "Marienplatz", 10, 3.5, 50);
     Stop s2 = new Stop("ApiId2", "Odeonsplatz", 11, 3.7, 43);
     Stop s3 = new Stop("ApiId3", "Stachus", 10.2, 2, 61);
-    Vehicle v1 = new Vehicle(300, 0, 28, EVehicleType.Subway, "Motorschaden");
-    Vehicle v2 = new Vehicle(340, 2, 31, EVehicleType.Train, "Fenster gebrochen");
+    Vehicle v1 = new Vehicle(300, 0, 28, EVehicleType.SUBWAY, "Motorschaden");
+    Vehicle v2 = new Vehicle(340, 2, 31, EVehicleType.SUBWAY, "Fenster gebrochen");
     Line l1 = new LineBuilder().name("U6").color(Color.blue).stops(s2, s1).travelTime(0, 2).build();
     Line l2 = new LineBuilder().name("S1").color(Color.cyan).stops(s3, s1).travelTime(0, 3).build();
 

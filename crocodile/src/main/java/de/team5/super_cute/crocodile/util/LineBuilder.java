@@ -1,5 +1,6 @@
 package de.team5.super_cute.crocodile.util;
 
+import de.team5.super_cute.crocodile.model.EVehicleType;
 import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Stop;
 import java.awt.Color;
@@ -24,6 +25,11 @@ public class LineBuilder {
 
   public LineBuilder color(Color color) {
     line.setColor(color);
+    return this;
+  }
+
+  public LineBuilder type(EVehicleType type) {
+    line.setType(type);
     return this;
   }
 
