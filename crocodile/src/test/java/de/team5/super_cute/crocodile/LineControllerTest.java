@@ -22,7 +22,7 @@ public class LineControllerTest {
   @Test
   public void testLineController() throws Exception {
     mockMvc.perform(get("/test"));
-    assert(!(new ControllerTestHelper<Line>(mockMvc)).getObjects("/lines", new TypeReference<List<Line>>() {}).isEmpty());
+    assert(!(new ControllerTestHelper<Line>(mockMvc, "/lines", new TypeReference<List<Line>>() {})).getObjects().isEmpty());
   }
 
 }
