@@ -7,7 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TickerComponent implements OnInit {
 
-  private tickerItems: string[] = [
+  public tickerItems: string[] = [
     'Soccer from 6pm to 7:45pm',
     'Terrorist attack planned for 8pm',
     'No power on some stations due to a tsunami',
