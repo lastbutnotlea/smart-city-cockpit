@@ -19,6 +19,7 @@ import { NgModule } from '@angular/core';
 import { DropdownComponent } from './shared/components/dropdown/dropdown.component';
 import {EmbeddedLineComponent} from './shared/components/embedded-line/embedded-line.component';
 import {EmbeddedVehicleComponent} from './shared/components/embedded-vehicle/embedded-vehicle.component';
+import { Angular2FontawesomeModule } from 'angular2-fontawesome';
 
 
 @NgModule({
@@ -41,6 +42,7 @@ import {EmbeddedVehicleComponent} from './shared/components/embedded-vehicle/emb
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
+    Angular2FontawesomeModule,
     NgbModule.forRoot()
   ],
   providers: [UrlBuilderService, HttpRoutingService, MapCreatorService],
