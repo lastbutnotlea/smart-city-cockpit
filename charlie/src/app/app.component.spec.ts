@@ -55,12 +55,14 @@ describe('AppComponent', () => {
         ConfirmDeletionComponent,
         TickerComponent,
         TickerItemComponent,
+        VehiclesComponent,
+        VehicleDetailComponent,
       ],
       imports: [
         BrowserModule,
         HttpClientModule,
         AppRoutingModule,
-        FormsModule
+        FormsModule,
       ],
       providers: [
         UrlBuilderService,
