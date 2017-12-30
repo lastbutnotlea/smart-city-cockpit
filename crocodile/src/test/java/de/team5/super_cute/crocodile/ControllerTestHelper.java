@@ -3,7 +3,7 @@ package de.team5.super_cute.crocodile;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,7 +33,7 @@ class ControllerTestHelper<T extends IdentifiableObject> {
 
     assert(getObjects().contains(object));
 
-    this.mockMvc.perform(delete(baseUri + "/" + object.getId())).andExpect(status().isOk());
+    this.mockMvc.perform(delete(baseUri + "/" + object.getId())).andExpect(content().string(object.getId()));
 
     assert(!getObjects().contains(object));
   }
@@ -44,7 +44,7 @@ class ControllerTestHelper<T extends IdentifiableObject> {
   }
 
   void testAdd(T object) throws Exception {
-    this.mockMvc.perform(post(baseUri).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(object))).andExpect(status().isCreated());
+    this.mockMvc.perform(post(baseUri).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(object))).andExpect(content().string(object.getId()));
   }
 
 }

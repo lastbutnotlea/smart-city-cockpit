@@ -97,13 +97,16 @@ public class TpDataConnector {
             node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("lon").asDouble(),
             node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("lat").asDouble(),
             0);
-        if (node.get("stopPointSequences").get(i).get("direction").asText().equals("inbound")) {
-          stopsInbound.add(stop);
-        } else if (node.get("stopPointSequences").get(i).get("direction").asText()
-            .equals("outbound")) {
-          stopsOutbound.add(stop);
-        } else {
-          throw new IllegalArgumentException("Invalid direction in JsonNode");
+
+        switch (node.get("stopPointSequences").get(i).get("direction").asText()) {
+          case "inbound":
+            stopsInbound.add(stop);
+            break;
+          case "outbound":
+            stopsOutbound.add(stop);
+            break;
+          default:
+            throw new IllegalArgumentException("Invalid direction in JsonNode");
         }
       }
     }
