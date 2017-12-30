@@ -1,11 +1,13 @@
 package de.team5.super_cute.crocodile.generator;
 
 
-import static de.team5.super_cute.crocodile.config.InitialSetupConfig.fromHour;
-import static de.team5.super_cute.crocodile.config.InitialSetupConfig.fromMinute;
-import static de.team5.super_cute.crocodile.config.InitialSetupConfig.lineIds;
-import static de.team5.super_cute.crocodile.config.InitialSetupConfig.toHour;
-import static de.team5.super_cute.crocodile.config.InitialSetupConfig.toMinute;
+import static de.team5.super_cute.crocodile.config.InitialSetupConfig.INITIALIZE_FOR_MINUTES;
+import static de.team5.super_cute.crocodile.config.InitialSetupConfig.INITIALIZE_SINCE_MINUTES;
+import static de.team5.super_cute.crocodile.config.InitialSetupConfig.FROM_HOUR;
+import static de.team5.super_cute.crocodile.config.InitialSetupConfig.FROM_MINUTE;
+import static de.team5.super_cute.crocodile.config.InitialSetupConfig.LINEIDS;
+import static de.team5.super_cute.crocodile.config.InitialSetupConfig.TO_HOUR;
+import static de.team5.super_cute.crocodile.config.InitialSetupConfig.TO_MINUTE;
 import static de.team5.super_cute.crocodile.config.TfLApiConfig.app_id;
 import static de.team5.super_cute.crocodile.config.TfLApiConfig.app_key;
 
@@ -53,9 +55,9 @@ public class InitialDataGenerator {
         tripData);
     LoggerFactory.getLogger(getClass())
         .info("Started initialization");
-    ArrayList<Line> lines = new TpDataConnector().getLines(lineIds);
-    LocalDateTime from = LocalDateTime.now().withHour(fromHour).withMinute(fromMinute);
-    LocalDateTime to = LocalDateTime.now().withHour(toHour).withMinute(toMinute);
+    ArrayList<Line> lines = new TpDataConnector().getLines(LINEIDS);
+    LocalDateTime from = LocalDateTime.now().minusMinutes(INITIALIZE_SINCE_MINUTES);
+    LocalDateTime to = LocalDateTime.now().plusMinutes(INITIALIZE_FOR_MINUTES);
     generateTripsAndVehicles(from, to, lines);
     LoggerFactory.getLogger(getClass())
         .info("Finished initialization");
@@ -89,7 +91,7 @@ public class InitialDataGenerator {
         MyLocalDateTime nextTripOutbound = new MyLocalDateTime(LocalDateTime.from(from));
         inboundPointer = 0;
         outboundPointer = 0;
-        params.put("id", lineIds.get(x));
+        params.put("id", LINEIDS.get(x));
         params.put("fromStopPointId", lines.get(x).getStopsInbound().get(0).getId());
         params.put("app_id", app_id);
         params.put("app_key", app_key);
