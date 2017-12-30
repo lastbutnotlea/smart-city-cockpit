@@ -25,6 +25,7 @@ import {TickerComponent} from './view/ticker/ticker.component';
 import {TickerItemComponent} from './view/ticker-item/ticker-item.component';
 import {StopDetailComponent} from './view/stop-detail/stop-detail.component';
 import {VehiclesComponent} from './view/vehicles/vehicles.component';
+import { VehicleDetailComponent } from './view/vehicle-detail/vehicle-detail.component';
 
 
 @NgModule({
@@ -46,6 +47,7 @@ import {VehiclesComponent} from './view/vehicles/vehicles.component';
     TickerComponent,
     TickerItemComponent,
     VehiclesComponent,
+    VehicleDetailComponent,
   ],
   imports: [
     BrowserModule,
