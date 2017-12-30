@@ -88,6 +88,7 @@ export class TripDetailComponent extends GeneralizedComponent implements OnInit 
       this.http.getTripDetails(this.trip.id).subscribe( data => {
           this.trip = data;
           this.trip.stops = this.stopSortService.sortStops(this.trip.stops);
+          debugger;
           this.subscribeToData();
         },
         err =>

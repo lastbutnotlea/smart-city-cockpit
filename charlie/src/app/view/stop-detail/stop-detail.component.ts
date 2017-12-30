@@ -8,7 +8,9 @@ import { GeneralizedComponent } from '../../shared/components/generalized/genera
 @Component({
   selector: 'app-stop-detail-view',
   templateUrl: './stop-detail.component.html',
-  styleUrls: ['./stop-detail.component.css', '../../shared/styling/embedded-components.css']
+  styleUrls: ['./stop-detail.component.css',
+    '../../shared/styling/embedded-components.css',
+    '../../shared/styling/global-styling.css']
 })
 
 export class StopDetailComponent extends GeneralizedComponent implements OnInit {

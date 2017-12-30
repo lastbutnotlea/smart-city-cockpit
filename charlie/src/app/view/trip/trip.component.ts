@@ -8,7 +8,8 @@ import { GeneralizedComponent } from '../../shared/components/generalized/genera
 @Component({
   selector: 'app-trip-view',
   templateUrl: './trip.component.html',
-  styleUrls: ['./trip.component.css', '../../shared/styling/global-styling.css']
+  styleUrls: ['./trip.component.css',
+    '../../shared/styling/global-styling.css']
 })
 
 export class TripComponent extends GeneralizedComponent implements OnInit {
@@ -76,6 +77,7 @@ export class TripComponent extends GeneralizedComponent implements OnInit {
     this.setDataSubscription(
     this.http.getTrips().subscribe( data => {
         this.trips = data;
+        debugger;
         this.subscribeToData();
       },
       err =>

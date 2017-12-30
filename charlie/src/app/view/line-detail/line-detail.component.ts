@@ -12,7 +12,8 @@ import { VehiclePositionData } from '../../shared/data/vehicle-position-data';
 @Component({
   selector: 'app-line-detail-view',
   templateUrl: './line-detail.component.html',
-  styleUrls: ['./line-detail.component.css']
+  styleUrls: ['./line-detail.component.css',
+    '../../shared/styling/global-styling.css']
 })
 
 export class LineDetailComponent extends GeneralizedComponent implements OnInit {

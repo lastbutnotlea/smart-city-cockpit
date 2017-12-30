@@ -9,14 +9,13 @@ import { AnonymousSubscription } from 'rxjs/Subscription';
 @Component({
   selector: 'app-network-view',
   templateUrl: './network.component.html',
-  styleUrls: ['./network.component.css'],
+  styleUrls: ['./network.component.css',
+    '../../shared/styling/global-styling.css'],
 })
 
 export class NetworkComponent extends GeneralizedComponent implements OnInit {
   title: String;
   lines: LineData[] = [];
-  // TODO: get real state data and update periodically
-  state: string = 'CRITICAL';
 
   @ViewChild(MapComponent)
   networkMap: MapComponent;
@@ -30,13 +29,14 @@ export class NetworkComponent extends GeneralizedComponent implements OnInit {
     // get line data
     this.http.getLines().subscribe( data => {
         this.lines = data;
+        debugger;
+        super.ngOnInit();
       },
       err => {
         console.log('Could not fetch lines.');
       }
     );
     this.getMapData();
-    super.ngOnInit();
   }
 
   private getMapData(): void {
