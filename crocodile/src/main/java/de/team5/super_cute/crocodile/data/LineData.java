@@ -18,8 +18,8 @@ public class LineData extends BaseData<Line> {
    * @return all Objects of Type T currently in the system
    */
   public List<Line> getData() {
-    List <Line> list = super.getData();
-    for (Line l:list) {
+    List<Line> list = super.getData();
+    for (Line l : list) {
       getHibernateTemplate().initialize(l.getStopsInbound());
       getHibernateTemplate().initialize(l.getStopsOutbound());
       getHibernateTemplate().initialize(l.getTravelTimeInbound());
@@ -28,7 +28,7 @@ public class LineData extends BaseData<Line> {
     return list;
   }
 
-  public boolean exists(String lineName){
+  public boolean exists(String lineName) {
     return super.getData().stream().anyMatch(l -> l.getName().equals(lineName));
   }
 

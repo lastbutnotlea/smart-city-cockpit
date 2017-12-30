@@ -64,8 +64,8 @@ public class TripController extends BaseController<Trip> {
   }
 
   /**
-   * Sets the correct times for each stop that has the dummy time associated.
-   * At least one Stop has to have a useful time!
+   * Sets the correct times for each stop that has the dummy time associated. At least one Stop has
+   * to have a useful time!
    *
    * @param tripInput Trip with some dummy values, these are replaced with correct ones
    */
@@ -79,8 +79,9 @@ public class TripController extends BaseController<Trip> {
     LocalDateTime departureAtFirstStopOfTrip = tripInput.getStops().get(firstStopIdOfTrip);
 
     // Find offset from first stop to line start
-    Map<String, Integer> travelTime = tripInput.isInbound() ? tripInput.getLine().getTravelTimeInbound()
-        : tripInput.getLine().getTravelTimeOutbound();
+    Map<String, Integer> travelTime =
+        tripInput.isInbound() ? tripInput.getLine().getTravelTimeInbound()
+            : tripInput.getLine().getTravelTimeOutbound();
 
     int tripToLineOffset = travelTime.get(firstStopIdOfTrip);
     List<String> stopIdsThatNeedCorrectTime = tripInput.getStops().entrySet().stream()

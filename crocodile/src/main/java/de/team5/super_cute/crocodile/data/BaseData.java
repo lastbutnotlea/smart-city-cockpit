@@ -32,19 +32,28 @@ public abstract class BaseData<T extends IdentifiableObject> {
         .createQuery("from " + clazz.getName()).list();
   }
 
-  public void addObject(T obj) {
+  public T getObjectForId(String Id) {
+    List<T> objects = (List<T>) hibernateTemplate.getSessionFactory().getCurrentSession()
+        .createQuery("from " + clazz.getName() + " C where C.id='" + Id + "'").list();
+    return objects.size() == 0 ? null : objects.get(0);
+  }
+
+  public boolean addObject(T obj) {
     if (hibernateTemplate.get(clazz.getName(), obj.getId()) == null) {
       hibernateTemplate.save(obj);
     }
+    return true;
   }
 
-  public void editObject(T newObj) {
-    hibernateTemplate.update(newObj);
+  public boolean editObject(T Obj) {
+    hibernateTemplate.update(Obj);
+    return true;
   }
 
-  public void deleteObject(String id) {
+  public boolean deleteObject(String id) {
     Object objToDelete = hibernateTemplate.get(clazz.getName(), id);
     hibernateTemplate.delete(objToDelete);
+    return true;
   }
 
 }
