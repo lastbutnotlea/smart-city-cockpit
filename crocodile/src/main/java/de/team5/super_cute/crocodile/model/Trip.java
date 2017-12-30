@@ -110,9 +110,7 @@ public class Trip extends IdentifiableObject implements Serializable {
   public void setStopsAsList(List<StopDepartureData> list) {
     try {
       stops = new HashMap<>(list.size());
-      list.forEach(data -> {
-        stops.put(data.id, LocalDateTime.parse(data.departureTime));
-      });
+      list.forEach(data -> stops.put(data.id, LocalDateTime.parse(data.departureTime)));
     } catch (Exception e) {
       e.printStackTrace();
       throw e;
