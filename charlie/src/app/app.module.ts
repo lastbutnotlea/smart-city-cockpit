@@ -26,6 +26,7 @@ import {TickerItemComponent} from './view/ticker-item/ticker-item.component';
 import {StopDetailComponent} from './view/stop-detail/stop-detail.component';
 import {VehiclesComponent} from './view/vehicles/vehicles.component';
 import { VehicleDetailComponent } from './view/vehicle-detail/vehicle-detail.component';
+import { VehicleAddComponent } from './view/vehicle-add/vehicle-add.component';
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import { VehicleDetailComponent } from './view/vehicle-detail/vehicle-detail.com
     TickerItemComponent,
     VehiclesComponent,
     VehicleDetailComponent,
+    VehicleAddComponent,
   ],
   imports: [
     BrowserModule,
@@ -61,7 +63,8 @@ import { VehicleDetailComponent } from './view/vehicle-detail/vehicle-detail.com
   bootstrap: [AppComponent],
   // modal dialogs:
   entryComponents: [
-    TripEditComponent
+    TripEditComponent,
+    VehicleAddComponent,
   ]
 })
 export class AppModule {
