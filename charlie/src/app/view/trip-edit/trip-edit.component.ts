@@ -8,6 +8,7 @@ import {StopData} from '../../shared/data/stop-data';
 import { TripStopData } from '../../shared/data/trip-stop-data';
 import {DropdownValue} from '../../shared/components/dropdown/dropdown.component';
 import {StopSortService} from '../../services/stop-sort.service';
+import {dummyDate} from '../../shared/data/dates';
 
 @Component({
   selector: 'app-trip-edit',
@@ -84,7 +85,7 @@ export class TripEditComponent implements OnInit {
 
   includeStop(stop: StopData, included: boolean): void {
     if (included) {
-      this.selected.stops.push(new TripStopData(stop.id, '0000-01-01T00:00', ''));
+      this.selected.stops.push(new TripStopData(stop.id, dummyDate, ''));
     } else {
       this.selected.stops = this.selected.stops.filter(filteredStop => filteredStop.id !== stop.id);
       this.selected.stops = this.stopSortService.sortStops(this.selected.stops);

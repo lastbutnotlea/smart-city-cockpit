@@ -8,6 +8,7 @@ import {DateParserService} from '../../services/date-parser.service';
 import {StopSortService} from '../../services/stop-sort.service';
 import {VehicleData} from '../../shared/data/vehicle-data';
 import {LineData} from '../../shared/data/line-data';
+import {dummyDate} from '../../shared/data/dates';
 
 @Component({
   selector: 'app-trip-edit-departure',
@@ -50,7 +51,7 @@ export class TripEditDepartureComponent implements OnInit {
     for(const stop of this.data.stops) {
       if(stop.id != this.selectedStop.value.id) {
         //                   dummy date
-        stop.departureTime = '0000-01-01T00:00';
+        stop.departureTime = dummyDate;
       }
       else {
         stop.departureTime = this.selectedStop.value.departureTime;

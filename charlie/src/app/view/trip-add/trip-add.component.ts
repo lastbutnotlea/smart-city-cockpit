@@ -9,6 +9,7 @@ import { TripStopData } from '../../shared/data/trip-stop-data';
 import {DropdownValue} from '../../shared/components/dropdown/dropdown.component';
 import {StopSortService} from '../../services/stop-sort.service';
 import { DateParserService } from '../../services/date-parser.service';
+import {dummyDate} from '../../shared/data/dates';
 
 @Component({
   selector: 'app-trip-add',
@@ -19,7 +20,7 @@ import { DateParserService } from '../../services/date-parser.service';
 export class TripAddComponent implements OnInit {
   selected: TripData;
   selectedLineStops: StopData[];
-  selectedTime: string = '0000-01-01T00:00';
+  selectedTime: string = dummyDate;
   displayStops: boolean = false;
 
   selectedVehicle: DropdownValue;
@@ -86,7 +87,7 @@ export class TripAddComponent implements OnInit {
     this.getStopsForSelectedDirection();
     this.selected.stops = [];
     for(const stop of this.selectedLineStops){
-      this.selected.stops.push(new TripStopData(stop.id, '0000-01-01T00:00', stop.commonName));
+      this.selected.stops.push(new TripStopData(stop.id, dummyDate, stop.commonName));
     }
     this.selected.stops[0].departureTime = this.selectedTime;
   }
@@ -125,7 +126,7 @@ export class TripAddComponent implements OnInit {
 
   includeStop(stop: StopData, included: boolean): void {
     if (included) {
-      this.selected.stops.push(new TripStopData(stop.id, '0000-01-01T00:00', stop.commonName));
+      this.selected.stops.push(new TripStopData(stop.id, dummyDate, stop.commonName));
     } else {
       this.selected.stops = this.selected.stops.filter(filteredStop => filteredStop.id !== stop.id);
       this.selected.stops = this.stopSortService.sortStops(this.selected.stops);
