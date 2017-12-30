@@ -14,41 +14,54 @@ public class LiveDataConfig {
   public static final int DEFECT_FEEDBACK_PERCENTAGE = 10;
   public static final int VALUE_FEEDBACK_PERCENTAGE = 1;
 
+  public static final String STOP_DIRTY = "dirty";
+  public static final String STOP_SHELTER_BROKEN = "shelter broken";
+  public static final String STOP_BENCH_BROKEN = "bench broken";
+  public static final String STOP_ELEVATOR_NOT_WORKING = "elevator not working";
+  public static final String STOP_ESCALATOR_NOT_WORKING = "escalator not working";
+  public static final String STOP_TICKET_MACHINE_NOT_WORKING = "ticket-machine not working";
+
+  public static final String VEHICLE_DIRTY = "dirty";
+  public static final String VEHICLE_WINDOW_BROKEN= "window broken";
+  public static final String VEHICLE_CHAIR_BROKEN = "chair broken";
+  public static final String VEHICLE_ENGINE_FAILURE = "engine failure";
+  public static final String VEHICLE_BRAKE_FAILURE = "brake failure";
+  public static final String VEHICLE_AIR_CONDITION_NOT_WORKING = "air-condition not working";
 
   public static final List<String> STOP_DEFECTS = new ArrayList<String>() {{
-    add("dirty");
-    add("shelter broken");
-    add("bench broken");
-    add("elevator not working");
-    add("escalator not working");
-    add("ticket-machine not working");
+    add(STOP_DIRTY);
+    add(STOP_SHELTER_BROKEN);
+    add(STOP_BENCH_BROKEN);
+    add(STOP_ELEVATOR_NOT_WORKING);
+    add(STOP_ESCALATOR_NOT_WORKING);
+    add(STOP_TICKET_MACHINE_NOT_WORKING);
   }};
 
   public static final List<String> VEHICLE_DEFECTS = new ArrayList<String>() {{
-    add("dirty");
-    add("window broken");
-    add("chair broken");
-    add("engine failure");
-    add("brake failure");
-    add("air-condition not working");
+    add(VEHICLE_DIRTY);
+    add(VEHICLE_WINDOW_BROKEN);
+    add(VEHICLE_CHAIR_BROKEN);
+    add(VEHICLE_ENGINE_FAILURE);
+    add(VEHICLE_BRAKE_FAILURE);
+    add(VEHICLE_AIR_CONDITION_NOT_WORKING);
   }};
 
   public static final Map<String, Integer> STOP_DEFECTS_SEVERITY = new HashMap<String, Integer>() {{
-    put("dirty", 2);
-    put("shelter broken", 4);
-    put("bench broken", 3);
-    put("elevator not working", 3);
-    put("escalator not working", 2);
-    put("ticket-machine not working", 4);
+    put(STOP_DIRTY, 2);
+    put(STOP_SHELTER_BROKEN, 4);
+    put(STOP_BENCH_BROKEN, 3);
+    put(STOP_ELEVATOR_NOT_WORKING, 3);
+    put(STOP_ESCALATOR_NOT_WORKING, 2);
+    put(STOP_TICKET_MACHINE_NOT_WORKING, 4);
   }};
 
   public static final Map<String, Integer> VEHICLE_DEFECTS_SEVERITY = new HashMap<String, Integer>() {{
-    put("dirty", 3);
-    put("window broken", 11);
-    put("chair broken", 2);
-    put("engine failure", 11);
-    put("brake failure", 20);
-    put("air-condition not working", 2);
+    put(VEHICLE_DIRTY, 3);
+    put(VEHICLE_WINDOW_BROKEN, 11);
+    put(VEHICLE_CHAIR_BROKEN, 2);
+    put(VEHICLE_ENGINE_FAILURE, 11);
+    put(VEHICLE_BRAKE_FAILURE, 20);
+    put(VEHICLE_AIR_CONDITION_NOT_WORKING, 2);
   }};
 
   //severity for 0-300, 301-700, 701-1000 people waiting
@@ -64,32 +77,32 @@ public class LiveDataConfig {
   public static final int[] DELAY_SEVERITY = new int[]{0, 6, 11};
 
   public static final Map<String, List<String>> STOP_DEFECT_FEEDBACK = new HashMap<String, List<String>>() {{
-    put("dirty", new ArrayList<String>() {{
+    put(STOP_DIRTY, new ArrayList<String>() {{
       add("This stop is unbelievable dirty! Please send someone to clean it...");
       add("I have never seen such a dirty station!!1!");
       add("So much garbage at this stop... :(");
     }});
-    put("shelter broken", new ArrayList<String>() {{
+    put(STOP_SHELTER_BROKEN, new ArrayList<String>() {{
       add("Shelter roof is leaky! There was rain inside");
       add("Quite windy here... Build new shelter please.");
       add("The whole shelter broke down!!! I had to stand in the rain for around 30mins!!!!");
     }});
-    put("bench broken", new ArrayList<String>() {{
+    put(STOP_BENCH_BROKEN, new ArrayList<String>() {{
       add("Wow i had to stand for 2 Minutes");
       add("0/10 seat comfort");
       add("Only 2 seats not spiky from broken metal");
     }});
-    put("elevator not working", new ArrayList<String>() {{
+    put(STOP_ELEVATOR_NOT_WORKING, new ArrayList<String>() {{
       add("Stuck in elevator for 2h!!");
       add("Had to carry my old grandma upstairs because the damn elevator was broken!!11!1!");
       add("Elevator music not that good :/");
     }});
-    put("escalator not working", new ArrayList<String>() {{
+    put(STOP_ESCALATOR_NOT_WORKING, new ArrayList<String>() {{
       add("Had to carry 10 beverage crates to the next station because the escalator was not working...");
       add("The escalator escalated :D");
       add("Escalator was moving in the wrong direction!");
     }});
-    put("ticket-machine not working", new ArrayList<String>() {{
+    put(STOP_TICKET_MACHINE_NOT_WORKING, new ArrayList<String>() {{
       add("I drove without a ticket because ticket-machine was not working...");
       add("HOW AM I SUPPOSED TO PAY FOR YOUR SERVICES IF THE TICKET MACHINE IS NOT WORKING????!!!!");
       add("Ticket-machine is not KIV verified i guess...");
@@ -97,32 +110,32 @@ public class LiveDataConfig {
   }};
 
   public static final Map<String, List<String>> VEHICLE_DEFECT_FEEDBACK = new HashMap<String, List<String>>() {{
-    put("dirty", new ArrayList<String>() {{
+    put(VEHICLE_DIRTY, new ArrayList<String>() {{
       add("white fluffy stuff in the corner... never use ur service again");
       add("so dirty!");
       add("Better clean your vehicles!!");
     }});
-    put("window broken", new ArrayList<String>() {{
+    put(VEHICLE_WINDOW_BROKEN, new ArrayList<String>() {{
       add("The whole window is broken!!!");
       add("I was just sitting here when someone broke the window to get out of the vehicle :O");
       add("I just leaned against the window and suddenly it broke!");
     }});
-    put("chair broken", new ArrayList<String>() {{
+    put(VEHICLE_CHAIR_BROKEN, new ArrayList<String>() {{
       add("too little seats that are not broken! :(");
       add("In our vehicle everybody has to stand because all seats are ripped up!!!");
       add("Next time I'll bring my own chair! -.-");
     }});
-    put("engine failure", new ArrayList<String>() {{
+    put(VEHICLE_ENGINE_FAILURE, new ArrayList<String>() {{
       add("Had to walk the rest of the way, because the vehicle wasn´t able to drive anymore...");
       add("WHENN IS THIOS DAMNN THINGF GOING TO CARRY ON?????!!11!");
       add("I´m stuck here for 2h already! Do your job and fix it!");
     }});
-    put("brake failure", new ArrayList<String>() {{
+    put(VEHICLE_BRAKE_FAILURE, new ArrayList<String>() {{
       add("The vehicle full of people rushed into the final stop. I´m the only alive!");
       add("Vehicle is driving circles for 1 hour now!");
       add("The operator just made an announcement that the brake aren´t working anymore. ARE WE GOING TO DIE NOW?");
     }});
-    put("air-condition not working", new ArrayList<String>() {{
+    put(VEHICLE_AIR_CONDITION_NOT_WORKING, new ArrayList<String>() {{
       add("The air is so stale :(");
       add("Please let some air into your vehicles!");
       add("Impossible to breathe in here...");
