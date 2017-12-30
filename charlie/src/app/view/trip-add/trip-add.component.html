@@ -23,7 +23,10 @@
     <app-dropdown [values]="directionItems()" [(selected)]="selectedDirection" (selectedChange)="updateStops()"></app-dropdown>
   </div>
 
-  <button type="button margin-bottom" class="btn btn-outline-primary" (click)="showStops()">Edit Stops</button>
+  <ngb-datepicker [(ngModel)]="date" (select)="updateDate()" class="float-left datepicker"></ngb-datepicker>
+  <ngb-timepicker [(ngModel)]="time" (click)="updateTime()"></ngb-timepicker>
+
+  <button type="button" class="btn btn-outline-primary margin-bottom no-float width-100" (click)="showStops()">Edit Stops</button>
 
   <div *ngIf="stopsVisible()" class="d-block">
     <label>Stops:</label>
@@ -32,9 +35,6 @@
       <label class="padding-left">{{stop.commonName}}</label>
     </div>
   </div>
-
-  <ngb-datepicker [(ngModel)]="date" (select)="updateDate()" class="float-left"></ngb-datepicker>
-  <ngb-timepicker [(ngModel)]="time" (click)="updateTime()"></ngb-timepicker>
 
 </div>
 <div class="modal-footer">
