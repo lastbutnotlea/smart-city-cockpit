@@ -7,8 +7,8 @@ import java.util.Map;
 
 public class LiveDataConfig {
 
-  public static final int CREATE_STOP_DEFECT_PERCENTAGE = 60;
-  public static final int CREATE_VEHICLE_DEFECT_PERCENTAGE = 60;
+  public static final int CREATE_STOP_DEFECT_PERCENTAGE = 40;
+  public static final int CREATE_VEHICLE_DEFECT_PERCENTAGE = 40;
   public static final int REMOVE_STOP_DEFECT_PERCENTAGE = 10;
   public static final int REMOVE_VEHICLE_DEFECT_PERCENTAGE = 10;
   public static final int DEFECT_FEEDBACK_PERCENTAGE = 10;
@@ -22,11 +22,25 @@ public class LiveDataConfig {
   public static final String STOP_TICKET_MACHINE_NOT_WORKING = "ticket-machine not working";
 
   public static final String VEHICLE_DIRTY = "dirty";
-  public static final String VEHICLE_WINDOW_BROKEN= "window broken";
+  public static final String VEHICLE_WINDOW_BROKEN = "window broken";
   public static final String VEHICLE_CHAIR_BROKEN = "chair broken";
   public static final String VEHICLE_ENGINE_FAILURE = "engine failure";
   public static final String VEHICLE_BRAKE_FAILURE = "brake failure";
   public static final String VEHICLE_AIR_CONDITION_NOT_WORKING = "air-condition not working";
+
+  public static final int SEVERITY_LIMIT_PROBLEMATIC = 6;
+  public static final int SEVERITY_LIMIT_CRITICAL = 11;
+
+  public static final int PEOPLE_WAITING_LIMIT_PROBLEMATIC = 301;
+  public static final int PEOPLE_WAITING_LIMIT_CRITICAL = 701;
+  public static final int DELAY_LIMIT_PROBLEMATIC = 6;
+  public static final int DELAY_LIMIT_CRITICAL = 16;
+  public static final int LOAD_LIMIT_PROBLEMATIC = 51;
+  public static final int LOAD_LIMIT_CRITICAL = 151;
+  public static final int TEMPERATURE_LOWER_LIMIT_PROBLEMATIC = 24;
+  public static final int TEMPERATURE_UPPER_LIMIT_PROBLEMATIC = 31;
+  public static final int TEMPERATURE_LOWER_LIMIT_CRITICAL = 14;
+  public static final int TEMPERATURE_UPPER_LIMIT_CRITICAl = 36;
 
   public static final List<String> STOP_DEFECTS = new ArrayList<String>() {{
     add(STOP_DIRTY);

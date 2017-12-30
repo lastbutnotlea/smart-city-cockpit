@@ -1,5 +1,7 @@
 package de.team5.super_cute.crocodile.model;
 
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.PEOPLE_WAITING_LIMIT_CRITICAL;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.PEOPLE_WAITING_LIMIT_PROBLEMATIC;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.STOP_DEFECTS_SEVERITY;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -46,10 +48,12 @@ public class Stop extends IdentifiableObject implements Serializable, Feedbackab
     this.longitude = longitude;
     this.latitude = latitude;
     this.peopleWaiting = peopleWaiting;
-    this.defects = new HashSet<>(Arrays.asList(defects));;
+    this.defects = new HashSet<>(Arrays.asList(defects));
+    ;
   }
 
-  public Stop(String id, String commonName, Double longitude, Double latitude, Integer peopleWaiting,
+  public Stop(String id, String commonName, Double longitude, Double latitude,
+      Integer peopleWaiting,
       Set<String> defects) {
     super();
     setId(id);
@@ -115,9 +119,9 @@ public class Stop extends IdentifiableObject implements Serializable, Feedbackab
 
   @JsonIgnore
   public int getPeopleWaitingSeverity() {
-    if (getPeopleWaiting() <= 300) {
+    if (getPeopleWaiting() < PEOPLE_WAITING_LIMIT_PROBLEMATIC) {
       return LiveDataConfig.PEOPLE_WAITING_SEVERITY[0];
-    } else if (getPeopleWaiting() <= 700) {
+    } else if (getPeopleWaiting() < PEOPLE_WAITING_LIMIT_CRITICAL) {
       return LiveDataConfig.PEOPLE_WAITING_SEVERITY[1];
     } else {
       return LiveDataConfig.PEOPLE_WAITING_SEVERITY[2];

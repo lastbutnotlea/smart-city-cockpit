@@ -21,6 +21,4 @@ public class InitialSetupConfig {
     add("victoria");
     add("waterloo-city");
   }};
-
-
 }

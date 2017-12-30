@@ -49,7 +49,7 @@ public class LiveDataGenerator {
   @Scheduled(fixedDelay = 10000)
   public void generateLiveData() {
     LoggerFactory.getLogger(getClass())
-        .info("Started generating LiveData");
+        .debug("Started generating LiveData");
     List<Stop> stops = stopData.getData();
     List<Vehicle> vehicles = vehicleData.getData();
     for (Stop stop : stops) {
@@ -59,7 +59,7 @@ public class LiveDataGenerator {
       generateLiveDataForVehicle(vehicle);
     }
     LoggerFactory.getLogger(getClass())
-        .info("Finished generating LiveData");
+        .debug("Finished generating LiveData");
   }
 
   private void generateLiveDataForStop(Stop stop) {

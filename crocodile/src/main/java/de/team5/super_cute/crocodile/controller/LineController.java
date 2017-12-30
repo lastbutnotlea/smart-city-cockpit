@@ -23,20 +23,17 @@ import org.springframework.web.bind.annotation.RestController;
 public class LineController extends BaseController<Line> {
 
   @Autowired
-  public LineController(BaseData<Line> lineData) {
+  public LineController(BaseData<Line> lineData, TripData tripData) {
     data = lineData;
+    this.tripData = tripData;
   }
 
-  @Autowired
   private TripData tripData;
 
   @GetMapping
   public List<Line> getAllLines() {
-    List<Line> lines = data.getData();
-    for (Line line : lines) {
-      line.setState(calculateLineState(line));
-    }
-    return lines;
+    return data.getData().stream().peek(l -> l.setState(calculateLineState(l)))
+        .collect(Collectors.toList());
   }
 
   @GetMapping("/{id}")
@@ -50,34 +47,39 @@ public class LineController extends BaseController<Line> {
     List<Trip> trips = tripData.getActiveTrips().stream()
         .filter(t -> t.getLine().getId() == line.getId())
         .collect(Collectors.toList());
-    int severity = 0;
-    int divisor = 0;
+    int severityVehicles = 0;
+    int severityStops = 0;
+    int divisorVehicles = 0;
+    int divisorStops = 0;
     for (Trip trip : trips) {
       if (trip.getVehicle() != null) {
-        severity += trip.getVehicle().getSeverity();
-        divisor++;
+        severityVehicles += trip.getVehicle().getSeverity();
+        divisorVehicles++;
       }
     }
     for (Stop stop : line.getStopsInbound()) {
-      severity += stop.getSeverity();
-      divisor++;
+      severityStops += stop.getSeverity();
+      divisorStops++;
     }
     for (Stop stop : line.getStopsOutbound()) {
-      severity += stop.getSeverity();
-      divisor++;
+      severityStops += stop.getSeverity();
+      divisorStops++;
     }
-    return StateCalculator.getState(severity / divisor);
+    return StateCalculator
+        .getState(((severityVehicles / divisorVehicles) + (severityStops / divisorStops)) / 2);
   }
 
   @GetMapping("/filter-data")
   public FilterData getFilterData() {
     FilterData fd = new FilterData();
     fd.lineNames = data.getData().stream().map(Line::getName).collect(Collectors.toList());
-    fd.types = Arrays.stream(EVehicleType.values()).map(EVehicleType::toString).collect(Collectors.toList());
+    fd.types = Arrays.stream(EVehicleType.values()).map(EVehicleType::toString)
+        .collect(Collectors.toList());
     return fd;
   }
 
   private class FilterData {
+
     @JsonProperty
     List<String> lineNames;
     @JsonProperty

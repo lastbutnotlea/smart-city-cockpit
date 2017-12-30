@@ -1,5 +1,13 @@
 package de.team5.super_cute.crocodile.model;
 
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.DELAY_LIMIT_CRITICAL;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.DELAY_LIMIT_PROBLEMATIC;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.LOAD_LIMIT_CRITICAL;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.LOAD_LIMIT_PROBLEMATIC;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.TEMPERATURE_LOWER_LIMIT_CRITICAL;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.TEMPERATURE_LOWER_LIMIT_PROBLEMATIC;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.TEMPERATURE_UPPER_LIMIT_CRITICAl;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.TEMPERATURE_UPPER_LIMIT_PROBLEMATIC;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.VEHICLE_DEFECTS_SEVERITY;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -8,6 +16,7 @@ import de.team5.super_cute.crocodile.util.StateCalculator;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -43,8 +52,8 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
     super();
   }
 
-  public Vehicle(int capacity, int load, int delay, int temperature, Set<String> defects,
-      EVehicleType type) {
+  public Vehicle(int capacity, int load, int delay, int temperature, EVehicleType type,
+      Set<String> defects) {
     super();
     this.capacity = capacity;
     this.load = load;
@@ -127,9 +136,9 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
 
   @JsonIgnore
   public int getLoadSeverity() {
-    if (getLoad() / getCapacity() <= 0.5) {
+    if (getLoad() / getCapacity() < LOAD_LIMIT_PROBLEMATIC * 0.01) {
       return LiveDataConfig.LOAD_SEVERITY[0];
-    } else if (getLoad() / getCapacity() <= 1.5) {
+    } else if (getLoad() / getCapacity() < LOAD_LIMIT_CRITICAL * 0.01) {
       return LiveDataConfig.LOAD_SEVERITY[1];
     } else {
       return LiveDataConfig.LOAD_SEVERITY[2];
@@ -138,10 +147,13 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
 
   @JsonIgnore
   public int getTemperatureSeverity() {
-    if (getTemperature() <= 30 && getTemperature() >= 25) {
+    if (getTemperature() < TEMPERATURE_UPPER_LIMIT_PROBLEMATIC
+        && getTemperature() > TEMPERATURE_LOWER_LIMIT_PROBLEMATIC) {
       return LiveDataConfig.TEMPERATURE_SEVERITY[0];
-    } else if ((getTemperature() <= 24 && getTemperature() >= 15) || (getTemperature() <= 40
-        && getTemperature() >= 31)) {
+    } else if ((getTemperature() <= TEMPERATURE_LOWER_LIMIT_PROBLEMATIC
+        && getTemperature() > TEMPERATURE_LOWER_LIMIT_CRITICAL) || (
+        getTemperature() < TEMPERATURE_UPPER_LIMIT_CRITICAl
+            && getTemperature() >= TEMPERATURE_UPPER_LIMIT_PROBLEMATIC)) {
       return LiveDataConfig.TEMPERATURE_SEVERITY[1];
     } else {
       return LiveDataConfig.TEMPERATURE_SEVERITY[2];
@@ -150,9 +162,9 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
 
   @JsonIgnore
   public int getDelaySeverity() {
-    if (getDelay() <= 5) {
+    if (getDelay() < DELAY_LIMIT_PROBLEMATIC) {
       return LiveDataConfig.DELAY_SEVERITY[0];
-    } else if (getDelay() <= 15) {
+    } else if (getDelay() < DELAY_LIMIT_CRITICAL) {
       return LiveDataConfig.DELAY_SEVERITY[1];
     } else {
       return LiveDataConfig.DELAY_SEVERITY[2];
@@ -175,5 +187,13 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
       severity += VEHICLE_DEFECTS_SEVERITY.get(defect);
     }
     return severity + getLoadSeverity() + getTemperatureSeverity() + getDelaySeverity();
+  }
+
+  public static Vehicle createRandom(EVehicleType vehicleType) {
+    Random r = new Random(System.currentTimeMillis());
+    Vehicle vehicle = new Vehicle(r.nextInt(100) + 100, 0, r.nextInt(65) - 5, r.nextInt(35) + 5,
+        vehicleType, new HashSet<>());
+    vehicle.setLoad((int) ((r.nextInt(199) + 1) * 0.01 * vehicle.getCapacity()));
+    return vehicle;
   }
 }

@@ -1,4 +1,4 @@
-package de.team5.super_cute.crocodile.util;
+package de.team5.super_cute.crocodile.config;
 
 import java.awt.Color;
 import java.util.HashMap;

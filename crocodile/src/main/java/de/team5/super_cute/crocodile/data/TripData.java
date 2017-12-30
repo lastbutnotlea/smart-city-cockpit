@@ -33,10 +33,11 @@ public class TripData extends BaseData<Trip> {
 
   public List<Trip> getActiveTrips() {
     LocalDateTime now = LocalDateTime.now();
-    return getData().stream().filter(
-        t -> t.getStops().values().stream().min(LocalDateTime::compareTo).orElse(now.plusDays(1))
-            .isBefore(now)).filter(
-        t -> t.getStops().values().stream().max(LocalDateTime::compareTo).orElse(now.minusDays(1))
+    return getData().stream().filter(t -> t.getStops().values().stream()
+        .min(LocalDateTime::compareTo).orElse(now.plusDays(1))
+        .isBefore(now))
+        .filter(t -> t.getStops().values().stream()
+            .max(LocalDateTime::compareTo).orElse(now.minusDays(1))
             .isAfter(now)).collect(Collectors.toList());
   }
 

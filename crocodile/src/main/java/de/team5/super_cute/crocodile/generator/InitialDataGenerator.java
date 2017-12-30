@@ -15,14 +15,12 @@ import de.team5.super_cute.crocodile.data.StopData;
 import de.team5.super_cute.crocodile.data.TripData;
 import de.team5.super_cute.crocodile.data.VehicleData;
 import de.team5.super_cute.crocodile.external.TpDataConnector;
-import de.team5.super_cute.crocodile.model.EVehicleType;
 import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Vehicle;
 import de.team5.super_cute.crocodile.util.NetworkDataBuilder;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.PriorityQueue;
 import javax.annotation.PostConstruct;
@@ -179,7 +177,7 @@ public class InitialDataGenerator {
     Vehicle vehicle;
     if (queueFrom.peek() == null || queueFrom.peek().getValue().compareTo(iterator) == 1) {
       //If no (or no available) vehicle exists: create new one
-      vehicle = new Vehicle(100, 50, 0, 28, new HashSet<>(), line.getType());
+      vehicle = Vehicle.createRandom(line.getType());
       networkDataBuilder.addVehicles(vehicle);
     } else {
       vehicle = queueFrom.poll().getKey();
@@ -205,22 +203,24 @@ public class InitialDataGenerator {
             .withMinute(knownJourneys.get(pointer).get("minute").asInt()));
     return pointer;
   }
+
+  private class MyLocalDateTime {
+
+    private LocalDateTime localDateTime;
+
+    public MyLocalDateTime(LocalDateTime localDateTime) {
+      this.localDateTime = localDateTime;
+    }
+
+    public LocalDateTime getLocalDateTime() {
+      return localDateTime;
+    }
+
+    public void setLocalDateTime(LocalDateTime localDateTime) {
+      this.localDateTime = localDateTime;
+    }
+  }
 }
 
-class MyLocalDateTime {
 
-  private LocalDateTime localDateTime;
-
-  public MyLocalDateTime(LocalDateTime localDateTime) {
-    this.localDateTime = localDateTime;
-  }
-
-  public LocalDateTime getLocalDateTime() {
-    return localDateTime;
-  }
-
-  public void setLocalDateTime(LocalDateTime localDateTime) {
-    this.localDateTime = localDateTime;
-  }
-}
 
