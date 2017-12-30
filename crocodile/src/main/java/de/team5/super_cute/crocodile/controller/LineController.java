@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,13 +23,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/lines")
 public class LineController extends BaseController<Line> {
 
-  @Autowired
-  public LineController(BaseData<Line> lineData) {
-    data = lineData;
-  }
+  private TripData tripData;
 
   @Autowired
-  private TripData tripData;
+  public LineController(BaseData<Line> lineData, TripData tripData) {
+    data = lineData;
+    this.tripData = tripData;
+  }
 
   @GetMapping
   public List<Line> getAllLines() {
@@ -64,12 +65,13 @@ public class LineController extends BaseController<Line> {
     if (line == null) {
       return null;
     }
-    List<PositionAtStopData> positionAtStopDatas = new ArrayList<>();
-    List<PositionAfterStopData> positionAfterStopDatas = new ArrayList<>();
-    List<Trip> trips = tripData.getActiveTripsWithDelay().stream()
-        .filter(t -> t.isInbound() == isInbound)
-        .filter(t -> t.getLine().getId().equals(line.getId())).collect(Collectors.toList());
+    List<PositionStopData> positionAtStopDatas = new ArrayList<>();
+    List<PositionStopData> positionAfterStopDatas = new ArrayList<>();
     LocalDateTime now = LocalDateTime.now();
+    List<Trip> trips = tripData.getActiveTripsWithDelay(now).stream()
+        .filter(t -> t.isInbound() == isInbound)
+        .filter(t -> t.getLine().getId().equals(line.getId()))
+        .collect(Collectors.toList());
     for (Trip trip : trips) {
       addPositionForTrip(trip, now, positionAtStopDatas, positionAfterStopDatas);
     }
@@ -80,62 +82,71 @@ public class LineController extends BaseController<Line> {
   }
 
   private void addPositionForTrip(Trip trip, LocalDateTime now,
-      List<PositionAtStopData> positionAtStopDatas,
-      List<PositionAfterStopData> positionAfterStopDatas) {
+      List<PositionStopData> positionAtStopDatas,
+      List<PositionStopData> positionAfterStopDatas) {
     Vehicle vehicle = trip.getVehicle();
     //check if the vehicle is at a stop at current minute
-    LocalDateTime timeAtStop = trip.getStops().values().stream().filter(
-        l -> l.getDayOfYear() == now.minusMinutes(vehicle.getDelay()).getDayOfYear()
-            && l.getHour() == now.minusMinutes(vehicle.getDelay()).getHour()
-            && l.getMinute() == now.minusMinutes(vehicle.getDelay()).getMinute()).findAny()
+    LocalDateTime vehicleTime = now.minusMinutes(vehicle.getDelay());
+    LocalDateTime timeAtStop = trip.getStops().values().stream()
+        .filter( l -> l.getDayOfYear() == vehicleTime.getDayOfYear()
+            && l.getHour() == vehicleTime.getHour()
+            && l.getMinute() == vehicleTime.getMinute())
+        .findAny()
         .orElse(null);
     if (timeAtStop != null) {
       //if the vehicle is at a stop at current minute
-      addPositionAtStop(trip, timeAtStop, positionAtStopDatas);
+      addPositionAtStop(trip, positionAtStopDatas, timeAtStop);
     } else {
       //else take last stop
       addPositionAfterStop(trip, positionAfterStopDatas, now);
     }
   }
 
-  private void addPositionAtStop(Trip trip, LocalDateTime timeAtStop,
-      List<PositionAtStopData> positionAtStopDatas) {
-    //check if positionDataAtStop exists for this stop
-    PositionAtStopData positionAtStopData = positionAtStopDatas.stream().filter(
-        p -> p.stopid == trip.getStops().entrySet().stream()
-            .filter(e -> e.getValue().isEqual(timeAtStop)).findAny().orElse(null).getKey())
-        .findAny().orElse(null);
-    if (positionAtStopData == null) {
-      positionAtStopData = new PositionAtStopData();
-      positionAtStopData.stopid = trip.getStops().entrySet().stream()
-          .filter(e -> e.getValue().isEqual(timeAtStop)).findAny().orElse(null).getKey();
-      positionAtStopData.vehicleIds = new ArrayList<>();
-      positionAtStopDatas.add(positionAtStopData);
-    }
-    positionAtStopData.vehicleIds.add(trip.getVehicle().getId());
-  }
-
-  private void addPositionAfterStop(Trip trip, List<PositionAfterStopData> positionAfterStopDatas,
+  private void addPositionAfterStop(Trip trip, List<PositionStopData> positionStopDatas,
       LocalDateTime now) {
     LocalDateTime timeAtLastStop = trip.getStops().values().stream().sorted()
         .filter(l -> l.isBefore(now.minusMinutes(trip.getVehicle().getDelay()))).findFirst()
         .orElse(null);
     if (timeAtLastStop == null) {
-      //error. but should not happen
+      throw new IllegalArgumentException("Time for determining Vehicle Positions between stops was too small");
     }
-    //check if positionDataAfterStop exists for last stop
-    PositionAfterStopData positionAfterStopData = positionAfterStopDatas.stream().filter(
-        p -> p.lastStopid == trip.getStops().entrySet().stream()
-            .filter(e -> e.getValue().isEqual(timeAtLastStop)).findAny().orElse(null).getKey())
-        .findAny().orElse(null);
-    if (positionAfterStopData == null) {
-      positionAfterStopData = new PositionAfterStopData();
-      positionAfterStopData.lastStopid = trip.getStops().entrySet().stream()
-          .filter(e -> e.getValue().isEqual(timeAtLastStop)).findAny().orElse(null).getKey();
-      positionAfterStopData.vehicleIds = new ArrayList<>();
-      positionAfterStopDatas.add(positionAfterStopData);
+    addPositionAtStop(trip, positionStopDatas,  timeAtLastStop);
+  }
+
+  private void addPositionAtStop(Trip trip, List<PositionStopData> positionStopDatas, LocalDateTime stopTime) {
+    PositionStopData positionStopData = positionStopDatas.stream()
+        .filter(p -> p.stopid.equals(trip.getStops().entrySet().stream()
+            .filter(e -> e.getValue().isEqual(stopTime))
+            .map(Entry::getKey)
+            .findAny()
+            .orElse("")))
+        .findAny()
+        .orElse(null);
+    if (positionStopData == null) {
+      positionStopData = addPositionStopData(trip, positionStopDatas, stopTime);
     }
-    positionAfterStopData.vehicleIds.add(trip.getVehicle().getId());
+    positionStopData.vehiclePositionData.add(generateVehiclePositionData(trip));
+  }
+
+  private PositionStopData addPositionStopData(Trip trip, List<PositionStopData> positionStopDatas, LocalDateTime stopTime) {
+    PositionStopData positionStopData = new PositionStopData();
+    positionStopData.stopid = trip.getStops().entrySet().stream()
+        .filter(e -> e.getValue().isEqual(stopTime))
+        .map(Entry::getKey)
+        .findAny()
+        .orElse("");
+    positionStopData.stopName = trip.getTripStopForId(positionStopData.stopid).getCommonName();
+    positionStopData.vehiclePositionData = new ArrayList<>();
+    positionStopDatas.add(positionStopData);
+    return positionStopData;
+  }
+
+  private VehiclePositionData generateVehiclePositionData(Trip trip) {
+    VehiclePositionData vpd = new VehiclePositionData();
+    vpd.id = trip.getVehicle().getId();
+    vpd.type = trip.getVehicle().getType();
+    vpd.state = trip.getVehicle().getState();
+    return vpd;
   }
 
   private class FilterData {
@@ -146,27 +157,33 @@ public class LineController extends BaseController<Line> {
     List<String> types;
   }
 
-  private class PositionAtStopData {
+  private class PositionStopData {
 
     @JsonProperty
     String stopid;
     @JsonProperty
-    List<String> vehicleIds;
+    String stopName;
+    @JsonProperty
+    EState stopState;
+    @JsonProperty
+    List<VehiclePositionData> vehiclePositionData;
   }
 
-  private class PositionAfterStopData {
+  private class VehiclePositionData {
 
     @JsonProperty
-    String lastStopid;
+    String id;
     @JsonProperty
-    List<String> vehicleIds;
+    EVehicleType type;
+    @JsonProperty
+    EState state;
   }
 
   private class PositionData {
 
     @JsonProperty
-    List<PositionAtStopData> positionsAtStops;
+    List<PositionStopData> positionsAtStops;
     @JsonProperty
-    List<PositionAfterStopData> positionAfterStops;
+    List<PositionStopData> positionAfterStops;
   }
 }

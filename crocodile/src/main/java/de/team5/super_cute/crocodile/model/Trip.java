@@ -101,14 +101,7 @@ public class Trip extends IdentifiableObject implements Serializable {
       StopDepartureData data = new StopDepartureData();
       data.id = entry.getKey();
       data.departureTime = entry.getValue().toString();
-      List<Stop> stopsInLine;
-      if (isInbound) {
-        stopsInLine = line.getStopsInbound();
-      } else {
-        stopsInLine = line.getStopsOutbound();
-      }
-      data.name = stopsInLine.stream().filter(s -> s.getId().equals(entry.getKey()))
-          .map(Stop::getCommonName).findAny().orElse("");
+      data.name = getTripStopForId(entry.getKey()).getCommonName();
       return data;
     }).collect(Collectors.toList());
   }
@@ -124,6 +117,19 @@ public class Trip extends IdentifiableObject implements Serializable {
       e.printStackTrace();
       throw e;
     }
+  }
+
+  public Stop getTripStopForId(String id) {
+    List<Stop> stopsInLine;
+    if (isInbound) {
+      stopsInLine = line.getStopsInbound();
+    } else {
+      stopsInLine = line.getStopsOutbound();
+    }
+    return stopsInLine.stream()
+        .filter(s -> s.getId().equals(id))
+        .findAny()
+        .orElse(null);
   }
 
   public static class StopDepartureData {

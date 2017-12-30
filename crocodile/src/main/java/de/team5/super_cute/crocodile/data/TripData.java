@@ -33,13 +33,17 @@ public class TripData extends BaseData<Trip> {
     return list;
   }
 
-  public List<Trip> getActiveTripsWithDelay() {
-    LocalDateTime now = LocalDateTime.now();
-    return getData().stream().filter(
-            t -> t.getStops().values().stream().min(LocalDateTime::compareTo).orElse(now.plusDays(1))
-                    .isBefore(now.minusMinutes(t.getVehicle().getDelay()))).filter(
-            t -> t.getStops().values().stream().max(LocalDateTime::compareTo).orElse(now.minusDays(1))
-                    .isAfter(now.minusMinutes(t.getVehicle().getDelay()))).collect(Collectors.toList());
+  public List<Trip> getActiveTripsWithDelay(LocalDateTime time) {
+    return getData().stream()
+        .filter(t -> t.getStops().values().stream()
+                .min(LocalDateTime::compareTo)
+                .orElse(time.plusDays(1))
+                .isBefore(time.minusMinutes(t.getVehicle().getDelay())))
+        .filter(t -> t.getStops().values().stream()
+                .max(LocalDateTime::compareTo)
+                .orElse(time.minusDays(1))
+                .isAfter(time.minusMinutes(t.getVehicle().getDelay())))
+        .collect(Collectors.toList());
   }
 
 }
