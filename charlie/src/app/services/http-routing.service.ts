@@ -7,6 +7,7 @@ import {VehicleData} from '../shared/data/vehicle-data';
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {StopData} from '../shared/data/stop-data';
+import 'rxjs/add/operator/map';
 
 @Injectable()
 export class HttpRoutingService {
@@ -93,19 +94,23 @@ export class HttpRoutingService {
   }
 
   public getVehicles(): Observable<VehicleData[]> {
-    return this.http.get<VehicleData[]>(this.urlBuilder.getVehiclesUrl()).pipe(
-      tap(vehicles => console.log('Fetches vehicles.'))
-    );
+    return this.http.get<VehicleData[]>(this.urlBuilder.getVehiclesUrl());
   }
 
   public getVehicle(vehicleId: string): Observable<VehicleData> {
-    return this.http.get<VehicleData>(this.urlBuilder.getVehicleDetailsUrl(vehicleId)).pipe(
-      tap(stop => console.log('Fetched Stop Details'))
-    );
+    return this.http.get<VehicleData>(this.urlBuilder.getVehicleDetailsUrl(vehicleId));
   }
 
   public deleteVehicle(vehicleId: string): Observable<any> {
     return this.http.delete(this.urlBuilder.getVehicleDetailsUrl(vehicleId));
+  }
+
+  public addVehicle(vehicle: VehicleData): Observable<any> {
+    return this.http.post(this.urlBuilder.getVehiclesUrl(), vehicle);
+  }
+
+  public getVehicleTypes(): Observable<string[]> {
+    return this.getFilterData().map(data => data.types);
   }
 
   public addTrip(trip: TripData): void {

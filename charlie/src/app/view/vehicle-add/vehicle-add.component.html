@@ -10,11 +10,11 @@
   <div class="row">
     <div class="col-auto p-2 m-1"><label>Type</label></div>
     <div class="col p-2 m-1">
-      <app-dropdown [values]="null" [(selected)]="a"></app-dropdown>
+      <app-dropdown [values]="toDropdown(vehicleTypes)" [(selected)]="selected"></app-dropdown>
     </div>
     <div class="w-100"></div>
     <div class="col bg-light p-2 m-1"><label>Capacity</label></div>
-    <div class="col bg-light p-2 m-1"><input type="number"></div>
+    <div class="col bg-light p-2 m-1"><input type="number" [(ngModel)]="capacity"></div>
   </div>
 </div>
 <div class="modal-footer">
