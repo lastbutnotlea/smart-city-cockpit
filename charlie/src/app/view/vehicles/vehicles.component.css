@@ -1,6 +1,7 @@
 :host {
   height: 100%;
-  display: block;
+  display: flex;
+  flex-direction: column;
 }
 
 .scrollable {
@@ -18,4 +19,12 @@
 .table-scrollable {
   margin: 0;
   padding: 0;
+}
+
+#table-head {
+  flex-shrink: 0;
+  /* strange, but this causes the scrollbar of the table body
+   * to appear outside the reserved space...
+   */
+  margin-right: 0;
 }

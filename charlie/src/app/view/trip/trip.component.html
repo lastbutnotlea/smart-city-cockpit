@@ -1,4 +1,4 @@
-  <h3 class="text-center margin-bottom">{{title}}</h3>
+<h3 class="text-center margin-bottom">{{title}}</h3>
 
 <app-filter-group-view></app-filter-group-view>
 
@@ -15,15 +15,15 @@
     </thead>
     <tbody>
     <tr *ngFor="let trip of filterGroup.getFiltered(trips)">
-        <td>
-          <a routerLink="detail/{{trip.id}}">
-            {{ trip.id }}
-          </a>
-        </td>
-        <td>{{ trip.vehicle.id }}</td>
-        <td>{{ trip.vehicle.type }}</td>
-        <td>{{ trip.line.name }}</td>
-        <td><i class="fa fa-trash fa-2x text-primary"></i></td>
+      <td>
+        <a routerLink="detail/{{trip.id}}">
+          {{ trip.id }}
+        </a>
+      </td>
+      <td>{{ trip.vehicle.id }}</td>
+      <td>{{ trip.vehicle.type }}</td>
+      <td>{{ trip.line.name }}</td>
+      <td><i class="fa fa-trash fa-2x text-primary"></i></td>
     </tr>
     </tbody>
   </table>

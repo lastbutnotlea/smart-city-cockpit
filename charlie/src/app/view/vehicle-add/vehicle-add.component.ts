@@ -1,8 +1,7 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {HttpRoutingService} from '../../services/http-routing.service';
 import {DropdownValue} from '../../shared/components/dropdown/dropdown.component';
-import {VehicleData} from '../../shared/data/vehicle-data';
 
 @Component({
   selector: 'app-vehicle-add',
@@ -11,9 +10,11 @@ import {VehicleData} from '../../shared/data/vehicle-data';
 })
 
 export class VehicleAddComponent implements OnInit {
+
   vehicleTypes: string[] = [];
   selected: DropdownValue = new DropdownValue(null, "");
   capacity: number;
+
   constructor(public activeModal: NgbActiveModal, private http: HttpRoutingService) {
   }
 
