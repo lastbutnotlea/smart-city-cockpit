@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.LoggerFactory;
@@ -93,13 +94,14 @@ public class TpDataConnector {
       //first sequence is inbound, second is outbound
       for (int x = 0; x < node.get("stopPointSequences").get(i).get("stopPoint").size(); x++) {
         //iterate over all stops and create objects
+        Random r = new Random(System.currentTimeMillis());
         Stop stop = new Stop(
             node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("id")
                 .asText(),
             node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("name").asText(),
             node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("lon").asDouble(),
             node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("lat").asDouble(),
-            300, new HashSet<>());
+            r.nextInt(400), new HashSet<>());
         if (node.get("stopPointSequences").get(i).get("direction").asText().equals("inbound")) {
           stopsInbound.add(stop);
         } else if (node.get("stopPointSequences").get(i).get("direction").asText()
