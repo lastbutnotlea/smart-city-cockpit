@@ -3,6 +3,7 @@ import { HttpRoutingService } from '../../services/http-routing.service';
 import {FilterComponent} from '../../shared/components/filter/filter.component';
 import { TripData } from '../../shared/data/trip-data';
 import { FilterGroupComponent } from '../../shared/components/filter-group/filter-group.component';
+import { GeneralizedComponent } from '../../shared/components/generalized/generalized.component';
 
 @Component({
   selector: 'app-trip-view',
@@ -10,23 +11,21 @@ import { FilterGroupComponent } from '../../shared/components/filter-group/filte
   styleUrls: ['./trip.component.css', '../../shared/styling/global-styling.css']
 })
 
-export class TripComponent implements OnInit {
+export class TripComponent extends GeneralizedComponent implements OnInit {
   title: String;
   trips: TripData[] = [];
 
   @ViewChild(FilterGroupComponent)
   filterGroup: FilterGroupComponent;
 
-  constructor(private http: HttpRoutingService) { }
+  constructor(private http: HttpRoutingService) {
+    super();
+  }
 
   public ngOnInit(): void {
     this.title = 'Trip View';
     this.addFilter();
-    // get trip data
-    this.http.getTrips().subscribe(
-      data => this.trips = data,
-      err => console.log('Could not fetch trips.')
-    );
+    this.getTrips();
   }
 
   public isLoaded(): boolean {
@@ -36,19 +35,31 @@ export class TripComponent implements OnInit {
     return false;
   }
 
+  private getTrips(): void {
+    // get trip data
+    this.http.getTrips().subscribe(
+      data => {
+        this.trips = data;
+        // This starts periodical calls for live-data after first data was received
+        super.ngOnInit();
+        },
+      err => console.log('Could not fetch trips.')
+    );
+  }
+
   private addFilter(): void {
     this.http.getFilterData().subscribe(
       data => {
         // add filters for vehicles
         let vehicleFilter = new FilterComponent();
-        for(let val in data.types){
+        for (let val in data.types) {
           let name = data.types[val];
           vehicleFilter.addFilter(name, trip => trip.vehicle.type === name);
         }
         this.filterGroup.addFilterComponent(vehicleFilter);
         // add filters for lines
         let lineFilter = new FilterComponent();
-        for(let val in data.lineNames){
+        for (let val in data.lineNames) {
           let name = data.lineNames[val];
           lineFilter.addFilter(name, trip => trip.line.name === name);
         }
@@ -58,9 +69,18 @@ export class TripComponent implements OnInit {
         console.log('Could not fetch filter data!');
       }
     )
+  }
 
+  // update trips
+  refreshData(): void {
+    this.setDataSubscription(
+    this.http.getTrips().subscribe( data => {
+        this.trips = data;
+        this.subscribeToData();
+      },
+      err =>
+        console.log('Could not fetch new line-data.')
+    ));
 
-/*    this.filterCreator.addVehicleFilters(this.filterGroup.getFilter('vehicleFilter'));
-    this.filterCreator.addLineFilters(this.filterGroup.getFilter('lineFilter'));*/
   }
 }

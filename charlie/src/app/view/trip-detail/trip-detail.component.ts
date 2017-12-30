@@ -8,6 +8,7 @@ import {TripEditComponent} from '../trip-edit/trip-edit.component';
 import {ConfirmDeletionComponent} from '../../shared/components/confirm-popup/confirm-deletion.component';
 import {StopSortService} from '../../services/stop-sort.service';
 import {TripEditDepartureComponent} from '../trip-edit-departure/trip-edit-departure.component';
+import { GeneralizedComponent } from '../../shared/components/generalized/generalized.component';
 
 
 
@@ -19,7 +20,7 @@ import {TripEditDepartureComponent} from '../trip-edit-departure/trip-edit-depar
               '../../shared/styling/global-styling.css']
 })
 
-export class TripDetailComponent implements OnInit {
+export class TripDetailComponent extends GeneralizedComponent implements OnInit {
 
   trip: TripData;
 
@@ -28,6 +29,7 @@ export class TripDetailComponent implements OnInit {
               private location: Location,
               private modalService: NgbModal,
               private stopSortService: StopSortService) {
+    super();
   }
 
   ngOnInit(): void {
@@ -40,6 +42,8 @@ export class TripDetailComponent implements OnInit {
       trip => {
         this.trip = trip;
         this.trip.stops = this.stopSortService.sortStops(this.trip.stops);
+        // This starts periodical calls for live-data after first data was received
+        super.ngOnInit();
       },
       err => console.log('Could not fetch trip data!')
     );
@@ -76,6 +80,20 @@ export class TripDetailComponent implements OnInit {
 
   isLoaded(): boolean {
     return this.trip != null;
+  }
+
+  // update trip data
+  refreshData(): void {
+    this.setDataSubscription(
+      this.http.getTripDetails(this.trip.id).subscribe( data => {
+          this.trip = data;
+          this.trip.stops = this.stopSortService.sortStops(this.trip.stops);
+          this.subscribeToData();
+        },
+        err =>
+          console.log('Could not fetch new line-data.')
+      ));
+
   }
 
 }

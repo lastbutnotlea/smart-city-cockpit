@@ -3,6 +3,7 @@ import { StopData } from '../../shared/data/stop-data';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { HttpRoutingService } from '../../services/http-routing.service';
+import { GeneralizedComponent } from '../../shared/components/generalized/generalized.component';
 
 @Component({
   selector: 'app-stop-detail-view',
@@ -10,7 +11,7 @@ import { HttpRoutingService } from '../../services/http-routing.service';
   styleUrls: ['./stop-detail.component.css', '../../shared/styling/embedded-components.css']
 })
 
-export class StopDetailComponent implements OnInit {
+export class StopDetailComponent extends GeneralizedComponent implements OnInit {
 
   stop: StopData;
   title: string = "Stop Details";
@@ -18,6 +19,7 @@ export class StopDetailComponent implements OnInit {
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
               private location: Location) {
+    super();
   }
 
   ngOnInit(): void {
@@ -30,6 +32,8 @@ export class StopDetailComponent implements OnInit {
     this.http.getStopDetails(stopId).subscribe(
       stop => {
         this.stop = stop;
+        // This starts periodical calls for live-data after first data was received
+        super.ngOnInit();
       },
       err => console.log('Could not fetch stop data!')
     );
@@ -41,6 +45,18 @@ export class StopDetailComponent implements OnInit {
 
   isLoaded(): boolean {
     return this.stop != null;
+  }
+
+  // update stop data
+  refreshData(): void {
+    this.setDataSubscription(
+      this.http.getStopDetails(this.stop.id).subscribe( data => {
+          this.stop = data;
+          this.subscribeToData();
+        },
+        err =>
+          console.log('Could not fetch new line-data.')
+      ));
   }
 
 }

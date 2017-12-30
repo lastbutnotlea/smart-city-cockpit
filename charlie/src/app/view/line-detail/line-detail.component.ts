@@ -4,6 +4,7 @@ import { HttpRoutingService } from '../../services/http-routing.service';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { LineMapComponent } from '../line-map/line-map.component';
+import { GeneralizedComponent } from '../../shared/components/generalized/generalized.component';
 
 @Component({
   selector: 'app-line-detail-view',
@@ -11,7 +12,7 @@ import { LineMapComponent } from '../line-map/line-map.component';
   styleUrls: ['./line-detail.component.css']
 })
 
-export class LineDetailComponent implements OnInit {
+export class LineDetailComponent extends GeneralizedComponent implements OnInit {
 
   line: LineData;
 
@@ -23,7 +24,9 @@ export class LineDetailComponent implements OnInit {
 
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
-              private location: Location) { }
+              private location: Location) {
+    super();
+  }
 
   ngOnInit(): void {
     this.getLine();
@@ -38,6 +41,8 @@ export class LineDetailComponent implements OnInit {
         this.line = line;
         this.lineMapInbound.getLineMap(line, line.stopsInbound);
         this.lineMapOutbound.getLineMap(line, line.stopsOutbound);
+        // This starts periodical calls for live-data after first data was received
+        super.ngOnInit();
       },
           err => {
         console.log('Could not fetch line data!')
@@ -50,5 +55,17 @@ export class LineDetailComponent implements OnInit {
 
   isLoaded(): boolean {
     return (this.line != null);
+  }
+
+  // Update line-data
+  refreshData(): void {
+    this.setDataSubscription(
+      this.http.getLineDetails(this.line.id).subscribe( data => {
+          this.line = data;
+          this.subscribeToData();
+        },
+        err =>
+          console.log('Could not fetch new line-data.')
+      ));
   }
 }
