@@ -2,6 +2,7 @@ package de.team5.super_cute.crocodile.controller;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import de.team5.super_cute.crocodile.data.BaseData;
+import de.team5.super_cute.crocodile.data.LineData;
 import de.team5.super_cute.crocodile.data.TripData;
 import de.team5.super_cute.crocodile.model.EState;
 import de.team5.super_cute.crocodile.model.EVehicleType;
@@ -32,41 +33,15 @@ public class LineController extends BaseController<Line> {
 
   @GetMapping
   public List<Line> getAllLines() {
-    return data.getData().stream().peek(l -> l.setState(calculateLineState(l)))
+    return data.getData().stream().peek(l -> l.setState(((LineData) data).calculateLineState(l)))
         .collect(Collectors.toList());
   }
 
   @GetMapping("/{id}")
   public Line getLine(@PathVariable String id) {
     Line line = getObjectForId(id);
-    line.setState(calculateLineState(line));
+    line.setState(((LineData) data).calculateLineState(line));
     return line;
-  }
-
-  public EState calculateLineState(Line line) {
-    List<Trip> trips = tripData.getActiveTrips().stream()
-        .filter(t -> t.getLine().getId() == line.getId())
-        .collect(Collectors.toList());
-    int severityVehicles = 0;
-    int severityStops = 0;
-    int divisorVehicles = 0;
-    int divisorStops = 0;
-    for (Trip trip : trips) {
-      if (trip.getVehicle() != null) {
-        severityVehicles += trip.getVehicle().getSeverity();
-        divisorVehicles++;
-      }
-    }
-    for (Stop stop : line.getStopsInbound()) {
-      severityStops += stop.getSeverity();
-      divisorStops++;
-    }
-    for (Stop stop : line.getStopsOutbound()) {
-      severityStops += stop.getSeverity();
-      divisorStops++;
-    }
-    return StateCalculator
-        .getState(((divisorVehicles != 0 ? (severityVehicles / divisorVehicles) : (severityStops / divisorStops)) + (severityStops / divisorStops)) / 2);
   }
 
   @GetMapping("/filter-data")
