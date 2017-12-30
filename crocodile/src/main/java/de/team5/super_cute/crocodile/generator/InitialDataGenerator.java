@@ -179,7 +179,7 @@ public class InitialDataGenerator {
     Vehicle vehicle;
     if (queueFrom.peek() == null || queueFrom.peek().getValue().compareTo(iterator) == 1) {
       //If no (or no available) vehicle exists: create new one
-      vehicle = new Vehicle(100, 50, 28, new HashSet<>(), line.getType());
+      vehicle = new Vehicle(100, 50, 0, 28, new HashSet<>(), line.getType());
       networkDataBuilder.addVehicles(vehicle);
     } else {
       vehicle = queueFrom.poll().getKey();
