@@ -9,6 +9,7 @@ import java.awt.Color;
 import java.io.IOException;
 
 public class ColorDeserializer extends JsonDeserializer<Color> {
+
   @Override
   public Color deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
     TreeNode root = p.getCodec().readTree(p);

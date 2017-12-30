@@ -1,5 +1,8 @@
 package de.team5.super_cute.crocodile.model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import de.team5.super_cute.crocodile.util.ColorConverter;
 import java.awt.Color;
 import java.io.Serializable;
@@ -16,12 +19,13 @@ import javax.persistence.ManyToMany;
 import javax.persistence.MapKeyColumn;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import org.hibernate.annotations.Proxy;
 
 @Entity
 @Table(name = "line")
 @Proxy(lazy = false)
-public class Line extends IdentifiableObject implements Serializable {
+public class Line extends IdentifiableObject implements Serializable, Feedbackable, Stateable {
 
   @Column
   private String name;
@@ -29,18 +33,18 @@ public class Line extends IdentifiableObject implements Serializable {
   @ManyToMany(fetch = FetchType.LAZY)
   @OrderColumn
   @JoinTable(
-      name="Line_Stops_InB",
-      joinColumns=@JoinColumn(name="line_id"),
-      inverseJoinColumns=@JoinColumn(name="stop_id")
+      name = "Line_Stops_InB",
+      joinColumns = @JoinColumn(name = "line_id"),
+      inverseJoinColumns = @JoinColumn(name = "stop_id")
   )
   private List<Stop> stopsInbound;
 
   @ManyToMany(fetch = FetchType.LAZY)
   @OrderColumn
   @JoinTable(
-      name="Line_Stops_OutB",
-      joinColumns=@JoinColumn(name="line_id"),
-      inverseJoinColumns=@JoinColumn(name="stop_id")
+      name = "Line_Stops_OutB",
+      joinColumns = @JoinColumn(name = "line_id"),
+      inverseJoinColumns = @JoinColumn(name = "stop_id")
   )
   private List<Stop> stopsOutbound;
 
@@ -55,7 +59,11 @@ public class Line extends IdentifiableObject implements Serializable {
 
   @Column
   @Convert(converter = ColorConverter.class)
+  @JsonIgnore //extra getter/setter fürs Json
   private Color color;
+
+  @Transient
+  private EState state;
 
   @Column
   private EVehicleType type;
@@ -110,6 +118,16 @@ public class Line extends IdentifiableObject implements Serializable {
     this.color = color;
   }
 
+  @JsonGetter("color")
+  public String getHexColor() {
+    return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
+  }
+
+  @JsonSetter("color")
+  public void setHexColor(String hexColor) {
+    color = Color.decode(hexColor);
+  }
+
   public EVehicleType getType() {
     return type;
   }
@@ -134,5 +152,14 @@ public class Line extends IdentifiableObject implements Serializable {
   public void setTravelTimeOutbound(
       Map<String, Integer> travelTimeOutbound) {
     this.travelTimeOutbound = travelTimeOutbound;
+  }
+
+  @Override
+  public EState getState() {
+    return state;
+  }
+
+  public void setState(EState state) {
+    this.state = state;
   }
 }
