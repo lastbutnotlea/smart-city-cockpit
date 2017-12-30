@@ -1,0 +1,26 @@
+<div class="bounding-box bg-light">
+
+  <h5 class="text-lg-left">
+    <i class="fa fa-map-marker fa-2x float-left small-padding-left text-primary"></i>
+    <label class="padding-emb-box-headline">Stops</label>
+  </h5>
+
+  <div *ngFor="let data of linePositionData.positionAtStop; let i = index">
+    
+    <p>
+      <i class="fa fa-map-marker float-left small-padding-left text-primary"></i> At {{data.stopName}}
+      <span *ngFor="let vehicle of data.vehicleIds">
+        {{vehicle}}
+      </span>
+    </p>
+
+    <p>
+      <i class="fa fa-map-marker float-left small-padding-left text-primary"></i> After {{linePositionData.positionAfterStop[i].stopName}}
+      <span *ngFor="linePositionData.positionAfterStop[i].vehicleIds">
+        {{vehicle}}
+      </span>
+    </p>
+
+  </div>
+
+</div>
