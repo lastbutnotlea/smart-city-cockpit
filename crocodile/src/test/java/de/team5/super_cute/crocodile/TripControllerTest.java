@@ -58,7 +58,7 @@ public class TripControllerTest {
     s3 = new Stop("ApiId3", "Stachus", 10.2, 2, 61, new HashSet<>());
     s4 = new Stop("ApiId4", "Sendlinger Tor", 12.2, 3, 41, new HashSet<>());
     v1 = new Vehicle(300, 150, 0, 28, EVehicleType.SUBWAY, "engine failure");
-    v2 = new Vehicle(340, 200, 2, 31, EVehicleType.TRAIN, "window broken");
+    v2 = new Vehicle(340, 200, 2, 31, EVehicleType.SUBWAY, "window broken");
     l1 = new LineBuilder().name("U6").color(Color.blue).stops(s2, s1, s4).travelTime(0, 2, 5).build();
     l2 = new LineBuilder().name("S1").color(Color.cyan).stops(s3, s1).travelTime(0, 3).build();
     ldt1 = LocalDateTime.of(2017, Month.AUGUST, 12, 11, 30);

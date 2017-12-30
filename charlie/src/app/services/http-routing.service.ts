@@ -103,8 +103,20 @@ export class HttpRoutingService {
     this.http.post(this.urlBuilder.getTripsUrl(), trip).subscribe();
   }
 
-  public editTrip(trip: TripData): void {
-    console.log('EDIT TRIP, lineID: ' + trip.line.id + ' vehicleID: ' + trip.vehicle.id);
-    this.http.put(this.urlBuilder.getTripsUrl(), trip).subscribe(() => console.log('TRIP EDIT OK'));
+  public editTrip(trip: TripData): Observable<any> {
+    return this.http.put(this.urlBuilder.getTripsUrl(), trip).pipe(tap(data =>
+      console.log('EDIT TRIP OK')));
+  }
+
+  public deleteTrip(tripId: string): Observable<any> {
+    return this.http.delete(this.urlBuilder.getTripDetailsUrl(tripId)).pipe(tap(data =>
+      console.log('DELETE TRIP OK')));
+  }
+
+  public getFilterData(): Observable<any> {
+    return this.http.get<any>(this.urlBuilder.getFilterInfosUrl()).
+      pipe(
+        tap(data => console.log('Data for filters: ' + data))
+    );
   }
 }
