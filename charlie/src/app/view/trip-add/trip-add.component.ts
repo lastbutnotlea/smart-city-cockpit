@@ -20,7 +20,7 @@ import {dummyDate, now} from '../../shared/data/dates';
 export class TripAddComponent implements OnInit {
   selected: TripData;
   selectedLineStops: StopData[];
-  selectedTime: string = dummyDate;
+  selectedTime: string = now.toISOString();
   displayStops: boolean = false;
 
   selectedVehicle: DropdownValue;
@@ -45,6 +45,8 @@ export class TripAddComponent implements OnInit {
 
     this.time = {hour: now.getHours(), minute: now.getMinutes(), second: now.getSeconds()};
     this.date = {year: now.getFullYear(), month: now.getMonth(), day: now.getDate()};
+    this.updateTime();
+    this.updateDate();
   }
 
   initData(): void {
@@ -65,13 +67,8 @@ export class TripAddComponent implements OnInit {
       err => console.log('Err'));
   }
 
-  getStopsForSelectedDirection(): void {
-    if(this.selectedDirection.value) {
-      this.selectedLineStops = this.selected.line.stopsInbound;
-    }
-    else {
-      this.selectedLineStops = this.selected.line.stopsOutbound;
-    }
+  stopsVisible(): boolean {
+    return this.displayStops;
   }
 
   showStops(): void {
@@ -79,8 +76,8 @@ export class TripAddComponent implements OnInit {
     this.displayStops = true;
   }
 
-  stopsVisible(): boolean {
-    return this.displayStops;
+  updateStops(): void {
+    if(this.displayStops) this.showStops();
   }
 
   addDataToSelected(): void {
@@ -93,6 +90,15 @@ export class TripAddComponent implements OnInit {
       this.selected.stops.push(new TripStopData(stop.id, dummyDate, stop.commonName));
     }
     this.selected.stops[0].departureTime = this.selectedTime;
+  }
+
+  getStopsForSelectedDirection(): void {
+    if(this.selectedDirection.value) {
+      this.selectedLineStops = this.selected.line.stopsInbound;
+    }
+    else {
+      this.selectedLineStops = this.selected.line.stopsOutbound;
+    }
   }
 
   confirm(): void {
@@ -165,20 +171,22 @@ export class TripAddComponent implements OnInit {
   }
 
   updateDate(): void {
-    this.addDataToSelected();
+   // this.addDataToSelected();
     this.selectedTime = this.dateParser.parseDate(
       this.selectedTime,
       this.date
     );
-    console.log(this.selected.stops[0].departureTime);
+    if(this.displayStops) console.log(this.selected.stops[0].departureTime);
+    else console.log(this.selectedTime);
   }
 
   updateTime(): void {
-    this.addDataToSelected();
+   // this.addDataToSelected();
     this.selectedTime = this.dateParser.parseTime(
       this.selectedTime,
       this.time
     );
-    console.log(this.selected.stops[0].departureTime);
+    if(this.displayStops) console.log(this.selected.stops[0].departureTime);
+    else console.log(this.selectedTime);
   }
 }

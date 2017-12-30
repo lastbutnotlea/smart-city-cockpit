@@ -10,17 +10,17 @@
 
   <div class="margin-bottom">
     <label>Vehicle: </label>
-    <app-dropdown [values]="toDropdownItemsV(availVehicles)" [(selected)]="selectedVehicle"></app-dropdown>
+    <app-dropdown [values]="toDropdownItemsV(availVehicles)" [(selected)]="selectedVehicle" (selectedChange)="updateStops()"></app-dropdown>
   </div>
 
   <div class="margin-bottom">
     <label>Line: </label>
-    <app-dropdown [values]="toDropdownItemsL(availLines)" [(selected)]="selectedLine"></app-dropdown>
+    <app-dropdown [values]="toDropdownItemsL(availLines)" [(selected)]="selectedLine" (selectedChange)="updateStops()"></app-dropdown>
   </div>
 
   <div class="margin-bottom">
     <label>Direction: </label>
-    <app-dropdown [values]="directionItems()" [(selected)]="selectedDirection"></app-dropdown>
+    <app-dropdown [values]="directionItems()" [(selected)]="selectedDirection" (selectedChange)="updateStops()"></app-dropdown>
   </div>
 
   <button type="button margin-bottom" class="btn btn-outline-primary" (click)="showStops()">Edit Stops</button>
