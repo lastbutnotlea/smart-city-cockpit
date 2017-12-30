@@ -5,4 +5,5 @@ export class StopData {
   peopleWaiting: number;
   lat: number;
   lon: number;
+  state: string;
 }

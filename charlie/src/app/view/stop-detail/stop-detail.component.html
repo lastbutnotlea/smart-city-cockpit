@@ -4,7 +4,15 @@
 
 <div *ngIf="isLoaded()">
 
-  <h3 class="text-center">{{title}} <label class="text-primary">{{stop.commonName}}</label></h3>
+  <h3 class="text-center">
+    <div [ngClass]="{'color-fine': stop.state === 'FINE',
+       'color-problematic': stop.state === 'PROBLEMATIC',
+       'color-critical': stop.state === 'CRITICAL' }">
+      <i class="fa fa-exclamation-triangle fa-2x float-right small-padding-right" aria-hidden="true"></i>
+    </div>
+    {{title}}
+    <label class="text-primary">{{stop.commonName}}</label>
+  </h3>
   <h6 class="text-center margin-bottom">Stop ID: {{stop.id}}</h6>
   <h6 class="text-center margin-bottom">People waiting: {{stop.peopleWaiting}}</h6>
 

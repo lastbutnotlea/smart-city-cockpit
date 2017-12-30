@@ -9,5 +9,5 @@ export class LineData {
   travelTimeInbound: any;
   travelTimeOutbound: any;
   color: any;
-
+  state: string;
 }

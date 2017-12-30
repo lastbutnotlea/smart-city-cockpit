@@ -15,6 +15,8 @@ import { AnonymousSubscription } from 'rxjs/Subscription';
 export class NetworkComponent extends GeneralizedComponent implements OnInit {
   title: String;
   lines: LineData[] = [];
+  // TODO: get real state data and update periodically
+  state: string = 'CRITICAL';
 
   @ViewChild(MapComponent)
   networkMap: MapComponent;

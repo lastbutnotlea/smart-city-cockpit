@@ -1,7 +1,14 @@
 <div *ngIf="!isLoaded()">Loading...</div>
 
 <div *ngIf="isLoaded()">
-  <h4>Line Id: {{line.id}}</h4>
+  <h3>
+    <div [ngClass]="{'color-fine': line.state === 'FINE',
+       'color-problematic': line.state === 'PROBLEMATIC',
+       'color-critical': line.state === 'CRITICAL' }">
+      <i class="fa fa-exclamation-triangle fa-2x float-right small-padding-right" aria-hidden="true"></i>
+    </div>
+    Line Id: {{line.id}}
+  </h3>
   <h4>Line Name: {{line.name}}</h4>
 </div>
 

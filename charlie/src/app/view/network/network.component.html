@@ -1,5 +1,12 @@
 <div class="text-center" id="network">
-  <h3>{{title}}</h3>
+  <h3>
+    <div [ngClass]="{'color-fine': state === 'FINE',
+       'color-problematic': state === 'PROBLEMATIC',
+       'color-critical': state === 'CRITICAL' }">
+      <i class="fa fa-exclamation-triangle fa-2x float-right small-padding-right" aria-hidden="true"></i>
+    </div>
+    {{title}}
+  </h3>
 </div>
 <app-network-map></app-network-map>
 
