@@ -1,5 +1,8 @@
 package de.team5.super_cute.crocodile.model;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonSetter;
 import de.team5.super_cute.crocodile.util.ColorConverter;
 import java.awt.Color;
 import java.io.Serializable;
@@ -56,6 +59,7 @@ public class Line extends IdentifiableObject implements Serializable, Feedbackab
 
   @Column
   @Convert(converter = ColorConverter.class)
+  @JsonIgnore //extra getter/setter fürs Json
   private Color color;
 
   @Transient
@@ -112,6 +116,16 @@ public class Line extends IdentifiableObject implements Serializable, Feedbackab
 
   public void setColor(Color color) {
     this.color = color;
+  }
+
+  @JsonGetter("color")
+  public String getHexColor() {
+    return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
+  }
+
+  @JsonSetter("color")
+  public void setHexColor(String hexColor) {
+    color = Color.decode(hexColor);
   }
 
   public EVehicleType getType() {

@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -48,18 +47,18 @@ public class TripController extends BaseController<Trip> {
   }
 
   @PostMapping
-  public ResponseEntity addTrip(@RequestBody Trip tripInput) {
+  public String addTrip(@RequestBody Trip tripInput) {
     insertCorrectTimesForTrip(tripInput);
     return addObject(tripInput);
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity deleteTrip(@PathVariable String id) {
+  public String deleteTrip(@PathVariable String id) {
     return deleteObject(id);
   }
 
   @PutMapping
-  public ResponseEntity editTrip(@RequestBody Trip tripInput) {
+  public String editTrip(@RequestBody Trip tripInput) {
     insertCorrectTimesForTrip(tripInput);
     return editObject(tripInput);
   }
@@ -68,8 +67,7 @@ public class TripController extends BaseController<Trip> {
    * Sets the correct times for each stop that has the dummy time associated. At least one Stop has
    * to have a useful time!
    *
-   * @param tripInput Trip with some dummy values
-   * @return Trip with all dummy values replaced by correct ones
+   * @param tripInput Trip with some dummy values, these are replaced with correct ones
    */
   private void insertCorrectTimesForTrip(Trip tripInput) {
     // Filter out Stops with dummy value + find stop in the trip with a specified time

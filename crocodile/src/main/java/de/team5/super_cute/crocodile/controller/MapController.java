@@ -1,6 +1,5 @@
 package de.team5.super_cute.crocodile.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -36,7 +35,7 @@ public class MapController {
   }
 
   @GetMapping("/stations")
-  public ObjectNode getMapStations() throws JsonProcessingException {
+  public ObjectNode getMapStations() {
     logger.info("Got Request for Stations in Map.");
     ObjectNode stations = mapper.createObjectNode();
 
@@ -60,21 +59,21 @@ public class MapController {
   }
 
   @GetMapping("/lines")
-  public ObjectNode getMapLines() throws JsonProcessingException {
+  public ObjectNode getMapLines() {
     logger.info("Got Request for Lines in Map.");
     ObjectNode lines = mapper.createObjectNode();
     List<Line> lineData = this.lineData.getData();
     for (Line l : lineData) {
       ObjectNode line = lines.putObject(l.getName());
       line.put("id", l.getId());
-      line.put("color", "#" + Integer.toHexString(l.getColor().getRGB()).substring(2));
+      line.put("color", l.getHexColor());
       line.put("type", l.getType().toString());
     }
     return lines;
   }
 
   @GetMapping("/connections")
-  public ObjectNode getMapConnections() throws JsonProcessingException {
+  public ObjectNode getMapConnections() {
     logger.info("Got Request for Connections in Map.");
     ObjectNode connections = mapper.createObjectNode();
     List<Line> lineData = this.lineData.getData();

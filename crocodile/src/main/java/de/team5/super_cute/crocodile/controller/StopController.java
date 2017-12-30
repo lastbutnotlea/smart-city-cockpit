@@ -1,8 +1,9 @@
 package de.team5.super_cute.crocodile.controller;
 
 import de.team5.super_cute.crocodile.data.BaseData;
-import de.team5.super_cute.crocodile.model.Stop;
 import java.util.List;
+
+import de.team5.super_cute.crocodile.model.Stop;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
