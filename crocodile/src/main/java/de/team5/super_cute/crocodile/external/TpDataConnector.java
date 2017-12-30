@@ -101,8 +101,10 @@ public class TpDataConnector {
         switch (node.get("stopPointSequences").get(i).get("direction").asText()) {
           case "inbound":
             stopsInbound.add(stop);
+            break;
           case "outbound":
             stopsOutbound.add(stop);
+            break;
           default:
             throw new IllegalArgumentException("Invalid direction in JsonNode");
         }
