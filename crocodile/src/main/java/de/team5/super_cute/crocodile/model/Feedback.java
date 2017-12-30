@@ -11,7 +11,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "feedback")
-public class Feedback extends IdentifiableObject implements Serializable {
+public class Feedback extends IdentifiableObject implements Serializable, TickerItemable {
 
   @Column
   private String message;
