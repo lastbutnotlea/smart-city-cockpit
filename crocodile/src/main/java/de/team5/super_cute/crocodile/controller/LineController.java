@@ -68,7 +68,7 @@ public class LineController extends BaseController<Line> {
     List<PositionAfterStopData> positionAfterStopDatas = new ArrayList<>();
     List<Trip> trips = tripData.getActiveTripsWithDelay().stream()
         .filter(t -> t.isInbound() == isInbound)
-        .filter(t -> t.getLine().getId() == line.getId()).collect(Collectors.toList());
+        .filter(t -> t.getLine().getId().equals(line.getId())).collect(Collectors.toList());
     LocalDateTime now = LocalDateTime.now();
     for (Trip trip : trips) {
       addPositionForTrip(trip, now, positionAtStopDatas, positionAfterStopDatas);
@@ -109,9 +109,7 @@ public class LineController extends BaseController<Line> {
       positionAtStopData = new PositionAtStopData();
       positionAtStopData.stopid = trip.getStops().entrySet().stream()
           .filter(e -> e.getValue().isEqual(timeAtStop)).findAny().orElse(null).getKey();
-      positionAtStopData.vehicleIds = new ArrayList<String>() {{
-        add(trip.getVehicle().getId());
-      }};
+      positionAtStopData.vehicleIds = new ArrayList<>();
       positionAtStopDatas.add(positionAtStopData);
     }
     positionAtStopData.vehicleIds.add(trip.getVehicle().getId());
@@ -134,9 +132,7 @@ public class LineController extends BaseController<Line> {
       positionAfterStopData = new PositionAfterStopData();
       positionAfterStopData.lastStopid = trip.getStops().entrySet().stream()
           .filter(e -> e.getValue().isEqual(timeAtLastStop)).findAny().orElse(null).getKey();
-      positionAfterStopData.vehicleIds = new ArrayList<String>() {{
-        add(trip.getVehicle().getId());
-      }};
+      positionAfterStopData.vehicleIds = new ArrayList<>();
       positionAfterStopDatas.add(positionAfterStopData);
     }
     positionAfterStopData.vehicleIds.add(trip.getVehicle().getId());
