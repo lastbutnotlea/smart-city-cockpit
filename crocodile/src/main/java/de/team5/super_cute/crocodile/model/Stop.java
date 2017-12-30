@@ -19,7 +19,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "stop")
-public class Stop extends IdentifiableObject implements Serializable, Feedbackable, Stateable {
+public class Stop extends IdentifiableObject implements Serializable, Feedbackable, Stateable, TickerItemable {
 
   @Column
   private String commonName;
