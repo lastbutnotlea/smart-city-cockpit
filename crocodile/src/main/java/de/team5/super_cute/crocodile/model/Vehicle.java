@@ -191,9 +191,9 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
 
   public static Vehicle createRandom(EVehicleType vehicleType) {
     Random r = new Random(System.currentTimeMillis());
-    Vehicle vehicle = new Vehicle(r.nextInt(100) + 100, 0, r.nextInt(65) - 5, r.nextInt(35) + 5,
+    Vehicle vehicle = new Vehicle(r.nextInt(100) + 100, 0, r.nextInt(15) - 5, r.nextInt(10) + 20,
         vehicleType, new HashSet<>());
-    vehicle.setLoad((int) ((r.nextInt(199) + 1) * 0.01 * vehicle.getCapacity()));
+    vehicle.setLoad((int) ((r.nextInt(99) + 1) * 0.01 * vehicle.getCapacity()));
     return vehicle;
   }
 }

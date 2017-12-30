@@ -3,11 +3,15 @@ package de.team5.super_cute.crocodile.generator;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.CREATE_STOP_DEFECT_PERCENTAGE;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.CREATE_VEHICLE_DEFECT_PERCENTAGE;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.DEFECT_FEEDBACK_PERCENTAGE;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.DELAY;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.LOAD;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.PEOPLE_WAITING;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.REMOVE_STOP_DEFECT_PERCENTAGE;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.REMOVE_VEHICLE_DEFECT_PERCENTAGE;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.STOP_DEFECTS;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.STOP_DEFECTS_SEVERITY;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.STOP_DEFECT_FEEDBACK;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.TEMPERATURE;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.VALUE_FEEDBACK;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.VALUE_FEEDBACK_PERCENTAGE;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.VEHICLE_DEFECTS;
@@ -66,7 +70,7 @@ public class LiveDataGenerator {
     Random r = new Random(System.currentTimeMillis());
     //increase or decrease people waiting by 0-5%
     stop.setPeopleWaiting(max(min(stop.getPeopleWaiting() + (r.nextInt(300) - 150), 1000), 0));
-    generateValueFeedback(stop, "peopleWaiting");
+    generateValueFeedback(stop, PEOPLE_WAITING);
     removeDefect(stop, true);
     String defect = generateDefect(stop, true);
     if (defect != null) {
@@ -80,11 +84,11 @@ public class LiveDataGenerator {
     //increase or decrease values by 0-5%
     vehicle.setLoad(
         max(min((int) (vehicle.getLoad() + (r.nextInt(50) - 25)), vehicle.getCapacity() * 2), 0));
-    generateValueFeedback(vehicle, "load");
+    generateValueFeedback(vehicle, LOAD);
     vehicle.setTemperature(max(min((int) (vehicle.getTemperature() + (r.nextInt(10) - 5)), 40), 5));
-    generateValueFeedback(vehicle, "temperature");
+    generateValueFeedback(vehicle, TEMPERATURE);
     vehicle.setDelay(max(min((int) (vehicle.getDelay() + (r.nextInt(10) - 5)), 60), -5));
-    generateValueFeedback(vehicle, "delay");
+    generateValueFeedback(vehicle, DELAY);
     removeDefect(vehicle, false);
     String defect = generateDefect(vehicle, false);
     if (defect != null) {
@@ -134,33 +138,33 @@ public class LiveDataGenerator {
     }
   }
 
-  private void generateValueFeedback(Feedbackable feedbackable, String attribute) {
+  private void generateValueFeedback(Feedbackable feedbackable, int fieldName) {
     Random r = new Random(System.currentTimeMillis());
     if (r.nextInt(99) + 1 <= VALUE_FEEDBACK_PERCENTAGE) {
       EState rating;
-      switch (attribute) {
-        case ("peopleWaiting"):
+      switch (fieldName) {
+        case (PEOPLE_WAITING):
           rating = getState(((Stop) feedbackable).getPeopleWaitingSeverity());
           feedbackData
-              .addObject(getValueFeedbackForField(feedbackable, "peopleWaiting", rating, r));
+              .addObject(getValueFeedbackForField(feedbackable, PEOPLE_WAITING, rating, r));
           break;
-        case ("load"):
+        case (LOAD):
           rating = getState(((Vehicle) feedbackable).getLoadSeverity());
-          feedbackData.addObject(getValueFeedbackForField(feedbackable, "load", rating, r));
+          feedbackData.addObject(getValueFeedbackForField(feedbackable, LOAD, rating, r));
           break;
-        case ("temperature"):
+        case (TEMPERATURE):
           rating = getState(((Vehicle) feedbackable).getTemperatureSeverity());
-          feedbackData.addObject(getValueFeedbackForField(feedbackable, "temperature", rating, r));
+          feedbackData.addObject(getValueFeedbackForField(feedbackable, TEMPERATURE, rating, r));
           break;
-        case ("delay"):
+        case (DELAY):
           rating = getState(((Vehicle) feedbackable).getDelaySeverity());
-          feedbackData.addObject(getValueFeedbackForField(feedbackable, "delay", rating, r));
+          feedbackData.addObject(getValueFeedbackForField(feedbackable, DELAY, rating, r));
           break;
       }
     }
   }
 
-  private Feedback getValueFeedbackForField(Feedbackable objective, String fieldname, EState rating,
+  private Feedback getValueFeedbackForField(Feedbackable objective, int fieldname, EState rating,
       Random random) {
     String message = VALUE_FEEDBACK.get(fieldname).get(rating.ordinal())
         .get(random.nextInt(VALUE_FEEDBACK.get(fieldname).get(rating.ordinal()).size() - 1));

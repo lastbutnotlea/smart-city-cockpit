@@ -66,7 +66,7 @@ public class LineController extends BaseController<Line> {
       divisorStops++;
     }
     return StateCalculator
-        .getState(((severityVehicles / divisorVehicles) + (severityStops / divisorStops)) / 2);
+        .getState(((divisorVehicles != 0 ? (severityVehicles / divisorVehicles) : (severityStops / divisorStops)) + (severityStops / divisorStops)) / 2);
   }
 
   @GetMapping("/filter-data")

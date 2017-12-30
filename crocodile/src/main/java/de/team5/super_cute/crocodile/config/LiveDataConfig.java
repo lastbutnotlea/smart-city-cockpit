@@ -7,11 +7,11 @@ import java.util.Map;
 
 public class LiveDataConfig {
 
-  public static final int CREATE_STOP_DEFECT_PERCENTAGE = 40;
-  public static final int CREATE_VEHICLE_DEFECT_PERCENTAGE = 40;
+  public static final int CREATE_STOP_DEFECT_PERCENTAGE = 20;
+  public static final int CREATE_VEHICLE_DEFECT_PERCENTAGE = 20;
   public static final int REMOVE_STOP_DEFECT_PERCENTAGE = 10;
   public static final int REMOVE_VEHICLE_DEFECT_PERCENTAGE = 10;
-  public static final int DEFECT_FEEDBACK_PERCENTAGE = 10;
+  public static final int DEFECT_FEEDBACK_PERCENTAGE = 5;
   public static final int VALUE_FEEDBACK_PERCENTAGE = 1;
 
   public static final String STOP_DIRTY = "dirty";
@@ -41,6 +41,11 @@ public class LiveDataConfig {
   public static final int TEMPERATURE_UPPER_LIMIT_PROBLEMATIC = 31;
   public static final int TEMPERATURE_LOWER_LIMIT_CRITICAL = 14;
   public static final int TEMPERATURE_UPPER_LIMIT_CRITICAl = 36;
+
+  public static final int PEOPLE_WAITING = 10;
+  public static final int LOAD = 20;
+  public static final int TEMPERATURE = 21;
+  public static final int DELAY = 22;
 
   public static final List<String> STOP_DEFECTS = new ArrayList<String>() {{
     add(STOP_DIRTY);
@@ -156,8 +161,8 @@ public class LiveDataConfig {
     }});
   }};
 
-  public static final Map<String, List<List<String>>> VALUE_FEEDBACK = new HashMap<String, List<List<String>>>() {{
-    put("peopleWaiting", new ArrayList<List<String>>() {{
+  public static final Map<Integer, List<List<String>>> VALUE_FEEDBACK = new HashMap<Integer, List<List<String>>>() {{
+    put(PEOPLE_WAITING, new ArrayList<List<String>>() {{
       //messages for low peopleWaiting
       add(new ArrayList<String>() {{
         add("Completely deserted here...");
@@ -177,7 +182,7 @@ public class LiveDataConfig {
         add("The whole platform is full of zombies staring at their IPhones!");
       }}); // critical
     }});
-    put("load", new ArrayList<List<String>>() {{
+    put(LOAD, new ArrayList<List<String>>() {{
       add(new ArrayList<String>() {{
         add("I was the only person in the vehicle! Apart from the driver...");
         add("I saw a vehicle driving by with just the driver inside. Such a waste of money!");
@@ -194,7 +199,7 @@ public class LiveDataConfig {
         add("U could throw a party with all these people in here!!!");
       }});
     }});
-    put("temperature", new ArrayList<List<String>>() {{
+    put(TEMPERATURE, new ArrayList<List<String>>() {{
       add(new ArrayList<String>() {{
         add("Had a nice drive!");
         add("Nice temperature, tho.");
@@ -211,7 +216,7 @@ public class LiveDataConfig {
         add("hotter than outside!!!");
       }});
     }});
-    put("delay", new ArrayList<List<String>>() {{
+    put(DELAY, new ArrayList<List<String>>() {{
       add(new ArrayList<String>() {{
         add("The vehicle was surprisingly punctual today :)");
         add("Wow i got one connecting train earlier!");
