@@ -98,6 +98,12 @@ export class HttpRoutingService {
     );
   }
 
+  public getVehicle(vehicleId: string): Observable<VehicleData> {
+    return this.http.get<VehicleData>(this.urlBuilder.getVehicleDetailsUrl(vehicleId)).pipe(
+      tap(stop => console.log('Fetched Stop Details'))
+    );
+  }
+
   public addTrip(trip: TripData): void {
     console.log('ADD TRIP, lineID: ' + trip.line.id + ' vehicleID: ' + trip.vehicle.id);
     this.http.post(this.urlBuilder.getTripsUrl(), trip).subscribe();

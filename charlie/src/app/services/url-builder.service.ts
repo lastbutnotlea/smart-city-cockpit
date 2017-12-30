@@ -32,6 +32,10 @@ export class UrlBuilderService {
     return this.vehicleBaseUrl;
   }
 
+  public getVehicleDetailsUrl(vehicleId: string): string {
+    return this.vehicleBaseUrl + '/' + vehicleId;
+  }
+
   public getTripsUrl(): string {
     return this.tripBaseUrl;
   }
