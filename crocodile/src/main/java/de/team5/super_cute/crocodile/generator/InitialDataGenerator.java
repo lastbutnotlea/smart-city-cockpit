@@ -20,8 +20,8 @@ import de.team5.super_cute.crocodile.model.Vehicle;
 import de.team5.super_cute.crocodile.util.NetworkDataBuilder;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.PriorityQueue;
 import javax.annotation.PostConstruct;
@@ -51,9 +51,9 @@ public class InitialDataGenerator {
   public void generateInitialPrototypeSetup() {
     networkDataBuilder = new NetworkDataBuilder(lineData, vehicleData, stopData,
         tripData);
-    ArrayList<Line> lines = new TpDataConnector().getLines(lineIds);
     LoggerFactory.getLogger(getClass())
         .info("Started initialization");
+    ArrayList<Line> lines = new TpDataConnector().getLines(lineIds);
     LocalDateTime from = LocalDateTime.now().withHour(fromHour).withMinute(fromMinute);
     LocalDateTime to = LocalDateTime.now().withHour(toHour).withMinute(toMinute);
     generateTripsAndVehicles(from, to, lines);
@@ -71,7 +71,7 @@ public class InitialDataGenerator {
     for (int x = 0; x < lines.size(); x++) {
       try {
         Line line = lines.get(x);
-        if(lineData.exists(line.getName())){
+        if (lineData.exists(line.getName())) {
           continue;
         }
         networkDataBuilder.addLinesWithStops(line);
@@ -79,10 +79,11 @@ public class InitialDataGenerator {
             .max(Integer::compareTo).orElse(-1);
         int outboundTravelTime = line.getTravelTimeOutbound().values().stream()
             .max(Integer::compareTo).orElse(-1);
+        //noinspection ComparatorCombinators
         PriorityQueue<Pair<Vehicle, LocalDateTime>> queueInbound = new PriorityQueue<>(
-            (a, b) -> a.getValue().compareTo(b.getValue()));
+            Comparator.comparing(Pair::getValue));
         PriorityQueue<Pair<Vehicle, LocalDateTime>> queueOutbound = new PriorityQueue<>(
-            (a, b) -> a.getValue().compareTo(b.getValue()));
+            Comparator.comparing(Pair::getValue));
         MyLocalDateTime iterator = new MyLocalDateTime(LocalDateTime.from(from));
         MyLocalDateTime nextTripInbound = new MyLocalDateTime(LocalDateTime.from(from));
         MyLocalDateTime nextTripOutbound = new MyLocalDateTime(LocalDateTime.from(from));
@@ -164,7 +165,7 @@ public class InitialDataGenerator {
           break;
         }
       } while (from.compareTo(actual.getLocalDateTime()) == 1);
-    } catch(NullPointerException e) {
+    } catch (NullPointerException e) {
       actual.setLocalDateTime(actual.getLocalDateTime().plusDays(1));
     }
     return pointer;
@@ -178,7 +179,7 @@ public class InitialDataGenerator {
     Vehicle vehicle;
     if (queueFrom.peek() == null || queueFrom.peek().getValue().compareTo(iterator) == 1) {
       //If no (or no available) vehicle exists: create new one
-      vehicle = new Vehicle(100, 0, 42, new HashSet<>(), line.getType());
+      vehicle = Vehicle.createRandom(line.getType());
       networkDataBuilder.addVehicles(vehicle);
     } else {
       vehicle = queueFrom.poll().getKey();
@@ -204,22 +205,24 @@ public class InitialDataGenerator {
             .withMinute(knownJourneys.get(pointer).get("minute").asInt()));
     return pointer;
   }
+
+  private class MyLocalDateTime {
+
+    private LocalDateTime localDateTime;
+
+    public MyLocalDateTime(LocalDateTime localDateTime) {
+      this.localDateTime = localDateTime;
+    }
+
+    public LocalDateTime getLocalDateTime() {
+      return localDateTime;
+    }
+
+    public void setLocalDateTime(LocalDateTime localDateTime) {
+      this.localDateTime = localDateTime;
+    }
+  }
 }
 
-class MyLocalDateTime {
 
-  private LocalDateTime localDateTime;
-
-  public MyLocalDateTime(LocalDateTime localDateTime) {
-    this.localDateTime = localDateTime;
-  }
-
-  public LocalDateTime getLocalDateTime() {
-    return localDateTime;
-  }
-
-  public void setLocalDateTime(LocalDateTime localDateTime) {
-    this.localDateTime = localDateTime;
-  }
-}
 

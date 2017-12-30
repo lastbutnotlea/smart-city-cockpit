@@ -1,7 +1,6 @@
 package de.team5.super_cute.crocodile.util;
 
 import java.awt.Color;
-
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
@@ -11,8 +10,7 @@ public class ColorConverter implements AttributeConverter<Color, String> {
   private static final String SEPARATOR = "-";
 
   /**
-   * Convert Color object to a String
-   * with format red|green|blue|alpha
+   * Convert Color object to a String with format red|green|blue|alpha
    */
   @Override
   public String convertToDatabaseColumn(Color color) {
@@ -27,8 +25,7 @@ public class ColorConverter implements AttributeConverter<Color, String> {
   }
 
   /**
-   * Convert a String with format red|green|blue|alpha
-   * to a Color object
+   * Convert a String with format red|green|blue|alpha to a Color object
    */
   @Override
   public Color convertToEntityAttribute(String colorString) {
