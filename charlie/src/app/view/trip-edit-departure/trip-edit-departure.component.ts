@@ -8,7 +8,7 @@ import {DateParserService} from '../../services/date-parser.service';
 import {StopSortService} from '../../services/stop-sort.service';
 import {VehicleData} from '../../shared/data/vehicle-data';
 import {LineData} from '../../shared/data/line-data';
-import {dummyDate} from '../../shared/data/dates';
+import {dummyDate, now} from '../../shared/data/dates';
 
 @Component({
   selector: 'app-trip-edit-departure',
@@ -30,7 +30,8 @@ export class TripEditDepartureComponent implements OnInit {
               private stopSortService: StopSortService) { }
 
   ngOnInit(): void {
-    this.time = {hour: 0, minute: 0, second: 0};
+    this.time = {hour: now.getHours(), minute: now.getMinutes(), second: now.getSeconds()};
+    this.date = {year: now.getFullYear(), month: now.getMonth(), day: now.getDate()};
   }
 
   initData(): void {
@@ -50,7 +51,6 @@ export class TripEditDepartureComponent implements OnInit {
   confirm(): void {
     for(const stop of this.data.stops) {
       if(stop.id != this.selectedStop.value.id) {
-        //                   dummy date
         stop.departureTime = dummyDate;
       }
       else {

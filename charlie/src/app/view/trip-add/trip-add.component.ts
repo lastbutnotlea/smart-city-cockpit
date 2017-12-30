@@ -9,7 +9,7 @@ import { TripStopData } from '../../shared/data/trip-stop-data';
 import {DropdownValue} from '../../shared/components/dropdown/dropdown.component';
 import {StopSortService} from '../../services/stop-sort.service';
 import { DateParserService } from '../../services/date-parser.service';
-import {dummyDate} from '../../shared/data/dates';
+import {dummyDate, now} from '../../shared/data/dates';
 
 @Component({
   selector: 'app-trip-add',
@@ -42,6 +42,9 @@ export class TripAddComponent implements OnInit {
     this.selectedVehicle = new DropdownValue(0, 'loading');
     this.selectedLine = new DropdownValue(0, 'loading');
     this.selectedDirection = this.directionItem();
+
+    this.time = {hour: now.getHours(), minute: now.getMinutes(), second: now.getSeconds()};
+    this.date = {year: now.getFullYear(), month: now.getMonth(), day: now.getDate()};
   }
 
   initData(): void {
