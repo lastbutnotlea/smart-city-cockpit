@@ -1,6 +1,8 @@
 package de.team5.super_cute.crocodile.controller;
 
 import de.team5.super_cute.crocodile.data.BaseData;
+import de.team5.super_cute.crocodile.data.LineData;
+import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Trip;
 import de.team5.super_cute.crocodile.util.Helpers;
 import java.time.LocalDateTime;
@@ -24,9 +26,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/trips")
 public class TripController extends BaseController<Trip> {
 
+  private LineData lineData;
+
   @Autowired
-  public TripController(BaseData<Trip> tripData) {
+  public TripController(BaseData<Trip> tripData, LineData lineData) {
     data = tripData;
+    this.lineData = lineData;
   }
 
   @GetMapping
@@ -37,13 +42,16 @@ public class TripController extends BaseController<Trip> {
         .filter(t -> StringUtils.isEmpty(lineId) || t.getLine().getId().equals(lineId))
         .filter(t -> StringUtils.isEmpty(stopId) || t.getStops().get(stopId) != null)
         .filter(t -> StringUtils.isEmpty(vehicleId) || t.getVehicle().getId().equals(vehicleId))
+            .peek(t -> t.getLine().setState(lineData.calculateLineState(t.getLine())))
         .collect(
             Collectors.toList());
   }
 
   @GetMapping("/{id}")
   public Trip getTrip(@PathVariable String id) {
-    return getObjectForId(id);
+    Trip trip = getObjectForId(id);
+    trip.getLine().setState(lineData.calculateLineState(trip.getLine()));
+    return trip;
   }
 
   @PostMapping
