@@ -7,7 +7,7 @@
 #main-view {
   flex-basis: 80%;
   flex-grow: 1;
-  margin: 20px;
+  margin: 20px 20px 20px 50px;
 }
 
 :host {

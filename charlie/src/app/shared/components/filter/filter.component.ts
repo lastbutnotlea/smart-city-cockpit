@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-filter-view',
@@ -7,19 +7,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class FilterComponent {
 
+  @Input()
   filters: [string, boolean, (any) => boolean][] = [];
 
   addFilter(text: string, predicate: (any) => boolean) {
-    this.filters.push([text, false, predicate]);
+    this.filters.push([text, true, predicate]);
   }
 
   getFiltered(list: any[]): any[] {
+    let result = [];
     for (const filter of this.filters) {
       if (filter[1]) {
-        list = list.filter(filter[2]);
+        result.push.apply(result, list.filter(filter[2]));
       }
     }
-    return list;
+    return result;
   }
 
 }

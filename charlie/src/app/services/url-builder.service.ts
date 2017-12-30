@@ -55,4 +55,8 @@ export class UrlBuilderService {
   public getMapConnectionsUrl(): string {
     return this.mapBaseUrl + '/connections';
   }
+
+  public getFilterInfosUrl(): string {
+    return this.networkBaseUrl + '/filter-data';
+  }
 }
