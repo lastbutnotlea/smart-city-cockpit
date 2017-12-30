@@ -104,6 +104,10 @@ export class HttpRoutingService {
     );
   }
 
+  public deleteVehicle(vehicleId: string): Observable<void> {
+    return this.http.delete(this.urlBuilder.getVehicleDetailsUrl(vehicleId));
+  }
+
   public addTrip(trip: TripData): void {
     console.log('ADD TRIP, lineID: ' + trip.line.id + ' vehicleID: ' + trip.vehicle.id);
     this.http.post(this.urlBuilder.getTripsUrl(), trip).subscribe();

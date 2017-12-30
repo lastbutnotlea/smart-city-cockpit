@@ -4,10 +4,12 @@
 
 <div *ngIf="loaded">
   <h3 class="text-center">Vehicle Details</h3>
-  <h6 class="text-center margin-bottom">Vehicle ID: {{vehicle.id}}</h6>
 
   <div class="container">
     <div class="row">
+      <div class="col-sm text-center bg-light p-2 m-1">Vehicle ID</div>
+      <div class="col-sm text-center bg-light p-2 m-1">{{vehicle.id}}</div>
+      <div class="w-100"></div>
       <div class="col-sm text-center bg-light p-2 m-1">Type</div>
       <div class="col-sm text-center bg-light p-2 m-1">{{vehicle.type}}</div>
       <div class="w-100"></div>

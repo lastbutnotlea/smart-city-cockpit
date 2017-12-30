@@ -35,6 +35,9 @@ export class VehicleDetailComponent implements OnInit {
   }
 
   delete(): void {
+    this.http.deleteVehicle(this.vehicle.id).subscribe(
+      () => this.goBack(),
+      () => alert("Could not delete vehicle"));
   }
 
 }
