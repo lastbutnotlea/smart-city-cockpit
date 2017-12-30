@@ -15,5 +15,11 @@
 <app-line-map #inbound></app-line-map>
 
 <app-line-map #outbound></app-line-map>
+<div *ngIf="isLoaded()">
+  <app-embedded-stop-overview [linePositionData]="inboundPositionData" [title]="'Inbound'" [color]="line.color"></app-embedded-stop-overview>
+  <app-embedded-stop-overview [linePositionData]="outboundPositionData" [title]="'Outbound'" [color]="line.color"></app-embedded-stop-overview>
+</div>
 
-<button (click)="goBack()">Back To Network-View</button>
+<div class="no-float big-padding-top">
+  <button class="btn btn-outline-secondary" (click)="goBack()">Back To Network-View</button>
+</div>

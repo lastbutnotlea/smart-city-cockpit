@@ -5,6 +5,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { LineMapComponent } from '../line-map/line-map.component';
 import { GeneralizedComponent } from '../../shared/components/generalized/generalized.component';
+import { LinePositionData } from '../../shared/data/line-position-data';
+import { StopPositionData } from '../../shared/data/stop-position-data';
+import { VehiclePositionData } from '../../shared/data/vehicle-position-data';
 
 @Component({
   selector: 'app-line-detail-view',
@@ -15,6 +18,9 @@ import { GeneralizedComponent } from '../../shared/components/generalized/genera
 export class LineDetailComponent extends GeneralizedComponent implements OnInit {
 
   line: LineData;
+
+  inboundPositionData: LinePositionData = new LinePositionData();
+  outboundPositionData: LinePositionData = new LinePositionData();
 
   @ViewChild('inbound')
   lineMapInbound: LineMapComponent;
@@ -30,8 +36,14 @@ export class LineDetailComponent extends GeneralizedComponent implements OnInit 
 
   ngOnInit(): void {
     this.getLine();
-    // TODO: route to stop-details view
-    // TODO: add live-data (status, vehicle positions)
+    this.inboundPositionData.positionAfterStop = [];
+    this.inboundPositionData.positionAtStop = [];
+    this.inboundPositionData.positionAfterStop
+      .push(new StopPositionData('id1', 'name1', 'FINE',
+        [new VehiclePositionData('v1', 'BUS', 'CRITICAL'),
+          new VehiclePositionData('v4', 'SUBWAY', 'PROBLEMATIC')]));
+    this.inboundPositionData.positionAtStop
+      .push(new StopPositionData('id1', 'name1', 'CRITICAL', []));
   }
 
   getLine(): void {
@@ -54,7 +66,7 @@ export class LineDetailComponent extends GeneralizedComponent implements OnInit 
   }
 
   isLoaded(): boolean {
-    return (this.line != null);
+    return (this.line != null && this.inboundPositionData != null && this.outboundPositionData != null);
   }
 
   // Update line-data

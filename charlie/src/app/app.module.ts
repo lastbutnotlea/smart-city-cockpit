@@ -29,6 +29,7 @@ import { TickerComponent } from './view/ticker/ticker.component';
 import { TickerItemComponent } from './view/ticker-item/ticker-item.component';
 import { StopDetailComponent } from './view/stop-detail/stop-detail.component';
 import { FilterGroupComponent } from './shared/components/filter-group/filter-group.component';
+import { EmbeddedStopOverviewComponent } from './shared/components/embedded-stop-overview/embedded-stop-overview.component';
 
 
 @NgModule({
@@ -49,6 +50,7 @@ import { FilterGroupComponent } from './shared/components/filter-group/filter-gr
     DropdownComponent,
     EmbeddedLineComponent,
     EmbeddedVehicleComponent,
+    EmbeddedStopOverviewComponent,
     ConfirmDeletionComponent,
     TickerComponent,
     TickerItemComponent,

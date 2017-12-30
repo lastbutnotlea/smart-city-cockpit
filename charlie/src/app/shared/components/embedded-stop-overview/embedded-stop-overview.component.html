@@ -2,25 +2,68 @@
 
   <h5 class="text-lg-left">
     <i class="fa fa-map-marker fa-2x float-left small-padding-left text-primary"></i>
-    <label class="padding-emb-box-headline">Stops</label>
+    <label class="padding-emb-box-headline">Stops {{title}}</label>
   </h5>
 
-  <div *ngFor="let data of linePositionData.positionAtStop; let i = index">
-    
-    <p>
-      <i class="fa fa-map-marker float-left small-padding-left text-primary"></i> At {{data.stopName}}
-      <span *ngFor="let vehicle of data.vehicleIds">
-        {{vehicle}}
-      </span>
-    </p>
+    <div *ngFor="let data of linePositionData.positionAtStop; let i = index">
+      <!-- for vehicles at stops -->
+      <p>
+        <!-- stop icon -->
+        <i class="fa fa-map-marker float-left small-padding-left" [style.color]="color"></i>
+        At {{data.stopName}}
+        <!-- status icon -->
+        <span [ngClass]="{'color-fine': data.state === 'FINE',
+                'color-problematic': data.state === 'PROBLEMATIC',
+                'color-critical': data.state === 'CRITICAL' }">
+          <i class="fa fa-exclamation-triangle small-padding-right" aria-hidden="true"></i>
+        </span>
+        <!-- vehicle icons -->
+        <span class="float-right" *ngFor="let vehicle of data.vehiclePositionData">
+          <!-- bus icon if bus -->
+          <span *ngIf="vehicle.type === 'BUS'"
+                [ngClass]="{'color-fine': vehicle.state === 'FINE',
+                'color-problematic': vehicle.state === 'PROBLEMATIC',
+                'color-critical': vehicle.state === 'CRITICAL' }">
+            <i class="fa fa-bus float-left small-padding-left"></i>
+          </span>
+          <!-- subway icon if subway -->
+          <span *ngIf="vehicle.type === 'SUBWAY'"
+                [ngClass]="{'color-fine': vehicle.state === 'FINE',
+                'color-problematic': vehicle.state === 'PROBLEMATIC',
+                'color-critical': vehicle.state === 'CRITICAL' }">
+            <i class="fa fa-subway float-left small-padding-left"></i>
+          </span>
+        </span>
+      </p>
 
-    <p>
-      <i class="fa fa-map-marker float-left small-padding-left text-primary"></i> After {{linePositionData.positionAfterStop[i].stopName}}
-      <span *ngFor="linePositionData.positionAfterStop[i].vehicleIds">
-        {{vehicle}}
-      </span>
-    </p>
-
-  </div>
-
+      <!-- for vehicles between stops -->
+      <p>
+        <!-- stop icon -->
+        <i class="fa fa-map-marker float-left small-padding-left"  [style.color]="color"></i>
+        After {{linePositionData.positionAfterStop[i].stopName}}
+        <!-- status icon -->
+        <span [ngClass]="{'color-fine': linePositionData.positionAfterStop[i].state === 'FINE',
+                'color-problematic': linePositionData.positionAfterStop[i].state === 'PROBLEMATIC',
+                'color-critical': linePositionData.positionAfterStop[i].state === 'CRITICAL' }">
+          <i class="fa fa-exclamation-triangle small-padding-right" aria-hidden="true"></i>
+        </span>
+        <!-- vehicle icons -->
+        <span class="float-right" *ngFor="let vehicle of linePositionData.positionAfterStop[i].vehiclePositionData">
+          <!-- bus icon if bus -->
+          <span *ngIf="vehicle.type === 'BUS'"
+                [ngClass]="{'color-fine': vehicle.state === 'FINE',
+                'color-problematic': vehicle.state === 'PROBLEMATIC',
+                'color-critical': vehicle.state === 'CRITICAL' }">
+            <i class="fa fa-bus float-left small-padding-left"></i>
+          </span>
+          <!-- subway icon if subway -->
+          <span *ngIf="vehicle.type === 'SUBWAY'"
+                [ngClass]="{'color-fine': vehicle.state === 'FINE',
+                'color-problematic': vehicle.state === 'PROBLEMATIC',
+                'color-critical': vehicle.state === 'CRITICAL' }">
+            <i class="fa fa-subway float-left small-padding-left"></i>
+          </span>
+        </span>
+      </p>
+    </div>
 </div>
