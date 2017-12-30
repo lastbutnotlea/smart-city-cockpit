@@ -23,6 +23,8 @@ import {EmbeddedVehicleComponent} from './shared/components/embedded-vehicle/emb
 import { StopDetailComponent } from './view/stop-detail/stop-detail.component';
 import {TickerComponent} from './view/ticker/ticker.component';
 import {TickerItemComponent} from './view/ticker-item/ticker-item.component';
+import {VehicleDetailComponent} from './view/vehicle-detail/vehicle-detail.component';
+import {VehiclesComponent} from './view/vehicles/vehicles.component';
 
 describe('AppComponent', () => {
   beforeEach(async(() => {
@@ -44,6 +46,8 @@ describe('AppComponent', () => {
         EmbeddedVehicleComponent,
         TickerComponent,
         TickerItemComponent,
+        VehiclesComponent,
+        VehicleDetailComponent,
       ],
       imports: [
         BrowserModule,

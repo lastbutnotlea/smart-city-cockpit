@@ -104,7 +104,7 @@ export class HttpRoutingService {
     );
   }
 
-  public deleteVehicle(vehicleId: string): Observable<void> {
+  public deleteVehicle(vehicleId: string): Observable<any> {
     return this.http.delete(this.urlBuilder.getVehicleDetailsUrl(vehicleId));
   }
 
