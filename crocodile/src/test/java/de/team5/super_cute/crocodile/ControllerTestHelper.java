@@ -7,11 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
 import de.team5.super_cute.crocodile.model.IdentifiableObject;
-import de.team5.super_cute.crocodile.util.ColorDeserializer;
-import de.team5.super_cute.crocodile.util.ColorSerializer;
-import java.awt.Color;
 import java.util.List;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
@@ -26,10 +22,6 @@ class ControllerTestHelper<T extends IdentifiableObject> {
   public ControllerTestHelper(MockMvc mockMvc, String baseUri, TypeReference typeReference) {
     this.mockMvc = mockMvc;
     mapper = new ObjectMapper();
-    SimpleModule module = new SimpleModule();
-    module.addSerializer(Color.class, new ColorSerializer());
-    module.addDeserializer(Color.class, new ColorDeserializer());
-    mapper.registerModule(module);
     this.baseUri = baseUri;
     this.typeReference = typeReference;
   }

@@ -66,7 +66,7 @@ public class MapController {
     for (Line l : lineData) {
       ObjectNode line = lines.putObject(l.getName());
       line.put("id", l.getId());
-      line.put("color", "#" + Integer.toHexString(l.getColor().getRGB()).substring(2));
+      line.put("color", l.getHexColor());
       line.put("type", l.getType().toString());
     }
     return lines;
