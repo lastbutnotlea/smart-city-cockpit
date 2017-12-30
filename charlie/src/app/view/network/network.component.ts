@@ -29,7 +29,6 @@ export class NetworkComponent extends GeneralizedComponent implements OnInit {
     // get line data
     this.http.getLines().subscribe( data => {
         this.lines = data;
-        debugger;
         super.ngOnInit();
       },
       err => {

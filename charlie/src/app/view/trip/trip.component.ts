@@ -65,6 +65,12 @@ export class TripComponent extends GeneralizedComponent implements OnInit {
           lineFilter.addFilter(name, trip => trip.line.name === name);
         }
         this.filterGroup.addFilterComponent(lineFilter);
+        // TODO: change this if needed data can be requested from backend
+        let stateFilter = new FilterComponent();
+        stateFilter.addFilter('Fine', trip => trip.vehicle.state === 'FINE');
+        stateFilter.addFilter('Problematic', trip => trip.vehicle.state === 'PROBLEMATIC');
+        stateFilter.addFilter('Critical', trip => trip.vehicle.state === 'CRITICAL');
+        this.filterGroup.addFilterComponent(stateFilter);
       },
       err => {
         console.log('Could not fetch filter data!');
@@ -77,7 +83,6 @@ export class TripComponent extends GeneralizedComponent implements OnInit {
     this.setDataSubscription(
     this.http.getTrips().subscribe( data => {
         this.trips = data;
-        debugger;
         this.subscribeToData();
       },
       err =>

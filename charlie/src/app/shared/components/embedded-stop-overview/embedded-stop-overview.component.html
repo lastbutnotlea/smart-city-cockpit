@@ -12,9 +12,9 @@
         <i class="fa fa-map-marker float-left small-padding-left" [style.color]="color"></i>
         At {{data.stopName}}
         <!-- status icon -->
-        <span [ngClass]="{'color-fine': data.state === 'FINE',
-                'color-problematic': data.state === 'PROBLEMATIC',
-                'color-critical': data.state === 'CRITICAL' }">
+        <span [ngClass]="{'color-fine': data.stopState === 'FINE',
+                'color-problematic': data.stopState === 'PROBLEMATIC',
+                'color-critical': data.stopState === 'CRITICAL' }">
           <i class="fa fa-exclamation-triangle small-padding-right" aria-hidden="true"></i>
         </span>
         <!-- vehicle icons -->
@@ -42,9 +42,9 @@
         <i class="fa fa-map-marker float-left small-padding-left"  [style.color]="color"></i>
         After {{linePositionData.positionAfterStop[i].stopName}}
         <!-- status icon -->
-        <span [ngClass]="{'color-fine': linePositionData.positionAfterStop[i].state === 'FINE',
-                'color-problematic': linePositionData.positionAfterStop[i].state === 'PROBLEMATIC',
-                'color-critical': linePositionData.positionAfterStop[i].state === 'CRITICAL' }">
+        <span [ngClass]="{'color-fine': linePositionData.positionAfterStop[i].stopState === 'FINE',
+                'color-problematic': linePositionData.positionAfterStop[i].stopState === 'PROBLEMATIC',
+                'color-critical': linePositionData.positionAfterStop[i].stopState === 'CRITICAL' }">
           <i class="fa fa-exclamation-triangle small-padding-right" aria-hidden="true"></i>
         </span>
         <!-- vehicle icons -->
