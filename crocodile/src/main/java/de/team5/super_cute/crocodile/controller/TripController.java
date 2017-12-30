@@ -42,9 +42,8 @@ public class TripController extends BaseController<Trip> {
         .filter(t -> StringUtils.isEmpty(lineId) || t.getLine().getId().equals(lineId))
         .filter(t -> StringUtils.isEmpty(stopId) || t.getStops().get(stopId) != null)
         .filter(t -> StringUtils.isEmpty(vehicleId) || t.getVehicle().getId().equals(vehicleId))
-            .peek(t -> t.getLine().setState(lineData.calculateLineState(t.getLine())))
-        .collect(
-            Collectors.toList());
+        .peek(t -> t.getLine().setState(lineData.calculateLineState(t.getLine())))
+        .collect(Collectors.toList());
   }
 
   @GetMapping("/{id}")
