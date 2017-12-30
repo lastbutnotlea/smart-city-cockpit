@@ -5,6 +5,7 @@ import de.team5.super_cute.crocodile.data.LineData;
 import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Trip;
 import de.team5.super_cute.crocodile.util.Helpers;
+import de.team5.super_cute.crocodile.validation.VehicleValidation;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
@@ -27,11 +28,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class TripController extends BaseController<Trip> {
 
   private LineData lineData;
+  private VehicleValidation vehicleValidation;
 
   @Autowired
-  public TripController(BaseData<Trip> tripData, LineData lineData) {
+  public TripController(BaseData<Trip> tripData, LineData lineData, VehicleValidation vehicleValidation) {
     data = tripData;
     this.lineData = lineData;
+    this.vehicleValidation = vehicleValidation;
   }
 
   @GetMapping
@@ -56,6 +59,11 @@ public class TripController extends BaseController<Trip> {
   @PostMapping
   public String addTrip(@RequestBody Trip tripInput) {
     insertCorrectTimesForTrip(tripInput);
+    if(tripInput.getVehicle() != null){
+      if(!vehicleValidation.checkVehicleAvailability(tripInput)){
+        return "Vehicle not available!";
+      }
+    }
     return addObject(tripInput);
   }
 
@@ -67,6 +75,11 @@ public class TripController extends BaseController<Trip> {
   @PutMapping
   public String editTrip(@RequestBody Trip tripInput) {
     insertCorrectTimesForTrip(tripInput);
+    if(tripInput.getVehicle() != null){
+      if(!vehicleValidation.checkVehicleAvailability(tripInput)){
+        return "Vehicle not available!";
+      }
+    }
     return editObject(tripInput);
   }
 
