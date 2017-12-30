@@ -1,7 +1,5 @@
 package de.team5.super_cute.crocodile;
 
-import static de.team5.super_cute.crocodile.model.EState.FINE;
-
 import com.fasterxml.jackson.core.type.TypeReference;
 import de.team5.super_cute.crocodile.data.LineData;
 import de.team5.super_cute.crocodile.data.StopData;
@@ -19,7 +17,6 @@ import java.awt.Color;
 import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import org.junit.Test;
@@ -53,12 +50,12 @@ public class TripControllerTest {
   }
 
   private void initTestObjects() {
-    s1 = new Stop("ApiId1", "Marienplatz", 10, 3.5, 50);
-    s2 = new Stop("ApiId2", "Odeonsplatz", 11, 3.7, 43);
-    s3 = new Stop("ApiId3", "Stachus", 10.2, 2, 61);
-    s4 = new Stop("ApiId4", "Sendlinger Tor", 12.2, 3, 41);
-    v1 = new Vehicle(300, 0, 28, EVehicleType.SUBWAY, "Motorschaden");
-    v2 = new Vehicle(340, 2, 31, EVehicleType.SUBWAY, "Fenster gebrochen");
+    s1 = new Stop("ApiId1", "Marienplatz", 10, 3.5, 50, "dirty");
+    s2 = new Stop("ApiId2", "Odeonsplatz", 11, 3.7, 43, "bench broken");
+    s3 = new Stop("ApiId3", "Stachus", 10.2, 2, 61, "shelter broken");
+    s4 = new Stop("ApiId4", "Sendlinger Tor", 12.2, 3, 41, "escalator not working");
+    v1 = new Vehicle(300, 100, 0, 28, EVehicleType.SUBWAY, "Motorschaden");
+    v2 = new Vehicle(340, 50, 2, 31, EVehicleType.SUBWAY, "Fenster gebrochen");
     l1 = new LineBuilder().name("U6").color(Color.blue).stops(s2, s1, s4).travelTime(0, 2, 5).type(EVehicleType.SUBWAY).build();
     l2 = new LineBuilder().name("S1").color(Color.cyan).stops(s3, s1).travelTime(0, 3).type(EVehicleType.SUBWAY).build();
     ldt1 = LocalDateTime.of(2017, Month.AUGUST, 12, 11, 30);

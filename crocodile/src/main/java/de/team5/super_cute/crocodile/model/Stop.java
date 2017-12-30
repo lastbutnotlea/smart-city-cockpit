@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.team5.super_cute.crocodile.config.LiveDataConfig;
 import de.team5.super_cute.crocodile.util.StateCalculator;
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -37,6 +39,17 @@ public class Stop extends IdentifiableObject implements Serializable, Feedbackab
   }
 
   public Stop(String id, String commonName, double longitude, double latitude, int peopleWaiting,
+      String... defects) {
+    super();
+    setId(id);
+    this.commonName = commonName;
+    this.longitude = longitude;
+    this.latitude = latitude;
+    this.peopleWaiting = peopleWaiting;
+    this.defects = new HashSet<>(Arrays.asList(defects));;
+  }
+
+  public Stop(String id, String commonName, Double longitude, Double latitude, Integer peopleWaiting,
       Set<String> defects) {
     super();
     setId(id);

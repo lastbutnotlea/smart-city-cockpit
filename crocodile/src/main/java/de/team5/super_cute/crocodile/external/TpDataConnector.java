@@ -47,7 +47,7 @@ public class TpDataConnector {
         lines.add(
             new Line(node.get("lineName").asText(), stopsInbound,
                 stopsOutbound, travelTimeInbound, travelTimeOutbound,
-                lineColors.get(node.get("lineName").asText())));
+                lineColors.get(node.get("lineName").asText()), type));
       } catch (RestClientException e) {
         LoggerFactory.getLogger(getClass())
             .error("Error while accessing Transport-API while creating lines: " + e.getMessage());
