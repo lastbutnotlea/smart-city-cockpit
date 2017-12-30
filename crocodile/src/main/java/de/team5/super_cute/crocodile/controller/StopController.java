@@ -1,7 +1,6 @@
 package de.team5.super_cute.crocodile.controller;
 
 import de.team5.super_cute.crocodile.data.BaseData;
-import de.team5.super_cute.crocodile.model.Line;
 import java.util.List;
 
 import de.team5.super_cute.crocodile.model.Stop;
