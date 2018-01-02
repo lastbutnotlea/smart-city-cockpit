@@ -78,7 +78,6 @@ export class LineDetailComponent extends GeneralizedComponent implements OnInit 
     this.http.getVehiclePositionData(this.line.id, true).subscribe(
       data => {
         this.inboundPositionData = data;
-        debugger;
       }, err => {
         console.log('Could not get inbound vehicle position data.');
       }
@@ -86,7 +85,6 @@ export class LineDetailComponent extends GeneralizedComponent implements OnInit 
     this.http.getVehiclePositionData(this.line.id, false).subscribe(
       data => {
         this.outboundPositionData = data;
-        debugger;
       }, err => {
         console.log('Could not get outbound vehicle position data.');
       }
