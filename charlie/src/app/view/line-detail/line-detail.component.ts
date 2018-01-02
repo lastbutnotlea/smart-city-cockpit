@@ -40,11 +40,11 @@ export class LineDetailComponent extends GeneralizedComponent implements OnInit 
 
     // Dummy-Data for positions of vehicles
     // TODO: Replace with data from backend, once available
-    this.inboundPositionData.positionAfterStop
+    this.inboundPositionData.positionAfterStops
       .push(new StopPositionData('id1', 'name1', 'FINE',
         [new VehiclePositionData('v1', 'BUS', 'CRITICAL'),
           new VehiclePositionData('v4', 'SUBWAY', 'PROBLEMATIC')]));
-    this.inboundPositionData.positionAtStop
+    this.inboundPositionData.positionAtStops
       .push(new StopPositionData('id1', 'name1', 'CRITICAL', []));
   }
 
@@ -55,6 +55,7 @@ export class LineDetailComponent extends GeneralizedComponent implements OnInit 
         this.line = line;
         this.lineMapInbound.getLineMap(line, line.stopsInbound);
         this.lineMapOutbound.getLineMap(line, line.stopsOutbound);
+        this.getPositionData();
         // This starts periodical calls for live-data after first data was received
         super.ngOnInit();
       },
@@ -68,7 +69,28 @@ export class LineDetailComponent extends GeneralizedComponent implements OnInit 
   }
 
   isLoaded(): boolean {
-    return (this.line != null && this.inboundPositionData != null && this.outboundPositionData != null);
+    return (this.line != null
+      && this.inboundPositionData.positionAtStops != null
+      && this.outboundPositionData.positionAtStops != null);
+  }
+
+  getPositionData(): void {
+    this.http.getVehiclePositionData(this.line.id, true).subscribe(
+      data => {
+        this.inboundPositionData = data;
+        debugger;
+      }, err => {
+        console.log('Could not get inbound vehicle position data.');
+      }
+    );
+    this.http.getVehiclePositionData(this.line.id, false).subscribe(
+      data => {
+        this.outboundPositionData = data;
+        debugger;
+      }, err => {
+        console.log('Could not get outbound vehicle position data.');
+      }
+    )
   }
 
   // Update line-data
@@ -76,6 +98,7 @@ export class LineDetailComponent extends GeneralizedComponent implements OnInit 
     this.setDataSubscription(
       this.http.getLineDetails(this.line.id).subscribe( data => {
           this.line = data;
+          this.getPositionData();
           this.subscribeToData();
         },
         err =>

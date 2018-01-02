@@ -8,6 +8,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {StopData} from '../shared/data/stop-data';
 import 'rxjs/add/operator/map';
+import { LinePositionData } from '../shared/data/line-position-data';
 
 @Injectable()
 export class HttpRoutingService {
@@ -132,5 +133,9 @@ export class HttpRoutingService {
       pipe(
         tap(data => console.log('Data for filters: ' + data))
     );
+  }
+
+  public getVehiclePositionData(lineData: string, isInbound: boolean): Observable<LinePositionData> {
+    return this.http.get<LinePositionData>(this.urlBuilder.getVehiclePositionDataUrl(lineData, isInbound));
   }
 }
