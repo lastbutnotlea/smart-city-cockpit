@@ -4,10 +4,10 @@ import java.util.ArrayList;
 
 public class InitialSetupConfig {
 
-  public static final int fromHour = 11;
-  public static final int fromMinute = 30;
-  public static final int toHour = 12;
-  public static final int toMinute = 10;
+  public static final int fromHour = 9;
+  public static final int fromMinute = 45;
+  public static final int toHour = 10;
+  public static final int toMinute = 30;
 
   public static final ArrayList<String> lineIds = new ArrayList<String>() {{
     add("10");

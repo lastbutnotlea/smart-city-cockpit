@@ -8,14 +8,16 @@ import de.team5.super_cute.crocodile.model.EVehicleType;
 import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Stop;
 import de.team5.super_cute.crocodile.model.Trip;
-import de.team5.super_cute.crocodile.util.StateCalculator;
 import de.team5.super_cute.crocodile.model.Vehicle;
+import de.team5.super_cute.crocodile.util.StateCalculator;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +28,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/lines")
 public class LineController extends BaseController<Line> {
 
+  private Logger logger = LoggerFactory.getLogger(this.getClass());
+
   private TripData tripData;
 
   @Autowired
@@ -34,16 +38,16 @@ public class LineController extends BaseController<Line> {
     this.tripData = tripData;
   }
 
-  private TripData tripData;
-
   @GetMapping
   public List<Line> getAllLines() {
+    logger.info("Got request for all lines");
     return data.getData().stream().peek(l -> l.setState(calculateLineState(l)))
         .collect(Collectors.toList());
   }
 
   @GetMapping("/{id}")
   public Line getLine(@PathVariable String id) {
+    logger.info("Got request for line with id " + id);
     Line line = getObjectForId(id);
     line.setState(calculateLineState(line));
     return line;
@@ -77,6 +81,7 @@ public class LineController extends BaseController<Line> {
 
   @GetMapping("/filter-data")
   public FilterData getFilterData() {
+    logger.info("Got request for filter data");
     FilterData fd = new FilterData();
     fd.lineNames = data.getData().stream().map(Line::getName).collect(Collectors.toList());
     fd.types = Arrays.stream(EVehicleType.values()).map(EVehicleType::toString)
@@ -86,11 +91,13 @@ public class LineController extends BaseController<Line> {
 
   @GetMapping("/{id}/vehicles/inbound")
   public PositionData getVehiclePositionInbound(@PathVariable String id) {
+    logger.info("Got request for vehicles inbound of line with id " + id);
     return getVehiclePosition(id, true);
   }
 
   @GetMapping("/{id}/vehicles/outbound")
   public PositionData getVehiclePositionOutbound(@PathVariable String id) {
+    logger.info("Got request for vehicles outbound of line with id " + id);
     return getVehiclePosition(id, false);
   }
 
@@ -100,19 +107,35 @@ public class LineController extends BaseController<Line> {
       return null;
     }
     List<PositionStopData> positionAtStopDatas = new ArrayList<>();
+    addAllPositionStopDatas(positionAtStopDatas, line, isInbound);
     List<PositionStopData> positionAfterStopDatas = new ArrayList<>();
+    addAllPositionStopDatas(positionAfterStopDatas, line, isInbound);
+
     LocalDateTime now = LocalDateTime.now();
     List<Trip> trips = tripData.getActiveTripsWithDelay(now).stream()
         .filter(t -> t.isInbound() == isInbound)
         .filter(t -> t.getLine().getId().equals(line.getId()))
         .collect(Collectors.toList());
+
     for (Trip trip : trips) {
       addPositionForTrip(trip, now, positionAtStopDatas, positionAfterStopDatas);
     }
+
     PositionData positionData = new PositionData();
     positionData.positionsAtStops = positionAtStopDatas;
     positionData.positionAfterStops = positionAfterStopDatas;
     return positionData;
+  }
+
+  private void addAllPositionStopDatas(List<PositionStopData> positionStopDatas, Line line, boolean isInbound) {
+    List<Stop> stops = isInbound ? line.getStopsInbound() : line.getStopsOutbound();
+    for (Stop s : stops) {
+      PositionStopData positionStopData = new PositionStopData();
+      positionStopData.stopid = s.getId();
+      positionStopData.stopName = s.getCommonName();
+      positionStopData.vehiclePositionData = new ArrayList<>();
+      positionStopDatas.add(positionStopData);
+    }
   }
 
   private void addPositionForTrip(Trip trip, LocalDateTime now,
@@ -138,8 +161,10 @@ public class LineController extends BaseController<Line> {
 
   private void addPositionAfterStop(Trip trip, List<PositionStopData> positionStopDatas,
       LocalDateTime now) {
-    LocalDateTime timeAtLastStop = trip.getStops().values().stream().sorted()
-        .filter(l -> l.isBefore(now.minusMinutes(trip.getVehicle().getDelay()))).findFirst()
+    LocalDateTime timeAtLastStop = trip.getStops().values().stream()
+        .sorted()
+        .filter(l -> l.isBefore(now.minusMinutes(trip.getVehicle().getDelay())))
+        .findFirst()
         .orElse(null);
     if (timeAtLastStop == null) {
       throw new IllegalArgumentException("Time for determining Vehicle Positions between stops was too small");
@@ -148,31 +173,14 @@ public class LineController extends BaseController<Line> {
   }
 
   private void addPositionAtStop(Trip trip, List<PositionStopData> positionStopDatas, LocalDateTime stopTime) {
-    PositionStopData positionStopData = positionStopDatas.stream()
+    positionStopDatas.stream()
         .filter(p -> p.stopid.equals(trip.getStops().entrySet().stream()
             .filter(e -> e.getValue().isEqual(stopTime))
             .map(Entry::getKey)
             .findAny()
             .orElse("")))
         .findAny()
-        .orElse(null);
-    if (positionStopData == null) {
-      positionStopData = addPositionStopData(trip, positionStopDatas, stopTime);
-    }
-    positionStopData.vehiclePositionData.add(generateVehiclePositionData(trip));
-  }
-
-  private PositionStopData addPositionStopData(Trip trip, List<PositionStopData> positionStopDatas, LocalDateTime stopTime) {
-    PositionStopData positionStopData = new PositionStopData();
-    positionStopData.stopid = trip.getStops().entrySet().stream()
-        .filter(e -> e.getValue().isEqual(stopTime))
-        .map(Entry::getKey)
-        .findAny()
-        .orElse("");
-    positionStopData.stopName = trip.getTripStopForId(positionStopData.stopid).getCommonName();
-    positionStopData.vehiclePositionData = new ArrayList<>();
-    positionStopDatas.add(positionStopData);
-    return positionStopData;
+        .ifPresent(psd ->   psd.vehiclePositionData.add(generateVehiclePositionData(trip)));
   }
 
   private VehiclePositionData generateVehiclePositionData(Trip trip) {
