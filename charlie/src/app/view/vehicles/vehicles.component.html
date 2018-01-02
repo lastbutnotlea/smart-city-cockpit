@@ -1,0 +1,37 @@
+<h3 class="text-center">{{title}}</h3>
+
+<div class="d-flex">
+  <app-filter-group-view></app-filter-group-view>
+
+  <div class="container d-flex flex-column">
+    <div class="row flex-nowrap" id="table-head">
+      <div class="col p-2 m-1 bg-secondary">VehicleId</div>
+      <div class="col p-2 m-1 bg-secondary">Capacity</div>
+      <div class="col p-2 m-1 bg-secondary">Current Delay</div>
+      <div class="col p-2 m-1 bg-secondary">Temperature</div>
+      <div class="col p-2 m-1 bg-secondary">Defects</div>
+      <div class="col p-2 m-1 bg-secondary">Type</div>
+    </div>
+    <div class="row" style="overflow-y: auto; height: 100%">
+      <ng-container *ngFor="let vehicle of filterGroup.getFiltered(vehicles)">
+        <div class="col p-2 m-1 bg-light">
+          <a routerLink="{{vehicle.id}}">{{ vehicle.id }}</a>
+        </div>
+        <div class="col p-2 m-1 bg-light">{{ vehicle.capacity }}</div>
+        <div class="col p-2 m-1 bg-light">{{ vehicle.delay }}</div>
+        <div class="col p-2 m-1 bg-light">{{ vehicle.temperature }}</div>
+        <div class="col p-2 m-1 bg-light">{{ vehicle.defects }}</div>
+        <div class="col p-2 m-1 bg-light">{{ vehicle.type }}</div>
+        <div class="w-100"></div>
+      </ng-container>
+
+      <div *ngIf="!loaded">
+        <h3>Loading...</h3>
+      </div>
+    </div>
+
+    <div class="no-float m-3">
+      <button class="btn btn-outline-secondary" (click)="add()">Add new vehicle</button>
+    </div>
+  </div>
+</div>
