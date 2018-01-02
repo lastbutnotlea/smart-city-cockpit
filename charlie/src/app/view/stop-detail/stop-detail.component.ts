@@ -14,7 +14,6 @@ import { GeneralizedComponent } from '../../shared/components/generalized/genera
 })
 
 export class StopDetailComponent extends GeneralizedComponent implements OnInit {
-
   stop: StopData;
   title: string = "Stop Details";
 

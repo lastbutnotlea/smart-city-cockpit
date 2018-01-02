@@ -88,6 +88,5 @@ export class TripComponent extends GeneralizedComponent implements OnInit {
       err =>
         console.log('Could not fetch new line-data.')
     ));
-
   }
 }

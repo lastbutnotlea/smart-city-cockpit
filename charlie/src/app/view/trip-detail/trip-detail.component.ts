@@ -75,8 +75,19 @@ export class TripDetailComponent extends GeneralizedComponent implements OnInit 
   deleteTrip(event) : void {
     super.ngOnDestroy();
     this.http.deleteTrip(this.trip.id).subscribe(
-      data =>this.location.back(),
-      err => this.location.back()
+      data => this.location.back(),
+      err => {
+        // Currently, when deleting a trip, we get a http-response with http-code 200 (ok)
+        // This means deleting the trip was successful
+        // http-response is interpreted as error, therefore the message must be checked here, not in data
+        // TODO: http-response should not always be considered an error / backend should return different value?
+        if(err.status === 200){
+          this.location.back();
+        } else {
+          console.log('Could not delete trip!');
+          this.refreshData();
+        }
+      }
     );
   }
 
@@ -95,7 +106,6 @@ export class TripDetailComponent extends GeneralizedComponent implements OnInit 
         err =>
           console.log('Could not fetch new line-data.')
       ));
-
   }
 
 }

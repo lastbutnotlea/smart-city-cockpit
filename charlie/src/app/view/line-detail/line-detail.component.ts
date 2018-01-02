@@ -37,8 +37,9 @@ export class LineDetailComponent extends GeneralizedComponent implements OnInit 
 
   ngOnInit(): void {
     this.getLine();
-    this.inboundPositionData.positionAfterStop = [];
-    this.inboundPositionData.positionAtStop = [];
+
+    // Dummy-Data for positions of vehicles
+    // TODO: Replace with data from backend, once available
     this.inboundPositionData.positionAfterStop
       .push(new StopPositionData('id1', 'name1', 'FINE',
         [new VehiclePositionData('v1', 'BUS', 'CRITICAL'),
