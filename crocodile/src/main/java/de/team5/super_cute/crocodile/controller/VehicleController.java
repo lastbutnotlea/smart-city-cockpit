@@ -55,5 +55,4 @@ public class VehicleController extends BaseController<Vehicle> {
     logger.info("Got Request to edit a vehicle to " + input);
     return editObject(input);
   }
-
 }
