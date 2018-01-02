@@ -73,9 +73,11 @@ export class TripDetailComponent extends GeneralizedComponent implements OnInit 
   }
 
   deleteTrip(event) : void {
+    super.ngOnDestroy();
     this.http.deleteTrip(this.trip.id).subscribe(
-      data => this.location.back(),
-      err => console.log("Could not delete trip."));
+      data =>this.location.back(),
+      err => this.location.back()
+    );
   }
 
   isLoaded(): boolean {
