@@ -10,7 +10,6 @@ import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Stop;
 import de.team5.super_cute.crocodile.model.Trip;
 import de.team5.super_cute.crocodile.model.Vehicle;
-import de.team5.super_cute.crocodile.util.StateCalculator;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,7 +41,7 @@ public class LineController extends BaseController<Line> {
   @GetMapping
   public List<Line> getAllLines() {
     logger.info("Got request for all lines");
-    return data.getData().stream().peek(l -> l.setState(calculateLineState(l)))
+    return data.getData().stream().peek(l -> l.setState(((LineData) data).calculateLineState(l)))
         .collect(Collectors.toList());
   }
 
