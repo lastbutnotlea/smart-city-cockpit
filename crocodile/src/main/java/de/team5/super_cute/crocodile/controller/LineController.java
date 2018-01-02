@@ -136,8 +136,8 @@ public class LineController extends BaseController<Line> {
   private void addPositionAfterStop(Trip trip, List<PositionStopData> positionStopDatas,
       LocalDateTime now) {
     LocalDateTime timeAtLastStop = trip.getStops().values().stream()
-        .sorted()
         .filter(l -> l.isBefore(now.minusMinutes(trip.getVehicle().getDelay())))
+        .sorted((l, l0) -> l0.compareTo(l))
         .findFirst()
         .orElse(null);
     if (timeAtLastStop == null) {
@@ -149,7 +149,7 @@ public class LineController extends BaseController<Line> {
   private void addPositionAtStop(Trip trip, List<PositionStopData> positionStopDatas, LocalDateTime stopTime) {
     positionStopDatas.stream()
         .filter(p -> p.stopid.equals(trip.getStops().entrySet().stream()
-            .filter(e -> e.getValue().isEqual(stopTime))
+            .filter(e -> e.getValue().withSecond(0).withNano(0).isEqual(stopTime.withSecond(0).withNano(0)))
             .map(Entry::getKey)
             .findAny()
             .orElse("")))

@@ -46,12 +46,12 @@ public class TripData extends BaseData<Trip> {
     return getData().stream()
         .filter(t -> t.getStops().values().stream()
                 .min(LocalDateTime::compareTo)
-                .orElse(time.plusDays(1))
-                .isBefore(time.minusMinutes(t.getVehicle().getDelay())))
+                .orElse(time.plusDays(1)).withSecond(0).withNano(0)
+                .isBefore(time.minusMinutes(t.getVehicle().getDelay()).withSecond(0).withNano(1)))
         .filter(t -> t.getStops().values().stream()
                 .max(LocalDateTime::compareTo)
-                .orElse(time.minusDays(1))
-                .isAfter(time.minusMinutes(t.getVehicle().getDelay())))
+                .orElse(time.minusDays(1)).withSecond(0).withNano(1)
+                .isAfter(time.minusMinutes(t.getVehicle().getDelay()).withSecond(0).withNano(0)))
         .collect(Collectors.toList());
   }
 
