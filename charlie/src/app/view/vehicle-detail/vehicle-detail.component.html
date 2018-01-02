@@ -1,0 +1,38 @@
+<div *ngIf="!loaded">
+  <h3>Loading...</h3>
+</div>
+
+<div *ngIf="loaded">
+  <h3 class="text-center">Vehicle Details</h3>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-sm text-center bg-light p-2 m-1">Vehicle ID</div>
+      <div class="col-sm text-center bg-light p-2 m-1">{{vehicle.id}}</div>
+      <div class="w-100"></div>
+      <div class="col-sm text-center bg-light p-2 m-1">Type</div>
+      <div class="col-sm text-center bg-light p-2 m-1">{{vehicle.type}}</div>
+      <div class="w-100"></div>
+      <div class="col-sm text-center bg-light p-2 m-1">Capacity</div>
+      <div class="col-sm text-center bg-light p-2 m-1">{{vehicle.capacity}}</div>
+      <div class="w-100"></div>
+      <div class="col-sm text-center bg-light p-2 m-1">Delay</div>
+      <div class="col-sm text-center bg-light p-2 m-1">{{vehicle.delay}}</div>
+      <div class="w-100"></div>
+      <div class="col-sm text-center bg-light p-2 m-1">Temperature</div>
+      <div class="col-sm text-center bg-light p-2 m-1">{{vehicle.temperature}}</div>
+      <div class="w-100"></div>
+      <div class="col-sm text-center bg-light p-2 m-1">Defects</div>
+      <div class="col-sm text-center bg-light p-2 m-1">
+        <div *ngFor="let defect of defects">
+          {{defect}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="no-float big-padding-top">
+    <button class="btn btn-outline-primary" (click)="delete()">Delete</button>
+    <button class="btn btn-outline-secondary" (click)="goBack()">Back</button>
+  </div>
+</div>

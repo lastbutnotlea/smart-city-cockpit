@@ -28,7 +28,7 @@ import org.hibernate.annotations.Proxy;
 @Entity
 @Table(name = "vehicle")
 @Proxy(lazy = false)
-public class Vehicle extends IdentifiableObject implements Serializable, Feedbackable, Stateable {
+public class Vehicle extends IdentifiableObject implements Serializable, Feedbackable, Stateable, TickerItemable {
 
   @Column
   private Integer capacity;
