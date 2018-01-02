@@ -96,7 +96,7 @@ public class LineController extends BaseController<Line> {
     }
 
     PositionData positionData = new PositionData();
-    positionData.positionsAtStops = positionAtStopDatas;
+    positionData.positionAtStops = positionAtStopDatas;
     positionData.positionAfterStops = positionAfterStopDatas;
     return positionData;
   }
@@ -105,8 +105,9 @@ public class LineController extends BaseController<Line> {
     List<Stop> stops = isInbound ? line.getStopsInbound() : line.getStopsOutbound();
     for (Stop s : stops) {
       PositionStopData positionStopData = new PositionStopData();
-      positionStopData.stopid = s.getId();
+      positionStopData.stopId = s.getId();
       positionStopData.stopName = s.getCommonName();
+      positionStopData.stopState = s.getState();
       positionStopData.vehiclePositionData = new ArrayList<>();
       positionStopDatas.add(positionStopData);
     }
@@ -148,7 +149,7 @@ public class LineController extends BaseController<Line> {
 
   private void addPositionAtStop(Trip trip, List<PositionStopData> positionStopDatas, LocalDateTime stopTime) {
     positionStopDatas.stream()
-        .filter(p -> p.stopid.equals(trip.getStops().entrySet().stream()
+        .filter(p -> p.stopId.equals(trip.getStops().entrySet().stream()
             .filter(e -> e.getValue().withSecond(0).withNano(0).isEqual(stopTime.withSecond(0).withNano(0)))
             .map(Entry::getKey)
             .findAny()
@@ -176,7 +177,7 @@ public class LineController extends BaseController<Line> {
   private class PositionStopData {
 
     @JsonProperty
-    String stopid;
+    String stopId;
     @JsonProperty
     String stopName;
     @JsonProperty
@@ -198,7 +199,7 @@ public class LineController extends BaseController<Line> {
   private class PositionData {
 
     @JsonProperty
-    List<PositionStopData> positionsAtStops;
+    List<PositionStopData> positionAtStops;
     @JsonProperty
     List<PositionStopData> positionAfterStops;
   }
