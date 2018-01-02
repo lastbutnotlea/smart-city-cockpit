@@ -37,3 +37,6 @@ package-lock.json
 # System Files
 .DS_Store
 Thumbs.db
+
+# git merge files
+*.orig

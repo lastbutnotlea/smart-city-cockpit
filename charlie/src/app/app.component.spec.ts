@@ -28,6 +28,8 @@ import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import { StopDetailComponent } from './view/stop-detail/stop-detail.component';
 import {TickerComponent} from './view/ticker/ticker.component';
 import {TickerItemComponent} from './view/ticker-item/ticker-item.component';
+import {VehicleDetailComponent} from './view/vehicle-detail/vehicle-detail.component';
+import {VehiclesComponent} from './view/vehicles/vehicles.component';
 import { FilterGroupComponent } from './shared/components/filter-group/filter-group.component';
 
 describe('AppComponent', () => {
@@ -53,12 +55,14 @@ describe('AppComponent', () => {
         ConfirmDeletionComponent,
         TickerComponent,
         TickerItemComponent,
+        VehiclesComponent,
+        VehicleDetailComponent,
       ],
       imports: [
         BrowserModule,
         HttpClientModule,
         AppRoutingModule,
-        FormsModule
+        FormsModule,
       ],
       providers: [
         UrlBuilderService,
