@@ -48,10 +48,10 @@ public class NetworkDataBuilder {
 
   public NetworkDataBuilder addLinesWithStops(Line... lines) {
     for (Line l : lines) {
-      for (Stop s : l.getStopsInbound()){
+      for (Stop s : l.getStopsInbound()) {
         stopData.addObject(s);
       }
-      for (Stop s : l.getStopsOutbound()){
+      for (Stop s : l.getStopsOutbound()) {
         stopData.addObject(s);
       }
       lineData.addObject(l);
@@ -68,30 +68,32 @@ public class NetworkDataBuilder {
 
   /**
    * Adds simple trips that go along the whole line.
-   * @param vehicle
-   * @param line
-   * @return
    */
-  public NetworkDataBuilder addTrip(Vehicle vehicle, Line line, LocalDateTime startTime, boolean inbound) {
+  public NetworkDataBuilder addTrip(Vehicle vehicle, Line line, LocalDateTime startTime,
+      boolean inbound) {
     Trip trip = assembleWholeLineTrip(vehicle, line, startTime, inbound);
     tripData.addObject(trip);
     return this;
   }
 
-  public static Trip assembleWholeLineTrip(Vehicle vehicle, Line line, LocalDateTime startTime, boolean inbound) {
+  public static Trip assembleWholeLineTrip(Vehicle vehicle, Line line, LocalDateTime startTime,
+      boolean inbound) {
     Trip trip = new Trip(vehicle, line, null, inbound);
     Map<String, LocalDateTime> stops = new HashMap<>();
     if (inbound) {
-      addStopsForOneDirection(stops, line.getStopsInbound(), line.getTravelTimeInbound(), startTime);
+      addStopsForOneDirection(stops, line.getStopsInbound(), line.getTravelTimeInbound(),
+          startTime);
     } else {
-      addStopsForOneDirection(stops, line.getStopsOutbound(), line.getTravelTimeOutbound(), startTime);
+      addStopsForOneDirection(stops, line.getStopsOutbound(), line.getTravelTimeOutbound(),
+          startTime);
     }
     trip.setStops(stops);
     return trip;
   }
 
   @SuppressWarnings("UnnecessaryLocalVariable")
-  private static void addStopsForOneDirection(Map<String, LocalDateTime> tripStops, List<Stop> lineStops, Map<String, Integer> travelTime, LocalDateTime startTime) {
+  private static void addStopsForOneDirection(Map<String, LocalDateTime> tripStops,
+      List<Stop> lineStops, Map<String, Integer> travelTime, LocalDateTime startTime) {
     for (Stop currentStop : lineStops) {
       LocalDateTime currentStopTime = startTime;
       currentStopTime = currentStopTime.plusMinutes(travelTime.get(currentStop.getId()));
@@ -99,5 +101,6 @@ public class NetworkDataBuilder {
     }
   }
 
-  public void build() {}
+  public void build() {
+  }
 }

@@ -105,12 +105,13 @@ export class TripAddComponent implements OnInit {
     this.addDataToSelected();
     console.log(this.selected);
     this.activeModal.close('Close click');
-    // TODO: addTrip should return id of added trip (id is generated in backend)
-    // after receiving this id, the trip can be used to get updated data from backend
     this.http.addTrip(this.selected).subscribe(
       data => {
+        debugger;
+      },
+      /*data => {
         // get trips to refresh the trip detail data in trip detail view
-        this.http.getTripDetails(this.selected.id).subscribe(
+        this.http.getTripDetails(data.id).subscribe(
           trip => {
             // copy new data into data object
             this.selected.line = Object.assign(new LineData(), trip.line);
@@ -121,12 +122,26 @@ export class TripAddComponent implements OnInit {
             }
             this.selected.stops = this.stopSortService.sortStops(this.selected.stops);
           },
-          err => console.log('Could not fetch trip data!')
+          err => {
+            console.log('Could not fetch trip data!');
+          }
         );
-      },
-      err => console.log('Could not edit trip.')
+      },*/
+      // Currently, we get a http-response here that is interpreted as an error
+      // (maybe parsing the response does not work for some reason)
+      // The response should contain the http-code 200 (ok) if adding the trip was successful
+      // TODO: these messages should not be interpreted as errors!
+      err => {
+        debugger;
+        if(err.status === 200){
+          console.log('Added trip.');
+        } else {
+          console.log('Could not edit trip.');
+        }
+      }
     );
   }
+
 
   isChecked(stop: StopData): boolean {
     // returns true if selected.stops contains one object with the id of stop
