@@ -4,14 +4,26 @@ import static de.team5.super_cute.crocodile.config.LiveDataConfig.CREATE_STOP_DE
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.CREATE_VEHICLE_DEFECT_PERCENTAGE;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.DEFECT_FEEDBACK_PERCENTAGE;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.DELAY;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.DELAY_CHANGE_AMPLITUDE;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.DELAY_MAX;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.DELAY_MIN;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.LOAD;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.LOAD_CHANGE_AMPLITUDE;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.LOAD_MAX_FACTOR;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.LOAD_MIN;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.PEOPLE_WAITING;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.PEOPLE_WAITING_CHANGE_AMPLITUDE;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.PEOPLE_WAITING_MAX;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.PEOPLE_WAITING_MIN;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.REMOVE_STOP_DEFECT_PERCENTAGE;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.REMOVE_VEHICLE_DEFECT_PERCENTAGE;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.STOP_DEFECTS;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.STOP_DEFECTS_SEVERITY;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.STOP_DEFECT_FEEDBACK;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.TEMPERATURE;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.TEMPERATURE_CHANGE_AMPLITUDE;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.TEMPERATURE_MAX;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.TEMPERATURE_MIN;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.VALUE_FEEDBACK;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.VALUE_FEEDBACK_PERCENTAGE;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.VEHICLE_DEFECTS;
@@ -25,15 +37,18 @@ import static org.apache.commons.lang3.math.NumberUtils.min;
 
 import de.team5.super_cute.crocodile.data.FeedbackData;
 import de.team5.super_cute.crocodile.data.StopData;
+import de.team5.super_cute.crocodile.data.TripData;
 import de.team5.super_cute.crocodile.data.VehicleData;
-import de.team5.super_cute.crocodile.model.EFeedbackType;
 import de.team5.super_cute.crocodile.model.EState;
 import de.team5.super_cute.crocodile.model.Feedback;
 import de.team5.super_cute.crocodile.model.Feedbackable;
 import de.team5.super_cute.crocodile.model.Stop;
+import de.team5.super_cute.crocodile.model.Trip;
 import de.team5.super_cute.crocodile.model.Vehicle;
+import de.team5.super_cute.crocodile.service.VehiclePositionService;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.Random;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,6 +64,10 @@ public class LiveDataGenerator {
   private VehicleData vehicleData;
   @Autowired
   private FeedbackData feedbackData;
+  @Autowired
+  private TripData tripData;
+  @Autowired
+  private VehiclePositionService vehiclePositionService;
 
   @Scheduled(fixedDelay = 10000)
   public void generateLiveData() {
@@ -69,8 +88,12 @@ public class LiveDataGenerator {
   private void generateLiveDataForStop(Stop stop) {
     Random r = new Random(System.currentTimeMillis());
     //increase or decrease people waiting by 0-5%
-    stop.setPeopleWaiting(max(min(stop.getPeopleWaiting() + (r.nextInt(300) - 150), 1000), 0));
-    generateValueFeedback(stop, PEOPLE_WAITING);
+    if (shouldIChangeThisValue(PEOPLE_WAITING, stop)) {
+      stop.setPeopleWaiting(
+          getNewValue(stop.getPeopleWaiting(), PEOPLE_WAITING_CHANGE_AMPLITUDE, PEOPLE_WAITING_MIN,
+              PEOPLE_WAITING_MAX));
+      generateValueFeedback(stop, PEOPLE_WAITING);
+    }
     removeDefect(stop, true);
     String defect = generateDefect(stop, true);
     if (defect != null) {
@@ -81,20 +104,60 @@ public class LiveDataGenerator {
 
   private void generateLiveDataForVehicle(Vehicle vehicle) {
     Random r = new Random(System.currentTimeMillis());
-    //increase or decrease values by 0-5%
-    vehicle.setLoad(
-        max(min((int) (vehicle.getLoad() + (r.nextInt(50) - 25)), vehicle.getCapacity() * 2), 0));
-    generateValueFeedback(vehicle, LOAD);
-    vehicle.setTemperature(max(min((int) (vehicle.getTemperature() + (r.nextInt(10) - 5)), 40), 5));
-    generateValueFeedback(vehicle, TEMPERATURE);
-    vehicle.setDelay(max(min((int) (vehicle.getDelay() + (r.nextInt(10) - 5)), 60), -5));
-    generateValueFeedback(vehicle, DELAY);
+    if (shouldIChangeThisValue(LOAD, vehicle)) {
+      vehicle.setLoad(getNewValue(vehicle.getLoad(), LOAD_CHANGE_AMPLITUDE, LOAD_MIN,
+          vehicle.getCapacity() * LOAD_MAX_FACTOR));
+      generateValueFeedback(vehicle, LOAD);
+    }
+    if (shouldIChangeThisValue(TEMPERATURE, vehicle)) {
+      vehicle.setTemperature(
+          getNewValue(vehicle.getTemperature(), TEMPERATURE_CHANGE_AMPLITUDE, TEMPERATURE_MIN,
+              TEMPERATURE_MAX));
+      generateValueFeedback(vehicle, TEMPERATURE);
+    }
+    if (shouldIChangeThisValue(DELAY, vehicle)) {
+      vehicle
+          .setDelay(getNewValue(vehicle.getDelay(), DELAY_CHANGE_AMPLITUDE, DELAY_MIN, DELAY_MAX));
+      generateValueFeedback(vehicle, DELAY);
+    }
     removeDefect(vehicle, false);
     String defect = generateDefect(vehicle, false);
     if (defect != null) {
       vehicle.addDefect(defect);
     }
     vehicleData.editObject(vehicle);
+  }
+
+  private int getNewValue(int oldValue, int changeAmplitude, int min, int max) {
+    Random r = new Random(System.currentTimeMillis());
+    return max(min(oldValue + (r.nextInt(changeAmplitude * 2) - changeAmplitude), max), min);
+  }
+
+  private boolean shouldIChangeThisValue(String fieldName, Stop stop) {
+    if (fieldName.equals(PEOPLE_WAITING)) {
+      return true; // the number of waiters at a stop can always change
+    } else {
+      throw new IllegalArgumentException(
+          "The field " + fieldName + " is not a field in the class Stop.");
+    }
+  }
+
+  private boolean shouldIChangeThisValue(String fieldName, Vehicle vehicle) {
+    switch (fieldName) {
+      case LOAD:
+        // only change load if vehicle is currently at a stop
+        LocalDateTime now = LocalDateTime.now();
+        Trip currentTrip = tripData.getCurrentTripOfVehicle(vehicle, now);
+        Entry<String, Boolean> vehicleAtStop = vehiclePositionService
+            .getStopForGivenTime(vehicle, currentTrip, now);
+        return vehicleAtStop.getValue();
+      case TEMPERATURE:
+      case DELAY:
+        return true;
+      default:
+        throw new IllegalArgumentException(
+            "The field " + fieldName + " is not a field in the class Vehicle.");
+    }
   }
 
   private String generateDefect(Feedbackable feedbackable, boolean forStop) {
@@ -138,38 +201,33 @@ public class LiveDataGenerator {
     }
   }
 
-  private void generateValueFeedback(Feedbackable feedbackable, int fieldName) {
+  private void generateValueFeedback(Feedbackable feedbackable, String fieldName) {
     Random r = new Random(System.currentTimeMillis());
     if (r.nextInt(99) + 1 <= VALUE_FEEDBACK_PERCENTAGE) {
-      EState rating;
+      EState rating = EState.FINE;
       switch (fieldName) {
         case (PEOPLE_WAITING):
           rating = getState(((Stop) feedbackable).getPeopleWaitingSeverity());
-          feedbackData
-              .addObject(getValueFeedbackForField(feedbackable, PEOPLE_WAITING, rating, r));
           break;
         case (LOAD):
           rating = getState(((Vehicle) feedbackable).getLoadSeverity());
-          feedbackData.addObject(getValueFeedbackForField(feedbackable, LOAD, rating, r));
           break;
         case (TEMPERATURE):
           rating = getState(((Vehicle) feedbackable).getTemperatureSeverity());
-          feedbackData.addObject(getValueFeedbackForField(feedbackable, TEMPERATURE, rating, r));
           break;
         case (DELAY):
           rating = getState(((Vehicle) feedbackable).getDelaySeverity());
-          feedbackData.addObject(getValueFeedbackForField(feedbackable, DELAY, rating, r));
           break;
       }
+      feedbackData.addObject(getValueFeedbackForField(feedbackable, fieldName, rating, r));
     }
   }
 
-  private Feedback getValueFeedbackForField(Feedbackable objective, int fieldname, EState rating,
+  private Feedback getValueFeedbackForField(Feedbackable objective, String fieldname, EState rating,
       Random random) {
     String message = VALUE_FEEDBACK.get(fieldname).get(rating.ordinal())
         .get(random.nextInt(VALUE_FEEDBACK.get(fieldname).get(rating.ordinal()).size() - 1));
-    EFeedbackType feedbackType = VEHICLE_FEEDBACK;
-    return new Feedback(message, LocalDateTime.now(), objective, feedbackType, rating);
+    return new Feedback(message, LocalDateTime.now(), objective, VEHICLE_FEEDBACK, rating);
   }
 }
 

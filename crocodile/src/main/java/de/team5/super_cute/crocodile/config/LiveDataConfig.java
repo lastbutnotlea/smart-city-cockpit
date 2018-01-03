@@ -42,10 +42,29 @@ public class LiveDataConfig {
   public static final int TEMPERATURE_LOWER_LIMIT_CRITICAL = 14;
   public static final int TEMPERATURE_UPPER_LIMIT_CRITICAl = 36;
 
-  public static final int PEOPLE_WAITING = 10;
-  public static final int LOAD = 20;
-  public static final int TEMPERATURE = 21;
-  public static final int DELAY = 22;
+  public static final String PEOPLE_WAITING = "peopleWaiting";
+  public static final int PEOPLE_WAITING_INITIAL = 10;
+  public static final int PEOPLE_WAITING_MIN = 0;
+  public static final int PEOPLE_WAITING_MAX = 1000;
+  public static final int PEOPLE_WAITING_CHANGE_AMPLITUDE = 150;
+  public static final String LOAD = "load";
+  public static final int LOAD_INITIAL = 20;
+  public static final int LOAD_MIN = 0;
+  public static final int LOAD_MAX_FACTOR = 2;
+  public static final int LOAD_CHANGE_AMPLITUDE = 25;
+  public static final String TEMPERATURE = "temperature";
+  public static final int TEMPERATURE_INITIAL = 21;
+  public static final int TEMPERATURE_MIN = 5;
+  public static final int TEMPERATURE_MAX = 40;
+  public static final int TEMPERATURE_CHANGE_AMPLITUDE = 1;
+  /**
+   * The initial delay (in seconds).
+   */
+  public static final String DELAY = "delay";
+  public static final int DELAY_INITIAL = 0;
+  public static final int DELAY_MIN = -5 * 60;
+  public static final int DELAY_MAX = 60 * 60;
+  public static final int DELAY_CHANGE_AMPLITUDE = 60 * 60;
 
   public static final List<String> STOP_DEFECTS = new ArrayList<String>() {{
     add(STOP_DIRTY);
@@ -161,7 +180,7 @@ public class LiveDataConfig {
     }});
   }};
 
-  public static final Map<Integer, List<List<String>>> VALUE_FEEDBACK = new HashMap<Integer, List<List<String>>>() {{
+  public static final Map<String, List<List<String>>> VALUE_FEEDBACK = new HashMap<String, List<List<String>>>() {{
     put(PEOPLE_WAITING, new ArrayList<List<String>>() {{
       //messages for low peopleWaiting
       add(new ArrayList<String>() {{
