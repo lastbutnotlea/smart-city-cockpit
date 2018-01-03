@@ -2,7 +2,6 @@ package de.team5.super_cute.crocodile.controller;
 
 import de.team5.super_cute.crocodile.data.BaseData;
 import de.team5.super_cute.crocodile.data.LineData;
-import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Trip;
 import de.team5.super_cute.crocodile.util.Helpers;
 import de.team5.super_cute.crocodile.validation.VehicleValidation;
@@ -100,7 +99,7 @@ public class TripController extends BaseController<Trip> {
 
     // Find offset from first stop to line start
     Map<String, Integer> travelTime =
-        tripInput.isInbound() ? tripInput.getLine().getTravelTimeInbound()
+        tripInput.getIsInbound() ? tripInput.getLine().getTravelTimeInbound()
             : tripInput.getLine().getTravelTimeOutbound();
 
     int tripToLineOffset = travelTime.get(firstStopIdOfTrip);
