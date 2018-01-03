@@ -44,9 +44,9 @@ export class TripAddComponent implements OnInit {
     this.selectedDirection = this.directionItem();
 
     this.time = {hour: now.getHours(), minute: now.getMinutes(), second: now.getSeconds()};
-    this.date = {year: now.getFullYear(), month: now.getMonth(), day: now.getDate()};
-    this.updateTime();
+    this.date = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
     this.updateDate();
+    this.updateTime();
   }
 
   initData(): void {
@@ -107,7 +107,7 @@ export class TripAddComponent implements OnInit {
     this.activeModal.close('Close click');
     this.http.addTrip(this.selected).subscribe(
       data => {
-        debugger;
+        //debugger;
       },
       /*data => {
         // get trips to refresh the trip detail data in trip detail view
@@ -132,11 +132,11 @@ export class TripAddComponent implements OnInit {
       // The response should contain the http-code 200 (ok) if adding the trip was successful
       // TODO: these messages should not be interpreted as errors!
       err => {
-        debugger;
+       // debugger;
         if(err.status === 200){
           console.log('Added trip.');
         } else {
-          console.log('Could not edit trip.');
+          console.log('Could not add trip.');
         }
       }
     );
@@ -186,7 +186,7 @@ export class TripAddComponent implements OnInit {
   }
 
   updateDate(): void {
-   // this.addDataToSelected();
+    // this.addDataToSelected();
     this.selectedTime = this.dateParser.parseDate(
       this.selectedTime,
       this.date
@@ -196,7 +196,7 @@ export class TripAddComponent implements OnInit {
   }
 
   updateTime(): void {
-   // this.addDataToSelected();
+    // this.addDataToSelected();
     this.selectedTime = this.dateParser.parseTime(
       this.selectedTime,
       this.time
