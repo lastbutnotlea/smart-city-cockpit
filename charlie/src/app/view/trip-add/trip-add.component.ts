@@ -18,7 +18,9 @@ import {dummyDate, now} from '../../shared/data/dates';
 })
 
 export class TripAddComponent implements OnInit {
+  // stores data of the new trip
   selected: TripData;
+  // this array is needed to display all available stops of the currently selected line
   selectedLineStops: StopData[];
   selectedTime: string = now.toISOString();
   displayStops: boolean = false;
@@ -55,7 +57,13 @@ export class TripAddComponent implements OnInit {
       data => {
         this.availLines = data;
         this.selectedLine = this.toDropdownItemL(this.availLines[0]);
+        // inbound
         this.selectedLineStops = this.selectedLine.value.stopsInbound;
+        // fill selected.stops with inbound stops
+        this.selected.stops = [];
+        for(const stop of this.selectedLineStops){
+          this.selected.stops.push(new TripStopData(stop.id, dummyDate, stop.commonName));
+        }
       },
       err => console.log('Err'));
 
@@ -72,37 +80,39 @@ export class TripAddComponent implements OnInit {
   }
 
   showStops(): void {
-    this.addDataToSelected();
+    this.refreshData();
     this.displayStops = true;
   }
 
-  updateStops(): void {
-    if(this.displayStops) this.showStops();
+  refreshData(): void {
+    if(this.displayStops) {
+      // set selectedLineStops to inbound/outbound stops of current line depending on value in dropdown
+      if(this.selectedDirection.value) {
+        this.selectedLineStops = this.selected.line.stopsInbound;
+      }
+      else {
+        this.selectedLineStops = this.selected.line.stopsOutbound;
+      }
+
+      this.selected.stops = [];
+      for (const stop of this.selectedLineStops) {
+        this.selected.stops.push(new TripStopData(stop.id, dummyDate, stop.commonName));
+      }
+
+      this.refreshVehicleAndLineData();
+    }
   }
 
-  addDataToSelected(): void {
+  refreshVehicleAndLineData(): void {
     this.selected.vehicle = this.selectedVehicle.value;
     this.selected.line = this.selectedLine.value;
     this.selected.isInbound = this.selectedDirection.value;
-    this.getStopsForSelectedDirection();
-    this.selected.stops = [];
-    for(const stop of this.selectedLineStops){
-      this.selected.stops.push(new TripStopData(stop.id, dummyDate, stop.commonName));
-    }
     this.selected.stops[0].departureTime = this.selectedTime;
   }
 
-  getStopsForSelectedDirection(): void {
-    if(this.selectedDirection.value) {
-      this.selectedLineStops = this.selected.line.stopsInbound;
-    }
-    else {
-      this.selectedLineStops = this.selected.line.stopsOutbound;
-    }
-  }
-
   confirm(): void {
-    this.addDataToSelected();
+    // don't call refreshData() here to keep selected stops
+    this.refreshVehicleAndLineData();
     console.log(this.selected);
     this.activeModal.close('Close click');
     this.http.addTrip(this.selected).subscribe(
@@ -186,7 +196,7 @@ export class TripAddComponent implements OnInit {
   }
 
   updateDate(): void {
-    // this.addDataToSelected();
+    // this.refreshData();
     this.selectedTime = this.dateParser.parseDate(
       this.selectedTime,
       this.date
@@ -196,7 +206,7 @@ export class TripAddComponent implements OnInit {
   }
 
   updateTime(): void {
-    // this.addDataToSelected();
+    // this.refreshData();
     this.selectedTime = this.dateParser.parseTime(
       this.selectedTime,
       this.time
