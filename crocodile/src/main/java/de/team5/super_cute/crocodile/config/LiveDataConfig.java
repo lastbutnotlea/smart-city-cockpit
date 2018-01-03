@@ -64,7 +64,7 @@ public class LiveDataConfig {
   public static final int DELAY_INITIAL = 0;
   public static final int DELAY_MIN = -5 * 60;
   public static final int DELAY_MAX = 60 * 60;
-  public static final int DELAY_CHANGE_AMPLITUDE = 60 * 60;
+  public static final int DELAY_CHANGE_AMPLITUDE = 10;
 
   public static final List<String> STOP_DEFECTS = new ArrayList<String>() {{
     add(STOP_DIRTY);

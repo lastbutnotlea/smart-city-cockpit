@@ -148,6 +148,10 @@ public class LiveDataGenerator {
         // only change load if vehicle is currently at a stop
         LocalDateTime now = LocalDateTime.now();
         Trip currentTrip = tripData.getCurrentTripOfVehicle(vehicle, now);
+        if (currentTrip == null) {
+          // vehicle currently not running
+          return false;
+        }
         Entry<String, Boolean> vehicleAtStop = vehiclePositionService
             .getStopForGivenTime(vehicle, currentTrip, now);
         return vehicleAtStop.getValue();

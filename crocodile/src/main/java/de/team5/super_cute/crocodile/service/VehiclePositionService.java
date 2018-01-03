@@ -78,7 +78,7 @@ public class VehiclePositionService {
   }
 
   /**
-   * @return if (value) { stopId the vehicle is a the given time }
+   * @return if (value) { stopId the vehicle is at at the given time }
    * else ( stopId the vehicle was last before the given time }
    */
   public Entry<String, Boolean> getStopForGivenTime(Vehicle vehicle, Trip trip,
