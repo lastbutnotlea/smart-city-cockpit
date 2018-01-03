@@ -43,14 +43,13 @@ import de.team5.super_cute.crocodile.model.EState;
 import de.team5.super_cute.crocodile.model.Feedback;
 import de.team5.super_cute.crocodile.model.Feedbackable;
 import de.team5.super_cute.crocodile.model.Stop;
-import de.team5.super_cute.crocodile.model.Trip;
 import de.team5.super_cute.crocodile.model.Vehicle;
 import de.team5.super_cute.crocodile.service.VehiclePositionService;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Random;
 import org.slf4j.LoggerFactory;
+import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -88,12 +87,10 @@ public class LiveDataGenerator {
   private void generateLiveDataForStop(Stop stop) {
     Random r = new Random(System.currentTimeMillis());
     //increase or decrease people waiting by 0-5%
-    if (shouldIChangeThisValue(PEOPLE_WAITING, stop)) {
-      stop.setPeopleWaiting(
-          getNewValue(stop.getPeopleWaiting(), PEOPLE_WAITING_CHANGE_AMPLITUDE, PEOPLE_WAITING_MIN,
-              PEOPLE_WAITING_MAX));
-      generateValueFeedback(stop, PEOPLE_WAITING);
-    }
+    stop.setPeopleWaiting(
+        getNewValue(stop.getPeopleWaiting(), PEOPLE_WAITING_CHANGE_AMPLITUDE, PEOPLE_WAITING_MIN,
+            PEOPLE_WAITING_MAX));
+    generateValueFeedback(stop, PEOPLE_WAITING);
     removeDefect(stop, true);
     String defect = generateDefect(stop, true);
     if (defect != null) {
@@ -104,22 +101,16 @@ public class LiveDataGenerator {
 
   private void generateLiveDataForVehicle(Vehicle vehicle) {
     Random r = new Random(System.currentTimeMillis());
-    if (shouldIChangeThisValue(LOAD, vehicle)) {
-      vehicle.setLoad(getNewValue(vehicle.getLoad(), LOAD_CHANGE_AMPLITUDE, LOAD_MIN,
-          vehicle.getCapacity() * LOAD_MAX_FACTOR));
-      generateValueFeedback(vehicle, LOAD);
-    }
-    if (shouldIChangeThisValue(TEMPERATURE, vehicle)) {
-      vehicle.setTemperature(
-          getNewValue(vehicle.getTemperature(), TEMPERATURE_CHANGE_AMPLITUDE, TEMPERATURE_MIN,
-              TEMPERATURE_MAX));
-      generateValueFeedback(vehicle, TEMPERATURE);
-    }
-    if (shouldIChangeThisValue(DELAY, vehicle)) {
-      vehicle
-          .setDelay(getNewValue(vehicle.getDelay(), DELAY_CHANGE_AMPLITUDE, DELAY_MIN, DELAY_MAX));
-      generateValueFeedback(vehicle, DELAY);
-    }
+    vehicle.setLoad(getNewValue(vehicle.getLoad(), LOAD_CHANGE_AMPLITUDE, LOAD_MIN,
+        vehicle.getCapacity() * LOAD_MAX_FACTOR));
+    generateValueFeedback(vehicle, LOAD);
+    vehicle.setTemperature(
+        getNewValue(vehicle.getTemperature(), TEMPERATURE_CHANGE_AMPLITUDE, TEMPERATURE_MIN,
+            TEMPERATURE_MAX));
+    generateValueFeedback(vehicle, TEMPERATURE);
+    vehicle
+        .setDelay(getNewValue(vehicle.getDelay(), DELAY_CHANGE_AMPLITUDE, DELAY_MIN, DELAY_MAX));
+    generateValueFeedback(vehicle, DELAY);
     removeDefect(vehicle, false);
     String defect = generateDefect(vehicle, false);
     if (defect != null) {
@@ -131,37 +122,6 @@ public class LiveDataGenerator {
   private int getNewValue(int oldValue, int changeAmplitude, int min, int max) {
     Random r = new Random(System.currentTimeMillis());
     return max(min(oldValue + (r.nextInt(changeAmplitude * 2) - changeAmplitude), max), min);
-  }
-
-  private boolean shouldIChangeThisValue(String fieldName, Stop stop) {
-    if (fieldName.equals(PEOPLE_WAITING)) {
-      return true; // the number of waiters at a stop can always change
-    } else {
-      throw new IllegalArgumentException(
-          "The field " + fieldName + " is not a field in the class Stop.");
-    }
-  }
-
-  private boolean shouldIChangeThisValue(String fieldName, Vehicle vehicle) {
-    switch (fieldName) {
-      case LOAD:
-        // only change load if vehicle is currently at a stop
-        LocalDateTime now = LocalDateTime.now();
-        Trip currentTrip = tripData.getCurrentTripOfVehicle(vehicle, now);
-        if (currentTrip == null) {
-          // vehicle currently not running
-          return false;
-        }
-        Entry<String, Boolean> vehicleAtStop = vehiclePositionService
-            .getStopForGivenTime(vehicle, currentTrip, now);
-        return vehicleAtStop.getValue();
-      case TEMPERATURE:
-      case DELAY:
-        return true;
-      default:
-        throw new IllegalArgumentException(
-            "The field " + fieldName + " is not a field in the class Vehicle.");
-    }
   }
 
   private String generateDefect(Feedbackable feedbackable, boolean forStop) {
