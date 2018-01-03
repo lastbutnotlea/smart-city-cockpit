@@ -83,7 +83,7 @@ public class VehiclePositionService {
    */
   public Entry<String, Boolean> getStopForGivenTime(Vehicle vehicle, Trip trip,
       LocalDateTime time) {
-    LocalDateTime vehicleTime = time.minusMinutes(vehicle.getDelay());
+    LocalDateTime vehicleTime = time.minusSeconds(vehicle.getDelay());
     LocalDateTime timeAtStop = trip.getStops().values().stream()
         .filter(l -> l.getDayOfYear() == vehicleTime.getDayOfYear()
             && l.getHour() == vehicleTime.getHour()
@@ -93,7 +93,7 @@ public class VehiclePositionService {
     boolean isAtStop = true;
     if (timeAtStop == null) {
       LocalDateTime timeAtLastStop = trip.getStops().values().stream()
-          .filter(l -> l.isBefore(time.minusMinutes(trip.getVehicle().getDelay())))
+          .filter(l -> l.isBefore(time.minusSeconds(trip.getVehicle().getDelay())))
           .sorted((l, l0) -> l0.compareTo(l))
           .findFirst()
           .orElse(null);

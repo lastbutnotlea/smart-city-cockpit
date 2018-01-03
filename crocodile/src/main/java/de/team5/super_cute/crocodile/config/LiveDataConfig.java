@@ -33,8 +33,8 @@ public class LiveDataConfig {
 
   public static final int PEOPLE_WAITING_LIMIT_PROBLEMATIC = 301;
   public static final int PEOPLE_WAITING_LIMIT_CRITICAL = 701;
-  public static final int DELAY_LIMIT_PROBLEMATIC = 6;
-  public static final int DELAY_LIMIT_CRITICAL = 16;
+  public static final int DELAY_LIMIT_PROBLEMATIC = 6 * 60;
+  public static final int DELAY_LIMIT_CRITICAL = 16 * 60;
   public static final int LOAD_LIMIT_PROBLEMATIC = 51;
   public static final int LOAD_LIMIT_CRITICAL = 151;
   public static final int TEMPERATURE_LOWER_LIMIT_PROBLEMATIC = 24;
