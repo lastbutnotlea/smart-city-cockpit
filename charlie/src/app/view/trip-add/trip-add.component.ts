@@ -86,6 +86,7 @@ export class TripAddComponent implements OnInit {
 
   refreshData(): void {
     if(this.displayStops) {
+      this.selected.line = this.selectedLine.value;
       // set selectedLineStops to inbound/outbound stops of current line depending on value in dropdown
       if(this.selectedDirection.value) {
         this.selectedLineStops = this.selected.line.stopsInbound;
