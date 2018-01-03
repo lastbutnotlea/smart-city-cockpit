@@ -31,7 +31,7 @@ export class TripEditDepartureComponent implements OnInit {
 
   ngOnInit(): void {
     this.time = {hour: now.getHours(), minute: now.getMinutes(), second: now.getSeconds()};
-    this.date = {year: now.getFullYear(), month: now.getMonth(), day: now.getDate()};
+    this.date = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
   }
 
   initData(): void {

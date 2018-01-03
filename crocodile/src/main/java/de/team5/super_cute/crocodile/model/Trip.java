@@ -77,11 +77,11 @@ public class Trip extends IdentifiableObject implements Serializable {
     this.line = line;
   }
 
-  public boolean isInbound() {
+  public boolean getIsInbound() {
     return isInbound;
   }
 
-  public void setInbound(boolean inbound) {
+  public void setIsInbound(boolean inbound) {
     isInbound = inbound;
   }
 

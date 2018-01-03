@@ -10,12 +10,12 @@
 
   <div class="margin-bottom">
     <label>Vehicle: </label>
-    <app-dropdown [values]="toDropdownItemsV(availVehicles)" [(selected)]="selectedVehicle" (selectedChange)="updateStops()"></app-dropdown>
+    <app-dropdown [values]="toDropdownItemsV(availVehicles)" [(selected)]="selectedVehicle"></app-dropdown>
   </div>
 
   <div class="margin-bottom">
     <label>Line: </label>
-    <app-dropdown [values]="toDropdownItemsL(availLines)" [(selected)]="selectedLine" (selectedChange)="updateStops()"></app-dropdown>
+    <app-dropdown [values]="toDropdownItemsL(availLines)" [(selected)]="selectedLine" (selectedChange)="refreshData()"></app-dropdown>
   </div>
 
   <div class="margin-bottom">
