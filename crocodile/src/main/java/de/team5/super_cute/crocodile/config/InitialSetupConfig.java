@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class InitialSetupConfig {
 
-  //not needed atm
   public static final int FROM_HOUR = 12;
   public static final int FROM_MINUTE = 30;
   public static final int TO_HOUR = 13;
