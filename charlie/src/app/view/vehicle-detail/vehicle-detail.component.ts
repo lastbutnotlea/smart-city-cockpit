@@ -3,7 +3,7 @@ import {Location} from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
 import {VehicleData} from '../../shared/data/vehicle-data';
 import {HttpRoutingService} from '../../services/http-routing.service';
-import { GeneralizedComponent } from '../../shared/components/generalized/generalized.component';
+import { GeneralizedComponent } from '../../shared/components/generalized/live-data.component';
 
 @Component({
   selector: 'app-vehicle-detail',

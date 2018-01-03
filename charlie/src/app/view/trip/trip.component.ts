@@ -3,7 +3,7 @@ import { HttpRoutingService } from '../../services/http-routing.service';
 import {FilterComponent} from '../../shared/components/filter/filter.component';
 import { TripData } from '../../shared/data/trip-data';
 import { FilterGroupComponent } from '../../shared/components/filter-group/filter-group.component';
-import { GeneralizedComponent } from '../../shared/components/generalized/generalized.component';
+import { GeneralizedComponent } from '../../shared/components/generalized/live-data.component';
 
 @Component({
   selector: 'app-trip-view',

@@ -4,7 +4,7 @@ import { HttpRoutingService } from '../../services/http-routing.service';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { LineMapComponent } from '../line-map/line-map.component';
-import { GeneralizedComponent } from '../../shared/components/generalized/generalized.component';
+import { GeneralizedComponent } from '../../shared/components/generalized/live-data.component';
 import { LinePositionData } from '../../shared/data/line-position-data';
 import { StopPositionData } from '../../shared/data/stop-position-data';
 import { VehiclePositionData } from '../../shared/data/vehicle-position-data';

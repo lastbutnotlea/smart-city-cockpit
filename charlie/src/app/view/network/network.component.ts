@@ -3,7 +3,7 @@ import {HttpRoutingService} from '../../services/http-routing.service';
 import { LineData } from '../../shared/data/line-data';
 import { MapComponent } from '../map/map.component';
 
-import { GeneralizedComponent } from '../../shared/components/generalized/generalized.component';
+import { GeneralizedComponent } from '../../shared/components/generalized/live-data.component';
 import { AnonymousSubscription } from 'rxjs/Subscription';
 
 @Component({

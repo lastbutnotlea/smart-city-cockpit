@@ -3,7 +3,7 @@ import { StopData } from '../../shared/data/stop-data';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { HttpRoutingService } from '../../services/http-routing.service';
-import { GeneralizedComponent } from '../../shared/components/generalized/generalized.component';
+import { GeneralizedComponent } from '../../shared/components/generalized/live-data.component';
 
 @Component({
   selector: 'app-stop-detail-view',

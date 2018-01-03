@@ -8,7 +8,7 @@ import {TripEditComponent} from '../trip-edit/trip-edit.component';
 import {ConfirmDeletionComponent} from '../../shared/components/confirm-popup/confirm-deletion.component';
 import {StopSortService} from '../../services/stop-sort.service';
 import {TripEditDepartureComponent} from '../trip-edit-departure/trip-edit-departure.component';
-import { GeneralizedComponent } from '../../shared/components/generalized/generalized.component';
+import { GeneralizedComponent } from '../../shared/components/generalized/live-data.component';
 
 
 
