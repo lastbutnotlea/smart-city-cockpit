@@ -2,9 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import {HttpRoutingService} from '../../services/http-routing.service';
 import { LineData } from '../../shared/data/line-data';
 import { MapComponent } from '../map/map.component';
-
-import { GeneralizedComponent } from '../../shared/components/generalized/live-data.component';
-import { AnonymousSubscription } from 'rxjs/Subscription';
+import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
 
 @Component({
   selector: 'app-network-view',
@@ -13,7 +11,7 @@ import { AnonymousSubscription } from 'rxjs/Subscription';
     '../../shared/styling/global-styling.css'],
 })
 
-export class NetworkComponent extends GeneralizedComponent implements OnInit {
+export class NetworkComponent extends LiveDataComponent implements OnInit {
   title: String;
   lines: LineData[] = [];
 

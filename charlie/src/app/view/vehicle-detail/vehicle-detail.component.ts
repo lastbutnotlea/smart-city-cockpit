@@ -3,7 +3,7 @@ import {Location} from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
 import {VehicleData} from '../../shared/data/vehicle-data';
 import {HttpRoutingService} from '../../services/http-routing.service';
-import { GeneralizedComponent } from '../../shared/components/generalized/live-data.component';
+import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
 
 @Component({
   selector: 'app-vehicle-detail',
@@ -11,7 +11,7 @@ import { GeneralizedComponent } from '../../shared/components/generalized/live-d
   styleUrls: ['./vehicle-detail.component.css',
     '../../shared/styling/global-styling.css']
 })
-export class VehicleDetailComponent extends GeneralizedComponent implements OnInit {
+export class VehicleDetailComponent extends LiveDataComponent implements OnInit {
 
   vehicle: VehicleData;
   loaded: boolean = false;
