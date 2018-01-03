@@ -2,7 +2,7 @@ import { Observable } from 'rxjs/Rx';
 import { AnonymousSubscription } from 'rxjs/Subscription';
 import { OnInit } from '@angular/core';
 
-export abstract class GeneralizedComponent implements OnInit {
+export abstract class LiveDataComponent implements OnInit {
 
   protected dataSubscription: AnonymousSubscription;
   protected timerSubscription: AnonymousSubscription;

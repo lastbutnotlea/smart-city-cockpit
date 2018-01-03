@@ -3,7 +3,7 @@ import { HttpRoutingService } from '../../services/http-routing.service';
 import {FilterComponent} from '../../shared/components/filter/filter.component';
 import { TripData } from '../../shared/data/trip-data';
 import { FilterGroupComponent } from '../../shared/components/filter-group/filter-group.component';
-import { GeneralizedComponent } from '../../shared/components/generalized/generalized.component';
+import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
 
 @Component({
   selector: 'app-trip-view',
@@ -12,7 +12,7 @@ import { GeneralizedComponent } from '../../shared/components/generalized/genera
     '../../shared/styling/global-styling.css']
 })
 
-export class TripComponent extends GeneralizedComponent implements OnInit {
+export class TripComponent extends LiveDataComponent implements OnInit {
   title: String;
   trips: TripData[] = [];
 

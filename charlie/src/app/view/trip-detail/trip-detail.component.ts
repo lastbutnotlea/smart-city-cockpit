@@ -8,7 +8,7 @@ import {TripEditComponent} from '../trip-edit/trip-edit.component';
 import {ConfirmDeletionComponent} from '../../shared/components/confirm-popup/confirm-deletion.component';
 import {StopSortService} from '../../services/stop-sort.service';
 import {TripEditDepartureComponent} from '../trip-edit-departure/trip-edit-departure.component';
-import { GeneralizedComponent } from '../../shared/components/generalized/generalized.component';
+import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
 
 
 
@@ -20,7 +20,7 @@ import { GeneralizedComponent } from '../../shared/components/generalized/genera
               '../../shared/styling/global-styling.css']
 })
 
-export class TripDetailComponent extends GeneralizedComponent implements OnInit {
+export class TripDetailComponent extends LiveDataComponent implements OnInit {
 
   trip: TripData;
 

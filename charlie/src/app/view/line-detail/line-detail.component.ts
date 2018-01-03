@@ -4,7 +4,7 @@ import { HttpRoutingService } from '../../services/http-routing.service';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { LineMapComponent } from '../line-map/line-map.component';
-import { GeneralizedComponent } from '../../shared/components/generalized/generalized.component';
+import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
 import { LinePositionData } from '../../shared/data/line-position-data';
 import { StopPositionData } from '../../shared/data/stop-position-data';
 import { VehiclePositionData } from '../../shared/data/vehicle-position-data';
@@ -16,7 +16,7 @@ import { VehiclePositionData } from '../../shared/data/vehicle-position-data';
     '../../shared/styling/global-styling.css']
 })
 
-export class LineDetailComponent extends GeneralizedComponent implements OnInit {
+export class LineDetailComponent extends LiveDataComponent implements OnInit {
 
   line: LineData;
 
@@ -37,15 +37,6 @@ export class LineDetailComponent extends GeneralizedComponent implements OnInit 
 
   ngOnInit(): void {
     this.getLine();
-
-    // Dummy-Data for positions of vehicles
-    // TODO: Replace with data from backend, once available
-    this.inboundPositionData.positionAfterStops
-      .push(new StopPositionData('id1', 'name1', 'FINE',
-        [new VehiclePositionData('v1', 'BUS', 'CRITICAL'),
-          new VehiclePositionData('v4', 'SUBWAY', 'PROBLEMATIC')]));
-    this.inboundPositionData.positionAtStops
-      .push(new StopPositionData('id1', 'name1', 'CRITICAL', []));
   }
 
   getLine(): void {

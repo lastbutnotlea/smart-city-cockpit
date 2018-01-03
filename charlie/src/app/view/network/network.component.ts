@@ -3,7 +3,7 @@ import {HttpRoutingService} from '../../services/http-routing.service';
 import { LineData } from '../../shared/data/line-data';
 import { MapComponent } from '../map/map.component';
 
-import { GeneralizedComponent } from '../../shared/components/generalized/generalized.component';
+import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
 import { AnonymousSubscription } from 'rxjs/Subscription';
 
 @Component({
@@ -13,7 +13,7 @@ import { AnonymousSubscription } from 'rxjs/Subscription';
     '../../shared/styling/global-styling.css'],
 })
 
-export class NetworkComponent extends GeneralizedComponent implements OnInit {
+export class NetworkComponent extends LiveDataComponent implements OnInit {
   title: String;
   lines: LineData[] = [];
 

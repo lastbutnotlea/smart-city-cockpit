@@ -5,7 +5,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {VehicleAddComponent} from '../vehicle-add/vehicle-add.component';
 import {FilterGroupComponent} from '../../shared/components/filter-group/filter-group.component';
 import {FilterComponent} from '../../shared/components/filter/filter.component';
-import { GeneralizedComponent } from '../../shared/components/generalized/generalized.component';
+import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
 
 @Component({
   selector: 'app-vehicles-component',
@@ -13,7 +13,7 @@ import { GeneralizedComponent } from '../../shared/components/generalized/genera
   styleUrls: ['./vehicles.component.css',
     '../../shared/styling/global-styling.css']
 })
-export class VehiclesComponent extends GeneralizedComponent implements OnInit {
+export class VehiclesComponent extends LiveDataComponent implements OnInit {
   title: string = 'Vehicles';
   loaded: boolean = false;
 
