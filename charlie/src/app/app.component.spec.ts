@@ -56,7 +56,7 @@ describe('AppComponent', () => {
         ConfirmDeletionComponent,
         TickerComponent,
         TickerItemComponent,
-        TripAddComponent
+        TripAddComponent,
         VehiclesComponent,
         VehicleDetailComponent,
       ],
