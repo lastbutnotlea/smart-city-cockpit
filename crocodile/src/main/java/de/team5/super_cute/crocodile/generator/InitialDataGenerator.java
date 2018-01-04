@@ -3,11 +3,7 @@ package de.team5.super_cute.crocodile.generator;
 
 import static de.team5.super_cute.crocodile.config.InitialSetupConfig.INITIALIZE_FOR_MINUTES;
 import static de.team5.super_cute.crocodile.config.InitialSetupConfig.INITIALIZE_SINCE_MINUTES;
-import static de.team5.super_cute.crocodile.config.InitialSetupConfig.FROM_HOUR;
-import static de.team5.super_cute.crocodile.config.InitialSetupConfig.FROM_MINUTE;
 import static de.team5.super_cute.crocodile.config.InitialSetupConfig.LINEIDS;
-import static de.team5.super_cute.crocodile.config.InitialSetupConfig.TO_HOUR;
-import static de.team5.super_cute.crocodile.config.InitialSetupConfig.TO_MINUTE;
 import static de.team5.super_cute.crocodile.config.TfLApiConfig.app_id;
 import static de.team5.super_cute.crocodile.config.TfLApiConfig.app_key;
 
