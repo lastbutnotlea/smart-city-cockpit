@@ -2,7 +2,9 @@ package de.team5.super_cute.crocodile.controller;
 
 import de.team5.super_cute.crocodile.data.BaseData;
 import de.team5.super_cute.crocodile.data.LineData;
+import de.team5.super_cute.crocodile.jsonclasses.LineForStopData;
 import de.team5.super_cute.crocodile.model.Line;
+import java.util.ArrayList;
 import java.util.List;
 
 import de.team5.super_cute.crocodile.model.Stop;
@@ -36,11 +38,17 @@ public class StopController extends BaseController<Stop> {
   }
 
   @GetMapping("/{id}/lines")
-  public List<Line> getLinesForStop(@PathVariable String id) {
-    return lineData.getData().stream()
-        .filter(
-            l -> l.getStopsOutbound().stream().anyMatch(s -> s.getId().equals(id)) ||
-                 l.getStopsInbound().stream().anyMatch(s -> s.getId().equals(id)))
-        .collect(Collectors.toList());
+  public List<LineForStopData> getLinesForStop(@PathVariable String id) {
+    List <Line> lines = lineData.getData();
+    List<LineForStopData> lineForStopData = new ArrayList<>();
+    for (Line line:lines) {
+      if(line.getStopsInbound().stream().anyMatch(s -> s.getId().equals(id))){
+        lineForStopData.add(new LineForStopData(true, line.getId()));
+      }
+      if(line.getStopsOutbound().stream().anyMatch(s -> s.getId().equals(id))){
+        lineForStopData.add(new LineForStopData(false, line.getId()));
+      }
+    }
+    return lineForStopData;
   }
 }
