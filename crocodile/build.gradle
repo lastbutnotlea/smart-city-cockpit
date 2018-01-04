@@ -31,6 +31,7 @@ dependencies {
 	compile('commons-dbcp:commons-dbcp:1.4')
 	compile('org.postgresql:postgresql')
 	compile('javax.transaction:jta:1.1')
+	compile group: 'com.google.guava', name: 'guava', version: '23.5-jre'
 }
 
 jar {
