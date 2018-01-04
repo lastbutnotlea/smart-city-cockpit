@@ -2,27 +2,32 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import {HttpRoutingService} from '../../services/http-routing.service';
 import { LineData } from '../../shared/data/line-data';
 import { MapComponent } from '../map/map.component';
+import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
 
 @Component({
   selector: 'app-network-view',
   templateUrl: './network.component.html',
-  styleUrls: ['./network.component.css'],
+  styleUrls: ['./network.component.css',
+    '../../shared/styling/global-styling.css'],
 })
 
-export class NetworkComponent implements OnInit {
+export class NetworkComponent extends LiveDataComponent implements OnInit {
   title: String;
   lines: LineData[] = [];
 
   @ViewChild(MapComponent)
   networkMap: MapComponent;
 
-  constructor(private http: HttpRoutingService) { }
+  constructor(private http: HttpRoutingService) {
+    super();
+  }
 
   ngOnInit(): void {
     this.title = 'Network View';
     // get line data
     this.http.getLines().subscribe( data => {
         this.lines = data;
+        super.ngOnInit();
       },
       err => {
         console.log('Could not fetch lines.');
@@ -59,4 +64,17 @@ export class NetworkComponent implements OnInit {
     }
     return false;
   }
+
+  // update network data
+  refreshData(): void {
+    this.setDataSubscription(
+      this.http.getLines().subscribe( data => {
+        this.lines = data;
+        this.subscribeToData();
+      },
+      err =>
+        console.log('Could not fetch new line-data.')
+      ));
+  }
+
 }

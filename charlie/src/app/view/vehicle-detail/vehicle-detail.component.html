@@ -16,6 +16,9 @@
       <div class="col-sm text-center bg-light p-2 m-1">Capacity</div>
       <div class="col-sm text-center bg-light p-2 m-1">{{vehicle.capacity}}</div>
       <div class="w-100"></div>
+      <div class="col-sm text-center bg-light p-2 m-1">Load</div>
+      <div class="col-sm text-center bg-light p-2 m-1">{{vehicle.load}}</div>
+      <div class="w-100"></div>
       <div class="col-sm text-center bg-light p-2 m-1">Delay</div>
       <div class="col-sm text-center bg-light p-2 m-1">{{vehicle.delay}}</div>
       <div class="w-100"></div>
@@ -27,6 +30,15 @@
         <div *ngFor="let defect of defects">
           {{defect}}
         </div>
+      </div>
+      <div class="w-100"></div>
+      <div class="col-sm text-center bg-light p-2 m-1">State</div>
+      <div class="col-sm text-center bg-light p-2 m-1">
+        <span [ngClass]="{'color-fine': vehicle.state === 'FINE',
+           'color-problematic': vehicle.state === 'PROBLEMATIC',
+          'color-critical': vehicle.state === 'CRITICAL' }">
+          <i class="fa fa-exclamation-triangle color-fine" aria-hidden="true"></i>
+        </span>
       </div>
     </div>
   </div>

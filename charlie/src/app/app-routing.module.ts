@@ -14,7 +14,7 @@ const routes: Routes = [
   {path: 'trip/detail/:id', component: TripDetailComponent},
   {path: 'network', component: NetworkComponent},
   {path: 'network/detail/:id', component: LineDetailComponent},
-  {path: 'network/detail/:lineId/stop/:stopId', component: StopDetailComponent},
+  {path: 'network/stop/:stopId', component: StopDetailComponent},
   {path: 'vehicles', component: VehiclesComponent},
   {path: 'vehicles/:id', component: VehicleDetailComponent},
 ];

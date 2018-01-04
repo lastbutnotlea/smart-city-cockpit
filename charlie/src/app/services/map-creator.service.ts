@@ -148,31 +148,13 @@ export class MapCreatorService {
     lineDataPoints.push({
         'name': lineData.id,
         'label': lineData.name,
-        'color': this.convertRGBtoHEX(lineData.color),
+        'color': lineData.color,
         'shiftCoords': [0, 0],
         'nodes':  this.calcNodesForSingleLine(stationDataPoints)
       });
     return lineDataPoints;
   }
 
-  /**
-   * Converts rbg to hex-value
-   * needed when drawing line from line-data for line-details-view
-   * tube map needs line color as hex-value instead of rbg
-   *
-   * @param lineColor color-object of line
-   * @returns color as hex-value
-   */
-  private convertRGBtoHEX(lineColor): string {
-    var r = lineColor.red.toString(16);
-    var g = lineColor.green.toString(16);
-    var b = lineColor.blue.toString(16);
-    // add padding if value only has one digit (because of leading 0)
-    const red = (1e2 + r).substr(r.length + 1);
-    const green = (1e2 + g).substr(g.length + 1);
-    const blue = (1e2 + b).substr(b.length + 1);
-    return '#' + red + green + blue;
-  }
   /**
    * To center map showing only one line (for line-details view)
    * tube map always places the leftmost nodes on the very left of the map, halfway out of view
