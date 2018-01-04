@@ -1,6 +1,7 @@
 package de.team5.super_cute.crocodile.data;
 
 import de.team5.super_cute.crocodile.model.Trip;
+import de.team5.super_cute.crocodile.model.Vehicle;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,18 +42,23 @@ public class TripData extends BaseData<Trip> {
             .max(LocalDateTime::compareTo).orElse(now.minusDays(1))
             .isAfter(now)).collect(Collectors.toList());
   }
-  
+
   public List<Trip> getActiveTripsWithDelay(LocalDateTime time) {
     return getData().stream()
         .filter(t -> t.getStops().values().stream()
-                .min(LocalDateTime::compareTo)
-                .orElse(time.plusDays(1)).withSecond(0).withNano(0)
-                .isBefore(time.minusMinutes(t.getVehicle().getDelay()).withSecond(0).withNano(1)))
+            .min(LocalDateTime::compareTo)
+            .orElse(time.plusDays(1)).withSecond(0).withNano(0)
+            .isBefore(time.minusSeconds(t.getVehicle().getDelay())))
         .filter(t -> t.getStops().values().stream()
-                .max(LocalDateTime::compareTo)
-                .orElse(time.minusDays(1)).withSecond(0).withNano(1)
-                .isAfter(time.minusMinutes(t.getVehicle().getDelay()).withSecond(0).withNano(0)))
+            .max(LocalDateTime::compareTo)
+            .orElse(time.minusDays(1)).withSecond(0).withNano(1)
+            .isAfter(time.minusSeconds(t.getVehicle().getDelay())))
         .collect(Collectors.toList());
+  }
+
+  public Trip getCurrentTripOfVehicle(Vehicle vehicle, LocalDateTime time) {
+    return getActiveTripsWithDelay(time).stream()
+        .filter(t -> t.getVehicle().equals(vehicle)).findAny().orElse(null);
   }
 
 }
