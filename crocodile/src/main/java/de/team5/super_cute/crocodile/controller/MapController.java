@@ -5,9 +5,12 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import de.team5.super_cute.crocodile.data.LineData;
 import de.team5.super_cute.crocodile.data.StopData;
+import de.team5.super_cute.crocodile.data.VehicleData;
+import de.team5.super_cute.crocodile.model.EState;
 import de.team5.super_cute.crocodile.model.EVehicleType;
 import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Stop;
+import de.team5.super_cute.crocodile.util.StateCalculator;
 import java.util.Collection;
 import java.util.List;
 import org.slf4j.Logger;
@@ -24,13 +27,15 @@ public class MapController {
   private Logger logger = LoggerFactory.getLogger(this.getClass());
   private LineData lineData;
   private StopData stopData;
+  private VehicleData vehicleData;
   private boolean gotDataFromTpConnector = false;
   private ObjectMapper mapper;
 
   @Autowired
-  public MapController(LineData lineData, StopData stopData) {
+  public MapController(LineData lineData, StopData stopData, VehicleData vehicleData) {
     this.lineData = lineData;
     this.stopData = stopData;
+    this.vehicleData = vehicleData;
     mapper = new ObjectMapper();
   }
 
@@ -88,5 +93,12 @@ public class MapController {
       }
     }
     return connections;
+  }
+
+  @GetMapping("/state")
+  public EState getMapState() {
+    Double vehicleSeverity = vehicleData.getData().stream().mapToInt(v -> v.getSeverity()).average().getAsDouble();
+    Double stopSeverity = stopData.getData().stream().mapToInt(v -> v.getSeverity()).average().getAsDouble();
+    return StateCalculator.getState((int) ((vehicleSeverity + stopSeverity) / 2));
   }
 }
