@@ -42,6 +42,9 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
   @ElementCollection(fetch = FetchType.EAGER)
   private Set<String> defects;
 
+  /**
+   * The delay of the vehicle in seconds.
+   */
   @Column
   private Integer delay;
 
