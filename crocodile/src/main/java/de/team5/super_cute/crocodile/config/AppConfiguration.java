@@ -10,7 +10,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 )
 @Configuration
 @EnableScheduling
-@EnableCaching
 public class AppConfiguration {
-
+  public static final int LIVEDATA_FREQUENCY = 30000;
 }

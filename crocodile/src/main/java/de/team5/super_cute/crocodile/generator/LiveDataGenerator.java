@@ -1,5 +1,6 @@
 package de.team5.super_cute.crocodile.generator;
 
+import static de.team5.super_cute.crocodile.config.AppConfiguration.LIVEDATA_FREQUENCY;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.CREATE_STOP_DEFECT_PERCENTAGE;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.CREATE_VEHICLE_DEFECT_PERCENTAGE;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.DEFECT_FEEDBACK_PERCENTAGE;
@@ -68,10 +69,10 @@ public class LiveDataGenerator {
   @Autowired
   private VehiclePositionService vehiclePositionService;
 
-  @Scheduled(fixedDelay = 10000)
+  @Scheduled(fixedDelay = LIVEDATA_FREQUENCY)
   public void generateLiveData() {
     LoggerFactory.getLogger(getClass())
-        .debug("Started generating LiveData");
+        .info("Started generating LiveData");
     List<Stop> stops = stopData.getData();
     List<Vehicle> vehicles = vehicleData.getData();
     for (Stop stop : stops) {
@@ -81,7 +82,7 @@ public class LiveDataGenerator {
       generateLiveDataForVehicle(vehicle);
     }
     LoggerFactory.getLogger(getClass())
-        .debug("Finished generating LiveData");
+        .info("Finished generating LiveData");
   }
 
   private void generateLiveDataForStop(Stop stop) {
