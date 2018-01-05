@@ -7,10 +7,12 @@
     <div class="row flex-nowrap" id="table-head">
       <div class="col p-2 m-1 bg-secondary">VehicleId</div>
       <div class="col p-2 m-1 bg-secondary">Capacity</div>
+      <div class="col p-2 m-1 bg-secondary">Load</div>
       <div class="col p-2 m-1 bg-secondary">Current Delay</div>
       <div class="col p-2 m-1 bg-secondary">Temperature</div>
       <div class="col p-2 m-1 bg-secondary">Defects</div>
       <div class="col p-2 m-1 bg-secondary">Type</div>
+      <div class="col p-2 m-1 bg-secondary">Status</div>
     </div>
     <div class="row" style="overflow-y: auto; height: 100%">
       <ng-container *ngFor="let vehicle of filterGroup.getFiltered(vehicles)">
@@ -18,10 +20,18 @@
           <a routerLink="{{vehicle.id}}">{{ vehicle.id }}</a>
         </div>
         <div class="col p-2 m-1 bg-light">{{ vehicle.capacity }}</div>
+        <div class="col p-2 m-1 bg-light">{{ vehicle.load }}</div>
         <div class="col p-2 m-1 bg-light">{{ vehicle.delay }}</div>
         <div class="col p-2 m-1 bg-light">{{ vehicle.temperature }}</div>
         <div class="col p-2 m-1 bg-light">{{ vehicle.defects }}</div>
         <div class="col p-2 m-1 bg-light">{{ vehicle.type }}</div>
+        <div class="col p-2 m-1 bg-light">
+          <span [ngClass]="{'color-fine': vehicle.state === 'FINE',
+           'color-problematic': vehicle.state === 'PROBLEMATIC',
+          'color-critical': vehicle.state === 'CRITICAL' }">
+            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+          </span>
+        </div>
         <div class="w-100"></div>
       </ng-container>
 

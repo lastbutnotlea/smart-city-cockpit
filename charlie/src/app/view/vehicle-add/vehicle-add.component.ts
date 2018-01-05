@@ -26,10 +26,12 @@ export class VehicleAddComponent implements OnInit {
     this.http.addVehicle({
       id: null,
       capacity: this.capacity,
+      load: 0,
       delay: 0,
       temperature: null,
       defects: [],
       type: this.selected.value,
+      state: 'FINE'
     }).subscribe(
       () => this.activeModal.close('Close click'),
       () => alert("Could not add vehicle"));
