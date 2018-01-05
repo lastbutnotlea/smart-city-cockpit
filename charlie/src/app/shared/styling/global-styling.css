@@ -19,3 +19,15 @@
   padding-top: 10px;
   padding-bottom: 20px;
 }
+
+.color-fine {
+  color: limegreen;
+}
+
+.color-problematic {
+  color: orange;
+}
+
+.color-critical {
+  color: darkred;
+}

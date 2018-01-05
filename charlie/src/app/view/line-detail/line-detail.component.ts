@@ -4,16 +4,24 @@ import { HttpRoutingService } from '../../services/http-routing.service';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { LineMapComponent } from '../line-map/line-map.component';
+import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
+import { LinePositionData } from '../../shared/data/line-position-data';
+import { StopPositionData } from '../../shared/data/stop-position-data';
+import { VehiclePositionData } from '../../shared/data/vehicle-position-data';
 
 @Component({
   selector: 'app-line-detail-view',
   templateUrl: './line-detail.component.html',
-  styleUrls: ['./line-detail.component.css']
+  styleUrls: ['./line-detail.component.css',
+    '../../shared/styling/global-styling.css']
 })
 
-export class LineDetailComponent implements OnInit {
+export class LineDetailComponent extends LiveDataComponent implements OnInit {
 
   line: LineData;
+
+  inboundPositionData: LinePositionData = new LinePositionData();
+  outboundPositionData: LinePositionData = new LinePositionData();
 
   @ViewChild('inbound')
   lineMapInbound: LineMapComponent;
@@ -23,12 +31,21 @@ export class LineDetailComponent implements OnInit {
 
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
-              private location: Location) { }
+              private location: Location) {
+    super();
+  }
 
   ngOnInit(): void {
     this.getLine();
-    // TODO: route to stop-details view
-    // TODO: add live-data (status, vehicle positions)
+
+    // Dummy-Data for positions of vehicles
+    // TODO: Replace with data from backend, once available
+    this.inboundPositionData.positionAfterStop
+      .push(new StopPositionData('id1', 'name1', 'FINE',
+        [new VehiclePositionData('v1', 'BUS', 'CRITICAL'),
+          new VehiclePositionData('v4', 'SUBWAY', 'PROBLEMATIC')]));
+    this.inboundPositionData.positionAtStop
+      .push(new StopPositionData('id1', 'name1', 'CRITICAL', []));
   }
 
   getLine(): void {
@@ -38,6 +55,8 @@ export class LineDetailComponent implements OnInit {
         this.line = line;
         this.lineMapInbound.getLineMap(line, line.stopsInbound);
         this.lineMapOutbound.getLineMap(line, line.stopsOutbound);
+        // This starts periodical calls for live-data after first data was received
+        super.ngOnInit();
       },
           err => {
         console.log('Could not fetch line data!')
@@ -49,6 +68,18 @@ export class LineDetailComponent implements OnInit {
   }
 
   isLoaded(): boolean {
-    return (this.line != null);
+    return (this.line != null && this.inboundPositionData != null && this.outboundPositionData != null);
+  }
+
+  // Update line-data
+  refreshData(): void {
+    this.setDataSubscription(
+      this.http.getLineDetails(this.line.id).subscribe( data => {
+          this.line = data;
+          this.subscribeToData();
+        },
+        err =>
+          console.log('Could not fetch new line-data.')
+      ));
   }
 }
