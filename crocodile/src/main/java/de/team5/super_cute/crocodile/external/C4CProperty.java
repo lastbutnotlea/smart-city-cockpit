@@ -11,4 +11,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface C4CProperty {
   String name();
+
+  //todo property for __metadata "type"
+  //todo property for max length?
 }

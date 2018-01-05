@@ -293,7 +293,7 @@ public class SAPC4CConnector {
       }
     }
     System.out.println(response);
-    return "Faliure";
+    return "Failure";
   }
 
   public String deleteC4CEntity(C4CEntity entity) throws IOException {
@@ -338,6 +338,9 @@ public class SAPC4CConnector {
         Helpers.logException(logger, e); // on access → continue
       }
     }
+
+    // TODO make special classes for Complicated names involving __metadata and serialize with them
+    // TODO also for time things
 
     ObjectMapper mapper = new ObjectMapper();
 
