@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import {HttpRoutingService} from '../../services/http-routing.service';
 import { LineData } from '../../shared/data/line-data';
 import { MapComponent } from '../map/map.component';
+import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
 
 import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
 import { AnonymousSubscription } from 'rxjs/Subscription';

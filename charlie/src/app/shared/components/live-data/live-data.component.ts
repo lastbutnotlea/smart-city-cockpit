@@ -7,10 +7,16 @@ export abstract class LiveDataComponent implements OnInit {
   protected dataSubscription: AnonymousSubscription;
   protected timerSubscription: AnonymousSubscription;
 
+  /**
+   * Starts periodical calls to get updated data from backend
+   */
   public ngOnInit(){
     this.refreshData();
   }
 
+  /**
+   * Stops calls for updated data form backend when component is not shown anymore
+   */
   public ngOnDestroy(): void {
     if (this.dataSubscription) {
       this.dataSubscription.unsubscribe();
@@ -29,6 +35,7 @@ export abstract class LiveDataComponent implements OnInit {
     this.dataSubscription = val;
   }
 
+  // Call for updated data from backend, needs to be specified idividually for every component
   // Example:
   /*
   this.dataSubscription = this.http.getLines().subscribe( data => {
