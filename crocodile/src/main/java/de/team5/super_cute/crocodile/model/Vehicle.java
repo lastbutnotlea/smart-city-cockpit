@@ -1,5 +1,11 @@
 package de.team5.super_cute.crocodile.model;
 
+import static de.team5.super_cute.crocodile.config.InitialSetupConfig.CAPACITY_INITIAL_MAX;
+import static de.team5.super_cute.crocodile.config.InitialSetupConfig.CAPACITY_INITIAL_MIN;
+import static de.team5.super_cute.crocodile.config.InitialSetupConfig.DELAY_INITIAL_MAX;
+import static de.team5.super_cute.crocodile.config.InitialSetupConfig.DELAY_INITIAL_MIN;
+import static de.team5.super_cute.crocodile.config.InitialSetupConfig.TEMPERATURE_INITIAL_MAX;
+import static de.team5.super_cute.crocodile.config.InitialSetupConfig.TEMPERATURE_INITIAL_MIN;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.DELAY_LIMIT_CRITICAL;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.DELAY_LIMIT_PROBLEMATIC;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.LOAD_LIMIT_CRITICAL;
@@ -28,7 +34,8 @@ import org.hibernate.annotations.Proxy;
 @Entity
 @Table(name = "vehicle")
 @Proxy(lazy = false)
-public class Vehicle extends IdentifiableObject implements Serializable, Feedbackable, Stateable, TickerItemable {
+public class Vehicle extends IdentifiableObject implements Serializable, Feedbackable, Stateable,
+    TickerItemable {
 
   @Column
   private Integer capacity;
@@ -194,9 +201,13 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
 
   public static Vehicle createRandom(EVehicleType vehicleType) {
     Random r = new Random(System.currentTimeMillis());
-    Vehicle vehicle = new Vehicle(r.nextInt(100) + 100, 0, r.nextInt(15) - 5, r.nextInt(10) + 20,
+    Vehicle vehicle = new Vehicle(
+        r.nextInt(CAPACITY_INITIAL_MAX - CAPACITY_INITIAL_MIN + 1) + CAPACITY_INITIAL_MIN,
+        0,
+        r.nextInt(DELAY_INITIAL_MAX - DELAY_INITIAL_MIN + 1) + DELAY_INITIAL_MIN,
+        r.nextInt(TEMPERATURE_INITIAL_MAX - TEMPERATURE_INITIAL_MIN + 1) + TEMPERATURE_INITIAL_MIN,
         vehicleType, new HashSet<>());
-    vehicle.setLoad((int) ((r.nextInt(99) + 1) * 0.01 * vehicle.getCapacity()));
+    vehicle.setLoad((int) ((r.nextInt(100) + 1) * 0.01 * vehicle.getCapacity()));
     return vehicle;
   }
 }
