@@ -200,14 +200,20 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
   }
 
   public static Vehicle createRandom(EVehicleType vehicleType) {
-    Random r = new Random(System.currentTimeMillis());
+
     Vehicle vehicle = new Vehicle(
-        r.nextInt(CAPACITY_INITIAL_MAX - CAPACITY_INITIAL_MIN + 1) + CAPACITY_INITIAL_MIN,
+        getInitialValue(CAPACITY_INITIAL_MIN, CAPACITY_INITIAL_MAX),
         0,
-        r.nextInt(DELAY_INITIAL_MAX - DELAY_INITIAL_MIN + 1) + DELAY_INITIAL_MIN,
-        r.nextInt(TEMPERATURE_INITIAL_MAX - TEMPERATURE_INITIAL_MIN + 1) + TEMPERATURE_INITIAL_MIN,
+        getInitialValue(DELAY_INITIAL_MIN, DELAY_INITIAL_MAX),
+        getInitialValue(TEMPERATURE_INITIAL_MIN, TEMPERATURE_INITIAL_MAX),
         vehicleType, new HashSet<>());
+    Random r = new Random(System.currentTimeMillis());
     vehicle.setLoad((int) ((r.nextInt(100) + 1) * 0.01 * vehicle.getCapacity()));
     return vehicle;
+  }
+
+  public static int getInitialValue(int min, int max){
+    Random r = new Random(System.currentTimeMillis());
+    return r.nextInt(max - min + 1) + min;
   }
 }
