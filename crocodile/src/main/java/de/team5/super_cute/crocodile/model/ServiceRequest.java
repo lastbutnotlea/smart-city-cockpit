@@ -1,5 +1,7 @@
 package de.team5.super_cute.crocodile.model;
 
+import static de.team5.super_cute.crocodile.util.Helpers.DUMMY_TIME;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.team5.super_cute.crocodile.external.C4CProperty;
 import java.time.LocalDateTime;
@@ -32,7 +34,7 @@ public class ServiceRequest extends C4CEntity {
    * not set by user, only in SAP
    */
   @C4CProperty(name = "CompletionOnDate")
-  private LocalDateTime completionDate;
+  private LocalDateTime completionDate = DUMMY_TIME;
 
   @C4CProperty(name = "DataOriginTypeCode")
   @JsonIgnore
@@ -150,14 +152,17 @@ public class ServiceRequest extends C4CEntity {
   }
 
   public EServiceType getType() {
-    switch (this.processingTypeCode) {
-      case CLEANING_TYPE_CODE:
-        return EServiceType.CLEANING;
-      case MAINTENANCE_TYPE_CODE:
-        return EServiceType.MAINTENANCE;
-      default:
-        return type;
+    if (this.processingTypeCode != null) {
+      switch (this.processingTypeCode) {
+        case CLEANING_TYPE_CODE:
+          return EServiceType.CLEANING;
+        case MAINTENANCE_TYPE_CODE:
+          return EServiceType.MAINTENANCE;
+        default:
+          return type;
+      }
     }
+    return type;
   }
 
   public void setType(EServiceType type) {

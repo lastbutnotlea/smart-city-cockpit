@@ -22,14 +22,14 @@ public class C4CTest {
   @Test
   public void testAppointments() {
     List<AppointmentInvolvedParties> aip = new ArrayList<AppointmentInvolvedParties>() {{
-      add(new AppointmentInvolvedParties("Fußballclub"));
+      add(new AppointmentInvolvedParties("Fussballclub"));
     }};
     List<C4CNotes> notes = new ArrayList<C4CNotes>() {{
       add(new C4CNotes("There are gonna be many many people"));
     }};
     testC4CEntity(
-        new Event("Fußballspiel", "3", LocalDateTime.now(), LocalDateTime.now().plusHours(1),
-            "Fußballarena", aip, notes));
+        new Event("Fussballspiel", "3", LocalDateTime.now(), LocalDateTime.now().plusHours(1),
+            "Fussballarena", aip, notes));
   }
 
   @Test
@@ -51,7 +51,8 @@ public class C4CTest {
                 .getCollectionName());
       }
       connector.putC4CEntity(entity);
-      Assert.assertTrue(connector.getC4CEntities(entity.getEmptyObject()).contains(entity));
+      List<C4CEntity> entities = connector.getC4CEntities(entity.getEmptyObject());
+      Assert.assertTrue(entities.contains(entity));
 
       List<C4CEntity> objects = connector.getC4CEntities(entity.getEmptyObject());
       C4CEntity entityWithObjectId = objects.get(objects.indexOf(entity));

@@ -15,7 +15,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.net.URI;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.GregorianCalendar;
@@ -249,13 +249,14 @@ public class SAPC4CConnector {
 
       Optional<Field> matchingField = getFieldWithC4CAnnotation(result, propName);
       matchingField.ifPresent(field -> {
+        field.setAccessible(true);
         try {
           // String
           if (value instanceof String) {
             field.set(result, value);
           } // Metadata Type
-          else if (value instanceof Map) {
-            Object content = ((Map) value).get("content");
+          else if (value instanceof HashMap) {
+            Object content = ((HashMap) value).get("content");
             if (content.getClass().equals(String.class)) {
               field.set(result, content);
             } // DateTime
@@ -266,12 +267,11 @@ public class SAPC4CConnector {
           else if (value instanceof ODataDeltaFeed) {
             C4CEntity exampleEntity = (C4CEntity) ((Class<?>) ((ParameterizedType) field
                 .getGenericType()).getActualTypeArguments()[0])
-                .getMethod("getEmptyObject")
-                .invoke(result);
+                .getConstructor().newInstance();
             field.set(result,
                 mapListOfEntriesToListOfC4CEntities((ODataDeltaFeed) value, exampleEntity));
           }
-        } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e1) {
+        } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException | InstantiationException e1) {
           Helpers.logException(logger, e1);
         }
       });
@@ -293,7 +293,7 @@ public class SAPC4CConnector {
   }
 
   private Optional<Field> getFieldWithC4CAnnotation(C4CEntity entity, String name) {
-    return Arrays.stream(entity.getClass().getFields())
+    return Arrays.stream(entity.getClass().getDeclaredFields())
         .filter((Field f) -> Arrays.stream(f.getDeclaredAnnotations())
             .filter(a -> a.annotationType().equals(C4CProperty.class)).map(
                 C4CProperty.class::cast).anyMatch(c -> c.name().equals(name))).findAny();
@@ -380,7 +380,9 @@ public class SAPC4CConnector {
   private String serializeC4CEntityToString(C4CEntity entity) throws JsonProcessingException {
     ObjectMapper mapper = new ObjectMapper();
 
-    return mapper.writeValueAsString(serializeC4CEntity(entity));
+    Map<String, Object> map = serializeC4CEntity(entity);
+    String json = mapper.writeValueAsString(map);
+    return json;
   }
 
   private Map<String, Object> serializeC4CEntity(C4CEntity entity)
@@ -388,30 +390,14 @@ public class SAPC4CConnector {
     Map<String, Object> propMap = new HashMap<>();
 
     for (Field field :
-        Arrays.stream(entity.getClass().getFields())
+        Arrays.stream(entity.getClass().getDeclaredFields())
             .filter(f -> f.getAnnotation(C4CProperty.class) != null)
             .collect(Collectors.toList())) {
+      field.setAccessible(true);
       C4CProperty c4CAnnotation = field.getAnnotation(C4CProperty.class);
       try {
-        // Strings
-        if (field.getType().equals(String.class)
-            && !StringUtils.isBlank((String) field.get(entity))) {
-          // check for correct length
-          String text = (String) field.get(entity);
-          if (text.length() > c4CAnnotation.maxLength()) {
-            logger.warn("The field " + field.getName() + " with the value '" + text
-                + "' is too long. The maximal length accepted by C4C is: " + c4CAnnotation
-                .maxLength());
-          }
-          propMap.put(c4CAnnotation.name(), field.get(entity));
-
-        } // LocalDateTime
-        else if (field.getType().equals(LocalDateTime.class)) {
-          propMap.put(c4CAnnotation.name(),
-              localDateTimeToC4CDateString((LocalDateTime) field.get(entity)));
-
-        } // Typen die extre Metadata Format benötigen
-        else if (!StringUtils.isBlank(c4CAnnotation.metadataType())) {
+        // Typen die extra Metadata Format benötigen
+        if (!StringUtils.isBlank(c4CAnnotation.metadataType())) {
           Map<String, Object> complexType = new HashMap<>();
           propMap.put(c4CAnnotation.name(), complexType);
 
@@ -429,7 +415,24 @@ public class SAPC4CConnector {
           }
           complexType.put("content", content);
 
-        }  // Listen
+        } // Strings
+        else if (field.getType().equals(String.class)
+            && !StringUtils.isBlank((String) field.get(entity))) {
+          // check for correct length
+          String text = (String) field.get(entity);
+          if (text.length() > c4CAnnotation.maxLength()) {
+            logger.warn("The field " + field.getName() + " with the value '" + text
+                + "' is too long. The maximal length accepted by C4C is: " + c4CAnnotation
+                .maxLength());
+          }
+          propMap.put(c4CAnnotation.name(), field.get(entity));
+
+        }  // LocalDateTime
+        else if (field.getType().equals(LocalDateTime.class)) {
+          propMap.put(c4CAnnotation.name(),
+              localDateTimeToC4CDateString((LocalDateTime) field.get(entity)));
+
+        } // Listen
         else if (field.getType().equals(List.class)) {
           ArrayList<Map<String, Object>> maps = new ArrayList<>();
           propMap.put(c4CAnnotation.name(), maps);
@@ -451,6 +454,6 @@ public class SAPC4CConnector {
   }
 
   private String localDateTimeToC4CDateString(LocalDateTime time) {
-    return "/Date(" + time.toEpochSecond(ZoneOffset.of("CET")) + ")/";
+    return "/Date(" + time.atZone(ZoneId.of("UTC")).toInstant().toEpochMilli() + ")/";
   }
 }

@@ -49,7 +49,6 @@ public abstract class C4CEntity extends IdentifiableObject {
     C4CEntity c4CEntity = (C4CEntity) o;
 
     return new EqualsBuilder()
-        .appendSuper(super.equals(o))
         .append(getObjectId(), c4CEntity.getObjectId())
         .isEquals();
   }
@@ -57,7 +56,6 @@ public abstract class C4CEntity extends IdentifiableObject {
   @Override
   public int hashCode() {
     return new HashCodeBuilder(17, 37)
-        .appendSuper(super.hashCode())
         .append(getObjectId())
         .toHashCode();
   }
