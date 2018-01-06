@@ -12,6 +12,7 @@ import java.lang.annotation.Target;
 public @interface C4CProperty {
   String name();
 
-  //todo property for __metadata "type"
-  //todo property for max length?
+  String metadataType() default "";
+
+  int maxLength() default Integer.MAX_VALUE;
 }

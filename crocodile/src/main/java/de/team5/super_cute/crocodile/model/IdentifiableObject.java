@@ -1,5 +1,6 @@
 package de.team5.super_cute.crocodile.model;
 
+import de.team5.super_cute.crocodile.external.C4CProperty;
 import java.util.HashMap;
 import java.util.Map;
 import javax.persistence.Column;
@@ -15,6 +16,7 @@ public abstract class IdentifiableObject {
 
   @Id
   @Column
+  @C4CProperty(name = "ID")
   private String id = null;
 
   IdentifiableObject() {

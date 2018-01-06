@@ -9,7 +9,10 @@ import de.team5.super_cute.crocodile.util.Helpers;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
 import java.net.URI;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -62,8 +65,6 @@ import org.springframework.stereotype.Service;
 @Service("sapC4CConnector")
 public class SAPC4CConnector {
 
-  private Logger logger = LoggerFactory.getLogger(this.getClass());
-
   private static final String BASE_URL = "https://my304939.crm.ondemand.com/sap/c4c/odata/v1/c4codata/";
   private static final String METADATA = "$metadata";
   private static final String AUTHORIZATION_HEADER = "Authorization";
@@ -75,16 +76,16 @@ public class SAPC4CConnector {
   private static final String CONTENT_TYPE_HEADER = "Content-Type";
   private static final String ACCEPT_HEADER = "Accept";
   private static final String CONTENT_ID_HEADER = "Content-ID";
-  private static final String FILTER_QUERY = "?$filter=CreatedBy%20eq%20%27Uni%20Augsburg02%27";
-
+  private static final String FILTER_QUERY = "?$filter=CreatedBy%20eq%20%27Uni%20Augsburg02%27&$expand";
+  private final String boundary = "batch_" + UUID.randomUUID().toString();
+  private Logger logger = LoggerFactory.getLogger(this.getClass());
   private HttpClient httpClient = null;
   private Edm metadataDefinition = null;
   private String csrfToken = null;
   private CookieStore cookieStore = null;
 
-  private final String boundary = "batch_" + UUID.randomUUID().toString();
-
-  public SAPC4CConnector() {}
+  public SAPC4CConnector() {
+  }
 
   private HttpClient getHttpClient() {
     if (httpClient == null) {
@@ -263,7 +264,7 @@ public class SAPC4CConnector {
     changeSetHeaders.put(ACCEPT_HEADER, CONTENT_TYPE);
 
     BatchChangeSetPart changeRequest = BatchChangeSetPart.method("POST")
-        .uri(entity.getCollectionName()).body(serializeC4CEntity(entity))
+        .uri(entity.getCollectionName()).body(serializeC4CEntityToString(entity))
         .headers(changeSetHeaders).contentId(contentId).build();
     changeSet.add(changeRequest);
     batchParts.add(changeSet);
@@ -298,7 +299,7 @@ public class SAPC4CConnector {
 
   public String deleteC4CEntity(C4CEntity entity) throws IOException {
     HttpDelete delete = new HttpDelete(
-        createUri(BASE_URL, entity.getCollectionName(), entity.objectId, ""));
+        createUri(BASE_URL, entity.getCollectionName(), entity.getObjectId(), ""));
     delete.setConfig(RequestConfig.DEFAULT);
     delete.setHeader(AUTHORIZATION_HEADER, AUTHORIZATION);
     delete.setHeader(ACCEPT_HEADER, CONTENT_TYPE);
@@ -324,26 +325,82 @@ public class SAPC4CConnector {
     return getHttpClient().execute(post);
   }
 
-  private String serializeC4CEntity(C4CEntity entity)
+  private String serializeC4CEntityToString(C4CEntity entity) throws JsonProcessingException{
+    ObjectMapper mapper = new ObjectMapper();
+
+    return mapper.writeValueAsString(serializeC4CEntity(entity));
+  }
+
+  private Map<String, Object> serializeC4CEntity(C4CEntity entity)
       throws JsonProcessingException {
     Map<String, Object> propMap = new HashMap<>();
 
-    for (Field field : entity.getClass().getFields()) {
+    for (Field field :
+        Arrays.stream(entity.getClass().getFields())
+            .filter(f -> f.getAnnotation(C4CProperty.class) != null)
+            .collect(Collectors.toList())) {
+      C4CProperty c4CAnnotation = field.getAnnotation(C4CProperty.class);
       try {
-        if (field.getType().equals(String.class) && !StringUtils
-            .isBlank((String) field.get(entity))) {
-          propMap.put(field.getAnnotation(C4CProperty.class).name(), field.get(entity));
+        // Strings
+        if (field.getType().equals(String.class)
+            && !StringUtils.isBlank((String) field.get(entity))) {
+          // check for correct length
+          String text = (String) field.get(entity);
+          if (text.length() > c4CAnnotation.maxLength()) {
+            logger.warn("The field " + field.getName() + " with the value '" + text
+                + "' is too long. The maximal length accepted by C4C is: " + c4CAnnotation
+                .maxLength());
+          }
+          propMap.put(c4CAnnotation.name(), field.get(entity));
+
+        } // LocalDateTime
+        else if (field.getType().equals(LocalDateTime.class)) {
+          propMap.put(c4CAnnotation.name(),
+              localDateTimeToC4CDateString((LocalDateTime) field.get(entity)));
+
+        } // Typen die extre Metadata Format benötigen
+        else if (!StringUtils.isBlank(c4CAnnotation.metadataType())) {
+          Map<String, Object> complexType = new HashMap<>();
+          propMap.put(c4CAnnotation.name(), complexType);
+
+          Map<String, Object> metadata = new HashMap<>();
+          complexType.put("__metadata", metadata);
+          metadata.put("type", c4CAnnotation.metadataType());
+
+          Object content = null;
+          if (c4CAnnotation.metadataType().equals("c4codata.LOCALNORMALISED_DateTime")) {
+            complexType.put("timeZoneCode", "CET");
+            content = localDateTimeToC4CDateString((LocalDateTime) field.get(entity));
+          }
+          else if (c4CAnnotation.metadataType().equals("c4codata.EXTENDED_Name")) {
+            complexType.put("languageCode", "EN");
+            content = field.get(entity);
+          }
+          complexType.put("content", content);
+
+        }  // Listen
+        else if (field.getType().equals(List.class)) {
+          List<?> list = (List<?>) field.get(entity);
+          Object[] maps = new Object[list.size()];
+          propMap.put(c4CAnnotation.name(), maps);
+          if (((Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0])
+              .getSuperclass().equals(C4CEntity.class)) {
+            List<C4CEntity> aip = (List<C4CEntity>) list;
+            for (int i = 0; i < aip.size(); i++) {
+              maps[i] = serializeC4CEntity(aip.get(i));
+            }
+          }
         }
+
       } catch (IllegalAccessException e) {
         Helpers.logException(logger, e); // on access → continue
       }
     }
 
-    // TODO make special classes for Complicated names involving __metadata and serialize with them
-    // TODO also for time things
+    return propMap;
+  }
 
-    ObjectMapper mapper = new ObjectMapper();
-
-    return mapper.writeValueAsString(propMap);
+  private String localDateTimeToC4CDateString(LocalDateTime time) {
+    return "/Date(" + time.toEpochSecond(ZoneOffset.of("CET")) + ")/";
   }
 }
