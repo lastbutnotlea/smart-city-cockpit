@@ -15,4 +15,6 @@ public @interface C4CProperty {
   String metadataType() default "";
 
   int maxLength() default Integer.MAX_VALUE;
+
+  boolean associatedEntities() default false;
 }

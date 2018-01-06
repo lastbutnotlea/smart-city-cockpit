@@ -2,6 +2,9 @@ package de.team5.super_cute.crocodile.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.team5.super_cute.crocodile.external.C4CProperty;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * Base Class for all Entities that should be serialized to SAP C4C Objects.
@@ -31,5 +34,38 @@ public abstract class C4CEntity extends IdentifiableObject {
 
   public void setObjectId(String objectId) {
     this.objectId = objectId;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (!(o instanceof C4CEntity)) {
+      return false;
+    }
+
+    C4CEntity c4CEntity = (C4CEntity) o;
+
+    return new EqualsBuilder()
+        .appendSuper(super.equals(o))
+        .append(getObjectId(), c4CEntity.getObjectId())
+        .isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 37)
+        .appendSuper(super.hashCode())
+        .append(getObjectId())
+        .toHashCode();
+  }
+
+  @Override
+  public String toString() {
+    return new ToStringBuilder(this)
+        .append("objectId", objectId)
+        .toString();
   }
 }

@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.team5.super_cute.crocodile.config.C4CConfig;
 import de.team5.super_cute.crocodile.external.C4CProperty;
 import java.util.Map.Entry;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class AppointmentInvolvedParties extends C4CEntity {
 
@@ -72,6 +75,48 @@ public class AppointmentInvolvedParties extends C4CEntity {
   @Override
   public C4CEntity getEmptyObject() {
     return new AppointmentInvolvedParties();
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (!(o instanceof AppointmentInvolvedParties)) {
+      return false;
+    }
+
+    AppointmentInvolvedParties that = (AppointmentInvolvedParties) o;
+
+    return new EqualsBuilder()
+        .appendSuper(super.equals(o))
+        .append(getPartyId(), that.getPartyId())
+        .append(getPartyName(), that.getPartyName())
+        .append(getRoleCode(), that.getRoleCode())
+        .append(getPartyTypeCode(), that.getPartyTypeCode())
+        .isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 37)
+        .appendSuper(super.hashCode())
+        .append(getPartyId())
+        .append(getPartyName())
+        .append(getRoleCode())
+        .append(getPartyTypeCode())
+        .toHashCode();
+  }
+
+  @Override
+  public String toString() {
+    return new ToStringBuilder(this)
+        .append("partyId", partyId)
+        .append("partyName", partyName)
+        .append("roleCode", roleCode)
+        .append("partyTypeCode", partyTypeCode)
+        .toString();
   }
 }
 

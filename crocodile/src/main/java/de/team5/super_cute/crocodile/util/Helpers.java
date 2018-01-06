@@ -1,12 +1,15 @@
 package de.team5.super_cute.crocodile.util;
 
+import de.team5.super_cute.crocodile.external.C4CProperty;
 import de.team5.super_cute.crocodile.external.TpDataConnector;
 import de.team5.super_cute.crocodile.model.Line;
+import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.slf4j.Logger;
 
 public class Helpers {
@@ -32,4 +35,7 @@ public class Helpers {
         .collect(Collectors.joining("\n")));
   }
 
+  public static Stream<Field> getC4CProperties(Object o) {
+    return Arrays.stream(o.getClass().getDeclaredFields()).filter(f -> f.getAnnotation(C4CProperty.class) != null);
+  }
 }

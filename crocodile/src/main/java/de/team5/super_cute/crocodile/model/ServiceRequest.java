@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.team5.super_cute.crocodile.external.C4CProperty;
 import java.time.LocalDateTime;
 import java.util.List;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class ServiceRequest extends C4CEntity {
 
@@ -41,7 +44,7 @@ public class ServiceRequest extends C4CEntity {
 
   private EServiceType type;
 
-  @C4CProperty(name = "ServiceRequestDescription")
+  @C4CProperty(name = "ServiceRequestDescription", associatedEntities = true)
   private List<C4CNotes> ServiceRequestDescription;
 
   /**
@@ -192,5 +195,71 @@ public class ServiceRequest extends C4CEntity {
 
   public void setReferencedFeedback(String referencedFeedback) {
     this.referencedFeedback = referencedFeedback;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (!(o instanceof ServiceRequest)) {
+      return false;
+    }
+
+    ServiceRequest that = (ServiceRequest) o;
+
+    return new EqualsBuilder()
+        .appendSuper(super.equals(o))
+        .append(getName(), that.getName())
+        .append(getCustomerId(), that.getCustomerId())
+        .append(getPriority(), that.getPriority())
+        .append(getStatusCode(), that.getStatusCode())
+        .append(getDueDate(), that.getDueDate())
+        .append(getCompletionDate(), that.getCompletionDate())
+        .append(getOriginTypeCode(), that.getOriginTypeCode())
+        .append(getProcessingTypeCode(), that.getProcessingTypeCode())
+        .append(getType(), that.getType())
+        .append(getServiceRequestDescription(), that.getServiceRequestDescription())
+        .append(getTarget(), that.getTarget())
+        .append(getReferencedFeedback(), that.getReferencedFeedback())
+        .isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 37)
+        .appendSuper(super.hashCode())
+        .append(getName())
+        .append(getCustomerId())
+        .append(getPriority())
+        .append(getStatusCode())
+        .append(getDueDate())
+        .append(getCompletionDate())
+        .append(getOriginTypeCode())
+        .append(getProcessingTypeCode())
+        .append(getType())
+        .append(getServiceRequestDescription())
+        .append(getTarget())
+        .append(getReferencedFeedback())
+        .toHashCode();
+  }
+
+  @Override
+  public String toString() {
+    return new ToStringBuilder(this)
+        .append("name", name)
+        .append("customerId", customerId)
+        .append("priority", priority)
+        .append("statusCode", statusCode)
+        .append("dueDate", dueDate)
+        .append("completionDate", completionDate)
+        .append("originTypeCode", originTypeCode)
+        .append("processingTypeCode", processingTypeCode)
+        .append("type", type)
+        .append("ServiceRequestDescription", ServiceRequestDescription)
+        .append("target", target)
+        .append("referencedFeedback", referencedFeedback)
+        .toString();
   }
 }

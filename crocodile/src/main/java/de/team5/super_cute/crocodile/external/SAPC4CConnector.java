@@ -1,5 +1,7 @@
 package de.team5.super_cute.crocodile.external;
 
+import static de.team5.super_cute.crocodile.util.Helpers.getC4CProperties;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.team5.super_cute.crocodile.model.C4CEntity;
@@ -9,12 +11,14 @@ import de.team5.super_cute.crocodile.util.Helpers;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,6 +56,7 @@ import org.apache.olingo.odata2.api.ep.EntityProvider;
 import org.apache.olingo.odata2.api.ep.EntityProviderException;
 import org.apache.olingo.odata2.api.ep.EntityProviderReadProperties;
 import org.apache.olingo.odata2.api.ep.entry.ODataEntry;
+import org.apache.olingo.odata2.api.ep.feed.ODataDeltaFeed;
 import org.apache.olingo.odata2.api.ep.feed.ODataFeed;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,7 +81,7 @@ public class SAPC4CConnector {
   private static final String CONTENT_TYPE_HEADER = "Content-Type";
   private static final String ACCEPT_HEADER = "Accept";
   private static final String CONTENT_ID_HEADER = "Content-ID";
-  private static final String FILTER_QUERY = "?$filter=CreatedBy%20eq%20%27Uni%20Augsburg02%27&$expand";
+  private static final String FILTER_QUERY = "?$filter=CreatedBy%20eq%20%27Uni%20Augsburg02%27";
   private final String boundary = "batch_" + UUID.randomUUID().toString();
   private Logger logger = LoggerFactory.getLogger(this.getClass());
   private HttpClient httpClient = null;
@@ -203,7 +208,22 @@ public class SAPC4CConnector {
       throws EntityProviderException, EdmException, IOException {
     List<C4CEntity> items = new ArrayList<>();
 
-    ODataFeed feed = readFeed(BASE_URL, exampleEntity.getCollectionName(), FILTER_QUERY);
+    // find associated objects to expand
+    StringBuilder expandOptions = new StringBuilder();
+    expandOptions.append("&$expand=");
+    getC4CProperties(exampleEntity)
+        .filter(f -> f.getAnnotation(C4CProperty.class).associatedEntities())
+        .map(f -> f.getAnnotation(C4CProperty.class).name()).forEach(s -> {
+      expandOptions.append(s);
+      expandOptions.append(",");
+    });
+    int lastCommaIndex = expandOptions.lastIndexOf(",");
+    if (lastCommaIndex == expandOptions.length() - 1) {
+      expandOptions.replace(lastCommaIndex, lastCommaIndex + 1, "");
+    }
+
+    ODataFeed feed = readFeed(BASE_URL, exampleEntity.getCollectionName(),
+        FILTER_QUERY + expandOptions.toString());
 
     for (ODataEntry entry : feed.getEntries()) {
       items.add(mapEntryToC4CEntity(entry, exampleEntity.getEmptyObject()));
@@ -230,14 +250,46 @@ public class SAPC4CConnector {
       Optional<Field> matchingField = getFieldWithC4CAnnotation(result, propName);
       matchingField.ifPresent(field -> {
         try {
-          field.set(result, value);
-        } catch (IllegalAccessException e1) {
+          // String
+          if (value instanceof String) {
+            field.set(result, value);
+          } // Metadata Type
+          else if (value instanceof Map) {
+            Object content = ((Map) value).get("content");
+            if (content.getClass().equals(String.class)) {
+              field.set(result, content);
+            } // DateTime
+            else if (content instanceof GregorianCalendar) {
+              field.set(result, ((GregorianCalendar) content).toZonedDateTime().toLocalDateTime());
+            }
+          } // Associated Entities
+          else if (value instanceof ODataDeltaFeed) {
+            C4CEntity exampleEntity = (C4CEntity) ((Class<?>) ((ParameterizedType) field
+                .getGenericType()).getActualTypeArguments()[0])
+                .getMethod("getEmptyObject")
+                .invoke(result);
+            field.set(result,
+                mapListOfEntriesToListOfC4CEntities((ODataDeltaFeed) value, exampleEntity));
+          }
+        } catch (IllegalAccessException | NoSuchMethodException | InvocationTargetException e1) {
           Helpers.logException(logger, e1);
         }
       });
     }
 
     return result;
+  }
+
+  private List<C4CEntity> mapListOfEntriesToListOfC4CEntities(ODataDeltaFeed feed,
+      C4CEntity exampleEntity) {
+    List<ODataEntry> entries = feed.getEntries();
+    ArrayList<C4CEntity> results = new ArrayList<>();
+
+    for (ODataEntry entry : entries) {
+      results.add(mapEntryToC4CEntity(entry, exampleEntity.getEmptyObject()));
+    }
+
+    return results;
   }
 
   private Optional<Field> getFieldWithC4CAnnotation(C4CEntity entity, String name) {
@@ -325,7 +377,7 @@ public class SAPC4CConnector {
     return getHttpClient().execute(post);
   }
 
-  private String serializeC4CEntityToString(C4CEntity entity) throws JsonProcessingException{
+  private String serializeC4CEntityToString(C4CEntity entity) throws JsonProcessingException {
     ObjectMapper mapper = new ObjectMapper();
 
     return mapper.writeValueAsString(serializeC4CEntity(entity));
@@ -371,8 +423,7 @@ public class SAPC4CConnector {
           if (c4CAnnotation.metadataType().equals("c4codata.LOCALNORMALISED_DateTime")) {
             complexType.put("timeZoneCode", "CET");
             content = localDateTimeToC4CDateString((LocalDateTime) field.get(entity));
-          }
-          else if (c4CAnnotation.metadataType().equals("c4codata.EXTENDED_Name")) {
+          } else if (c4CAnnotation.metadataType().equals("c4codata.EXTENDED_Name")) {
             complexType.put("languageCode", "EN");
             content = field.get(entity);
           }
@@ -380,14 +431,13 @@ public class SAPC4CConnector {
 
         }  // Listen
         else if (field.getType().equals(List.class)) {
-          List<?> list = (List<?>) field.get(entity);
-          Object[] maps = new Object[list.size()];
+          ArrayList<Map<String, Object>> maps = new ArrayList<>();
           propMap.put(c4CAnnotation.name(), maps);
           if (((Class<?>) ((ParameterizedType) field.getGenericType()).getActualTypeArguments()[0])
               .getSuperclass().equals(C4CEntity.class)) {
-            List<C4CEntity> aip = (List<C4CEntity>) list;
-            for (int i = 0; i < aip.size(); i++) {
-              maps[i] = serializeC4CEntity(aip.get(i));
+            List<C4CEntity> items = (List<C4CEntity>) field.get(entity);
+            for (C4CEntity item : items) {
+              maps.add(serializeC4CEntity(item));
             }
           }
         }
