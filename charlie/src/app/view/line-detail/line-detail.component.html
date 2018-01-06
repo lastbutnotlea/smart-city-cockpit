@@ -14,10 +14,6 @@
 
 <app-line-map #inbound></app-line-map>
 <app-line-map #outbound></app-line-map>
-<div *ngIf="isLoaded()">
-  <app-embedded-stop-overview [linePositionData]="inboundPositionData" [title]="'Inbound'" [color]="line.color"></app-embedded-stop-overview>
-  <app-embedded-stop-overview [linePositionData]="outboundPositionData" [title]="'Outbound'" [color]="line.color"></app-embedded-stop-overview>
-</div>
 
 <div *ngIf="isLoaded()">
   <app-embedded-stop-overview [linePositionData]="inboundPositionData" [title]="'Inbound'" [color]="line.color"></app-embedded-stop-overview>

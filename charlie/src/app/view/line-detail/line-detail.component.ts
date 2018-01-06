@@ -25,7 +25,6 @@ export class LineDetailComponent extends LiveDataComponent implements OnInit {
 
   @ViewChild('inbound')
   lineMapInbound: LineMapComponent;
-
   @ViewChild('outbound')
   lineMapOutbound: LineMapComponent;
 
