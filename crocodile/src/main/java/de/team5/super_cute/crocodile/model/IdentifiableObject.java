@@ -43,7 +43,7 @@ public abstract class IdentifiableObject {
     return id;
   }
 
-  public void setId(String id){
+  public void setId(String id) {
     this.id = id;
   }
 

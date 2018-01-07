@@ -6,7 +6,6 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,21 +39,20 @@ public class VehicleController extends BaseController<Vehicle> {
   }
 
   @PostMapping
-  public ResponseEntity addVehicle(@RequestBody Vehicle input) {
+  public String addVehicle(@RequestBody Vehicle input) {
     logger.info("Got Request to add the vehicle " + input);
     return addObject(input);
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity deleteVehicle(@PathVariable String id) {
+  public String deleteVehicle(@PathVariable String id) {
     logger.info("Got Request to delete the vehicle with id " + id);
     return deleteObject(id);
   }
 
   @PutMapping
-  public ResponseEntity editVehicle(@RequestBody Vehicle input) {
+  public String editVehicle(@RequestBody Vehicle input) {
     logger.info("Got Request to edit a vehicle to " + input);
     return editObject(input);
   }
-
 }

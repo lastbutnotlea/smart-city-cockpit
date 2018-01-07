@@ -1,5 +1,17 @@
 <div class="bounding-box bg-light">
-  <h5>Line</h5>
+
+  <h5 class="text-lg-left">
+    <div [ngClass]="{'color-fine': line.state === 'FINE',
+     'color-problematic': line.state === 'PROBLEMATIC',
+     'color-critical': line.state === 'CRITICAL' }">
+      <i class="fa fa-exclamation-triangle fa-2x float-right small-padding-right" aria-hidden="true"></i>
+    </div>
+    <i class="fa fa-arrows-h fa-2x float-left small-padding-left text-primary"></i>
+    <label class="padding-emb-box-headline">Line</label>
+
+
+  </h5>
+
   <p class="text-primary">{{line.name}}</p>
   <p>ID: {{line.id}}</p>
 </div>

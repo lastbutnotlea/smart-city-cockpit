@@ -1,11 +1,9 @@
 package de.team5.super_cute.crocodile.generator;
 
 
-import static de.team5.super_cute.crocodile.config.InitialSetupConfig.fromHour;
-import static de.team5.super_cute.crocodile.config.InitialSetupConfig.fromMinute;
-import static de.team5.super_cute.crocodile.config.InitialSetupConfig.lineIds;
-import static de.team5.super_cute.crocodile.config.InitialSetupConfig.toHour;
-import static de.team5.super_cute.crocodile.config.InitialSetupConfig.toMinute;
+import static de.team5.super_cute.crocodile.config.InitialSetupConfig.INITIALIZE_FOR_MINUTES;
+import static de.team5.super_cute.crocodile.config.InitialSetupConfig.INITIALIZE_SINCE_MINUTES;
+import static de.team5.super_cute.crocodile.config.InitialSetupConfig.LINEIDS;
 import static de.team5.super_cute.crocodile.config.TfLApiConfig.app_id;
 import static de.team5.super_cute.crocodile.config.TfLApiConfig.app_key;
 
@@ -15,14 +13,13 @@ import de.team5.super_cute.crocodile.data.StopData;
 import de.team5.super_cute.crocodile.data.TripData;
 import de.team5.super_cute.crocodile.data.VehicleData;
 import de.team5.super_cute.crocodile.external.TpDataConnector;
-import de.team5.super_cute.crocodile.model.EVehicleType;
 import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Vehicle;
 import de.team5.super_cute.crocodile.util.NetworkDataBuilder;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.PriorityQueue;
 import javax.annotation.PostConstruct;
@@ -52,11 +49,11 @@ public class InitialDataGenerator {
   public void generateInitialPrototypeSetup() {
     networkDataBuilder = new NetworkDataBuilder(lineData, vehicleData, stopData,
         tripData);
-    ArrayList<Line> lines = new TpDataConnector().getLines(lineIds);
     LoggerFactory.getLogger(getClass())
         .info("Started initialization");
-    LocalDateTime from = LocalDateTime.now().withHour(fromHour).withMinute(fromMinute);
-    LocalDateTime to = LocalDateTime.now().withHour(toHour).withMinute(toMinute);
+    ArrayList<Line> lines = new TpDataConnector().getLines(LINEIDS);
+    LocalDateTime from = LocalDateTime.now().minusMinutes(INITIALIZE_SINCE_MINUTES);
+    LocalDateTime to = LocalDateTime.now().plusMinutes(INITIALIZE_FOR_MINUTES);
     generateTripsAndVehicles(from, to, lines);
     LoggerFactory.getLogger(getClass())
         .info("Finished initialization");
@@ -72,7 +69,7 @@ public class InitialDataGenerator {
     for (int x = 0; x < lines.size(); x++) {
       try {
         Line line = lines.get(x);
-        if(lineData.exists(line.getName())){
+        if (lineData.exists(line.getName())) {
           continue;
         }
         networkDataBuilder.addLinesWithStops(line);
@@ -80,16 +77,17 @@ public class InitialDataGenerator {
             .max(Integer::compareTo).orElse(-1);
         int outboundTravelTime = line.getTravelTimeOutbound().values().stream()
             .max(Integer::compareTo).orElse(-1);
+        //noinspection ComparatorCombinators
         PriorityQueue<Pair<Vehicle, LocalDateTime>> queueInbound = new PriorityQueue<>(
-            (a, b) -> a.getValue().compareTo(b.getValue()));
+            Comparator.comparing(Pair::getValue));
         PriorityQueue<Pair<Vehicle, LocalDateTime>> queueOutbound = new PriorityQueue<>(
-            (a, b) -> a.getValue().compareTo(b.getValue()));
+            Comparator.comparing(Pair::getValue));
         MyLocalDateTime iterator = new MyLocalDateTime(LocalDateTime.from(from));
         MyLocalDateTime nextTripInbound = new MyLocalDateTime(LocalDateTime.from(from));
         MyLocalDateTime nextTripOutbound = new MyLocalDateTime(LocalDateTime.from(from));
         inboundPointer = 0;
         outboundPointer = 0;
-        params.put("id", lineIds.get(x));
+        params.put("id", LINEIDS.get(x));
         params.put("fromStopPointId", lines.get(x).getStopsInbound().get(0).getId());
         params.put("app_id", app_id);
         params.put("app_key", app_key);
@@ -165,7 +163,7 @@ public class InitialDataGenerator {
           break;
         }
       } while (from.compareTo(actual.getLocalDateTime()) == 1);
-    } catch(NullPointerException e) {
+    } catch (NullPointerException e) {
       actual.setLocalDateTime(actual.getLocalDateTime().plusDays(1));
     }
     return pointer;
@@ -179,7 +177,7 @@ public class InitialDataGenerator {
     Vehicle vehicle;
     if (queueFrom.peek() == null || queueFrom.peek().getValue().compareTo(iterator) == 1) {
       //If no (or no available) vehicle exists: create new one
-      vehicle = new Vehicle(100, 0, 42, new HashSet<>(), EVehicleType.Bus);
+      vehicle = Vehicle.createRandom(line.getType());
       networkDataBuilder.addVehicles(vehicle);
     } else {
       vehicle = queueFrom.poll().getKey();
@@ -205,22 +203,24 @@ public class InitialDataGenerator {
             .withMinute(knownJourneys.get(pointer).get("minute").asInt()));
     return pointer;
   }
+
+  private class MyLocalDateTime {
+
+    private LocalDateTime localDateTime;
+
+    public MyLocalDateTime(LocalDateTime localDateTime) {
+      this.localDateTime = localDateTime;
+    }
+
+    public LocalDateTime getLocalDateTime() {
+      return localDateTime;
+    }
+
+    public void setLocalDateTime(LocalDateTime localDateTime) {
+      this.localDateTime = localDateTime;
+    }
+  }
 }
 
-class MyLocalDateTime {
 
-  private LocalDateTime localDateTime;
-
-  public MyLocalDateTime(LocalDateTime localDateTime) {
-    this.localDateTime = localDateTime;
-  }
-
-  public LocalDateTime getLocalDateTime() {
-    return localDateTime;
-  }
-
-  public void setLocalDateTime(LocalDateTime localDateTime) {
-    this.localDateTime = localDateTime;
-  }
-}
 

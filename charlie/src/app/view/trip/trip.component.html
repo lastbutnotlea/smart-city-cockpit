@@ -1,23 +1,21 @@
-<div *ngIf="!isLoaded()">
-  <h3>Loading...</h3>
-</div>
+<h3 class="text-center margin-bottom">{{title}}</h3>
 
-<h3 class="text-center">{{title}}</h3>
-
-<app-filter-view></app-filter-view>
+<app-filter-group-view></app-filter-group-view>
 
 <div class="scrollable">
-  <table class="table">
+  <table class="table table-width">
     <thead>
     <tr>
       <th>TripId</th>
       <th>VehicleId</th>
       <th>VehicleType</th>
       <th>LineId</th>
+      <th></th>
+      <th></th>
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let trip of (compFilter.getFiltered(trips))">
+    <tr *ngFor="let trip of filterGroup.getFiltered(trips)">
       <td>
         <a routerLink="detail/{{trip.id}}">
           {{ trip.id }}
@@ -26,7 +24,19 @@
       <td>{{ trip.vehicle.id }}</td>
       <td>{{ trip.vehicle.type }}</td>
       <td>{{ trip.line.name }}</td>
+        <td>
+          <span [ngClass]="{'color-fine': trip.vehicle.state === 'FINE',
+           'color-problematic': trip.vehicle.state === 'PROBLEMATIC',
+          'color-critical': trip.vehicle.state === 'CRITICAL' }">
+            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+          </span>
+        </td>
+      <td><i class="fa fa-trash fa-2x text-primary"></i></td>
     </tr>
     </tbody>
   </table>
+
+  <div *ngIf="!isLoaded()">
+    <h3>Loading...</h3>
+  </div>
 </div>

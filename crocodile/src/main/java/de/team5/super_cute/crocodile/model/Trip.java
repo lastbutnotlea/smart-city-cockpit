@@ -101,14 +101,9 @@ public class Trip extends IdentifiableObject implements Serializable {
       StopDepartureData data = new StopDepartureData();
       data.id = entry.getKey();
       data.departureTime = entry.getValue().toString();
-      List<Stop> stopsInLine;
-      if (isInbound) {
-        stopsInLine = line.getStopsInbound();
-      } else {
-        stopsInLine = line.getStopsOutbound();
-      }
-      data.name = stopsInLine.stream().filter(s -> s.getId().equals(entry.getKey()))
-          .map(Stop::getCommonName).findAny().orElse("");
+      Stop stop = getTripStopForId(entry.getKey());
+      data.name = stop.getCommonName();
+      data.state = stop.getState();
       return data;
     }).collect(Collectors.toList());
   }
@@ -117,13 +112,24 @@ public class Trip extends IdentifiableObject implements Serializable {
   public void setStopsAsList(List<StopDepartureData> list) {
     try {
       stops = new HashMap<>(list.size());
-      list.forEach(data -> {
-        stops.put(data.id, LocalDateTime.parse(data.departureTime));
-      });
+      list.forEach(data -> stops.put(data.id, LocalDateTime.parse(data.departureTime)));
     } catch (Exception e) {
       e.printStackTrace();
       throw e;
     }
+  }
+
+  public Stop getTripStopForId(String id) {
+    List<Stop> stopsInLine;
+    if (isInbound) {
+      stopsInLine = line.getStopsInbound();
+    } else {
+      stopsInLine = line.getStopsOutbound();
+    }
+    return stopsInLine.stream()
+        .filter(s -> s.getId().equals(id))
+        .findAny()
+        .orElse(null);
   }
 
   public static class StopDepartureData {
@@ -134,5 +140,7 @@ public class Trip extends IdentifiableObject implements Serializable {
     public String departureTime;
     @JsonProperty
     public String name;
+    @JsonProperty
+    public EState state;
   }
 }

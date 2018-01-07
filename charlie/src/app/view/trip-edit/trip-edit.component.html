@@ -1,6 +1,6 @@
 <div class="modal-header">
   <h4 class="modal-title">
-    Edit trip {{data.id}} on line
+    Edit stops and vehicle of trip {{data.id}} on line
     <label class="text-primary">{{data.line.name}}</label>
   </h4>
   <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
@@ -9,7 +9,7 @@
 </div>
 <div class="modal-body">
 
-  <div class="spacing">
+  <div class="margin-bottom">
     <label>Vehicle: </label>
     <app-dropdown [values]="toDropdownItems(availVehicles)" [(selected)]="selectedVehicle"></app-dropdown>
   </div>

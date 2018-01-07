@@ -1,17 +1,19 @@
 package de.team5.super_cute.crocodile.external;
 
+import static de.team5.super_cute.crocodile.config.ColorMapping.lineColors;
 import static de.team5.super_cute.crocodile.config.TfLApiConfig.app_id;
 import static de.team5.super_cute.crocodile.config.TfLApiConfig.app_key;
-import static de.team5.super_cute.crocodile.util.ColorMapping.girlyColors;
-import static de.team5.super_cute.crocodile.util.ColorMapping.lineColors;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import de.team5.super_cute.crocodile.model.EVehicleType;
 import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Stop;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.LoggerFactory;
@@ -33,22 +35,23 @@ public class TpDataConnector {
         params.put("id", id);
         params.put("app_id", app_id);
         params.put("app_key", app_key);
-        JsonNode node = rt
-            .getForObject("https://api.tfl.gov.uk/Line/{id}/Route/Sequence/all?app_id={app_id}&app_key={app_key}", JsonNode.class,
-                params);
+        JsonNode node = rt.getForObject(
+            "https://api.tfl.gov.uk/Line/{id}/Route/Sequence/all?app_id={app_id}&app_key={app_key}",
+            JsonNode.class,
+            params);
         getStopsFromNode(node, stopsInbound, stopsOutbound);
         travelTimeInbound = getTravelTimes(node, stopsInbound);
         travelTimeOutbound = getTravelTimes(node, stopsOutbound);
+        // Bus line ids are always only numbers
+        EVehicleType type = id.matches("\\d+") ? EVehicleType.BUS : EVehicleType.SUBWAY;
         lines.add(
             new Line(node.get("lineName").asText(), stopsInbound,
-                stopsOutbound, travelTimeInbound, travelTimeOutbound, lineColors.get(node.get("lineName").asText())));
+                stopsOutbound, travelTimeInbound, travelTimeOutbound,
+                lineColors.get(node.get("lineName").asText()), type));
       } catch (RestClientException e) {
         LoggerFactory.getLogger(getClass())
             .error("Error while accessing Transport-API while creating lines: " + e.getMessage());
-      } catch (NullPointerException e) {
-        LoggerFactory.getLogger(getClass())
-            .error("Error while accessing JsonNode while creating lines: " + e.getMessage());
-      } catch (IllegalArgumentException e) {
+      } catch (NullPointerException | IllegalArgumentException e) {
         LoggerFactory.getLogger(getClass())
             .error("Error while accessing JsonNode while creating lines: " + e.getMessage());
       }
@@ -64,10 +67,10 @@ public class TpDataConnector {
     params.put("fromStopPointId", stops.get(0).getId());
     params.put("app_id", app_id);
     params.put("app_key", app_key);
-    JsonNode node_travelTime = rt
-        .getForObject("https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}?app_id={app_id}&app_key={app_key}",
-            JsonNode.class,
-            params);
+    JsonNode node_travelTime = rt.getForObject(
+        "https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}?app_id={app_id}&app_key={app_key}",
+        JsonNode.class,
+        params);
     Map<String, Integer> travelTime = new HashMap<>();
     JsonNode stationIntervals = node_travelTime.get("timetable").get("routes").get(0)
         .get("stationIntervals");
@@ -91,13 +94,14 @@ public class TpDataConnector {
       //first sequence is inbound, second is outbound
       for (int x = 0; x < node.get("stopPointSequences").get(i).get("stopPoint").size(); x++) {
         //iterate over all stops and create objects
+        Random r = new Random(System.currentTimeMillis());
         Stop stop = new Stop(
             node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("id")
                 .asText(),
             node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("name").asText(),
             node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("lon").asDouble(),
             node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("lat").asDouble(),
-            0);
+            r.nextInt(400), new HashSet<>());
         if (node.get("stopPointSequences").get(i).get("direction").asText().equals("inbound")) {
           stopsInbound.add(stop);
         } else if (node.get("stopPointSequences").get(i).get("direction").asText()

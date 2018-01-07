@@ -1,15 +1,17 @@
 package de.team5.super_cute.crocodile.controller;
 
 import de.team5.super_cute.crocodile.data.BaseData;
+import de.team5.super_cute.crocodile.data.LineData;
+import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Trip;
 import de.team5.super_cute.crocodile.util.Helpers;
+import de.team5.super_cute.crocodile.validation.VehicleValidation;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,9 +27,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/trips")
 public class TripController extends BaseController<Trip> {
 
+  private LineData lineData;
+  private VehicleValidation vehicleValidation;
+
   @Autowired
-  public TripController(BaseData<Trip> tripData) {
+  public TripController(BaseData<Trip> tripData, LineData lineData, VehicleValidation vehicleValidation) {
     data = tripData;
+    this.lineData = lineData;
+    this.vehicleValidation = vehicleValidation;
   }
 
   @GetMapping
@@ -38,38 +45,49 @@ public class TripController extends BaseController<Trip> {
         .filter(t -> StringUtils.isEmpty(lineId) || t.getLine().getId().equals(lineId))
         .filter(t -> StringUtils.isEmpty(stopId) || t.getStops().get(stopId) != null)
         .filter(t -> StringUtils.isEmpty(vehicleId) || t.getVehicle().getId().equals(vehicleId))
-        .collect(
-            Collectors.toList());
+        .peek(t -> t.getLine().setState(lineData.calculateLineState(t.getLine())))
+        .collect(Collectors.toList());
   }
 
   @GetMapping("/{id}")
   public Trip getTrip(@PathVariable String id) {
-    return getObjectForId(id);
+    Trip trip = getObjectForId(id);
+    trip.getLine().setState(lineData.calculateLineState(trip.getLine()));
+    return trip;
   }
 
   @PostMapping
-  public ResponseEntity addTrip(@RequestBody Trip tripInput) {
+  public String addTrip(@RequestBody Trip tripInput) {
     insertCorrectTimesForTrip(tripInput);
+    if(tripInput.getVehicle() != null){
+      if(!vehicleValidation.checkVehicleAvailability(tripInput)){
+        return "Vehicle not available!";
+      }
+    }
     return addObject(tripInput);
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity deleteTrip(@PathVariable String id) {
+  public String deleteTrip(@PathVariable String id) {
     return deleteObject(id);
   }
 
   @PutMapping
-  public ResponseEntity editTrip(@RequestBody Trip tripInput) {
+  public String editTrip(@RequestBody Trip tripInput) {
     insertCorrectTimesForTrip(tripInput);
+    if(tripInput.getVehicle() != null){
+      if(!vehicleValidation.checkVehicleAvailability(tripInput)){
+        return "Vehicle not available!";
+      }
+    }
     return editObject(tripInput);
   }
 
   /**
-   * Sets the correct times for each stop that has the dummy time associated.
-   * At least one Stop has to have a useful time!
+   * Sets the correct times for each stop that has the dummy time associated. At least one Stop has
+   * to have a useful time!
    *
-   * @param tripInput Trip with some dummy values
-   * @return Trip with all dummy values replaced by correct ones
+   * @param tripInput Trip with some dummy values, these are replaced with correct ones
    */
   private void insertCorrectTimesForTrip(Trip tripInput) {
     // Filter out Stops with dummy value + find stop in the trip with a specified time
@@ -81,8 +99,9 @@ public class TripController extends BaseController<Trip> {
     LocalDateTime departureAtFirstStopOfTrip = tripInput.getStops().get(firstStopIdOfTrip);
 
     // Find offset from first stop to line start
-    Map<String, Integer> travelTime = tripInput.isInbound() ? tripInput.getLine().getTravelTimeInbound()
-        : tripInput.getLine().getTravelTimeOutbound();
+    Map<String, Integer> travelTime =
+        tripInput.isInbound() ? tripInput.getLine().getTravelTimeInbound()
+            : tripInput.getLine().getTravelTimeOutbound();
 
     int tripToLineOffset = travelTime.get(firstStopIdOfTrip);
     List<String> stopIdsThatNeedCorrectTime = tripInput.getStops().entrySet().stream()

@@ -32,6 +32,10 @@ export class UrlBuilderService {
     return this.vehicleBaseUrl;
   }
 
+  public getVehicleDetailsUrl(vehicleId: string): string {
+    return this.vehicleBaseUrl + '/' + vehicleId;
+  }
+
   public getTripsUrl(): string {
     return this.tripBaseUrl;
   }
@@ -50,5 +54,9 @@ export class UrlBuilderService {
 
   public getMapConnectionsUrl(): string {
     return this.mapBaseUrl + '/connections';
+  }
+
+  public getFilterInfosUrl(): string {
+    return this.networkBaseUrl + '/filter-data';
   }
 }
