@@ -7,6 +7,7 @@ import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -37,5 +38,18 @@ public class Helpers {
 
   public static Stream<Field> getC4CProperties(Object o) {
     return Arrays.stream(o.getClass().getDeclaredFields()).filter(f -> f.getAnnotation(C4CProperty.class) != null);
+  }
+
+  // from https://stackoverflow.com/a/3567901/6456126
+  public static List<Field> getInheritedAndDeclaredPrivateFields(Class<?> type) {
+    List<Field> result = new ArrayList<Field>();
+
+    Class<?> i = type;
+    while (i != null && i != Object.class) {
+      Collections.addAll(result, i.getDeclaredFields());
+      i = i.getSuperclass();
+    }
+
+    return result;
   }
 }

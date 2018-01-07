@@ -90,7 +90,6 @@ public class AppointmentInvolvedParties extends C4CEntity {
     AppointmentInvolvedParties that = (AppointmentInvolvedParties) o;
 
     return new EqualsBuilder()
-        .appendSuper(super.equals(o))
         .append(getPartyId(), that.getPartyId())
         .append(getPartyName(), that.getPartyName())
         .append(getRoleCode(), that.getRoleCode())
@@ -101,7 +100,6 @@ public class AppointmentInvolvedParties extends C4CEntity {
   @Override
   public int hashCode() {
     return new HashCodeBuilder(17, 37)
-        .appendSuper(super.hashCode())
         .append(getPartyId())
         .append(getPartyName())
         .append(getRoleCode())

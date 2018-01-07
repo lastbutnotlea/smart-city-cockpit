@@ -175,7 +175,6 @@ public class Event extends C4CEntity {
     Event event = (Event) o;
 
     return new EqualsBuilder()
-        .appendSuper(super.equals(o))
         .append(getSubject(), event.getSubject())
         .append(getAccountId(), event.getAccountId())
         .append(getCategory(), event.getCategory())
@@ -194,7 +193,6 @@ public class Event extends C4CEntity {
   @Override
   public int hashCode() {
     return new HashCodeBuilder(17, 37)
-        .appendSuper(super.hashCode())
         .append(getSubject())
         .append(getAccountId())
         .append(getCategory())

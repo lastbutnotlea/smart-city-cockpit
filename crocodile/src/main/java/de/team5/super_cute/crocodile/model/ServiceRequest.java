@@ -22,6 +22,10 @@ public class ServiceRequest extends C4CEntity {
   @JsonIgnore
   private String customerId = "4000560"; // Id unserer Gruppe
 
+  @C4CProperty(name = "CreatedBy")
+  @JsonIgnore
+  private String createdBy = "Uni Augsburg02"; // unsere Gruppe
+
   @C4CProperty(name = "ServicePriorityCode", maxLength = 8)
   private String priority = "3"; // normal
 
@@ -30,10 +34,11 @@ public class ServiceRequest extends C4CEntity {
 
   @C4CProperty(name = "CompletionDueDate")
   private LocalDateTime dueDate;
+
   /**
    * not set by user, only in SAP
    */
-  @C4CProperty(name = "CompletionOnDate")
+  @C4CProperty(name = "CompletedOnDate")
   private LocalDateTime completionDate = DUMMY_TIME;
 
   @C4CProperty(name = "DataOriginTypeCode")
@@ -47,18 +52,18 @@ public class ServiceRequest extends C4CEntity {
   private EServiceType type;
 
   @C4CProperty(name = "ServiceRequestDescription", associatedEntities = true)
-  private List<C4CNotes> ServiceRequestDescription;
+  private List<C4CNotes> serviceRequestDescription;
 
   /**
    * The id of the target entity;
    */
-  @C4CProperty(name = "RefID", maxLength = 36)
+  //@C4CProperty(name = "RefID", maxLength = 36) todo uncomment if mhp created them
   private String target;
 
   /**
    * The id of the feedback this service request answers to.
    */
-  @C4CProperty(name = "FeedbackReference", maxLength = 36)
+  //@C4CProperty(name = "FeedbackReference", maxLength = 36) todo uncomment if mhp created them
   private String referencedFeedback;
 
   public ServiceRequest() {
@@ -67,15 +72,16 @@ public class ServiceRequest extends C4CEntity {
   public ServiceRequest(String name, String priority, String statusCode,
       LocalDateTime dueDate, EServiceType type,
       List<C4CNotes> serviceRequestDescription, String target, String referencedFeedback) {
-    this.name = name;
-    this.priority = priority;
-    this.statusCode = statusCode;
-    this.dueDate = dueDate;
-    this.type = type;
-    ServiceRequestDescription = serviceRequestDescription;
-    this.target = target;
-    this.referencedFeedback = referencedFeedback;
+    setName(name);
+    setPriority(priority);
+    setStatusCode(statusCode);
+    setDueDate(dueDate);
+    setType(type);
+    setServiceRequestDescription(serviceRequestDescription);
+    setTarget(target);
+    setReferencedFeedback(referencedFeedback);
   }
+
 
   @Override
   public String getCollectionName() {
@@ -101,6 +107,14 @@ public class ServiceRequest extends C4CEntity {
 
   public void setCustomerId(String customerId) {
     this.customerId = customerId;
+  }
+
+  public String getCreatedBy() {
+    return createdBy;
+  }
+
+  public void setCreatedBy(String createdBy) {
+    this.createdBy = createdBy;
   }
 
   public String getPriority() {
@@ -144,11 +158,27 @@ public class ServiceRequest extends C4CEntity {
   }
 
   public String getProcessingTypeCode() {
+    if (this.type != null) {
+      switch (this.type) {
+        case CLEANING:
+          return CLEANING_TYPE_CODE;
+        case MAINTENANCE:
+          return MAINTENANCE_TYPE_CODE;
+      }
+    }
     return processingTypeCode;
   }
 
   public void setProcessingTypeCode(String processingTypeCode) {
     this.processingTypeCode = processingTypeCode;
+    switch (processingTypeCode) {
+      case CLEANING_TYPE_CODE:
+        this.type = EServiceType.CLEANING;
+        break;
+      case MAINTENANCE_TYPE_CODE:
+        this.type = EServiceType.MAINTENANCE;
+        break;
+    }
   }
 
   public EServiceType getType() {
@@ -158,8 +188,6 @@ public class ServiceRequest extends C4CEntity {
           return EServiceType.CLEANING;
         case MAINTENANCE_TYPE_CODE:
           return EServiceType.MAINTENANCE;
-        default:
-          return type;
       }
     }
     return type;
@@ -178,12 +206,12 @@ public class ServiceRequest extends C4CEntity {
   }
 
   public List<C4CNotes> getServiceRequestDescription() {
-    return ServiceRequestDescription;
+    return serviceRequestDescription;
   }
 
   public void setServiceRequestDescription(
       List<C4CNotes> serviceRequestDescription) {
-    ServiceRequestDescription = serviceRequestDescription;
+    this.serviceRequestDescription = serviceRequestDescription;
   }
 
   public String getTarget() {
@@ -215,56 +243,55 @@ public class ServiceRequest extends C4CEntity {
     ServiceRequest that = (ServiceRequest) o;
 
     return new EqualsBuilder()
-        .appendSuper(super.equals(o))
         .append(getName(), that.getName())
         .append(getCustomerId(), that.getCustomerId())
         .append(getPriority(), that.getPriority())
         .append(getStatusCode(), that.getStatusCode())
-        .append(getDueDate(), that.getDueDate())
+        //.append(getDueDate(), that.getDueDate())
         .append(getCompletionDate(), that.getCompletionDate())
         .append(getOriginTypeCode(), that.getOriginTypeCode())
         .append(getProcessingTypeCode(), that.getProcessingTypeCode())
         .append(getType(), that.getType())
         .append(getServiceRequestDescription(), that.getServiceRequestDescription())
-        .append(getTarget(), that.getTarget())
-        .append(getReferencedFeedback(), that.getReferencedFeedback())
+        //.append(getTarget(), that.getTarget())
+        //.append(getReferencedFeedback(), that.getReferencedFeedback())
         .isEquals();
   }
 
   @Override
   public int hashCode() {
     return new HashCodeBuilder(17, 37)
-        .appendSuper(super.hashCode())
         .append(getName())
         .append(getCustomerId())
         .append(getPriority())
         .append(getStatusCode())
-        .append(getDueDate())
+        //.append(getDueDate())
         .append(getCompletionDate())
         .append(getOriginTypeCode())
         .append(getProcessingTypeCode())
         .append(getType())
         .append(getServiceRequestDescription())
-        .append(getTarget())
-        .append(getReferencedFeedback())
+        //.append(getTarget())
+        //.append(getReferencedFeedback()) todo uncomment if mhp guys created field
         .toHashCode();
   }
 
   @Override
   public String toString() {
     return new ToStringBuilder(this)
-        .append("name", name)
-        .append("customerId", customerId)
-        .append("priority", priority)
-        .append("statusCode", statusCode)
-        .append("dueDate", dueDate)
-        .append("completionDate", completionDate)
-        .append("originTypeCode", originTypeCode)
-        .append("processingTypeCode", processingTypeCode)
-        .append("type", type)
-        .append("ServiceRequestDescription", ServiceRequestDescription)
-        .append("target", target)
-        .append("referencedFeedback", referencedFeedback)
+        .append("name", getName())
+        .append("customerId", getCustomerId())
+        .append("createdBy", getCreatedBy())
+        .append("priority", getPriority())
+        .append("statusCode", getStatusCode())
+        .append("dueDate", getDueDate())
+        .append("completionDate", getCompletionDate())
+        .append("originTypeCode", getOriginTypeCode())
+        .append("processingTypeCode", getProcessingTypeCode())
+        .append("type", getType())
+        .append("serviceRequestDescription", getServiceRequestDescription())
+        .append("target", getTarget())
+        .append("referencedFeedback", getReferencedFeedback())
         .toString();
   }
 }

@@ -25,7 +25,7 @@ public class C4CTest {
       add(new AppointmentInvolvedParties("Fussballclub"));
     }};
     List<C4CNotes> notes = new ArrayList<C4CNotes>() {{
-      add(new C4CNotes("There are gonna be many many people"));
+      add(new C4CNotes("There are gonna be many many people", C4CNotes.APPOINTMENT_NOTES_TYPE_CODE));
     }};
     testC4CEntity(
         new Event("Fussballspiel", "3", LocalDateTime.now(), LocalDateTime.now().plusHours(1),
@@ -35,11 +35,12 @@ public class C4CTest {
   @Test
   public void testServiceRequests() {
     List<C4CNotes> notes = new ArrayList<C4CNotes>() {{
-      add(new C4CNotes("Please clean this mess."));
+      add(new C4CNotes("Please clean this mess.", C4CNotes.SERVICE_REQUEST_DESCRIPTION_TYPE_CODE));
     }};
     testC4CEntity(
-        new ServiceRequest("Reinigung des Fahrzeugs", "3", "1", LocalDateTime.now().plusDays(1),
-            EServiceType.CLEANING, notes, "Vehicle_0", "Feedback_0"));
+        new ServiceRequest("Reinigung des Fahrzeugs | " + Math.random(), "3", "1", LocalDateTime.now().plusDays(5),
+            EServiceType.MAINTENANCE, notes, "Vehicle_0", "Feedback_0"));
+    //todo change type to cleaning if respecitive code was created by mhp
   }
 
   private void testC4CEntity(C4CEntity entity) {
@@ -57,6 +58,8 @@ public class C4CTest {
       List<C4CEntity> objects = connector.getC4CEntities(entity.getEmptyObject());
       C4CEntity entityWithObjectId = objects.get(objects.indexOf(entity));
       connector.deleteC4CEntity(entityWithObjectId);
+
+      Assert.assertTrue(!connector.getC4CEntities(entity.getEmptyObject()).contains(entity));
 
     } catch (EntityProviderException | IOException | BatchException | EdmException e) {
       e.printStackTrace();

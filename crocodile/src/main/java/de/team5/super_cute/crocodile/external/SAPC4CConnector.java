@@ -1,6 +1,7 @@
 package de.team5.super_cute.crocodile.external;
 
 import static de.team5.super_cute.crocodile.util.Helpers.getC4CProperties;
+import static de.team5.super_cute.crocodile.util.Helpers.getInheritedAndDeclaredPrivateFields;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -224,7 +225,6 @@ public class SAPC4CConnector {
 
     ODataFeed feed = readFeed(BASE_URL, exampleEntity.getCollectionName(),
         FILTER_QUERY + expandOptions.toString());
-
     for (ODataEntry entry : feed.getEntries()) {
       items.add(mapEntryToC4CEntity(entry, exampleEntity.getEmptyObject()));
     }
@@ -254,7 +254,11 @@ public class SAPC4CConnector {
           // String
           if (value instanceof String) {
             field.set(result, value);
-          } // Metadata Type
+          } // DateTime
+          else if (value instanceof GregorianCalendar) {
+            field.set(result, ((GregorianCalendar) value).toZonedDateTime().toLocalDateTime());
+          }
+          // Metadata Type
           else if (value instanceof HashMap) {
             Object content = ((HashMap) value).get("content");
             if (content.getClass().equals(String.class)) {
@@ -293,7 +297,7 @@ public class SAPC4CConnector {
   }
 
   private Optional<Field> getFieldWithC4CAnnotation(C4CEntity entity, String name) {
-    return Arrays.stream(entity.getClass().getDeclaredFields())
+    return getInheritedAndDeclaredPrivateFields(entity.getClass()).stream()
         .filter((Field f) -> Arrays.stream(f.getDeclaredAnnotations())
             .filter(a -> a.annotationType().equals(C4CProperty.class)).map(
                 C4CProperty.class::cast).anyMatch(c -> c.name().equals(name))).findAny();

@@ -6,11 +6,18 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class C4CNotes extends C4CEntity{
+public class C4CNotes extends C4CEntity {
+
+  public static final String APPOINTMENT_NOTES_TYPE_CODE = "10002";
+  public static final String SERVICE_REQUEST_DESCRIPTION_TYPE_CODE = "10004";
 
   @C4CProperty(name = "Text")
   private String text;
 
+  /**
+   * 10002 for Appointment Notes
+   * 10004 for Service Request Description
+   */
   @C4CProperty(name = "TypeCode", maxLength = 5)
   @JsonIgnore
   private String typeCode = "10002"; // Textkörper
@@ -18,8 +25,9 @@ public class C4CNotes extends C4CEntity{
   public C4CNotes() {
   }
 
-  public C4CNotes(String text) {
+  public C4CNotes(String text, String typeCode) {
     this.text = text;
+    this.typeCode = typeCode;
   }
 
   @Override
@@ -45,7 +53,6 @@ public class C4CNotes extends C4CEntity{
     C4CNotes c4CNotes = (C4CNotes) o;
 
     return new EqualsBuilder()
-        .appendSuper(super.equals(o))
         .append(text, c4CNotes.text)
         .append(typeCode, c4CNotes.typeCode)
         .isEquals();
@@ -54,7 +61,6 @@ public class C4CNotes extends C4CEntity{
   @Override
   public int hashCode() {
     return new HashCodeBuilder(17, 37)
-        .appendSuper(super.hashCode())
         .append(text)
         .append(typeCode)
         .toHashCode();
