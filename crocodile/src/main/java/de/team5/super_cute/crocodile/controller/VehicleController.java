@@ -66,6 +66,18 @@ public class VehicleController extends BaseController<Vehicle> {
     return deleteObject(id);
   }
 
+  @DeleteMapping("/{id}/force")
+  public String forceDeleteVehicle(@PathVariable String id) {
+    logger.info("Got Request to delete the vehicle with id " + id);
+    //delete trips for this vehicle
+    List<Trip> trips = tripData.getData().stream().filter(t -> t.getVehicle().getId().equals(id))
+        .collect(Collectors.toList());
+    for (Trip trip:trips) {
+      tripData.deleteObject(trip.getId());
+    }
+    return deleteObject(id);
+  }
+
   @PutMapping
   public String editVehicle(@RequestBody Vehicle input) {
     logger.info("Got Request to edit a vehicle to " + input);
