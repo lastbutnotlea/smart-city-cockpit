@@ -26,4 +26,20 @@ public class Event extends IdentifiableObject implements TickerItemable {
   public int getItemPriority() {
     return EVENT_BASE_PRIORITY;
   }
+
+  public void setItemDescription(String s){
+    // do nothing, fool the json mapper!
+  }
+
+  public void setItemHeader(String s){
+    // do nothing, fool the json mapper!
+  }
+
+  public void setItemState(EState s){
+    // do nothing, fool the json mapper!
+  }
+
+  public void setItemPriority(int i){
+    // do nothing, fool the json mapper!
+  }
 }

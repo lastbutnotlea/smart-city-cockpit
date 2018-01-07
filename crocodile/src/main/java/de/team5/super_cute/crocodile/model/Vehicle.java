@@ -251,4 +251,20 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
     Random r = new Random(System.currentTimeMillis());
     return r.nextInt(max - min + 1) + min;
   }
+
+  public void setItemDescription(String s){
+    // do nothing, fool the json mapper!
+  }
+
+  public void setItemHeader(String s){
+    // do nothing, fool the json mapper!
+  }
+
+  public void setItemState(EState s){
+    // do nothing, fool the json mapper!
+  }
+
+  public void setItemPriority(int i){
+    // do nothing, fool the json mapper!
+  }
 }

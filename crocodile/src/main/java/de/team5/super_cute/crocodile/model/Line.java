@@ -155,6 +155,7 @@ public class Line extends IdentifiableObject implements Serializable, Feedbackab
   }
 
   @Override
+  @JsonIgnore
   public int getSeverity() {
     return 0;
   }
