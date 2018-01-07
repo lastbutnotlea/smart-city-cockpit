@@ -7,7 +7,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "announcement")
-public class Announcement extends IdentifiableObject implements TickerItemable {
+public class Announcement extends IdentifiableObject {
 
     @Column
     private String text;
