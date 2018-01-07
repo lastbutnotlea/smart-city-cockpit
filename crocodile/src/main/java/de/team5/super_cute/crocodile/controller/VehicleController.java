@@ -1,5 +1,7 @@
 package de.team5.super_cute.crocodile.controller;
 
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.TEMPERATURE_INITIAL;
+
 import de.team5.super_cute.crocodile.data.BaseData;
 import de.team5.super_cute.crocodile.data.TripData;
 import de.team5.super_cute.crocodile.model.Trip;
@@ -47,6 +49,9 @@ public class VehicleController extends BaseController<Vehicle> {
   @PostMapping
   public String addVehicle(@RequestBody Vehicle input) {
     logger.info("Got Request to add the vehicle " + input);
+    input.setId();
+    input.setLoad(0);
+    input.setTemperature(TEMPERATURE_INITIAL);
     return addObject(input);
   }
 

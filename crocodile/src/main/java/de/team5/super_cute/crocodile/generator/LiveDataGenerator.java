@@ -122,23 +122,23 @@ public class LiveDataGenerator {
 
   private int getNewValue(int oldValue, int changeAmplitude, int min, int max) {
     Random r = new Random(System.currentTimeMillis());
-    return max(min(oldValue + (r.nextInt(changeAmplitude * 2) - changeAmplitude), max), min);
+    return max(min(oldValue + (r.nextInt(changeAmplitude * 2 + 1) - changeAmplitude), max), min);
   }
 
   private String generateDefect(Feedbackable feedbackable, boolean forStop) {
     Random r = new Random(System.currentTimeMillis());
     String defect = null;
-    if (r.nextInt(99) + 1 <= (forStop ? CREATE_STOP_DEFECT_PERCENTAGE
+    if (r.nextInt(100) + 1 <= (forStop ? CREATE_STOP_DEFECT_PERCENTAGE
         : CREATE_VEHICLE_DEFECT_PERCENTAGE)) {
-      defect = (forStop ? STOP_DEFECTS.get(r.nextInt(STOP_DEFECTS.size() - 1))
-          : VEHICLE_DEFECTS.get(r.nextInt(VEHICLE_DEFECTS.size() - 1)));
-      if (r.nextInt(99) + 1 <= DEFECT_FEEDBACK_PERCENTAGE) {
+      defect = (forStop ? STOP_DEFECTS.get(r.nextInt(STOP_DEFECTS.size()))
+          : VEHICLE_DEFECTS.get(r.nextInt(VEHICLE_DEFECTS.size())));
+      if (r.nextInt(100) + 1 <= DEFECT_FEEDBACK_PERCENTAGE) {
         feedbackData.addObject(new Feedback((
             forStop ?
                 STOP_DEFECT_FEEDBACK.get(defect)
-                    .get(r.nextInt(STOP_DEFECT_FEEDBACK.get(defect).size() - 1)) :
+                    .get(r.nextInt(STOP_DEFECT_FEEDBACK.get(defect).size())) :
                 VEHICLE_DEFECT_FEEDBACK.get(defect)
-                    .get(r.nextInt(VEHICLE_DEFECT_FEEDBACK.get(defect).size() - 1))),
+                    .get(r.nextInt(VEHICLE_DEFECT_FEEDBACK.get(defect).size()))),
             LocalDateTime.now(), feedbackable,
             forStop ? STOP_FEEDBACK : VEHICLE_FEEDBACK,
             forStop ? getState(STOP_DEFECTS_SEVERITY.get(defect))
@@ -152,13 +152,13 @@ public class LiveDataGenerator {
     Random r = new Random(System.currentTimeMillis());
     if (forStop) {
       if (((Stop) feedbackable).getDefects().size() != 0) {
-        if (r.nextInt(99) + 1 <= REMOVE_STOP_DEFECT_PERCENTAGE) {
+        if (r.nextInt(100) + 1 <= REMOVE_STOP_DEFECT_PERCENTAGE) {
           ((Stop) feedbackable).removeDefect(((Stop) feedbackable).getDefects().iterator().next());
         }
       }
     } else {
       if (((Vehicle) feedbackable).getDefects().size() != 0) {
-        if (r.nextInt(99) + 1 <= REMOVE_VEHICLE_DEFECT_PERCENTAGE) {
+        if (r.nextInt(100) + 1 <= REMOVE_VEHICLE_DEFECT_PERCENTAGE) {
           ((Vehicle) feedbackable)
               .removeDefect(((Vehicle) feedbackable).getDefects().iterator().next());
         }
@@ -168,7 +168,7 @@ public class LiveDataGenerator {
 
   private void generateValueFeedback(Feedbackable feedbackable, String fieldName) {
     Random r = new Random(System.currentTimeMillis());
-    if (r.nextInt(99) + 1 <= VALUE_FEEDBACK_PERCENTAGE) {
+    if (r.nextInt(100) + 1 <= VALUE_FEEDBACK_PERCENTAGE) {
       EState rating = EState.FINE;
       switch (fieldName) {
         case (PEOPLE_WAITING):
@@ -191,7 +191,7 @@ public class LiveDataGenerator {
   private Feedback getValueFeedbackForField(Feedbackable objective, String fieldname, EState rating,
       Random random) {
     String message = VALUE_FEEDBACK.get(fieldname).get(rating.ordinal())
-        .get(random.nextInt(VALUE_FEEDBACK.get(fieldname).get(rating.ordinal()).size() - 1));
+        .get(random.nextInt(VALUE_FEEDBACK.get(fieldname).get(rating.ordinal()).size()));
     return new Feedback(message, LocalDateTime.now(), objective, VEHICLE_FEEDBACK, rating);
   }
 }
