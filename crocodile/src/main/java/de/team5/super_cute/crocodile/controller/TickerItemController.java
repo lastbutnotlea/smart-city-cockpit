@@ -9,7 +9,9 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -30,6 +32,12 @@ public class TickerItemController extends BaseController<TickerItem> {
     List<TickerItem> list = data.getData();
     return list.stream()
         .sorted((t, u) -> Integer.compare(u.getItem().getItemPriority(), t.getItem().getItemPriority()))
-        .collect(Collectors.toList()).subList(0, Integer.min(ITEM_COUNT - 1, list.size()));
+        .collect(Collectors.toList()).subList(0, Integer.min(ITEM_COUNT, list.size()));
+  }
+
+  @DeleteMapping("/{id}")
+  public String deleteTickerItem(@PathVariable String id) {
+    logger.info("Got Request to delete the tickerItem with id " + id);
+    return deleteObject(id);
   }
 }

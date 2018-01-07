@@ -45,7 +45,6 @@ public class TickerItemGenerator {
         .info("Started generating TickerItems");
     //wip
     List<Event> eventData = new ArrayList<>();
-
     //delete all TickerItems
     for (TickerItem tickerItem : tickerItemData.getData()) {
       tickerItemData.deleteObject(tickerItem.getId());
@@ -87,7 +86,6 @@ public class TickerItemGenerator {
   }
 
   private class SeverityComparator implements Comparator<Stateable> {
-
     @Override
     public int compare(Stateable o1, Stateable o2) {
       return Integer.compare(o1.getSeverity(), o2.getSeverity());
