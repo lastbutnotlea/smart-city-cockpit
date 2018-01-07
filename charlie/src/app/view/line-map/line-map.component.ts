@@ -56,7 +56,7 @@ export class LineMapComponent {
   private addIntersectionEvents(): void {
     const interchanges = d3.selectAll('.interchanges').selectAll('g');
     interchanges.on('click', interchange => {
-      this.router.navigate(['/network/detail/' + this.line.id + '/stop/' + interchange.name])
+      this.router.navigate(['/network/stop/' + interchange.name]);
     });
   }
 }

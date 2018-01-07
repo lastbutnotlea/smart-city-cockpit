@@ -5,9 +5,7 @@ export class LineData {
   name: string;
   stopsInbound: StopData[];
   stopsOutbound: StopData[];
-  // TODO: No maps! Agree on different object here (with backend)
-  travelTimeInbound: any;
-  travelTimeOutbound: any;
+  type: string;
   color: any;
-
+  state: string;
 }

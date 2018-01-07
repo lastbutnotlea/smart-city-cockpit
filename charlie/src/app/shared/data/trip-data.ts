@@ -1,4 +1,3 @@
-
 import { VehicleData } from './vehicle-data';
 import { LineData } from './line-data';
 import { TripStopData } from './trip-stop-data';

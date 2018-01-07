@@ -8,6 +8,7 @@ import {TripEditComponent} from '../trip-edit/trip-edit.component';
 import {ConfirmDeletionComponent} from '../../shared/components/confirm-popup/confirm-deletion.component';
 import {StopSortService} from '../../services/stop-sort.service';
 import {TripEditDepartureComponent} from '../trip-edit-departure/trip-edit-departure.component';
+import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
 
 
 
@@ -19,7 +20,7 @@ import {TripEditDepartureComponent} from '../trip-edit-departure/trip-edit-depar
               '../../shared/styling/global-styling.css']
 })
 
-export class TripDetailComponent implements OnInit {
+export class TripDetailComponent extends LiveDataComponent implements OnInit {
 
   trip: TripData;
 
@@ -28,6 +29,7 @@ export class TripDetailComponent implements OnInit {
               private location: Location,
               private modalService: NgbModal,
               private stopSortService: StopSortService) {
+    super();
   }
 
   ngOnInit(): void {
@@ -40,6 +42,8 @@ export class TripDetailComponent implements OnInit {
       trip => {
         this.trip = trip;
         this.trip.stops = this.stopSortService.sortStops(this.trip.stops);
+        // This starts periodical calls for live-data after first data was received
+        super.ngOnInit();
       },
       err => console.log('Could not fetch trip data!')
     );
@@ -69,13 +73,39 @@ export class TripDetailComponent implements OnInit {
   }
 
   deleteTrip(event) : void {
+    super.ngOnDestroy();
     this.http.deleteTrip(this.trip.id).subscribe(
       data => this.location.back(),
-      err => console.log("Could not delete trip."));
+      err => {
+        // Currently, when deleting a trip, we get a http-response with http-code 200 (ok)
+        // This means deleting the trip was successful
+        // http-response is interpreted as error, therefore the message must be checked here, not in data
+        // TODO: http-response should not always be considered an error / backend should return different value?
+        if(err.status === 200){
+          this.location.back();
+        } else {
+          console.log('Could not delete trip!');
+          this.refreshData();
+        }
+      }
+    );
   }
 
   isLoaded(): boolean {
     return this.trip != null;
+  }
+
+  // update trip data
+  refreshData(): void {
+    this.setDataSubscription(
+      this.http.getTripDetails(this.trip.id).subscribe( data => {
+          this.trip = data;
+          this.trip.stops = this.stopSortService.sortStops(this.trip.stops);
+          this.subscribeToData();
+        },
+        err =>
+          console.log('Could not fetch new line-data.')
+      ));
   }
 
 }

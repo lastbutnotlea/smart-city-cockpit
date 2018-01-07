@@ -32,6 +32,7 @@ import {VehiclesComponent} from './view/vehicles/vehicles.component';
 import { VehicleDetailComponent } from './view/vehicle-detail/vehicle-detail.component';
 import { VehicleAddComponent } from './view/vehicle-add/vehicle-add.component';
 import { FilterGroupComponent } from './shared/components/filter-group/filter-group.component';
+import { EmbeddedStopOverviewComponent } from './shared/components/embedded-stop-overview/embedded-stop-overview.component';
 
 
 @NgModule({
@@ -52,6 +53,7 @@ import { FilterGroupComponent } from './shared/components/filter-group/filter-gr
     DropdownComponent,
     EmbeddedLineComponent,
     EmbeddedVehicleComponent,
+    EmbeddedStopOverviewComponent,
     ConfirmDeletionComponent,
     TickerComponent,
     TickerItemComponent,
