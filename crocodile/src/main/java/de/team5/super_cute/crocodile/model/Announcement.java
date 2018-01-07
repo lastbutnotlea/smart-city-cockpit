@@ -1,5 +1,6 @@
 package de.team5.super_cute.crocodile.model;
 
+import de.team5.super_cute.crocodile.util.LocalDateTimeAttributeConverter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,9 +13,11 @@ public class Announcement extends IdentifiableObject implements TickerItemable {
     private String text;
 
     @Column
+    @Convert(converter = LocalDateTimeAttributeConverter.class)
     private LocalDateTime validFrom;
 
     @Column
+    @Convert(converter = LocalDateTimeAttributeConverter.class)
     private LocalDateTime validTo;
 
     @ElementCollection(fetch = FetchType.EAGER)
