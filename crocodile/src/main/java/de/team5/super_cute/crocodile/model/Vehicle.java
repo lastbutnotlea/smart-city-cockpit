@@ -9,6 +9,7 @@ import static de.team5.super_cute.crocodile.config.LiveDataConfig.TEMPERATURE_LO
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.TEMPERATURE_UPPER_LIMIT_CRITICAl;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.TEMPERATURE_UPPER_LIMIT_PROBLEMATIC;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.VEHICLE_DEFECTS_SEVERITY;
+import static de.team5.super_cute.crocodile.config.TickerConfig.VEHICLE_BASE_PRIORITY;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.team5.super_cute.crocodile.config.LiveDataConfig;
@@ -16,6 +17,8 @@ import de.team5.super_cute.crocodile.util.StateCalculator;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import javax.persistence.Column;
@@ -198,5 +201,37 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
         vehicleType, new HashSet<>());
     vehicle.setLoad((int) ((r.nextInt(99) + 1) * 0.01 * vehicle.getCapacity()));
     return vehicle;
+  }
+
+  @Override
+  public String getItemDescription() {
+    String description = this.getId() + ":\n"
+        + "load: " + this.getLoad() + "/" + this.getCapacity() + "\n"
+        + "temperature: " + this.getTemperature() + "\n"
+        + "delay: " + this.getDelay() + "\n"
+        + "defects: ";
+    Iterator<String> defects = this.getDefects().iterator();
+    for(int i = 0; i < this.getDefects().size(); i++){
+      if(i != 0){
+        description += ", ";
+      }
+      description += defects.next();
+    }
+    return description;
+  }
+
+  @Override
+  public String getItemHeader() {
+    return "Vehicle state is critical";
+  }
+
+  @Override
+  public EState getItemState() {
+    return EState.CRITICAL;
+  }
+
+  @Override
+  public int getItemPriority() {
+    return Integer.max(VEHICLE_BASE_PRIORITY + (this.getSeverity() - 10) / 2, 10);
   }
 }

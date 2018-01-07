@@ -1,7 +1,6 @@
 package de.team5.super_cute.crocodile.model;
 
-import de.team5.super_cute.crocodile.util.LocalDateTimeAttributeConverter;
-import java.time.LocalDateTime;
+import de.team5.super_cute.crocodile.util.TickerItemableAttributeConverter;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
@@ -12,29 +11,18 @@ import org.hibernate.annotations.Proxy;
 @Table(name = "tickerItem")
 @Proxy(lazy = false)
 public class TickerItem extends IdentifiableObject {
-  @Column
-  @Convert(converter = LocalDateTimeAttributeConverter.class)
-  private LocalDateTime timeToLive;
 
   @Column
+  @Convert(converter = TickerItemableAttributeConverter.class)
   private TickerItemable item;
 
   public TickerItem() {
     super();
   }
 
-  public TickerItem(LocalDateTime timeToLive, TickerItemable item) {
+  public TickerItem(TickerItemable item) {
     super();
-    this.timeToLive = timeToLive;
     this.item = item;
-  }
-
-  public LocalDateTime getTimeToLive() {
-    return timeToLive;
-  }
-
-  public void setTimeToLive(LocalDateTime timeToLive) {
-    this.timeToLive = timeToLive;
   }
 
   public TickerItemable getItem() {

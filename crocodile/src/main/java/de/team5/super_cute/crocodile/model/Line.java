@@ -155,6 +155,11 @@ public class Line extends IdentifiableObject implements Serializable, Feedbackab
   }
 
   @Override
+  public int getSeverity() {
+    return 0;
+  }
+
+  @Override
   public EState getState() {
     return state;
   }
