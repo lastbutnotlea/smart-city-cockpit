@@ -86,9 +86,12 @@ public class TickerItemGenerator {
 
   private class SeverityComparator implements Comparator<Stateable> {
 
+    /**
+     * returns objects desc
+     */
     @Override
     public int compare(Stateable o1, Stateable o2) {
-      return Integer.compare(o1.getSeverity(), o2.getSeverity());
+      return Integer.compare(o2.getSeverity(), o1.getSeverity());
     }
   }
 }
