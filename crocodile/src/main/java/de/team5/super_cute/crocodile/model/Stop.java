@@ -177,7 +177,7 @@ public class Stop extends IdentifiableObject implements Serializable, Feedbackab
 
   @Override
   public int getItemPriority() {
-    return STOP_BASE_PRIORITY + (this.getSeverity() - 10) / SEVERITY_DIVISOR;
+    return STOP_BASE_PRIORITY + (this.getSeverity() - 11) / SEVERITY_DIVISOR;
   }
 
   public void setItemDescription(String s){

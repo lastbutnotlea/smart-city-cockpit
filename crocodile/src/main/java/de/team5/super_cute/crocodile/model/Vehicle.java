@@ -245,7 +245,7 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
 
   @Override
   public int getItemPriority() {
-    return VEHICLE_BASE_PRIORITY + (this.getSeverity() - 10) / SEVERITY_DIVISOR;
+    return VEHICLE_BASE_PRIORITY + (this.getSeverity() - 11) / SEVERITY_DIVISOR;
   }
 
   public static int getInitialValue(int min, int max){
