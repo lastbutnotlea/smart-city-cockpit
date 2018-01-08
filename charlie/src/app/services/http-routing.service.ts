@@ -135,7 +135,11 @@ export class HttpRoutingService {
     );
   }
 
-  public getVehiclePositionData(lineData: string, isInbound: boolean): Observable<LinePositionData> {
-    return this.http.get<LinePositionData>(this.urlBuilder.getVehiclePositionDataUrl(lineData, isInbound));
+  public getVehiclePositionInboundData(lineData: string): Observable<LinePositionData> {
+    return this.http.get<LinePositionData>(this.urlBuilder.getVehiclePositionInboundUrl(lineData));
+  }
+
+  public getVehiclePositionOutboundData(lineData: string): Observable<LinePositionData> {
+    return this.http.get<LinePositionData>(this.urlBuilder.getVehiclePositionOutboundUrl(lineData));
   }
 }

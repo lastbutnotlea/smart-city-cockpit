@@ -34,7 +34,7 @@ export class VehicleAddComponent implements OnInit {
       state: 'FINE'
     }).subscribe(
       () => this.activeModal.close('Close click'),
-      () => alert("Could not add vehicle"));
+      err => {if(err == null) {alert("Could not add vehicle")};});
   }
 
   toDropdown(types: string[]): DropdownValue[] {

@@ -60,12 +60,11 @@ export class UrlBuilderService {
     return this.networkBaseUrl + '/filter-data';
   }
 
-  public getVehiclePositionDataUrl(lineId: string, isInbound: boolean): string {
-    let url = this.getLineDetailsUrl(lineId);
-    if(isInbound) {
-      return url + '/vehicles/inbound';
-    } else {
-      return url + '/vehicles/outbound';
-    }
+  public getVehiclePositionInboundUrl(lineId: string): string {
+    return this.getLineDetailsUrl(lineId) + '/vehicles/inbound';
+  }
+
+  public getVehiclePositionOutboundUrl(lineId: string): string {
+    return this.getLineDetailsUrl(lineId) + '/vehicles/outbound';
   }
 }
