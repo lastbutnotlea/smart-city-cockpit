@@ -61,4 +61,8 @@ public class TripData extends BaseData<Trip> {
         .filter(t -> t.getVehicle().equals(vehicle)).findAny().orElse(null);
   }
 
+  public boolean getPresentAndFutureTripsForVehicle(String vehicleId){
+    return getData().stream().anyMatch(t -> t.getVehicle().getId().equals(vehicleId) && t.getStops().values().stream().max(LocalDateTime::compareTo).orElse(null).isAfter(LocalDateTime.now()));
+  }
+
 }

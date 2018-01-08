@@ -1,6 +1,8 @@
 package de.team5.super_cute.crocodile.external;
 
 import static de.team5.super_cute.crocodile.config.ColorMapping.lineColors;
+import static de.team5.super_cute.crocodile.config.InitialSetupConfig.PEOPLE_WAITING_INITIAL_MAX;
+import static de.team5.super_cute.crocodile.config.InitialSetupConfig.PEOPLE_WAITING_INITIAL_MIN;
 import static de.team5.super_cute.crocodile.config.TfLApiConfig.app_id;
 import static de.team5.super_cute.crocodile.config.TfLApiConfig.app_key;
 
@@ -101,7 +103,7 @@ public class TpDataConnector {
             node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("name").asText(),
             node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("lon").asDouble(),
             node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("lat").asDouble(),
-            r.nextInt(400), new HashSet<>());
+            r.nextInt(PEOPLE_WAITING_INITIAL_MAX - PEOPLE_WAITING_INITIAL_MIN + 1) + PEOPLE_WAITING_INITIAL_MIN, new HashSet<>());
         if (node.get("stopPointSequences").get(i).get("direction").asText().equals("inbound")) {
           stopsInbound.add(stop);
         } else if (node.get("stopPointSequences").get(i).get("direction").asText()
