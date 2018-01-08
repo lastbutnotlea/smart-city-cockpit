@@ -3,7 +3,7 @@ package de.team5.super_cute.crocodile.generator;
 import static de.team5.super_cute.crocodile.config.TickerConfig.EVENT_COUNT;
 import static de.team5.super_cute.crocodile.config.TickerConfig.ITEM_COUNT;
 import static de.team5.super_cute.crocodile.config.TickerConfig.STOP_COUNT;
-import static de.team5.super_cute.crocodile.config.TickerConfig.UPDATE_FREQUENCY;
+import static de.team5.super_cute.crocodile.config.TickerConfig.TICKER_FREQUENCY;
 import static de.team5.super_cute.crocodile.config.TickerConfig.VEHICLE_COUNT;
 
 import de.team5.super_cute.crocodile.data.FeedbackData;
@@ -15,7 +15,6 @@ import de.team5.super_cute.crocodile.model.Event;
 import de.team5.super_cute.crocodile.model.Stateable;
 import de.team5.super_cute.crocodile.model.TickerItem;
 import de.team5.super_cute.crocodile.model.TickerItemable;
-import de.team5.super_cute.crocodile.model.Vehicle;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -39,7 +38,7 @@ public class TickerItemGenerator {
 
   private SeverityComparator severityComparator = new SeverityComparator();
 
-  @Scheduled(fixedDelay = UPDATE_FREQUENCY, initialDelay = 4000)
+  @Scheduled(fixedDelay = TICKER_FREQUENCY, initialDelay = 4000)
   public void generateTickerItems() {
     LoggerFactory.getLogger(getClass())
         .info("Started generating TickerItems");
@@ -86,6 +85,7 @@ public class TickerItemGenerator {
   }
 
   private class SeverityComparator implements Comparator<Stateable> {
+
     @Override
     public int compare(Stateable o1, Stateable o2) {
       return Integer.compare(o1.getSeverity(), o2.getSeverity());

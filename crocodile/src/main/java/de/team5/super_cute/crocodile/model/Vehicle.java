@@ -15,6 +15,7 @@ import static de.team5.super_cute.crocodile.config.LiveDataConfig.TEMPERATURE_LO
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.TEMPERATURE_UPPER_LIMIT_CRITICAl;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.TEMPERATURE_UPPER_LIMIT_PROBLEMATIC;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.VEHICLE_DEFECTS_SEVERITY;
+import static de.team5.super_cute.crocodile.config.TickerConfig.SEVERITY_DIVISOR;
 import static de.team5.super_cute.crocodile.config.TickerConfig.VEHICLE_BASE_PRIORITY;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -239,12 +240,12 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
 
   @Override
   public EState getItemState() {
-    return EState.CRITICAL;
+    return this.getState();
   }
 
   @Override
   public int getItemPriority() {
-    return Integer.max(VEHICLE_BASE_PRIORITY + (this.getSeverity() - 10) / 4, 10);
+    return VEHICLE_BASE_PRIORITY + (this.getSeverity() - 10) / SEVERITY_DIVISOR;
   }
 
   public static int getInitialValue(int min, int max){

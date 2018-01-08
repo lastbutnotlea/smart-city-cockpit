@@ -3,6 +3,7 @@ package de.team5.super_cute.crocodile.model;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.PEOPLE_WAITING_LIMIT_CRITICAL;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.PEOPLE_WAITING_LIMIT_PROBLEMATIC;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.STOP_DEFECTS_SEVERITY;
+import static de.team5.super_cute.crocodile.config.TickerConfig.SEVERITY_DIVISOR;
 import static de.team5.super_cute.crocodile.config.TickerConfig.STOP_BASE_PRIORITY;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -151,7 +152,7 @@ public class Stop extends IdentifiableObject implements Serializable, Feedbackab
 
   @Override
   public String getItemDescription() {
-    String description = this.getId() + ":\n"
+    String description = "Stop " + this.getId() + ":\n"
         + "people waiting: " + this.getPeopleWaiting() + "\n"
         + "defects: ";
     Iterator<String> defects = this.getDefects().iterator();
@@ -171,13 +172,12 @@ public class Stop extends IdentifiableObject implements Serializable, Feedbackab
 
   @Override
   public EState getItemState() {
-    return EState.CRITICAL;
+    return this.getState();
   }
 
   @Override
   public int getItemPriority() {
-
-    return Integer.max(STOP_BASE_PRIORITY + (this.getSeverity() - 10) / 4, 10);
+    return STOP_BASE_PRIORITY + (this.getSeverity() - 10) / SEVERITY_DIVISOR;
   }
 
   public void setItemDescription(String s){
