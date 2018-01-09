@@ -3,10 +3,14 @@ package de.team5.super_cute.crocodile.model;
 import static de.team5.super_cute.crocodile.util.Helpers.DUMMY_TIME;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.team5.super_cute.crocodile.external.C4CProperty;
 import de.team5.super_cute.crocodile.model.c4c.C4CEntity;
 import de.team5.super_cute.crocodile.model.c4c.C4CNotes;
 import de.team5.super_cute.crocodile.model.c4c.EStatusCode;
+import de.team5.super_cute.crocodile.util.DateDeserializer;
+import de.team5.super_cute.crocodile.util.DateSerializer;
 import de.team5.super_cute.crocodile.util.Helpers;
 import de.team5.super_cute.crocodile.util.LocalDateTimeAttributeConverter;
 import java.time.LocalDateTime;
@@ -37,6 +41,8 @@ public class ServiceRequest extends C4CEntity {
 
   @C4CProperty(name = "CompletionDueDate")
   @Convert(converter = LocalDateTimeAttributeConverter.class)
+  @JsonSerialize(using = DateSerializer.class)
+  @JsonDeserialize(using = DateDeserializer.class)
   private LocalDateTime dueDate;
 
   /**
@@ -44,6 +50,8 @@ public class ServiceRequest extends C4CEntity {
    */
   @C4CProperty(name = "CompletedOnDate")
   @Convert(converter = LocalDateTimeAttributeConverter.class)
+  @JsonSerialize(using = DateSerializer.class)
+  @JsonDeserialize(using = DateDeserializer.class)
   private LocalDateTime completionDate = DUMMY_TIME;
 
   @C4CProperty(name = "DataOriginTypeCode")
