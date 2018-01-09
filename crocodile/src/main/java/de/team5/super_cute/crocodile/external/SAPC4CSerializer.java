@@ -4,9 +4,9 @@ import static de.team5.super_cute.crocodile.util.Helpers.getInheritedAndDeclared
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import de.team5.super_cute.crocodile.model.C4CEntity;
 import de.team5.super_cute.crocodile.model.EState;
-import de.team5.super_cute.crocodile.model.EStatusCode;
+import de.team5.super_cute.crocodile.model.c4c.C4CEntity;
+import de.team5.super_cute.crocodile.model.c4c.EStatusCode;
 import de.team5.super_cute.crocodile.util.Helpers;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -29,8 +29,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
-public class SAPC4CSerializer
-{
+public class SAPC4CSerializer {
+
   private static final Logger logger = LoggerFactory.getLogger(SAPC4CSerializer.class);
 
   public String serializeC4CEntityToString(C4CEntity entity) throws JsonProcessingException {
@@ -144,7 +144,13 @@ public class SAPC4CSerializer
         try {
           // String
           if (value instanceof String) {
-            field.set(result, value);
+            if (field.getType().equals(EStatusCode.class)) {
+              field.set(result, EStatusCode.getStatusCode((String) value));
+            } else if (field.getType().equals(EState.class)) {
+              field.set(result, EState.c4CPriorityToState((String) value));
+            } else {
+              field.set(result, value);
+            }
           } // DateTime
           else if (value instanceof GregorianCalendar) {
             field.set(result, ((GregorianCalendar) value).toZonedDateTime().toLocalDateTime());

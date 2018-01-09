@@ -4,6 +4,9 @@ import static de.team5.super_cute.crocodile.util.Helpers.DUMMY_TIME;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.team5.super_cute.crocodile.external.C4CProperty;
+import de.team5.super_cute.crocodile.model.c4c.C4CEntity;
+import de.team5.super_cute.crocodile.model.c4c.C4CNotes;
+import de.team5.super_cute.crocodile.model.c4c.EStatusCode;
 import de.team5.super_cute.crocodile.util.Helpers;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -67,12 +70,11 @@ public class ServiceRequest extends C4CEntity {
   public ServiceRequest() {
   }
 
-  public ServiceRequest(String name, EState priority, EStatusCode statusCode,
+  public ServiceRequest(String name, EState priority,
       LocalDateTime dueDate, EServiceType type,
       List<C4CNotes> serviceRequestDescription, String target, String referencedFeedback) {
     setName(name);
     setPriority(priority);
-    setStatusCode(statusCode);
     setDueDate(dueDate);
     setType(type);
     setServiceRequestDescription(serviceRequestDescription);
