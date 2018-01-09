@@ -25,7 +25,6 @@ export class LineDetailComponent extends LiveDataComponent implements OnInit {
 
   @ViewChild('inbound')
   lineMapInbound: LineMapComponent;
-
   @ViewChild('outbound')
   lineMapOutbound: LineMapComponent;
 
@@ -37,15 +36,6 @@ export class LineDetailComponent extends LiveDataComponent implements OnInit {
 
   ngOnInit(): void {
     this.getLine();
-
-    // Dummy-Data for positions of vehicles
-    // TODO: Replace with data from backend, once available
-    this.inboundPositionData.positionAfterStop
-      .push(new StopPositionData('id1', 'name1', 'FINE',
-        [new VehiclePositionData('v1', 'BUS', 'CRITICAL'),
-          new VehiclePositionData('v4', 'SUBWAY', 'PROBLEMATIC')]));
-    this.inboundPositionData.positionAtStop
-      .push(new StopPositionData('id1', 'name1', 'CRITICAL', []));
   }
 
   getLine(): void {
@@ -55,6 +45,7 @@ export class LineDetailComponent extends LiveDataComponent implements OnInit {
         this.line = line;
         this.lineMapInbound.getLineMap(line, line.stopsInbound);
         this.lineMapOutbound.getLineMap(line, line.stopsOutbound);
+        this.getPositionData();
         // This starts periodical calls for live-data after first data was received
         super.ngOnInit();
       },
@@ -68,7 +59,26 @@ export class LineDetailComponent extends LiveDataComponent implements OnInit {
   }
 
   isLoaded(): boolean {
-    return (this.line != null && this.inboundPositionData != null && this.outboundPositionData != null);
+    return (this.line != null
+      && this.inboundPositionData.positionAtStops != null
+      && this.outboundPositionData.positionAtStops != null);
+  }
+
+  getPositionData(): void {
+    this.http.getVehiclePositionInboundData(this.line.id).subscribe(
+      data => {
+        this.inboundPositionData = data;
+      }, err => {
+        console.log('Could not get inbound vehicle position data.');
+      }
+    );
+    this.http.getVehiclePositionOutboundData(this.line.id).subscribe(
+      data => {
+        this.outboundPositionData = data;
+      }, err => {
+        console.log('Could not get outbound vehicle position data.');
+      }
+    )
   }
 
   // Update line-data
@@ -76,6 +86,7 @@ export class LineDetailComponent extends LiveDataComponent implements OnInit {
     this.setDataSubscription(
       this.http.getLineDetails(this.line.id).subscribe( data => {
           this.line = data;
+          this.getPositionData();
           this.subscribeToData();
         },
         err =>
