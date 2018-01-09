@@ -1,20 +1,23 @@
 package de.team5.super_cute.crocodile.model;
 
+import de.team5.super_cute.crocodile.util.LocalDateTimeAttributeConverter;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
 @Table(name = "announcement")
-public class Announcement extends IdentifiableObject implements TickerItemable {
+public class Announcement extends IdentifiableObject {
 
     @Column
     private String text;
 
     @Column
+    @Convert(converter = LocalDateTimeAttributeConverter.class)
     private LocalDateTime validFrom;
 
     @Column
+    @Convert(converter = LocalDateTimeAttributeConverter.class)
     private LocalDateTime validTo;
 
     @ElementCollection(fetch = FetchType.EAGER)
