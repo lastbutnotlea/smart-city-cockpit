@@ -1,5 +1,6 @@
 package de.team5.super_cute.crocodile.controller;
 
+import de.team5.super_cute.crocodile.config.AppConfiguration;
 import de.team5.super_cute.crocodile.data.BaseData;
 import de.team5.super_cute.crocodile.model.EFeedbackType;
 import de.team5.super_cute.crocodile.model.Feedback;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/feedback")
+@RequestMapping(AppConfiguration.API_PREFIX + "/feedback")
 public class FeedbackController extends BaseController<Feedback> {
 
   @Autowired
