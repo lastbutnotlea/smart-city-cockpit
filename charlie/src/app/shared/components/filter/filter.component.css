@@ -4,3 +4,29 @@
   margin-right: 40px;
   display: block;
 }
+
+.btn {
+  color: #007bff;
+  background-color: #ffffff;
+  border-color: #007bff;
+}
+
+.btn.active {
+  color: #fff;
+  background-color: #0062cc;
+  border-color: #0062cc;
+}
+
+
+.btn input[type=checkbox] {
+  position: absolute;
+  clip: rect(0,0,0,0);
+  pointer-events: none;
+}
+
+/*.btn-primary:not([disabled]):not(.disabled).active, .btn-primary:not([disabled]):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
+  color: #fff;
+  background-color: #0062cc;
+  border-color: #0062cc;
+}*/
+

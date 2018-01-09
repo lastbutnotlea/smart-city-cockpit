@@ -1,7 +1,10 @@
 <div class="filter-component">
 
-<div *ngFor="let item of (filters); let i = index">
-  <label>{{filters[i][0]}}</label>
-  <input #elem type="checkbox" checked="true" (change)="filters[i][1]=elem.checked">
-</div>
+  <div *ngFor="let item of (filters); let i = index">
+    <!--<label>{{filters[i][0]}}</label>
+    <input #elem type="checkbox" checked="true" (change)="filters[i][1]=elem.checked">-->
+      <label class="btn active" ngbButtonLabel>
+        <input ngbButton type="checkbox" #elem (change)="filters[i][1]=elem.checked"> {{filters[i][0]}}
+      </label>
+  </div>
 </div>
