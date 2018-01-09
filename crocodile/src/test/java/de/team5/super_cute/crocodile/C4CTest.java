@@ -1,15 +1,14 @@
 package de.team5.super_cute.crocodile;
 
 import de.team5.super_cute.crocodile.external.SAPC4CConnector;
-import de.team5.super_cute.crocodile.model.AppointmentInvolvedParties;
-import de.team5.super_cute.crocodile.model.C4CEntity;
-import de.team5.super_cute.crocodile.model.C4CNotes;
-import de.team5.super_cute.crocodile.model.EC4CNotesTypeCode;
 import de.team5.super_cute.crocodile.model.EServiceType;
 import de.team5.super_cute.crocodile.model.EState;
-import de.team5.super_cute.crocodile.model.EStatusCode;
 import de.team5.super_cute.crocodile.model.Event;
 import de.team5.super_cute.crocodile.model.ServiceRequest;
+import de.team5.super_cute.crocodile.model.c4c.AppointmentInvolvedParties;
+import de.team5.super_cute.crocodile.model.c4c.C4CEntity;
+import de.team5.super_cute.crocodile.model.c4c.C4CNotes;
+import de.team5.super_cute.crocodile.model.c4c.EC4CNotesTypeCode;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -22,10 +21,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@TestPropertySource(properties = "app.scheduling.enable=false")
 public class C4CTest {
 
   @Autowired
@@ -50,7 +51,7 @@ public class C4CTest {
       add(new C4CNotes("Please clean this mess.", EC4CNotesTypeCode.SERVICE_REQUEST_DESCRIPTION));
     }};
     testC4CEntity(
-        new ServiceRequest("Reinigung des Fahrzeugs | " + Math.random(), EState.FINE, EStatusCode.OPEN, LocalDateTime.now().plusDays(5),
+        new ServiceRequest("Reinigung des Fahrzeugs | " + Math.random(), EState.FINE, LocalDateTime.now().plusDays(5),
             EServiceType.MAINTENANCE, notes, "Vehicle_0", "Feedback_0"));
     //todo change type to cleaning if respecitive code was created by mhp
   }
@@ -70,7 +71,8 @@ public class C4CTest {
       C4CEntity entityWithObjectId = objects.get(objects.indexOf(entity));
       connector.deleteC4CEntity(entityWithObjectId);
 
-      Assert.assertTrue(!connector.getC4CEntities(entity.getEmptyObject()).contains(entity));
+      List<C4CEntity> entitiesAfterDeletion = connector.getC4CEntities(entity.getEmptyObject());
+      Assert.assertTrue(entitiesAfterDeletion.contains(entity));
 
     } catch (EntityProviderException | IOException | BatchException | EdmException e) {
       e.printStackTrace();

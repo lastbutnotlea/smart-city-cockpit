@@ -1,4 +1,4 @@
-package de.team5.super_cute.crocodile.model;
+package de.team5.super_cute.crocodile.model.c4c;
 
 public enum EC4CNotesTypeCode {
   APPOINTMENT_NOTES("10002"),

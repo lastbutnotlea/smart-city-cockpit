@@ -1,4 +1,6 @@
-package de.team5.super_cute.crocodile.model;
+package de.team5.super_cute.crocodile.model.c4c;
+
+import java.util.Arrays;
 
 public enum EStatusCode {
   OPEN("Open", 1),
@@ -20,5 +22,10 @@ public enum EStatusCode {
 
   public int getValue() {
     return value;
+  }
+
+  public static EStatusCode getStatusCode(String code) {
+    return Arrays.stream(EStatusCode.values()).filter(v -> Integer.toString(v.getValue()).equals(code)).findAny()
+        .orElseThrow(() -> new IllegalArgumentException("No enum value for this code: " + code));
   }
 }

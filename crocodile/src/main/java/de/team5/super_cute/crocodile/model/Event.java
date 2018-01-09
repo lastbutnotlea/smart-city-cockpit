@@ -2,6 +2,10 @@ package de.team5.super_cute.crocodile.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.team5.super_cute.crocodile.external.C4CProperty;
+import de.team5.super_cute.crocodile.model.c4c.AppointmentInvolvedParties;
+import de.team5.super_cute.crocodile.model.c4c.C4CEntity;
+import de.team5.super_cute.crocodile.model.c4c.C4CNotes;
+import de.team5.super_cute.crocodile.model.c4c.EStatusCode;
 import de.team5.super_cute.crocodile.util.Helpers;
 import java.time.LocalDateTime;
 import java.util.List;

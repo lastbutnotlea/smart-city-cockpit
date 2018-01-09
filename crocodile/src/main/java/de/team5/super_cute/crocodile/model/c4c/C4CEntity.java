@@ -1,7 +1,8 @@
-package de.team5.super_cute.crocodile.model;
+package de.team5.super_cute.crocodile.model.c4c;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.team5.super_cute.crocodile.external.C4CProperty;
+import de.team5.super_cute.crocodile.model.IdentifiableObject;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
