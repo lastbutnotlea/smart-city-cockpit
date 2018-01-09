@@ -62,7 +62,7 @@ export class TripAddComponent implements OnInit {
         // fill selected.stops with inbound stops
         this.selected.stops = [];
         for(const stop of this.selectedLineStops){
-          this.selected.stops.push(new TripStopData(stop.id, dummyDate, stop.commonName));
+          this.selected.stops.push(new TripStopData(stop.id, dummyDate, stop.commonName, ''));
         }
       },
       err => console.log('Err'));
@@ -97,7 +97,7 @@ export class TripAddComponent implements OnInit {
 
       this.selected.stops = [];
       for (const stop of this.selectedLineStops) {
-        this.selected.stops.push(new TripStopData(stop.id, dummyDate, stop.commonName));
+        this.selected.stops.push(new TripStopData(stop.id, dummyDate, stop.commonName, ''));
       }
 
       this.refreshVehicleAndLineData();
@@ -161,7 +161,7 @@ export class TripAddComponent implements OnInit {
 
   includeStop(stop: StopData, included: boolean): void {
     if (included) {
-      this.selected.stops.push(new TripStopData(stop.id, dummyDate, stop.commonName));
+      this.selected.stops.push(new TripStopData(stop.id, dummyDate, stop.commonName, ''));
     } else {
       this.selected.stops = this.selected.stops.filter(filteredStop => filteredStop.id !== stop.id);
       this.selected.stops = this.stopSortService.sortStops(this.selected.stops);
