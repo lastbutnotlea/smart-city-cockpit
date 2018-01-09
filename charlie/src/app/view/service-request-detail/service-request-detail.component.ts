@@ -21,20 +21,21 @@ import { ServiceRequestData } from '../../shared/data/service-request-data';
               '../../shared/styling/global-styling.css']
 })
 
-export class ServiceRequestComponent extends LiveDataComponent implements OnInit {
+export class ServiceRequestDetailComponent extends LiveDataComponent implements OnInit {
 
+  title: string;
   serviceRequest: ServiceRequestData;
   loaded: boolean = false;
 
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
               private location: Location,
-              private modalService: NgbModal,
-              private stopSortService: StopSortService) {
+              private modalService: NgbModal) {
     super();
   }
 
   ngOnInit(): void {
+    this.title = "Service Request Detail View"
     this.getServiceRequest();
   }
 
