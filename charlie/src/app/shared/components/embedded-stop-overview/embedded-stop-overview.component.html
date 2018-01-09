@@ -5,12 +5,14 @@
     <label class="padding-emb-box-headline">Stops {{title}}</label>
   </h5>
 
-    <div *ngFor="let data of linePositionData.positionAtStop; let i = index">
+    <div *ngFor="let data of linePositionData.positionAtStops; let i = index">
       <!-- for vehicles at stops -->
       <p>
         <!-- stop icon -->
-        <i class="fa fa-map-marker float-left small-padding-left" [style.color]="color"></i>
-        At {{data.stopName}}
+        <a href="network/stop/{{data.stopId}}">
+          <i class="fa fa-map-marker float-left small-padding-left" [style.color]="color"></i>
+          At {{data.stopName}}
+        </a>
         <!-- status icon -->
         <span [ngClass]="{'color-fine': data.stopState === 'FINE',
                 'color-problematic': data.stopState === 'PROBLEMATIC',
@@ -19,6 +21,7 @@
         </span>
         <!-- vehicle icons -->
         <span class="float-right" *ngFor="let vehicle of data.vehiclePositionData">
+          <a href="vehicles/{{vehicle.id}}">
           <!-- bus icon if bus -->
           <span *ngIf="vehicle.type === 'BUS'"
                 [ngClass]="{'color-fine': vehicle.state === 'FINE',
@@ -33,36 +36,41 @@
                 'color-critical': vehicle.state === 'CRITICAL' }">
             <i class="fa fa-subway float-left small-padding-left"></i>
           </span>
+          </a>
         </span>
       </p>
 
       <!-- for vehicles between stops -->
       <p>
         <!-- stop icon -->
-        <i class="fa fa-map-marker float-left small-padding-left"  [style.color]="color"></i>
-        After {{linePositionData.positionAfterStop[i].stopName}}
-        <!-- status icon -->
-        <span [ngClass]="{'color-fine': linePositionData.positionAfterStop[i].stopState === 'FINE',
-                'color-problematic': linePositionData.positionAfterStop[i].stopState === 'PROBLEMATIC',
-                'color-critical': linePositionData.positionAfterStop[i].stopState === 'CRITICAL' }">
+        <a href="network/stop/{{linePositionData.positionAfterStops[i].stopId}}">
+          <i class="fa fa-map-marker float-left small-padding-left"  [style.color]="color"></i>
+          After {{linePositionData.positionAfterStops[i].stopName}}
+        </a>
+
+        <span [ngClass]="{'color-fine': linePositionData.positionAfterStops[i].stopState === 'FINE',
+                'color-problematic': linePositionData.positionAfterStops[i].stopState === 'PROBLEMATIC',
+                'color-critical': linePositionData.positionAfterStops[i].stopState === 'CRITICAL' }">
           <i class="fa fa-exclamation-triangle small-padding-right" aria-hidden="true"></i>
         </span>
         <!-- vehicle icons -->
-        <span class="float-right" *ngFor="let vehicle of linePositionData.positionAfterStop[i].vehiclePositionData">
+        <span class="float-right" *ngFor="let vehicle of linePositionData.positionAfterStops[i].vehiclePositionData">
+          <a href="vehicles/{{vehicle.id}}">
           <!-- bus icon if bus -->
-          <span *ngIf="vehicle.type === 'BUS'"
-                [ngClass]="{'color-fine': vehicle.state === 'FINE',
+            <span *ngIf="vehicle.type === 'BUS'"
+                  [ngClass]="{'color-fine': vehicle.state === 'FINE',
                 'color-problematic': vehicle.state === 'PROBLEMATIC',
                 'color-critical': vehicle.state === 'CRITICAL' }">
-            <i class="fa fa-bus float-left small-padding-left"></i>
-          </span>
+              <i class="fa fa-bus float-left small-padding-left"></i>
+            </span>
           <!-- subway icon if subway -->
-          <span *ngIf="vehicle.type === 'SUBWAY'"
+            <span *ngIf="vehicle.type === 'SUBWAY'"
                 [ngClass]="{'color-fine': vehicle.state === 'FINE',
                 'color-problematic': vehicle.state === 'PROBLEMATIC',
                 'color-critical': vehicle.state === 'CRITICAL' }">
-            <i class="fa fa-subway float-left small-padding-left"></i>
-          </span>
+              <i class="fa fa-subway float-left small-padding-left"></i>
+            </span>
+          </a>
         </span>
       </p>
     </div>

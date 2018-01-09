@@ -9,6 +9,7 @@ import {HttpClient} from '@angular/common/http';
 import {StopData} from '../shared/data/stop-data';
 import 'rxjs/add/operator/map';
 import { ServiceRequestData } from '../shared/data/service-request-data';
+import { LinePositionData } from '../shared/data/line-position-data';
 
 @Injectable()
 export class HttpRoutingService {
@@ -134,10 +135,19 @@ export class HttpRoutingService {
         tap(data => console.log('Data for filters: ' + data))
     );
   }
+  
+  public getVehiclePositionInboundData(lineData: string): Observable<LinePositionData> {
+    return this.http.get<LinePositionData>(this.urlBuilder.getVehiclePositionInboundUrl(lineData));
+  }
+
+  public getVehiclePositionOutboundData(lineData: string): Observable<LinePositionData> {
+    return this.http.get<LinePositionData>(this.urlBuilder.getVehiclePositionOutboundUrl(lineData));
+  }
 
   public getServiceRequests(): Observable<any> {
     return this.http.get<any>(this.urlBuilder.getServiceRequestsUrl());
   }
+  
 
   public getServiceRequestDetails(id: string): Observable<any> {
     return this.http.get<any>(this.urlBuilder.getServiceRequestUrl(id));
