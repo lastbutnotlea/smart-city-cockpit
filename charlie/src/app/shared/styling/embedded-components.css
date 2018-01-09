@@ -4,7 +4,7 @@
   padding: 10px;
   border-radius: 10px;
   border: 1px solid #007bff;
-  overflow: auto;
+  overflow-y: scroll;
 }
 
 .flex-3 {
