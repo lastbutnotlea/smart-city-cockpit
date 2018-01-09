@@ -1,13 +1,16 @@
 package de.team5.super_cute.crocodile.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import de.team5.super_cute.crocodile.util.FeedbackableAttributeConverter;
 import de.team5.super_cute.crocodile.util.LocalDateTimeAttributeConverter;
-import java.io.Serializable;
-import java.time.LocalDateTime;
+
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "feedback")
@@ -52,12 +55,14 @@ public class Feedback extends IdentifiableObject implements Serializable, Ticker
     this.message = message;
   }
 
-  public LocalDateTime getTimestamp() {
-    return timestamp;
+  @JsonProperty("timestamp")
+  public String getTimestamp() {
+    return timestamp.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
   }
 
-  public void setTimestamp(LocalDateTime timestamp) {
-    this.timestamp = timestamp;
+  @JsonProperty("timestamp")
+  public void setTimestamp(String timestamp) {
+    this.timestamp = LocalDateTime.parse(timestamp);
   }
 
   public Feedbackable getObjective() {

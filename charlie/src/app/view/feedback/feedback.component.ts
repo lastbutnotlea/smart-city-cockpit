@@ -11,7 +11,7 @@ import {FilterComponent} from '../../shared/components/filter/filter.component';
 })
 export class FeedbackComponent implements OnInit {
   title: string = 'Feedback';
-  feedback: FeedbackData[] = null;
+  feedback: FeedbackData[] = [];
 
   @ViewChild(FilterGroupComponent)
   filterGroup: FilterGroupComponent;
