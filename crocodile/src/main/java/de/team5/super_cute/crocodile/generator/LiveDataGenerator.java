@@ -72,6 +72,11 @@ public class LiveDataGenerator {
   public void generateLiveData() {
     LoggerFactory.getLogger(getClass())
         .info("Started generating LiveData");
+    // delete old feedback
+    feedbackData.getData().stream()
+        .filter(f -> f.getTimestamp().compareTo(LocalDateTime.now().minusMinutes(30)) < 0)
+        .forEach(f -> feedbackData.deleteObject(f.getId()));
+
     List<Stop> stops = stopData.getData();
     List<Vehicle> vehicles = vehicleData.getData();
     for (Stop stop : stops) {
@@ -86,7 +91,7 @@ public class LiveDataGenerator {
 
   private void generateLiveDataForStop(Stop stop) {
     Random r = new Random(System.currentTimeMillis());
-    //increase or decrease people waiting by 0-5%
+    // increase or decrease people waiting by 0-5%
     stop.setPeopleWaiting(
         getNewValue(stop.getPeopleWaiting(), PEOPLE_WAITING_CHANGE_AMPLITUDE, PEOPLE_WAITING_MIN,
             PEOPLE_WAITING_MAX));
