@@ -2,7 +2,7 @@ package de.team5.super_cute.crocodile.external;
 
 import static de.team5.super_cute.crocodile.util.Helpers.getC4CProperties;
 
-import de.team5.super_cute.crocodile.model.C4CEntity;
+import de.team5.super_cute.crocodile.model.c4c.C4CEntity;
 import de.team5.super_cute.crocodile.model.Event;
 import de.team5.super_cute.crocodile.model.ServiceRequest;
 import de.team5.super_cute.crocodile.util.Helpers;
@@ -148,7 +148,7 @@ public class SAPC4CConnector {
 
     HttpResponse response = getHttpClient().execute(get);
 
-    if (response.getStatusLine().getStatusCode() % 100 != 2) {
+    if (!response.getStatusLine().toString().equals("HTTP/1.1 200 OK")) {
       logger.error("Error from Get Request to SAP C4C: " + response.getStatusLine());
     }
 

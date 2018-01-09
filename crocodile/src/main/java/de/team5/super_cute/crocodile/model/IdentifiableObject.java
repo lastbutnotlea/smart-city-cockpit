@@ -20,7 +20,7 @@ public abstract class IdentifiableObject {
   @C4CProperty(name = "ID")
   private String id = null;
 
-  IdentifiableObject() {
+  public IdentifiableObject() {
     setId();
   }
 
