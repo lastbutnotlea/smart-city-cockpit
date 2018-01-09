@@ -8,6 +8,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {StopData} from '../shared/data/stop-data';
 import 'rxjs/add/operator/map';
+import { ServiceRequestData } from '../shared/data/service-request-data';
 
 @Injectable()
 export class HttpRoutingService {
@@ -132,5 +133,26 @@ export class HttpRoutingService {
       pipe(
         tap(data => console.log('Data for filters: ' + data))
     );
+  }
+
+  public getServiceRequests(): Observable<any> {
+    return this.http.get<any>(this.urlBuilder.getServiceRequestsUrl());
+  }
+
+  public getServiceRequestDetails(id: string): Observable<any> {
+    return this.http.get<any>(this.urlBuilder.getServiceRequestUrl(id));
+  }
+
+  public addServiceRequest(serviceRequest: ServiceRequestData): Observable<any> {
+    console.log('ADD SERVICE REQUEST, ...');
+    return this.http.post(this.urlBuilder.getServiceRequestsUrl(), serviceRequest);
+  }
+
+  public editServiceRequest(serviceRequest: ServiceRequestData): Observable<any> {
+    return this.http.put(this.urlBuilder.getTripsUrl(), serviceRequest);
+  }
+
+  public deleteServiceRequest(id: string): Observable<any> {
+    return this.http.delete(this.urlBuilder.getServiceRequestUrl(id));
   }
 }

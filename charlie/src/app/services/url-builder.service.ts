@@ -5,16 +5,12 @@ import { environment } from '../../environments/environment';
 export class UrlBuilderService {
 
   private baseUrl = environment.backendUrl;
-
   private networkBaseUrl = this.baseUrl + '/lines';
-
   private stopBaseUrl = this.baseUrl + '/stops';
-
   private tripBaseUrl = this.baseUrl + '/trips';
-
   private vehicleBaseUrl = this.baseUrl + '/vehicles';
-
   private mapBaseUrl = this.baseUrl + '/map';
+  private serviceRequestsUrl = this.baseUrl + '/servicerequests';
 
   public getNetworkUrl(): string {
     return this.networkBaseUrl;
@@ -58,5 +54,13 @@ export class UrlBuilderService {
 
   public getFilterInfosUrl(): string {
     return this.networkBaseUrl + '/filter-data';
+  }
+
+  public getServiceRequestsUrl(): string {
+    return this.serviceRequestsUrl;
+  }
+
+  public getServiceRequestUrl(id: string): string {
+    return this.serviceRequestsUrl + '/' + id;
   }
 }

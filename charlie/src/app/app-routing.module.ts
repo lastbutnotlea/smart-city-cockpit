@@ -7,6 +7,7 @@ import {LineDetailComponent} from './view/line-detail/line-detail.component';
 import {StopDetailComponent} from './view/stop-detail/stop-detail.component';
 import {VehiclesComponent} from './view/vehicles/vehicles.component';
 import {VehicleDetailComponent} from './view/vehicle-detail/vehicle-detail.component';
+import { ServiceRequestsComponent } from './view/service-requests/service-requests.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/network', pathMatch: 'full'},
@@ -17,6 +18,7 @@ const routes: Routes = [
   {path: 'network/stop/:stopId', component: StopDetailComponent},
   {path: 'vehicles', component: VehiclesComponent},
   {path: 'vehicles/:id', component: VehicleDetailComponent},
+  {path: 'serviceRequests', component: ServiceRequestsComponent},
 ];
 
 @NgModule({

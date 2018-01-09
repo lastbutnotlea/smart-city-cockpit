@@ -1,5 +1,6 @@
-export class StopData {
-  id: string;
+import { ServiceRequestTarget } from './service-request-target';
+
+export class StopData extends ServiceRequestTarget {
   commonName: string;
   peopleWaiting: number;
   lat: number;

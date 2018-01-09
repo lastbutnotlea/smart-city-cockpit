@@ -1,6 +1,6 @@
+import { ServiceRequestTarget } from './service-request-target';
 
-export class VehicleData {
-  id: string;
+export class VehicleData extends ServiceRequestTarget {
   capacity: number;
   load: number;
   delay: number;
