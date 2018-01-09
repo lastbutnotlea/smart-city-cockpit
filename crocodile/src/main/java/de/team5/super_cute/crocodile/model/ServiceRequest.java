@@ -8,8 +8,10 @@ import de.team5.super_cute.crocodile.model.c4c.C4CEntity;
 import de.team5.super_cute.crocodile.model.c4c.C4CNotes;
 import de.team5.super_cute.crocodile.model.c4c.EStatusCode;
 import de.team5.super_cute.crocodile.util.Helpers;
+import de.team5.super_cute.crocodile.util.LocalDateTimeAttributeConverter;
 import java.time.LocalDateTime;
 import java.util.List;
+import javax.persistence.Convert;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -34,12 +36,14 @@ public class ServiceRequest extends C4CEntity {
   private EStatusCode statusCode = EStatusCode.OPEN;
 
   @C4CProperty(name = "CompletionDueDate")
+  @Convert(converter = LocalDateTimeAttributeConverter.class)
   private LocalDateTime dueDate;
 
   /**
    * not set by user, only in SAP
    */
   @C4CProperty(name = "CompletedOnDate")
+  @Convert(converter = LocalDateTimeAttributeConverter.class)
   private LocalDateTime completionDate = DUMMY_TIME;
 
   @C4CProperty(name = "DataOriginTypeCode")
@@ -84,11 +88,13 @@ public class ServiceRequest extends C4CEntity {
 
 
   @Override
+  @JsonIgnore
   public String getCollectionName() {
     return "ServiceRequestCollection";
   }
 
   @Override
+  @JsonIgnore
   public C4CEntity getEmptyObject() {
     return new ServiceRequest();
   }

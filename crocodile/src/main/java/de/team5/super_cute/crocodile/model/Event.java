@@ -7,8 +7,10 @@ import de.team5.super_cute.crocodile.model.c4c.C4CEntity;
 import de.team5.super_cute.crocodile.model.c4c.C4CNotes;
 import de.team5.super_cute.crocodile.model.c4c.EStatusCode;
 import de.team5.super_cute.crocodile.util.Helpers;
+import de.team5.super_cute.crocodile.util.LocalDateTimeAttributeConverter;
 import java.time.LocalDateTime;
 import java.util.List;
+import javax.persistence.Convert;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -38,9 +40,11 @@ public class Event extends C4CEntity {
   private EStatusCode status = EStatusCode.OPEN; // offen
 
   @C4CProperty(name = "StartDateTime", metadataType = "c4codata.LOCALNORMALISED_DateTime")
+  @Convert(converter = LocalDateTimeAttributeConverter.class)
   private LocalDateTime startTime;
 
   @C4CProperty(name = "EndDateTime", metadataType = "c4codata.LOCALNORMALISED_DateTime")
+  @Convert(converter = LocalDateTimeAttributeConverter.class)
   private LocalDateTime endTime;
 
   @C4CProperty(name = "LocationName", maxLength = 100)
@@ -69,11 +73,13 @@ public class Event extends C4CEntity {
   }
 
   @Override
+  @JsonIgnore
   public String getCollectionName() {
     return "AppointmentCollection";
   }
 
   @Override
+  @JsonIgnore
   public C4CEntity getEmptyObject() {
     return new Event();
   }
