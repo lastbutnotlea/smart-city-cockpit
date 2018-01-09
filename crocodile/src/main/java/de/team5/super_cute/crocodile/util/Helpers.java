@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 
 public class Helpers {
@@ -31,9 +31,10 @@ public class Helpers {
 
   public static LocalDateTime DUMMY_TIME = LocalDateTime.MIN.withYear(0).withHour(0).withMinute(0);
 
+  public static String SAP_ACCOUNT_ID = "4000560"; // wohl unser Account 'Uni Augsburg02'
+
   public static void logException(Logger logger , Exception e) {
-    logger.error(e.getMessage() + Arrays.stream(e.getStackTrace()).map(Object::toString)
-        .collect(Collectors.joining("\n")));
+    logger.error(e.getMessage() + ExceptionUtils.getStackTrace(e));
   }
 
   public static Stream<Field> getC4CProperties(Object o) {

@@ -8,9 +8,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class C4CNotes extends C4CEntity {
 
-  public static final String APPOINTMENT_NOTES_TYPE_CODE = "10002";
-  public static final String SERVICE_REQUEST_DESCRIPTION_TYPE_CODE = "10004";
-
   @C4CProperty(name = "Text")
   private String text;
 
@@ -20,14 +17,14 @@ public class C4CNotes extends C4CEntity {
    */
   @C4CProperty(name = "TypeCode", maxLength = 5)
   @JsonIgnore
-  private String typeCode = "10002"; // Textkörper
+  private String typeCode;
 
   public C4CNotes() {
   }
 
-  public C4CNotes(String text, String typeCode) {
+  public C4CNotes(String text, EC4CNotesTypeCode typeCode) {
     this.text = text;
-    this.typeCode = typeCode;
+    this.typeCode = typeCode.toString();
   }
 
   @Override

@@ -2,6 +2,7 @@ package de.team5.super_cute.crocodile.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.team5.super_cute.crocodile.external.C4CProperty;
+import de.team5.super_cute.crocodile.util.Helpers;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -15,7 +16,7 @@ public class Event extends C4CEntity {
 
   @C4CProperty(name = "AccountID", maxLength = 60)
   @JsonIgnore
-  private String accountId = "4000560"; // wohl unser Account 'Uni Augsburg02'
+  private String accountId = Helpers.SAP_ACCOUNT_ID;
 
   @C4CProperty(name = "CategoryCode", maxLength = 4)
   @JsonIgnore
@@ -26,11 +27,11 @@ public class Event extends C4CEntity {
   private String type = "12"; // keine Ahnung wieso 12, das ist bei den bisherigen so TODO soll das Frontend die sehen/einstellen können? (z.B. Veranstaltung, Fußball, Oper)
 
   @C4CProperty(name = "PriorityCode", maxLength = 1)
-  private String priority = "3"; // normal
+  private EState priority = EState.FINE;
 
   @C4CProperty(name = "StatusCode", maxLength = 2)
   @JsonIgnore
-  private String status = "1"; // offen
+  private EStatusCode status = EStatusCode.OPEN; // offen
 
   @C4CProperty(name = "StartDateTime", metadataType = "c4codata.LOCALNORMALISED_DateTime")
   private LocalDateTime startTime;
@@ -41,16 +42,16 @@ public class Event extends C4CEntity {
   @C4CProperty(name = "LocationName", maxLength = 100)
   private String LocationName;
 
-  @C4CProperty(name = "AppointmentInvolvedParties", associatedEntities = true)
+  @C4CProperty(name = "AppointmentInvolvedParties", hasAssociatedEntities = true)
   private List<AppointmentInvolvedParties> appointmentInvolvedParties;
 
-  @C4CProperty(name = "AppointmentNotes", associatedEntities = true)
+  @C4CProperty(name = "AppointmentNotes", hasAssociatedEntities = true)
   private List<C4CNotes> appointmentNotes;
 
   public Event() {
   }
 
-  public Event(String subject, String priority, LocalDateTime startTime,
+  public Event(String subject, EState priority, LocalDateTime startTime,
       LocalDateTime endTime, String locationName,
       List<AppointmentInvolvedParties> appointmentInvolvedParties,
       List<C4CNotes> appointmentNotes) {
@@ -105,19 +106,19 @@ public class Event extends C4CEntity {
     this.type = type;
   }
 
-  public String getPriority() {
+  public EState getPriority() {
     return priority;
   }
 
-  public void setPriority(String priority) {
+  public void setPriority(EState priority) {
     this.priority = priority;
   }
 
-  public String getStatus() {
+  public EStatusCode getStatus() {
     return status;
   }
 
-  public void setStatus(String status) {
+  public void setStatus(EStatusCode status) {
     this.status = status;
   }
 

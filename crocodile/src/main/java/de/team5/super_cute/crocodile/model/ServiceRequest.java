@@ -4,6 +4,7 @@ import static de.team5.super_cute.crocodile.util.Helpers.DUMMY_TIME;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.team5.super_cute.crocodile.external.C4CProperty;
+import de.team5.super_cute.crocodile.util.Helpers;
 import java.time.LocalDateTime;
 import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -12,25 +13,22 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class ServiceRequest extends C4CEntity {
 
-  private static final String CLEANING_TYPE_CODE = "ZCLN";
-  private static final String MAINTENANCE_TYPE_CODE = "SRRQ";
-
   @C4CProperty(name = "Name", metadataType = "c4codata.EXTENDED_Name")
   private String name;
 
   @C4CProperty(name = "CustomerID")
   @JsonIgnore
-  private String customerId = "4000560"; // Id unserer Gruppe
+  private String customerId = Helpers.SAP_ACCOUNT_ID;
 
   @C4CProperty(name = "CreatedBy")
   @JsonIgnore
   private String createdBy = "Uni Augsburg02"; // unsere Gruppe
 
   @C4CProperty(name = "ServicePriorityCode", maxLength = 8)
-  private String priority = "3"; // normal
+  private EState priority = EState.FINE;
 
   @C4CProperty(name = "ServiceRequestLifeCycleStatusCode")
-  private String statusCode = "1"; // open todo safe strings to get string meanings from number code?
+  private EStatusCode statusCode = EStatusCode.OPEN;
 
   @C4CProperty(name = "CompletionDueDate")
   private LocalDateTime dueDate;
@@ -43,7 +41,7 @@ public class ServiceRequest extends C4CEntity {
 
   @C4CProperty(name = "DataOriginTypeCode")
   @JsonIgnore
-  private String originTypeCode = "1";
+  private String originTypeCode = "1"; // Manual Data Entry
 
   @C4CProperty(name = "ProcessingTypeCode")
   @JsonIgnore
@@ -51,7 +49,7 @@ public class ServiceRequest extends C4CEntity {
 
   private EServiceType type;
 
-  @C4CProperty(name = "ServiceRequestDescription", associatedEntities = true)
+  @C4CProperty(name = "ServiceRequestDescription", hasAssociatedEntities = true)
   private List<C4CNotes> serviceRequestDescription;
 
   /**
@@ -69,7 +67,7 @@ public class ServiceRequest extends C4CEntity {
   public ServiceRequest() {
   }
 
-  public ServiceRequest(String name, String priority, String statusCode,
+  public ServiceRequest(String name, EState priority, EStatusCode statusCode,
       LocalDateTime dueDate, EServiceType type,
       List<C4CNotes> serviceRequestDescription, String target, String referencedFeedback) {
     setName(name);
@@ -117,19 +115,19 @@ public class ServiceRequest extends C4CEntity {
     this.createdBy = createdBy;
   }
 
-  public String getPriority() {
+  public EState getPriority() {
     return priority;
   }
 
-  public void setPriority(String priority) {
+  public void setPriority(EState priority) {
     this.priority = priority;
   }
 
-  public String getStatusCode() {
+  public EStatusCode getStatusCode() {
     return statusCode;
   }
 
-  public void setStatusCode(String statusCode) {
+  public void setStatusCode(EStatusCode statusCode) {
     this.statusCode = statusCode;
   }
 
@@ -159,50 +157,26 @@ public class ServiceRequest extends C4CEntity {
 
   public String getProcessingTypeCode() {
     if (this.type != null) {
-      switch (this.type) {
-        case CLEANING:
-          return CLEANING_TYPE_CODE;
-        case MAINTENANCE:
-          return MAINTENANCE_TYPE_CODE;
-      }
+      return this.type.getCode();
     }
     return processingTypeCode;
   }
 
   public void setProcessingTypeCode(String processingTypeCode) {
     this.processingTypeCode = processingTypeCode;
-    switch (processingTypeCode) {
-      case CLEANING_TYPE_CODE:
-        this.type = EServiceType.CLEANING;
-        break;
-      case MAINTENANCE_TYPE_CODE:
-        this.type = EServiceType.MAINTENANCE;
-        break;
-    }
+    this.type = EServiceType.getServiceType(processingTypeCode);
   }
 
   public EServiceType getType() {
     if (this.processingTypeCode != null) {
-      switch (this.processingTypeCode) {
-        case CLEANING_TYPE_CODE:
-          return EServiceType.CLEANING;
-        case MAINTENANCE_TYPE_CODE:
-          return EServiceType.MAINTENANCE;
-      }
+      return EServiceType.getServiceType(this.processingTypeCode);
     }
     return type;
   }
 
   public void setType(EServiceType type) {
     this.type = type;
-    switch (type) {
-      case CLEANING:
-        this.processingTypeCode = CLEANING_TYPE_CODE;
-        break;
-      case MAINTENANCE:
-        this.processingTypeCode = MAINTENANCE_TYPE_CODE;
-        break;
-    }
+    this.processingTypeCode = type.getCode();
   }
 
   public List<C4CNotes> getServiceRequestDescription() {

@@ -4,6 +4,7 @@ import de.team5.super_cute.crocodile.external.SAPC4CConnector;
 import de.team5.super_cute.crocodile.model.AppointmentInvolvedParties;
 import de.team5.super_cute.crocodile.model.C4CEntity;
 import de.team5.super_cute.crocodile.model.C4CNotes;
+import de.team5.super_cute.crocodile.model.EC4CNotesTypeCode;
 import de.team5.super_cute.crocodile.model.EServiceType;
 import de.team5.super_cute.crocodile.model.Event;
 import de.team5.super_cute.crocodile.model.ServiceRequest;
@@ -16,8 +17,17 @@ import org.apache.olingo.odata2.api.edm.EdmException;
 import org.apache.olingo.odata2.api.ep.EntityProviderException;
 import org.junit.Assert;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class C4CTest {
+
+  @Autowired
+  private SAPC4CConnector connector;
 
   @Test
   public void testAppointments() {
@@ -25,7 +35,7 @@ public class C4CTest {
       add(new AppointmentInvolvedParties("Fussballclub"));
     }};
     List<C4CNotes> notes = new ArrayList<C4CNotes>() {{
-      add(new C4CNotes("There are gonna be many many people", C4CNotes.APPOINTMENT_NOTES_TYPE_CODE));
+      add(new C4CNotes("There are gonna be many many people", EC4CNotesTypeCode.APPOINTMENT_NOTES));
     }};
     testC4CEntity(
         new Event("Fussballspiel", "3", LocalDateTime.now(), LocalDateTime.now().plusHours(1),
@@ -35,7 +45,7 @@ public class C4CTest {
   @Test
   public void testServiceRequests() {
     List<C4CNotes> notes = new ArrayList<C4CNotes>() {{
-      add(new C4CNotes("Please clean this mess.", C4CNotes.SERVICE_REQUEST_DESCRIPTION_TYPE_CODE));
+      add(new C4CNotes("Please clean this mess.", EC4CNotesTypeCode.SERVICE_REQUEST_DESCRIPTION));
     }};
     testC4CEntity(
         new ServiceRequest("Reinigung des Fahrzeugs | " + Math.random(), "3", "1", LocalDateTime.now().plusDays(5),
@@ -45,7 +55,6 @@ public class C4CTest {
 
   private void testC4CEntity(C4CEntity entity) {
     try {
-      SAPC4CConnector connector = new SAPC4CConnector();
       if (connector.getC4CEntities(entity.getEmptyObject()).contains(entity)) {
         Assert.fail(
             "Test " + entity.getClass() + "\n" + entity + "\n is already present in " + entity
