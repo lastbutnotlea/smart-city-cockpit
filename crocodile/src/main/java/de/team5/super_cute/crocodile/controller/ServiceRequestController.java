@@ -35,12 +35,14 @@ public class ServiceRequestController {
   @GetMapping
   public List<ServiceRequest> getAllServiceRequests()
       throws IOException, EdmException, EntityProviderException {
+    logger.info("Got Request for all Service Requests");
     return connector.getServiceRequests();
   }
 
   @GetMapping("/{id}")
   public ServiceRequest getAllServiceRequests(@PathVariable String id)
       throws IOException, EdmException, EntityProviderException {
+    logger.info("Got Request for Service Request with id " + id);
     return connector.getServiceRequests().stream().filter(sr -> sr.getId().equals(id)).findAny()
         .orElseThrow(() -> new IllegalArgumentException("No Service Request found for this id."));
   }
@@ -48,6 +50,7 @@ public class ServiceRequestController {
   @PostMapping
   public String addServiceRequest(@RequestBody ServiceRequest serviceRequestInput)
       throws IOException, BatchException {
+    logger.info("Got Request to add Service Request: " + serviceRequestInput);
     if (serviceRequestInput.getId() == null) {
       serviceRequestInput.setId();
     }
@@ -58,6 +61,7 @@ public class ServiceRequestController {
   @DeleteMapping("/{id}")
   public String deleteServiceRequest(@PathVariable String id)
       throws IOException, EdmException, EntityProviderException {
+    logger.info("Got Request to delete Service Request with id " + id);
     return connector.deleteC4CEntity(
         connector.getServiceRequests().stream().filter(sr -> sr.getId().equals(id)).findAny()
             .orElseThrow(() -> new IllegalArgumentException(
@@ -67,6 +71,7 @@ public class ServiceRequestController {
   @PutMapping
   public String editServiceRequest(@RequestBody ServiceRequest serviceRequestInput)
       throws IOException, BatchException {
+    logger.info("Got Request to edit Service Request: " + serviceRequestInput);
     connector.deleteC4CEntity(serviceRequestInput);
     connector.putC4CEntity(serviceRequestInput);
     return serviceRequestInput.getId();
