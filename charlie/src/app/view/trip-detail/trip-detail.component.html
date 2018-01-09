@@ -26,10 +26,10 @@
     <!-- stops -->
     <div class="flex-3">
     <div class="bounding-box">
-      <h5 class="text-lg-left">
+      <h4 class="text-lg-left">
         <i class="fa fa-map-marker fa-2x float-left small-padding-left text-primary"></i>
         <label class="padding-emb-box-headline">Stops</label>
-      </h5>
+      </h4>
       <p *ngFor="let stop of trip.stops">
         <label class="text-secondary">{{stop.departureTime | date:'MM/dd/yyyy HH:mm'}}</label>
         {{stop.name}}
