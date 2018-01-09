@@ -32,14 +32,14 @@ public class FeedbackController extends BaseController<Feedback> {
   public List<Feedback> getVehicleFeedbacks(@PathVariable String vehicleId) {
     return data.getData().stream()
         .filter(f -> f.getFeedbackType() == EFeedbackType.VEHICLE_FEEDBACK)
-        .filter(f -> ((Vehicle) f.getObjective()).getId() == vehicleId)
+        .filter(f -> f.getObjective().getId() == vehicleId)
         .collect(Collectors.toList());
   }
 
   @GetMapping("/stop/{stopId}")
   public List<Feedback> getStopFeedbacks(@PathVariable String stopId) {
     return data.getData().stream().filter(f -> f.getFeedbackType() == EFeedbackType.STOP_FEEDBACK)
-        .filter(f -> ((Stop) f.getObjective()).getId() == stopId).collect(Collectors.toList());
+        .filter(f -> f.getObjective().getId() == stopId).collect(Collectors.toList());
   }
 
   @GetMapping("/line/{lineId}")
