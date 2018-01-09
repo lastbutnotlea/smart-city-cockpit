@@ -4,7 +4,7 @@
   <app-filter-group-view></app-filter-group-view>
 
   <div class="d-flex flex-column scrollable container">
-    <ng-container *ngFor="let fb of feedback">
+    <ng-container *ngFor="let fb of filterGroup.getFiltered(feedback)">
       <app-feedback-item [item]="fb"></app-feedback-item>
     </ng-container>
   </div>
