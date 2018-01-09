@@ -59,4 +59,12 @@ export class UrlBuilderService {
   public getFilterInfosUrl(): string {
     return this.networkBaseUrl + '/filter-data';
   }
+
+  public getVehiclePositionInboundUrl(lineId: string): string {
+    return this.getLineDetailsUrl(lineId) + '/vehicles/inbound';
+  }
+
+  public getVehiclePositionOutboundUrl(lineId: string): string {
+    return this.getLineDetailsUrl(lineId) + '/vehicles/outbound';
+  }
 }
