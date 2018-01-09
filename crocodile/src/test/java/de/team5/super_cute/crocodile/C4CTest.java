@@ -6,6 +6,8 @@ import de.team5.super_cute.crocodile.model.C4CEntity;
 import de.team5.super_cute.crocodile.model.C4CNotes;
 import de.team5.super_cute.crocodile.model.EC4CNotesTypeCode;
 import de.team5.super_cute.crocodile.model.EServiceType;
+import de.team5.super_cute.crocodile.model.EState;
+import de.team5.super_cute.crocodile.model.EStatusCode;
 import de.team5.super_cute.crocodile.model.Event;
 import de.team5.super_cute.crocodile.model.ServiceRequest;
 import java.io.IOException;
@@ -38,7 +40,7 @@ public class C4CTest {
       add(new C4CNotes("There are gonna be many many people", EC4CNotesTypeCode.APPOINTMENT_NOTES));
     }};
     testC4CEntity(
-        new Event("Fussballspiel", "3", LocalDateTime.now(), LocalDateTime.now().plusHours(1),
+        new Event("Fussballspiel", EState.FINE, LocalDateTime.now(), LocalDateTime.now().plusHours(1),
             "Fussballarena", aip, notes));
   }
 
@@ -48,7 +50,7 @@ public class C4CTest {
       add(new C4CNotes("Please clean this mess.", EC4CNotesTypeCode.SERVICE_REQUEST_DESCRIPTION));
     }};
     testC4CEntity(
-        new ServiceRequest("Reinigung des Fahrzeugs | " + Math.random(), "3", "1", LocalDateTime.now().plusDays(5),
+        new ServiceRequest("Reinigung des Fahrzeugs | " + Math.random(), EState.FINE, EStatusCode.OPEN, LocalDateTime.now().plusDays(5),
             EServiceType.MAINTENANCE, notes, "Vehicle_0", "Feedback_0"));
     //todo change type to cleaning if respecitive code was created by mhp
   }
