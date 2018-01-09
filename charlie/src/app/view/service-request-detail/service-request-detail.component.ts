@@ -1,17 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {TripData} from '../../shared/data/trip-data';
 import {HttpRoutingService} from '../../services/http-routing.service';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {TripEditComponent} from '../trip-edit/trip-edit.component';
 import {ConfirmDeletionComponent} from '../../shared/components/confirm-popup/confirm-deletion.component';
-import {StopSortService} from '../../services/stop-sort.service';
-import {TripEditDepartureComponent} from '../trip-edit-departure/trip-edit-departure.component';
-import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
 import { ServiceRequestData } from '../../shared/data/service-request-data';
-
-
 
 @Component({
   selector: 'app-service-request-detail-view',
@@ -21,7 +14,7 @@ import { ServiceRequestData } from '../../shared/data/service-request-data';
               '../../shared/styling/global-styling.css']
 })
 
-export class ServiceRequestDetailComponent extends LiveDataComponent implements OnInit {
+export class ServiceRequestDetailComponent implements OnInit {
 
   title: string;
   serviceRequest: ServiceRequestData;
@@ -31,7 +24,6 @@ export class ServiceRequestDetailComponent extends LiveDataComponent implements 
               private route: ActivatedRoute,
               private location: Location,
               private modalService: NgbModal) {
-    super();
   }
 
   ngOnInit(): void {
@@ -44,9 +36,9 @@ export class ServiceRequestDetailComponent extends LiveDataComponent implements 
     this.http.getServiceRequestDetails(serviceRequestId).subscribe(
       data => {
         this.serviceRequest = data;
+        // dummy data
+        this.serviceRequest.feedback = [];
         this.loaded = true;
-        // This starts periodical calls for live-data after first data was received
-        super.ngOnInit();
       },
       err => console.log('Could not fetch trip data!')
     );
@@ -71,7 +63,6 @@ export class ServiceRequestDetailComponent extends LiveDataComponent implements 
   }
 
   deleteServiceRequest(event) : void {
-    super.ngOnDestroy();
     this.http.deleteServiceRequest(this.serviceRequest.id).subscribe(
       data => this.location.back(),
       err => {
@@ -83,22 +74,14 @@ export class ServiceRequestDetailComponent extends LiveDataComponent implements 
           this.location.back();
         } else {
           console.log('Could not delete trip!');
-          this.refreshData();
         }
       }
     );
   }
 
-  // update trip data
-  refreshData(): void {
-    this.setDataSubscription(
-      this.http.getServiceRequestDetails(this.serviceRequest.id).subscribe( data => {
-          this.serviceRequest = data;
-          this.subscribeToData();
-        },
-        err =>
-          console.log('Could not fetch new line-data.')
-      ));
+  hasVehicleTarget(){
+    const test = typeof this.serviceRequest.target;
+    return false;
   }
 
 }

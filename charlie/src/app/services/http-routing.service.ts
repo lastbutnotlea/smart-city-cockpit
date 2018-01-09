@@ -10,6 +10,7 @@ import {StopData} from '../shared/data/stop-data';
 import 'rxjs/add/operator/map';
 import { ServiceRequestData } from '../shared/data/service-request-data';
 import { LinePositionData } from '../shared/data/line-position-data';
+import { FeedbackData } from '../shared/data/feedback-data';
 
 @Injectable()
 export class HttpRoutingService {
@@ -74,6 +75,10 @@ export class HttpRoutingService {
       );
   }
 
+  public getStops(): Observable<StopData[]> {
+    return this.http.get<StopData[]>(this.urlBuilder.getStopsUrl());
+  }
+
   public getMapDataStations(): Observable<any> {
     return this.http.get<any>(this.urlBuilder.getMapStationsUrl())
       .pipe(
@@ -135,7 +140,7 @@ export class HttpRoutingService {
         tap(data => console.log('Data for filters: ' + data))
     );
   }
-  
+
   public getVehiclePositionInboundData(lineData: string): Observable<LinePositionData> {
     return this.http.get<LinePositionData>(this.urlBuilder.getVehiclePositionInboundUrl(lineData));
   }
@@ -147,7 +152,7 @@ export class HttpRoutingService {
   public getServiceRequests(): Observable<any> {
     return this.http.get<any>(this.urlBuilder.getServiceRequestsUrl());
   }
-  
+
 
   public getServiceRequestDetails(id: string): Observable<any> {
     return this.http.get<any>(this.urlBuilder.getServiceRequestUrl(id));
@@ -164,5 +169,13 @@ export class HttpRoutingService {
 
   public deleteServiceRequest(id: string): Observable<any> {
     return this.http.delete(this.urlBuilder.getServiceRequestUrl(id));
+  }
+
+  public getVehicleFeedback(vehicleId: string): Observable<FeedbackData[]> {
+    return this.http.get<FeedbackData[]>(this.urlBuilder.getVehicleFeedbackUrl(vehicleId));
+  }
+
+  public getStopFeedback(stopId: string): Observable<FeedbackData[]> {
+    return this.http.get<FeedbackData[]>(this.urlBuilder.getStopFeedbackUrl(stopId));
   }
 }

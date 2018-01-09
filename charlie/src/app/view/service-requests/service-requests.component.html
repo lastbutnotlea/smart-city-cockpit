@@ -1,9 +1,10 @@
 <h3 class="text-center">{{title}}</h3>
+<button class="btn btn-outline-primary no-float margin-bottom" (click)="addServiceRequest()">Add</button>
 
 <div class="d-flex">
   <app-filter-group-view></app-filter-group-view>
 
-  <div class="container d-flex flex-column">
+  <div *ngIf="loaded" class="container d-flex flex-column">
     <div class="row flex-nowrap" id="table-head">
       <div class="col p-2 m-1 bg-secondary">Id</div>
       <div class="col p-2 m-1 bg-secondary">Name</div>
@@ -20,7 +21,9 @@
       <ng-container *ngFor="let serviceRequest of filterGroup.getFiltered(serviceRequests)">
         <div class="col p-2 m-1 bg-light">
           <!--TODO: add <a routerLink="{{serviceRequest.id}}">...</a> once service request detail view is available -->
-          {{ serviceRequest.id }}
+          <a routerLink="{{serviceRequest.id}}">
+            {{ serviceRequest.id }}
+          </a>
         </div>
         <div class="col p-2 m-1 bg-light">{{ serviceRequest.name }}</div>
         <div class="col p-2 m-1 bg-light">{{ serviceRequest.type }}</div>
@@ -43,14 +46,11 @@
         </div>
         <div class="w-100"></div>
       </ng-container>
-
-      <div *ngIf="!loaded">
-        <h3>Loading...</h3>
-      </div>
     </div>
 
     <div class="no-float m-3">
       <button class="btn btn-outline-secondary" (click)="add()">Add new serviceRequest</button>
     </div>
   </div>
+  <div *ngIf="!loaded"></div>
 </div>

@@ -11,6 +11,7 @@ export class UrlBuilderService {
   private vehicleBaseUrl = this.baseUrl + '/vehicles';
   private mapBaseUrl = this.baseUrl + '/map';
   private serviceRequestsUrl = this.baseUrl + '/servicerequests';
+  private feedbackUrl = this.baseUrl + '/feedback';
 
   public getNetworkUrl(): string {
     return this.networkBaseUrl;
@@ -18,6 +19,10 @@ export class UrlBuilderService {
 
   public getLineDetailsUrl(lineId: string): string {
     return this.networkBaseUrl + '/' + lineId;
+  }
+
+  public getStopsUrl(): string {
+    return this.stopBaseUrl;
   }
 
   public getStopDetailsUrl(stopId: string): string {
@@ -70,5 +75,13 @@ export class UrlBuilderService {
 
   public getVehiclePositionOutboundUrl(lineId: string): string {
     return this.getLineDetailsUrl(lineId) + '/vehicles/outbound';
+  }
+
+  public getVehicleFeedbackUrl(vehicleId: string): string {
+    return this.feedbackUrl + '/vehicle/' + vehicleId;
+  }
+
+  public getStopFeedbackUrl(stopId: string): string {
+    return this.feedbackUrl + '/stop/' + stopId;
   }
 }

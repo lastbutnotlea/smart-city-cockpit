@@ -34,6 +34,8 @@ import { VehicleAddComponent } from './view/vehicle-add/vehicle-add.component';
 import { FilterGroupComponent } from './shared/components/filter-group/filter-group.component';
 import { EmbeddedStopOverviewComponent } from './shared/components/embedded-stop-overview/embedded-stop-overview.component';
 import { ServiceRequestsComponent } from './view/service-requests/service-requests.component';
+import { ServiceRequestDetailComponent } from './view/service-request-detail/service-request-detail.component';
+import { ServiceRequestAddComponent } from './view/service-request-add/service-request-add.component';
 
 
 @NgModule({
@@ -61,7 +63,9 @@ import { ServiceRequestsComponent } from './view/service-requests/service-reques
     VehiclesComponent,
     VehicleDetailComponent,
     VehicleAddComponent,
-    ServiceRequestsComponent
+    ServiceRequestsComponent,
+    ServiceRequestDetailComponent,
+    ServiceRequestAddComponent
   ],
   imports: [
     BrowserModule,
@@ -85,6 +89,7 @@ import { ServiceRequestsComponent } from './view/service-requests/service-reques
     VehicleAddComponent,
     TripEditDepartureComponent,
     ConfirmDeletionComponent,
+    ServiceRequestAddComponent
   ]
 })
 export class AppModule { }

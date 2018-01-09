@@ -8,6 +8,7 @@ import { ServiceRequestData } from '../../shared/data/service-request-data';
 import { VehicleData } from '../../shared/data/vehicle-data';
 import { VehicleAddComponent } from '../vehicle-add/vehicle-add.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ServiceRequestAddComponent } from '../service-request-add/service-request-add.component';
 
 @Component({
   selector: 'app-service-requests-view',
@@ -16,7 +17,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
     '../../shared/styling/global-styling.css']
 })
 
-export class ServiceRequestsComponent extends LiveDataComponent implements OnInit {
+export class ServiceRequestsComponent implements OnInit {
   title: String;
   serviceRequests: ServiceRequestData[] = [];
   loaded: boolean = false;
@@ -26,7 +27,6 @@ export class ServiceRequestsComponent extends LiveDataComponent implements OnIni
 
   constructor(private http: HttpRoutingService,
               private modalService: NgbModal) {
-    super();
   }
 
   public ngOnInit(): void {
@@ -41,8 +41,6 @@ export class ServiceRequestsComponent extends LiveDataComponent implements OnIni
       data => {
         this.serviceRequests = data;
         this.loaded = true;
-        // This starts periodical calls for live-data after first data was received
-        super.ngOnInit();
         },
       err => console.log('Could not fetch trips.')
     );
@@ -55,9 +53,9 @@ export class ServiceRequestsComponent extends LiveDataComponent implements OnIni
         // TODO: add filter for target type (vehicle or stop)
         // TODO: change this if needed data can be requested from backend
         let stateFilter = new FilterComponent();
-        stateFilter.addFilter('Fine', trip => trip.vehicle.state === 'FINE');
-        stateFilter.addFilter('Problematic', trip => trip.vehicle.state === 'PROBLEMATIC');
-        stateFilter.addFilter('Critical', trip => trip.vehicle.state === 'CRITICAL');
+        stateFilter.addFilter('Fine', serviceRequest => serviceRequest.priority === 'FINE');
+        stateFilter.addFilter('Problematic', serviceRequest => serviceRequest.priority === 'PROBLEMATIC');
+        stateFilter.addFilter('Critical', serviceRequest => serviceRequest.priority === 'CRITICAL');
         this.filterGroup.addFilterComponent(stateFilter);
       },
       err => {
@@ -66,20 +64,8 @@ export class ServiceRequestsComponent extends LiveDataComponent implements OnIni
     )
   }
 
-  // update trips
-  refreshData(): void {
-    this.setDataSubscription(
-    this.http.getServiceRequests().subscribe( data => {
-        this.serviceRequests = data;
-        this.subscribeToData();
-      },
-      err =>
-        console.log('Could not fetch new line-data.')
-    ));
-  }
-
-  add(): void {
+  addServiceRequest(): void {
     // TODO: open add component once available
-    // const modal = this.modalService.open(ServiceRequestAddComponent);
+    const modal = this.modalService.open(ServiceRequestAddComponent);
   }
 }

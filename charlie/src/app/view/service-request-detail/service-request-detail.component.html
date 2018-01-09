@@ -21,24 +21,37 @@
   <!-- feedback -->
   <div class="bounding-box bg-light">
     <h5 class="text-lg-left">
-      <i class="fa fa-map-marker fa-2x float-left small-padding-left text-primary"></i>
-      <label class="padding-emb-box-headline">Stops</label>
+      <label class="padding-emb-box-headline">Feedback</label>
     </h5>
-    <p *ngFor="let stop of trip.stops">
-      <label class="text-secondary">{{stop.departureTime |  date:'MM/dd/yyyy HH:mm'}}</label>  {{stop.name}}
-      <span [ngClass]="{'color-fine': stop.state === 'FINE',
-       'color-problematic': stop.state === 'PROBLEMATIC',
-       'color-critical': stop.state === 'CRITICAL' }">
-        <i class="fa fa-exclamation-triangle float-right small-padding-right" aria-hidden="true"></i>
+    <p *ngFor="let feedback of serviceRequest.feedback.feedbacks">
+      <label class="text-secondary">{{feedback.feedback}}</label>
+      <span [ngClass]="{'color-fine': serviceRequest.priority === 'FINE',
+       'color-problematic': serviceRequest.priority === 'PROBLEMATIC',
+       'color-critical': serviceRequest.priority === 'CRITICAL' }">
+        <i class="fa fa-lightbulb-o float-right small-padding-right" aria-hidden="true"></i>
       </span>
     </p>
   </div>
 
-  <!-- line -->
-  <app-embedded-line [line]="trip.line"></app-embedded-line>
+  <!-- info about service request -->
+  <div class="bounding-box bg-light">
+    <h5 class="text-lg-left">
+      <label class="padding-emb-box-headline">Info</label>
+    </h5>
+    <p>Name: {{serviceRequest.name}}</p>
+    <p>Type: {{serviceRequest.type}}</p>
+    <p>Status Code: {{serviceRequest.statusCode}}</p>
+    <p>Due Date: {{serviceRequest.dueDate}}</p>
+    <p>Completion Date: {{serviceRequest.completionDate}}</p>
+    <p>Priority: {{serviceRequest.priority}}</p>
+    <p>Description: {{serviceRequest.serviceRequestDescription}}</p>
+  </div>
 
-  <!-- vehicle -->
-  <app-embedded-vehicle [vehicle]="trip.vehicle"></app-embedded-vehicle>
+  <!-- target (vehicle or stop) -->
+  <div *ngIf="hasVehicleTarget()">
+    <!-- vehicle -->
+    <app-embedded-vehicle [vehicle]="serviceRequest.target"></app-embedded-vehicle>
+  </div>
 
   <div class="no-float big-padding-top">
     <button class="btn btn-outline-secondary" (click)="goBack()">Back To Trips</button>

@@ -5,5 +5,4 @@ export class StopData extends ServiceRequestTarget {
   peopleWaiting: number;
   lat: number;
   lon: number;
-  state: string;
 }
