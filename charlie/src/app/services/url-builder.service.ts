@@ -16,6 +16,8 @@ export class UrlBuilderService {
 
   private mapBaseUrl = this.baseUrl + '/map';
 
+  private feedbackBaseUrl = this.baseUrl + '/feedback';
+
   public getNetworkUrl(): string {
     return this.networkBaseUrl;
   }
@@ -66,5 +68,9 @@ export class UrlBuilderService {
 
   public getVehiclePositionOutboundUrl(lineId: string): string {
     return this.getLineDetailsUrl(lineId) + '/vehicles/outbound';
+  }
+
+  getFeedback(): string {
+    return this.feedbackBaseUrl;
   }
 }

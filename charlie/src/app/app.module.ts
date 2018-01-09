@@ -33,6 +33,8 @@ import { VehicleDetailComponent } from './view/vehicle-detail/vehicle-detail.com
 import { VehicleAddComponent } from './view/vehicle-add/vehicle-add.component';
 import { FilterGroupComponent } from './shared/components/filter-group/filter-group.component';
 import { EmbeddedStopOverviewComponent } from './shared/components/embedded-stop-overview/embedded-stop-overview.component';
+import { FeedbackComponent } from './view/feedback/feedback.component';
+import { FeedbackItemComponent } from './view/feedback-item/feedback-item.component';
 
 
 @NgModule({
@@ -60,6 +62,8 @@ import { EmbeddedStopOverviewComponent } from './shared/components/embedded-stop
     VehiclesComponent,
     VehicleDetailComponent,
     VehicleAddComponent,
+    FeedbackComponent,
+    FeedbackItemComponent,
   ],
   imports: [
     BrowserModule,
