@@ -4,7 +4,15 @@
   padding: 10px;
   border-radius: 10px;
   border: 1px solid #007bff;
-  overflow-y: scroll;
+  overflow-y: auto;
+}
+
+.emb-big-height {
+  height: 50vh;
+}
+
+.emb-small-height {
+  height: 25vh;
 }
 
 .flex-3 {
