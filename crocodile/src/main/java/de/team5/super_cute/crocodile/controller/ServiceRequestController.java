@@ -10,7 +10,6 @@ import org.apache.olingo.odata2.api.ep.EntityProviderException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,8 +17,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@Controller
+@RestController
 @RequestMapping("/servicerequests")
 public class ServiceRequestController {
 
@@ -36,6 +36,13 @@ public class ServiceRequestController {
   public List<ServiceRequest> getAllServiceRequests()
       throws IOException, EdmException, EntityProviderException {
     return connector.getServiceRequests();
+  }
+
+  @GetMapping("/{id}")
+  public ServiceRequest getAllServiceRequests(@PathVariable String id)
+      throws IOException, EdmException, EntityProviderException {
+    return connector.getServiceRequests().stream().filter(sr -> sr.getId().equals(id)).findAny()
+        .orElseThrow(() -> new IllegalArgumentException("No Service Request found for this id."));
   }
 
   @PostMapping
