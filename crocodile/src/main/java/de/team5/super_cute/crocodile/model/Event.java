@@ -1,5 +1,7 @@
 package de.team5.super_cute.crocodile.model;
 
+import static de.team5.super_cute.crocodile.config.TickerConfig.EVENT_BASE_PRIORITY;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.team5.super_cute.crocodile.external.C4CProperty;
 import de.team5.super_cute.crocodile.model.c4c.AppointmentInvolvedParties;
