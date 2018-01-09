@@ -123,8 +123,7 @@ export class HttpRoutingService {
   }
 
   public deleteTrip(tripId: string): Observable<any> {
-    return this.http.delete(this.urlBuilder.getTripDetailsUrl(tripId)).pipe(tap(data =>
-      console.log('DELETE TRIP OK')));
+    return this.http.delete(this.urlBuilder.getTripDetailsUrl(tripId));
   }
 
   public getFilterData(): Observable<any> {

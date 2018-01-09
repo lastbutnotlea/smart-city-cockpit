@@ -85,7 +85,7 @@ export class TripEditComponent implements OnInit {
 
   includeStop(stop: StopData, included: boolean): void {
     if (included) {
-      this.selected.stops.push(new TripStopData(stop.id, dummyDate, ''));
+      this.selected.stops.push(new TripStopData(stop.id, dummyDate, stop.commonName, stop.state));
     } else {
       this.selected.stops = this.selected.stops.filter(filteredStop => filteredStop.id !== stop.id);
       this.selected.stops = this.stopSortService.sortStops(this.selected.stops);

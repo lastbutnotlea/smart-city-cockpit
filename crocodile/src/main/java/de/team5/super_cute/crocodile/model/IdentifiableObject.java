@@ -18,6 +18,18 @@ public abstract class IdentifiableObject {
   private String id = null;
 
   IdentifiableObject() {
+    setId();
+  }
+
+  public final String getId() {
+    return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public void setId(){
     // create id
     StringBuilder builder = new StringBuilder();
 
@@ -33,15 +45,7 @@ public abstract class IdentifiableObject {
     CURRENT_NUMBER.put(this.getClass(), number + 1);
     builder.append(number);
 
-    id = builder.toString();
-  }
-
-  public final String getId() {
-    return id;
-  }
-
-  public void setId(String id) {
-    this.id = id;
+    this.id = builder.toString();
   }
 
   @Override

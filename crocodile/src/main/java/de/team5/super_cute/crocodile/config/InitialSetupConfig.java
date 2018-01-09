@@ -4,14 +4,18 @@ import java.util.ArrayList;
 
 public class InitialSetupConfig {
 
-  //not needed atm
-  public static final int FROM_HOUR = 12;
-  public static final int FROM_MINUTE = 30;
-  public static final int TO_HOUR = 13;
-  public static final int TO_MINUTE = 0;
-
   public static final int INITIALIZE_FOR_MINUTES = 30;
-  public static final int INITIALIZE_SINCE_MINUTES = 5;
+  public static final int INITIALIZE_SINCE_MINUTES = 15;
+
+  public static final int PEOPLE_WAITING_INITIAL_MIN = 0;
+  public static final int PEOPLE_WAITING_INITIAL_MAX = 400;
+  public static final int CAPACITY_INITIAL_MIN = 100;
+  public static final int CAPACITY_INITIAL_MAX = 200;
+  public static final int DELAY_INITIAL_MIN = -5 * 60;
+  public static final int DELAY_INITIAL_MAX = 5 * 60;
+  public static final int TEMPERATURE_INITIAL_MIN = 25;
+  public static final int TEMPERATURE_INITIAL_MAX = 30;
+
 
   public static final ArrayList<String> LINEIDS = new ArrayList<String>() {{
     add("10");

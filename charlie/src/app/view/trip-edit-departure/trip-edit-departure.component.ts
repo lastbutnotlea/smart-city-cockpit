@@ -41,7 +41,8 @@ export class TripEditDepartureComponent implements OnInit {
         this.copiedStops.push(Object.assign(new TripStopData(
           stop.id,
           stop.departureTime,
-          stop.name
+          stop.name,
+          stop.state
         )));
       }
       this.selectedStop = this.toDropdownItem(this.copiedStops[0]);

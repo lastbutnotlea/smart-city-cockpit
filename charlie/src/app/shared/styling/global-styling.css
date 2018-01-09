@@ -20,6 +20,18 @@
   padding-bottom: 20px;
 }
 
+.color-fine {
+  color: limegreen;
+}
+
+.color-problematic {
+  color: orange;
+}
+
+.color-critical {
+  color: darkred;
+}
+
 .width-100 {
   width: 100%;
 }
