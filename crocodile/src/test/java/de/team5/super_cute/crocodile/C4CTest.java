@@ -72,7 +72,7 @@ public class C4CTest {
       connector.deleteC4CEntity(entityWithObjectId);
 
       List<C4CEntity> entitiesAfterDeletion = connector.getC4CEntities(entity.getEmptyObject());
-      Assert.assertTrue(entitiesAfterDeletion.contains(entity));
+      Assert.assertTrue(!entitiesAfterDeletion.contains(entity));
 
     } catch (EntityProviderException | IOException | BatchException | EdmException e) {
       e.printStackTrace();
