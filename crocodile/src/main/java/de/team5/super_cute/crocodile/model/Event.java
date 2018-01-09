@@ -13,7 +13,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class Event extends C4CEntity extends TickerItemable {
+public class Event extends C4CEntity implements TickerItemable {
 
   @C4CProperty(name = "Subject", maxLength = 765)
   private String subject;
