@@ -1,10 +1,10 @@
-<div class="bounding-box flex-1">
+
 
   <h4 class="text-lg-left">
     <div [ngClass]="{'color-fine': line.state === 'FINE',
      'color-problematic': line.state === 'PROBLEMATIC',
      'color-critical': line.state === 'CRITICAL' }">
-      <i class="fa fa-exclamation-triangle fa-2x float-right small-padding-right" aria-hidden="true"></i>
+      <i class="fa fa-lightbulb-o fa-2x float-right small-padding-right" aria-hidden="true"></i>
     </div>
     <i class="fa fa-arrows-h fa-2x float-left small-padding-left text-primary"></i>
     <label class="padding-emb-box-headline">Line</label>
@@ -14,4 +14,4 @@
 
   <p class="text-primary">{{line.name}}</p>
   <p>ID: {{line.id}}</p>
-</div>
+
