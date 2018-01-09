@@ -6,10 +6,10 @@
   <table class="table table-width">
     <thead>
     <tr>
-      <th>TripId</th>
-      <th>VehicleId</th>
-      <th>VehicleType</th>
-      <th>LineId</th>
+      <th>Trip-ID</th>
+      <th>Vehicle-ID</th>
+      <th nowrap>Vehicle type</th>
+      <th>Line-ID</th>
       <th></th>
       <th></th>
     </tr>
@@ -28,7 +28,7 @@
           <span [ngClass]="{'color-fine': trip.vehicle.state === 'FINE',
            'color-problematic': trip.vehicle.state === 'PROBLEMATIC',
           'color-critical': trip.vehicle.state === 'CRITICAL' }">
-            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+            <i class="fa fa-lightbulb-o" aria-hidden="true"></i>
           </span>
         </td>
       <td><i class="fa fa-trash fa-2x text-primary"></i></td>
