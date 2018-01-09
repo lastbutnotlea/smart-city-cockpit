@@ -33,8 +33,8 @@
         <div class="col p-2 m-1 bg-light">{{ serviceRequest.completionDate }}</div>
         <div class="col p-2 m-1 bg-light">{{ serviceRequest.description }}</div>
         <div class="col p-2 m-1 bg-light">
-          <div *ngFor="let feedback of serviceRequest.feedbacks">
-            {{feedback}}
+          <div *ngFor="let feedback of serviceRequest">
+            {{feedback.message}}
           </div>
         </div>
         <div class="col p-2 m-1 bg-light">
