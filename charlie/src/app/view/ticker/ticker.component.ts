@@ -3,7 +3,8 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'app-ticker',
   templateUrl: './ticker.component.html',
-  styleUrls: ['./ticker.component.css']
+  styleUrls: ['./ticker.component.css',
+    '../../shared/styling/global-styling.css']
 })
 export class TickerComponent implements OnInit {
 
