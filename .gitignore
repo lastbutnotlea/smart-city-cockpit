@@ -33,6 +33,7 @@ package-lock.json
 !.idea/gradle.xml # else the import does not work really well...
 /**/.idea/libraries/
 /**/.idea/modules.xml
+/**/.idea/uiDesigner.xml
 
 # System Files
 .DS_Store

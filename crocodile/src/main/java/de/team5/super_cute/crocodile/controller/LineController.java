@@ -1,6 +1,7 @@
 package de.team5.super_cute.crocodile.controller;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import de.team5.super_cute.crocodile.config.AppConfiguration;
 import de.team5.super_cute.crocodile.data.BaseData;
 import de.team5.super_cute.crocodile.data.LineData;
 import de.team5.super_cute.crocodile.jsonclasses.PositionData;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/lines")
+@RequestMapping(AppConfiguration.API_PREFIX + "/lines")
 public class LineController extends BaseController<Line> {
 
   private Logger logger = LoggerFactory.getLogger(this.getClass());
