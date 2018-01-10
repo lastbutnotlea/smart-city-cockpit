@@ -50,7 +50,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MarkerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -73,6 +72,11 @@ public class LiveDataGenerator {
   public void generateLiveData() {
     LoggerFactory.getLogger(getClass())
         .info("Started generating LiveData");
+    // delete old feedback
+    feedbackData.getData().stream()
+        .filter(f -> f.getTimestamp().compareTo(LocalDateTime.now().minusMinutes(30)) < 0)
+        .forEach(f -> feedbackData.deleteObject(f.getId()));
+
     List<Stop> stops = stopData.getData();
     List<Vehicle> vehicles = vehicleData.getData();
     for (Stop stop : stops) {
@@ -87,7 +91,7 @@ public class LiveDataGenerator {
 
   private void generateLiveDataForStop(Stop stop) {
     Random r = new Random(System.currentTimeMillis());
-    //increase or decrease people waiting by 0-5%
+    // increase or decrease people waiting by 0-5%
     stop.setPeopleWaiting(
         getNewValue(stop.getPeopleWaiting(), PEOPLE_WAITING_CHANGE_AMPLITUDE, PEOPLE_WAITING_MIN,
             PEOPLE_WAITING_MAX));
@@ -128,10 +132,21 @@ public class LiveDataGenerator {
   private String generateDefect(Feedbackable feedbackable, boolean forStop) {
     Random r = new Random(System.currentTimeMillis());
     String defect = null;
+    // check whether there are already a lot of defects (we don't need more)
+    if (forStop) {
+      if (((Stop) feedbackable).getDefects().size() >= 3) {
+        return null;
+      }
+    } else {
+      if (((Vehicle) feedbackable).getDefects().size() >= 3) {
+        return null;
+      }
+    }
     if (r.nextInt(100) + 1 <= (forStop ? CREATE_STOP_DEFECT_PERCENTAGE
         : CREATE_VEHICLE_DEFECT_PERCENTAGE)) {
       defect = (forStop ? STOP_DEFECTS.get(r.nextInt(STOP_DEFECTS.size()))
           : VEHICLE_DEFECTS.get(r.nextInt(VEHICLE_DEFECTS.size())));
+
       if (r.nextInt(100) + 1 <= DEFECT_FEEDBACK_PERCENTAGE) {
         feedbackData.addObject(new Feedback((
             forStop ?
