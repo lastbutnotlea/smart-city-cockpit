@@ -1,9 +1,8 @@
-import { ServiceRequestTarget } from './service-request-target';
-
 export class FeedbackData {
-  message: string;
-  timestamp: string;
-  objective: ServiceRequestTarget;
+  id: string;
   feedbackType: string;
+  message: string;
   rating: string;
+  timestamp: string;
+  objective: any;
 }

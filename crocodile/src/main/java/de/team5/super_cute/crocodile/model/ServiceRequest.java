@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.team5.super_cute.crocodile.external.C4CProperty;
+import de.team5.super_cute.crocodile.jsonclasses.IdStateData;
 import de.team5.super_cute.crocodile.model.c4c.C4CEntity;
 import de.team5.super_cute.crocodile.model.c4c.C4CNotes;
 import de.team5.super_cute.crocodile.model.c4c.EStatusCode;
@@ -15,6 +16,7 @@ import de.team5.super_cute.crocodile.util.Helpers;
 import de.team5.super_cute.crocodile.util.LocalDateTimeAttributeConverter;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.Convert;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -71,26 +73,32 @@ public class ServiceRequest extends C4CEntity {
    * The id of the target entity;
    */
   //@C4CProperty(name = "RefID", maxLength = 36) todo uncomment if mhp created them
-  private String target;
+  @JsonIgnore
+  private String targetId;
+
+  private IdStateData target;
 
   /**
-   * The id of the feedback this service request answers to.
+   * The id of the feedbackGroup this service request answers to.
    */
   //@C4CProperty(name = "FeedbackReference", maxLength = 36) todo uncomment if mhp created them
+  @JsonIgnore
   private String referencedFeedback;
+
+  private Set<Feedback> feedbacks;
 
   public ServiceRequest() {
   }
 
   public ServiceRequest(String name, EState priority,
       LocalDateTime dueDate, EServiceType type,
-      List<C4CNotes> serviceRequestDescription, String target, String referencedFeedback) {
+      List<C4CNotes> serviceRequestDescription, String targetId, String referencedFeedback) {
     setName(name);
     setPriority(priority);
     setDueDate(dueDate);
     setType(type);
     setServiceRequestDescription(serviceRequestDescription);
-    setTarget(target);
+    setTargetId(targetId);
     setReferencedFeedback(referencedFeedback);
   }
 
@@ -204,11 +212,19 @@ public class ServiceRequest extends C4CEntity {
     this.serviceRequestDescription = serviceRequestDescription;
   }
 
-  public String getTarget() {
+  public String getTargetId() {
+    return targetId;
+  }
+
+  public void setTargetId(String targetId) {
+    this.targetId = targetId;
+  }
+
+  public IdStateData getTarget() {
     return target;
   }
 
-  public void setTarget(String target) {
+  public void setTarget(IdStateData target) {
     this.target = target;
   }
 
@@ -218,6 +234,14 @@ public class ServiceRequest extends C4CEntity {
 
   public void setReferencedFeedback(String referencedFeedback) {
     this.referencedFeedback = referencedFeedback;
+  }
+
+  public Set<Feedback> getFeedbacks() {
+    return feedbacks;
+  }
+
+  public void setFeedbacks(Set<Feedback> feedbacks) {
+    this.feedbacks = feedbacks;
   }
 
   @Override

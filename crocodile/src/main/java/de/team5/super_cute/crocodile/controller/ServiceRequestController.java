@@ -1,7 +1,15 @@
 package de.team5.super_cute.crocodile.controller;
 
+import de.team5.super_cute.crocodile.data.FeedbackGroupData;
+import de.team5.super_cute.crocodile.data.StopData;
+import de.team5.super_cute.crocodile.data.VehicleData;
 import de.team5.super_cute.crocodile.external.SAPC4CConnector;
+import de.team5.super_cute.crocodile.jsonclasses.IdStateData;
+import de.team5.super_cute.crocodile.model.IdentifiableObject;
 import de.team5.super_cute.crocodile.model.ServiceRequest;
+import de.team5.super_cute.crocodile.model.Stateable;
+import de.team5.super_cute.crocodile.model.Vehicle;
+import de.team5.super_cute.crocodile.model.c4c.FeedbackGroup;
 import java.io.IOException;
 import java.util.List;
 import org.apache.olingo.odata2.api.batch.BatchException;
@@ -26,25 +34,37 @@ public class ServiceRequestController {
   private static final Logger logger = LoggerFactory.getLogger(ServiceRequestController.class);
 
   private SAPC4CConnector connector;
+  private FeedbackGroupData feedbackGroupData;
+  private VehicleData vehicleData;
+  private StopData stopData;
 
   @Autowired
-  public ServiceRequestController(SAPC4CConnector connector) {
+  public ServiceRequestController(SAPC4CConnector connector,
+      FeedbackGroupData feedbackGroupData, VehicleData vehicleData,
+      StopData stopData) {
     this.connector = connector;
+    this.feedbackGroupData = feedbackGroupData;
+    this.vehicleData = vehicleData;
+    this.stopData = stopData;
   }
 
   @GetMapping
   public List<ServiceRequest> getAllServiceRequests()
       throws IOException, EdmException, EntityProviderException {
     logger.info("Got Request for all Service Requests");
-    return connector.getServiceRequests();
+    List<ServiceRequest> serviceRequests = connector.getServiceRequests();
+    serviceRequests.forEach(this::prepareServiceRequestForFrontend);
+    return serviceRequests;
   }
 
   @GetMapping("/{id}")
   public ServiceRequest getAllServiceRequests(@PathVariable String id)
       throws IOException, EdmException, EntityProviderException {
     logger.info("Got Request for Service Request with id " + id);
-    return connector.getServiceRequests().stream().filter(sr -> sr.getId().equals(id)).findAny()
+    ServiceRequest serviceRequest = connector.getServiceRequests().stream().filter(sr -> sr.getId().equals(id)).findAny()
         .orElseThrow(() -> new IllegalArgumentException("No Service Request found for this id."));
+    prepareServiceRequestForFrontend(serviceRequest);
+    return serviceRequest;
   }
 
   @PostMapping
@@ -75,5 +95,33 @@ public class ServiceRequestController {
     connector.deleteC4CEntity(serviceRequestInput);
     connector.putC4CEntity(serviceRequestInput);
     return serviceRequestInput.getId();
+  }
+
+  private void prepareServiceRequestForFrontend(ServiceRequest sr) {
+    FeedbackGroup feedbackGroup = feedbackGroupData.getObjectForId(sr.getReferencedFeedback());
+    if (feedbackGroup != null) {
+      sr.setFeedbacks(feedbackGroup.getFeedbacks());
+    }
+    IdentifiableObject target = getTargetObject(sr);
+    if (target != null) {
+      sr.setTarget(new IdStateData(sr.getId(), ((Stateable) target).getState()));
+    }
+  }
+
+  private IdentifiableObject getTargetObject(ServiceRequest sr) {
+    if (sr.getTargetId() == null) {
+      return null;
+    }
+    if (sr.getTargetId().startsWith(Vehicle.class.getSimpleName())) {
+      return vehicleData.getObjectForId(sr.getTargetId());
+    } else {
+      return stopData.getObjectForId(sr.getTargetId());
+    }
+  }
+
+  private void handleServiceRequestFromFrontend(ServiceRequest sr) {
+    // todo check for feedback id, null -> create feedback group + save id
+    // todo auto generate name
+    // todo
   }
 }

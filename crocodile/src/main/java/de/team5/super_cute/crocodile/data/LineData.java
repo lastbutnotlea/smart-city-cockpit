@@ -27,6 +27,7 @@ public class LineData extends BaseData<Line> {
   /**
    * @return all Objects of Type T currently in the system
    */
+  @Override
   public List<Line> getData() {
     List<Line> list = super.getData();
     for (Line l : list) {

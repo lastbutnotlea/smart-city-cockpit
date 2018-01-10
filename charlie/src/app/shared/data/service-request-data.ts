@@ -10,6 +10,6 @@ export class ServiceRequestData {
   dueDate: string;
   completionDate: string = null; // used in C4C
   serviceRequestDescription: string;
-  feedback: FeedbackData[];
+  feedbacks: FeedbackData[];
   priority: string; // FINE, PROBLEMATIC or CRITICAL, like state
 }
