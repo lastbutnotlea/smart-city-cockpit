@@ -7,7 +7,6 @@ import { now } from '../../shared/data/dates';
 import { DateParserService } from '../../services/date-parser.service';
 import { FeedbackData } from '../../shared/data/feedback-data';
 import { VehicleData } from '../../shared/data/vehicle-data';
-import { StopData } from '../../shared/data/stop-data';
 
 @Component({
   selector: 'app-service-request-edit',

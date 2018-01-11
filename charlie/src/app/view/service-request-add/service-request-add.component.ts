@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import { Component, Input, OnInit, Output } from '@angular/core';
 import { NgbActiveModal, NgbDateStruct, NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
 import {HttpRoutingService} from '../../services/http-routing.service';
 import {DropdownValue} from '../../shared/components/dropdown/dropdown.component';
@@ -15,6 +15,8 @@ import { FeedbackData } from '../../shared/data/feedback-data';
 })
 
 export class ServiceRequestAddComponent implements OnInit {
+  @Input() @Output()
+  data: ServiceRequestData[];
   // stores data of the new service request
   selected: ServiceRequestData;
 
@@ -117,11 +119,13 @@ export class ServiceRequestAddComponent implements OnInit {
     this.http.addServiceRequest(this.selected).subscribe(
       data => {
         console.log('Added service request.');
+        this.data.push(this.selected);
         this.activeModal.close('Close click');
       },
       // TODO: these messages should not be interpreted as errors!
       err => {
         if(err.status === 200){
+          this.data.push(this.selected);
           console.log('Added service request.');
           this.activeModal.close('Close click');
         } else {

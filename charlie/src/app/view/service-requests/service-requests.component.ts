@@ -71,5 +71,6 @@ export class ServiceRequestsComponent implements OnInit {
   addServiceRequest(): void {
     // TODO: open add component once available
     const modal = this.modalService.open(ServiceRequestAddComponent);
+    modal.componentInstance.data = this.serviceRequests;
   }
 }
