@@ -1,11 +1,5 @@
 package de.team5.super_cute.crocodile.model;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import static de.team5.super_cute.crocodile.config.TickerConfig.FEEDBACK_BASE_PRIORITY;
-import static de.team5.super_cute.crocodile.config.TickerConfig.FEEDBACK_CRITICAl_PRIORITY;
-import static de.team5.super_cute.crocodile.config.TickerConfig.FEEDBACK_FINE_PRIORITY;
-import static de.team5.super_cute.crocodile.config.TickerConfig.FEEDBACK_PROBLEMATIC_PRIORITY;
-
 import de.team5.super_cute.crocodile.util.FeedbackableAttributeConverter;
 import de.team5.super_cute.crocodile.util.LocalDateTimeAttributeConverter;
 
@@ -15,7 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+
+import static de.team5.super_cute.crocodile.config.TickerConfig.*;
 
 @Entity
 @Table(name = "feedback")
