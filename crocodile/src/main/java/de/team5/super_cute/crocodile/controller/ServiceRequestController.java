@@ -6,11 +6,13 @@ import de.team5.super_cute.crocodile.data.FeedbackGroupData;
 import de.team5.super_cute.crocodile.data.StopData;
 import de.team5.super_cute.crocodile.data.VehicleData;
 import de.team5.super_cute.crocodile.external.SAPC4CConnector;
-import de.team5.super_cute.crocodile.model.EVehicleType;
+import de.team5.super_cute.crocodile.model.IdentifiableObject;
 import de.team5.super_cute.crocodile.model.ServiceRequest;
+import de.team5.super_cute.crocodile.model.ServiceTargetObject;
 import de.team5.super_cute.crocodile.model.Stop;
 import de.team5.super_cute.crocodile.model.Vehicle;
 import de.team5.super_cute.crocodile.model.c4c.FeedbackGroup;
+import de.team5.super_cute.crocodile.util.Helpers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -124,22 +126,21 @@ public class ServiceRequestController {
     } else {
       sr.setFeedbacks(new HashSet<>());
     }
-    Vehicle target = getTargetObject(sr);
+    ServiceTargetObject target = getTargetObject(sr);
     if (target != null) {
       sr.setTarget(target);
     }
   }
 
-  private Vehicle getTargetObject(ServiceRequest sr) {
+  private ServiceTargetObject getTargetObject(ServiceRequest sr) {
     if (sr.getTargetId() == null) {
       return null;
     }
     if (sr.getTargetId().startsWith(Vehicle.class.getSimpleName())) {
       return vehicleData.getObjectForId(sr.getTargetId());
     } else {
-      //return stopData.getObjectForId(sr.getTargetId());
+      return stopData.getObjectForId(sr.getTargetId());
     }
-    return Vehicle.createRandom(EVehicleType.SUBWAY);
   }
 
   private void handleServiceRequestFromFrontend(ServiceRequest sr) {
@@ -160,7 +161,11 @@ public class ServiceRequestController {
       sr.setName(generateServiceRequestName(sr));
     }
 
-    sr.setTargetId(sr.getTarget().getId());
+    sr.setTargetId(((IdentifiableObject) sr.getTarget()).getId());
+
+    if (sr.getCompletionDate() == null) {
+      sr.setCompletionDate(Helpers.DUMMY_TIME);
+    }
   }
 
   private String generateServiceRequestName(ServiceRequest sr) {
@@ -175,7 +180,7 @@ public class ServiceRequestController {
       name.append("Stop ").append(((Stop) sr.getTarget()).getCommonName()).append(" (")
           .append(sr.getId()).append(")");
     } else if (sr.getTarget() instanceof Vehicle) {
-      name.append("Vehicle ").append(sr.getTarget().getId());
+      name.append("Vehicle ").append(((Vehicle) sr.getTarget()).getId());
     }
     return name.toString();
   }

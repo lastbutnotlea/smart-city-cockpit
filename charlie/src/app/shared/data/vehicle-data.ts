@@ -8,4 +8,5 @@ export class VehicleData extends ServiceRequestTarget {
   defects: string[];
   type: string;
   state: string;
+  identifiableType: String = "vehicle"; // Caro: brauche ich für die Service Requests zum Deserialisieren im Backend :)
 }

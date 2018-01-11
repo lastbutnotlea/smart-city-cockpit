@@ -5,4 +5,5 @@ export class StopData extends ServiceRequestTarget {
   peopleWaiting: number;
   lat: number;
   lon: number;
+  identifiableType: String = "stop"; // Caro: brauche ich für die Service Requests zum Deserialisieren im Backend :)
 }

@@ -164,7 +164,7 @@ export class HttpRoutingService {
   }
 
   public editServiceRequest(serviceRequest: ServiceRequestData): Observable<any> {
-    return this.http.put(this.urlBuilder.getTripsUrl(), serviceRequest);
+    return this.http.put(this.urlBuilder.getServiceRequestsUrl(), serviceRequest);
   }
 
   public deleteServiceRequest(id: string): Observable<any> {

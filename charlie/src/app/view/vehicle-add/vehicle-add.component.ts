@@ -31,7 +31,8 @@ export class VehicleAddComponent implements OnInit {
       temperature: null,
       defects: [],
       type: this.selected.value,
-      state: 'FINE'
+      state: 'FINE',
+      identifiableType: "vehicle"
     }).subscribe(
       () => this.activeModal.close('Close click'),
       err => {if(err == null) {alert("Could not add vehicle")};});
