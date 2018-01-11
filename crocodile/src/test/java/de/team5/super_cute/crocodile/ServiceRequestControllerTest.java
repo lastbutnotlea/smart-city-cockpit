@@ -9,6 +9,7 @@ import de.team5.super_cute.crocodile.model.c4c.EC4CNotesTypeCode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ public class ServiceRequestControllerTest {
   private MockMvc mockMvc;
 
   @Test
+  @Ignore
   public void testServiceRequestController() throws Exception {
     ControllerTestHelper<ServiceRequest> serviceRequestControllerTestHelper = new ControllerTestHelper<>(mockMvc, "/servicerequests",
         new TypeReference<List<ServiceRequest>>() {

@@ -22,7 +22,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
-import javax.annotation.PostConstruct;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.LoggerFactory;
@@ -45,7 +44,7 @@ public class InitialDataGenerator {
 
   private NetworkDataBuilder networkDataBuilder;
 
-  @PostConstruct
+  //@PostConstruct
   public void generateInitialPrototypeSetup() {
     networkDataBuilder = new NetworkDataBuilder(lineData, vehicleData, stopData,
         tripData);
@@ -65,7 +64,6 @@ public class InitialDataGenerator {
     int outboundPointer;
     RestTemplate rt = new RestTemplate();
     Map<String, Object> params = new HashMap<>();
-    lines:
     for (int x = 0; x < lines.size(); x++) {
       try {
         Line line = lines.get(x);

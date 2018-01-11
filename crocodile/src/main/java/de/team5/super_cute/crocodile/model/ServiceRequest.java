@@ -6,10 +6,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.team5.super_cute.crocodile.external.C4CProperty;
-import de.team5.super_cute.crocodile.jsonclasses.IdStateData;
 import de.team5.super_cute.crocodile.model.c4c.C4CEntity;
 import de.team5.super_cute.crocodile.model.c4c.C4CNotes;
-import de.team5.super_cute.crocodile.model.c4c.EStatusCode;
 import de.team5.super_cute.crocodile.model.c4c.EStatusCode;
 import de.team5.super_cute.crocodile.util.DateDeserializer;
 import de.team5.super_cute.crocodile.util.DateSerializer;
@@ -77,7 +75,7 @@ public class ServiceRequest extends C4CEntity {
   @JsonIgnore
   private String targetId;
 
-  private IdStateData target;
+  private IdentifiableObject target;
 
   /**
    * The id of the feedbackGroup this service request answers to.
@@ -161,7 +159,7 @@ public class ServiceRequest extends C4CEntity {
   }
 
   public void setDueDate(LocalDateTime dueDate) {
-    this.dueDate = dueDate;
+    this.dueDate = dueDate.withNano(0).withHour(0).withMinute(0).withMinute(0);
   }
 
   public LocalDateTime getCompletionDate() {
@@ -221,11 +219,11 @@ public class ServiceRequest extends C4CEntity {
     this.targetId = targetId;
   }
 
-  public IdStateData getTarget() {
+  public IdentifiableObject getTarget() {
     return target;
   }
 
-  public void setTarget(IdStateData target) {
+  public void setTarget(IdentifiableObject target) {
     this.target = target;
   }
 

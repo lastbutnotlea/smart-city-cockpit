@@ -39,6 +39,22 @@ public class C4CNotes extends C4CEntity {
     return new C4CNotes();
   }
 
+  public String getText() {
+    return text;
+  }
+
+  public void setText(String text) {
+    this.text = text;
+  }
+
+  public String getTypeCode() {
+    return typeCode;
+  }
+
+  public void setTypeCode(String typeCode) {
+    this.typeCode = typeCode;
+  }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) {

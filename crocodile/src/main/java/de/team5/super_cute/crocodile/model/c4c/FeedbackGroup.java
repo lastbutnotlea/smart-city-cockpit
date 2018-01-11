@@ -22,6 +22,9 @@ public class FeedbackGroup extends IdentifiableObject {
   @PrimaryKeyJoinColumn
   private Set<Feedback> feedbacks;
 
+  public FeedbackGroup() {
+  }
+
   public FeedbackGroup(Set<Feedback> feedbacks) {
     this.feedbacks = feedbacks;
   }
