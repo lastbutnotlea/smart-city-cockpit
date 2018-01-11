@@ -28,6 +28,7 @@ import {Angular2FontawesomeModule} from 'angular2-fontawesome';
 import {TickerComponent} from './view/ticker/ticker.component';
 import {TickerItemComponent} from './view/ticker-item/ticker-item.component';
 import {StopDetailComponent} from './view/stop-detail/stop-detail.component';
+import {TripAddComponent} from './view/trip-add/trip-add.component';
 import {VehiclesComponent} from './view/vehicles/vehicles.component';
 import { VehicleDetailComponent } from './view/vehicle-detail/vehicle-detail.component';
 import { VehicleAddComponent } from './view/vehicle-add/vehicle-add.component';
@@ -59,6 +60,7 @@ import { FeedbackItemComponent } from './view/feedback-item/feedback-item.compon
     ConfirmDeletionComponent,
     TickerComponent,
     TickerItemComponent,
+    TripAddComponent,
     VehiclesComponent,
     VehicleDetailComponent,
     VehicleAddComponent,
@@ -87,6 +89,7 @@ import { FeedbackItemComponent } from './view/feedback-item/feedback-item.compon
     VehicleAddComponent,
     TripEditDepartureComponent,
     ConfirmDeletionComponent,
+    TripAddComponent
   ]
 })
 export class AppModule { }
