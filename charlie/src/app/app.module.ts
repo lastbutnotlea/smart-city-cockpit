@@ -37,6 +37,7 @@ import { ServiceRequestsComponent } from './view/service-requests/service-reques
 import { ServiceRequestDetailComponent } from './view/service-request-detail/service-request-detail.component';
 import { ServiceRequestAddComponent } from './view/service-request-add/service-request-add.component';
 import { EmbeddedStopComponent } from './shared/components/embedded-stop/embedded-stop.component';
+import { ServiceRequestEditComponent } from './view/service-request-edit/service-request-edit.component';
 
 
 @NgModule({
@@ -67,7 +68,8 @@ import { EmbeddedStopComponent } from './shared/components/embedded-stop/embedde
     ServiceRequestsComponent,
     ServiceRequestDetailComponent,
     ServiceRequestAddComponent,
-    EmbeddedStopComponent
+    EmbeddedStopComponent,
+    ServiceRequestEditComponent
   ],
   imports: [
     BrowserModule,
@@ -91,7 +93,8 @@ import { EmbeddedStopComponent } from './shared/components/embedded-stop/embedde
     VehicleAddComponent,
     TripEditDepartureComponent,
     ConfirmDeletionComponent,
-    ServiceRequestAddComponent
+    ServiceRequestAddComponent,
+    ServiceRequestEditComponent
   ]
 })
 export class AppModule { }

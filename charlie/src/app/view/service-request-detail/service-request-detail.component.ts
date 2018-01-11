@@ -7,6 +7,7 @@ import {ConfirmDeletionComponent} from '../../shared/components/confirm-popup/co
 import { ServiceRequestData } from '../../shared/data/service-request-data';
 import { VehicleData } from '../../shared/data/vehicle-data';
 import { StopData } from '../../shared/data/stop-data';
+import { ServiceRequestEditComponent } from '../service-request-edit/service-request-edit.component';
 
 @Component({
   selector: 'app-service-request-detail-view',
@@ -61,14 +62,14 @@ export class ServiceRequestDetailComponent implements OnInit {
 
   editServiceRequest(): void {
     // TODO: open edit component once available
-    /*const modal = this.modalService.open(ServiceRequestEditComponent);
+    const modal = this.modalService.open(ServiceRequestEditComponent);
     modal.componentInstance.data = this.serviceRequest;
-    modal.componentInstance.initData();*/
+    modal.componentInstance.initData();
   }
 
   showConfirmModal(): void {
     const modal = this.modalService.open(ConfirmDeletionComponent);
-    modal.componentInstance.objectToDelete = 'trip ' + this.serviceRequest.id;
+    modal.componentInstance.objectToDelete = 'service request ' + this.serviceRequest.id;
     modal.componentInstance.deletionEvent.subscribe(($event) => {
       this.deleteServiceRequest($event);});
   }

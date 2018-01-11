@@ -166,10 +166,7 @@ export class ServiceRequestAddComponent implements OnInit {
   }
 
   isChecked(feedback: FeedbackData) {
-    const test = this.selectedFeedback.filter(feedback => {
-      return feedback.message === feedback.message
-    });
-    return test.length === 1;
+    return this.selectedFeedback.filter(feedback => feedback.id === feedback.id);
   }
 
   includeFeedback(feedback: FeedbackData, included: boolean) {
@@ -177,7 +174,7 @@ export class ServiceRequestAddComponent implements OnInit {
       this.selected.feedbacks.push(feedback);
     } else {
       this.selected.feedbacks = this.selected.feedbacks.filter(filteredFeedback =>
-        filteredFeedback.message !== feedback.message);
+        filteredFeedback.id !== feedback.id);
     }
     console.log(JSON.stringify(this.selected.feedbacks));
   }
