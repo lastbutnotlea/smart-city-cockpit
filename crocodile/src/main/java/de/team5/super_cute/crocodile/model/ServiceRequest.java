@@ -10,6 +10,7 @@ import de.team5.super_cute.crocodile.jsonclasses.IdStateData;
 import de.team5.super_cute.crocodile.model.c4c.C4CEntity;
 import de.team5.super_cute.crocodile.model.c4c.C4CNotes;
 import de.team5.super_cute.crocodile.model.c4c.EStatusCode;
+import de.team5.super_cute.crocodile.model.c4c.EStatusCode;
 import de.team5.super_cute.crocodile.util.DateDeserializer;
 import de.team5.super_cute.crocodile.util.DateSerializer;
 import de.team5.super_cute.crocodile.util.Helpers;

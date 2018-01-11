@@ -2,6 +2,7 @@ package de.team5.super_cute.crocodile.controller;
 
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.TEMPERATURE_INITIAL;
 
+import de.team5.super_cute.crocodile.config.AppConfiguration;
 import de.team5.super_cute.crocodile.data.BaseData;
 import de.team5.super_cute.crocodile.data.TripData;
 import de.team5.super_cute.crocodile.model.Trip;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/vehicles")
+@RequestMapping(AppConfiguration.API_PREFIX + "/vehicles")
 public class VehicleController extends BaseController<Vehicle> {
 
   private Logger logger = LoggerFactory.getLogger(this.getClass());

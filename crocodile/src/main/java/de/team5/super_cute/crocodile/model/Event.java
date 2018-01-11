@@ -1,5 +1,7 @@
 package de.team5.super_cute.crocodile.model;
 
+import static de.team5.super_cute.crocodile.config.TickerConfig.EVENT_BASE_PRIORITY;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -19,7 +21,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
-public class Event extends C4CEntity {
+public class Event extends C4CEntity implements TickerItemable {
 
   @C4CProperty(name = "Subject", maxLength = 765)
   private String subject;
@@ -241,5 +243,44 @@ public class Event extends C4CEntity {
         .append("appointmentInvolvedParties", appointmentInvolvedParties)
         .append("appointmentNotes", appointmentNotes)
         .toString();
+  }
+
+  //TODO
+  @Override
+  public String getItemDescription() {
+    return "Party at university from 0:00 to 23:59";
+  }
+
+  @Override
+  public String getItemHeader() {
+    return "Planned event";
+  }
+
+  //TODO
+  @Override
+  public EState getItemState() {
+    return EState.PROBLEMATIC;
+  }
+
+  //TODO
+  @Override
+  public int getItemPriority() {
+    return EVENT_BASE_PRIORITY;
+  }
+
+  public void setItemDescription(String s){
+    // do nothing, fool the json mapper!
+  }
+
+  public void setItemHeader(String s){
+    // do nothing, fool the json mapper!
+  }
+
+  public void setItemState(EState s){
+    // do nothing, fool the json mapper!
+  }
+
+  public void setItemPriority(int i){
+    // do nothing, fool the json mapper!
   }
 }
