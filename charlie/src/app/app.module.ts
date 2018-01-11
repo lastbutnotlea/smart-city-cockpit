@@ -36,7 +36,6 @@ import { FilterGroupComponent } from './shared/components/filter-group/filter-gr
 import { EmbeddedStopOverviewComponent } from './shared/components/embedded-stop-overview/embedded-stop-overview.component';
 import { FeedbackComponent } from './view/feedback/feedback.component';
 import { FeedbackItemComponent } from './view/feedback-item/feedback-item.component';
-import {EventsComponent} from './view/events/events.component';
 
 
 @NgModule({
@@ -67,7 +66,6 @@ import {EventsComponent} from './view/events/events.component';
     VehicleAddComponent,
     FeedbackComponent,
     FeedbackItemComponent,
-    EventsComponent,
   ],
   imports: [
     BrowserModule,
