@@ -1,5 +1,6 @@
 package de.team5.super_cute.crocodile.controller;
 
+import de.team5.super_cute.crocodile.config.AppConfiguration;
 import de.team5.super_cute.crocodile.data.BaseData;
 import de.team5.super_cute.crocodile.model.EFeedbackType;
 import de.team5.super_cute.crocodile.model.Feedback;
@@ -15,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/feedback")
+@RequestMapping(AppConfiguration.API_PREFIX + "/feedback")
 public class FeedbackController extends BaseController<Feedback> {
 
   @Autowired
@@ -32,19 +33,19 @@ public class FeedbackController extends BaseController<Feedback> {
   public List<Feedback> getVehicleFeedbacks(@PathVariable String vehicleId) {
     return data.getData().stream()
         .filter(f -> f.getFeedbackType() == EFeedbackType.VEHICLE_FEEDBACK)
-        .filter(f -> ((Vehicle) f.getObjective()).getId() == vehicleId)
+        .filter(f -> f.getObjective().getId().equals(vehicleId))
         .collect(Collectors.toList());
   }
 
   @GetMapping("/stop/{stopId}")
   public List<Feedback> getStopFeedbacks(@PathVariable String stopId) {
     return data.getData().stream().filter(f -> f.getFeedbackType() == EFeedbackType.STOP_FEEDBACK)
-        .filter(f -> ((Stop) f.getObjective()).getId() == stopId).collect(Collectors.toList());
+        .filter(f -> f.getObjective().getId().equals(stopId)).collect(Collectors.toList());
   }
 
   @GetMapping("/line/{lineId}")
   public List<Feedback> getLineFeedbacks(@PathVariable String lineId) {
     return data.getData().stream().filter(f -> f.getFeedbackType() == EFeedbackType.LINE_FEEDBACK)
-        .filter(f -> ((Line) f.getObjective()).getId() == lineId).collect(Collectors.toList());
+        .filter(f -> ((Line) f.getObjective()).getId().equals(lineId)).collect(Collectors.toList());
   }
 }

@@ -3,6 +3,8 @@ package de.team5.super_cute.crocodile.model;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.PEOPLE_WAITING_LIMIT_CRITICAL;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.PEOPLE_WAITING_LIMIT_PROBLEMATIC;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.STOP_DEFECTS_SEVERITY;
+import static de.team5.super_cute.crocodile.config.TickerConfig.SEVERITY_DIVISOR;
+import static de.team5.super_cute.crocodile.config.TickerConfig.STOP_BASE_PRIORITY;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import de.team5.super_cute.crocodile.config.LiveDataConfig;
@@ -10,6 +12,7 @@ import de.team5.super_cute.crocodile.util.StateCalculator;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -19,7 +22,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "stop")
-public class Stop extends IdentifiableObject implements Serializable, Feedbackable, Stateable, TickerItemable {
+public class Stop extends IdentifiableObject implements Serializable, Feedbackable, Stateable,
+    TickerItemable {
 
   @Column
   private String commonName;
@@ -144,5 +148,51 @@ public class Stop extends IdentifiableObject implements Serializable, Feedbackab
       severity += STOP_DEFECTS_SEVERITY.get(defect);
     }
     return severity + getPeopleWaitingSeverity();
+  }
+
+  @Override
+  public String getItemDescription() {
+    String description = "Stop " + this.getId() + ":\n"
+        + "people waiting: " + this.getPeopleWaiting() + "\n"
+        + "defects: ";
+    Iterator<String> defects = this.getDefects().iterator();
+    for (int i = 0; i < this.getDefects().size(); i++) {
+      if (i != 0) {
+        description += ", ";
+      }
+      description += defects.next();
+    }
+    return description;
+  }
+
+  @Override
+  public String getItemHeader() {
+    return "Stop state is critical";
+  }
+
+  @Override
+  public EState getItemState() {
+    return this.getState();
+  }
+
+  @Override
+  public int getItemPriority() {
+    return STOP_BASE_PRIORITY + (this.getSeverity() - 11) / SEVERITY_DIVISOR;
+  }
+
+  public void setItemDescription(String s){
+    // do nothing, fool the json mapper!
+  }
+
+  public void setItemHeader(String s){
+    // do nothing, fool the json mapper!
+  }
+
+  public void setItemState(EState s){
+    // do nothing, fool the json mapper!
+  }
+
+  public void setItemPriority(int i){
+    // do nothing, fool the json mapper!
   }
 }
