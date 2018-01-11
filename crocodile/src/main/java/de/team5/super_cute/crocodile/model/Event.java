@@ -233,23 +233,27 @@ public class Event extends C4CEntity implements TickerItemable {
 
   //TODO
   @Override
+  @JsonIgnore
   public String getItemDescription() {
     return "Party at university from 0:00 to 23:59";
   }
 
   @Override
+  @JsonIgnore
   public String getItemHeader() {
     return "Planned event";
   }
 
   //TODO
   @Override
+  @JsonIgnore
   public EState getItemState() {
     return EState.PROBLEMATIC;
   }
 
   //TODO
   @Override
+  @JsonIgnore
   public int getItemPriority() {
     return EVENT_BASE_PRIORITY;
   }
@@ -269,8 +273,4 @@ public class Event extends C4CEntity implements TickerItemable {
   public void setItemPriority(int i){
     // do nothing, fool the json mapper!
   }
-  @JsonIgnore
-  @JsonIgnore
-  @JsonIgnore
-  @JsonIgnore
 }
