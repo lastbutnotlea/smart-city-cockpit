@@ -13,7 +13,8 @@ import {dummyDate, now} from '../../shared/data/dates';
 @Component({
   selector: 'app-trip-edit-departure',
   templateUrl: './trip-edit-departure.component.html',
-  styleUrls: ['./trip-edit-departure.component.css',  '../../shared/styling/global-styling.css']
+  styleUrls: ['./trip-edit-departure.component.css',
+              '../../shared/styling/global-styling.css']
 })
 
 export class TripEditDepartureComponent implements OnInit {
