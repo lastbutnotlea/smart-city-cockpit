@@ -3,7 +3,14 @@
 </div>
 
 <div *ngIf="loaded">
-  <h3 class="text-center">Vehicle Details</h3>
+  <h3 class="text-center">
+    <div [ngClass]="{'color-fine': vehicle.state === 'FINE',
+       'color-problematic': vehicle.state === 'PROBLEMATIC',
+       'color-critical': vehicle.state === 'CRITICAL' }">
+      <i class="fa fa-lightbulb-o fa-2x float-right small-padding-right" aria-hidden="true"></i>
+    </div>
+    Vehicle Details
+  </h3>
 
   <div class="container">
     <div class="row">
@@ -31,16 +38,6 @@
           {{defect}}
         </div>
       </div>
-      <div class="w-100"></div>
-      <div class="col-sm text-center bg-light p-2 m-1">State</div>
-      <div class="col-sm text-center bg-light p-2 m-1">
-        <span [ngClass]="{'color-fine': vehicle.state === 'FINE',
-           'color-problematic': vehicle.state === 'PROBLEMATIC',
-          'color-critical': vehicle.state === 'CRITICAL' }">
-          <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
-        </span>
-      </div>
-    </div>
   </div>
 
   <div class="no-float big-padding-top">

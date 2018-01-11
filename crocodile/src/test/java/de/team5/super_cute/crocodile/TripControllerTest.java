@@ -72,7 +72,7 @@ public class TripControllerTest {
         .addVehicles(v1, v2)
         .build();
 
-    tripControllerTestHelper = new ControllerTestHelper<>(mockMvc, "/trips",
+    tripControllerTestHelper = new ControllerTestHelper<>(mockMvc, "/api/trips",
         new TypeReference<List<Trip>>() {
         });
   }

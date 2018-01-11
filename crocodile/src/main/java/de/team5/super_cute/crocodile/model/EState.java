@@ -17,4 +17,17 @@ public enum EState {
           return "7"; // low priority
     }
   }
+
+  public static EState c4CPriorityToState(String priority) {
+    switch (priority) {
+      case "3":
+        return FINE;
+      case "2":
+        return PROBLEMATIC;
+      case "1":
+        return CRITICAL;
+        default:
+          return FINE;
+    }
+  }
 }

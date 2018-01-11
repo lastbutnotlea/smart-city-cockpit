@@ -1,8 +1,8 @@
 package de.team5.super_cute.crocodile.controller;
 
+import de.team5.super_cute.crocodile.config.AppConfiguration;
 import de.team5.super_cute.crocodile.data.BaseData;
 import de.team5.super_cute.crocodile.data.LineData;
-import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Trip;
 import de.team5.super_cute.crocodile.util.Helpers;
 import de.team5.super_cute.crocodile.validation.VehicleValidation;
@@ -24,7 +24,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/trips")
+@RequestMapping(AppConfiguration.API_PREFIX + "/trips")
 public class TripController extends BaseController<Trip> {
 
   private LineData lineData;
@@ -100,7 +100,7 @@ public class TripController extends BaseController<Trip> {
 
     // Find offset from first stop to line start
     Map<String, Integer> travelTime =
-        tripInput.isInbound() ? tripInput.getLine().getTravelTimeInbound()
+        tripInput.getIsInbound() ? tripInput.getLine().getTravelTimeInbound()
             : tripInput.getLine().getTravelTimeOutbound();
 
     int tripToLineOffset = travelTime.get(firstStopIdOfTrip);
