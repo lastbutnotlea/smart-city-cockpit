@@ -60,14 +60,12 @@ public class Feedback extends IdentifiableObject implements Serializable, Ticker
     this.message = message;
   }
 
-  @JsonProperty("timestamp")
-  public String getTimestamp() {
-    return timestamp.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+  public LocalDateTime getTimestamp() {
+    return timestamp;
   }
 
-  @JsonProperty("timestamp")
-  public void setTimestamp(String timestamp) {
-    this.timestamp = LocalDateTime.parse(timestamp);
+  public void setTimestamp(LocalDateTime timestamp) {
+    this.timestamp = timestamp;
   }
 
   public Feedbackable getObjective() {
