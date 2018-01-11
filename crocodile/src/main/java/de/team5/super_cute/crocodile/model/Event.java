@@ -3,14 +3,20 @@ package de.team5.super_cute.crocodile.model;
 import static de.team5.super_cute.crocodile.config.TickerConfig.EVENT_BASE_PRIORITY;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.team5.super_cute.crocodile.external.C4CProperty;
 import de.team5.super_cute.crocodile.model.c4c.AppointmentInvolvedParties;
 import de.team5.super_cute.crocodile.model.c4c.C4CEntity;
 import de.team5.super_cute.crocodile.model.c4c.C4CNotes;
 import de.team5.super_cute.crocodile.model.c4c.EStatusCode;
+import de.team5.super_cute.crocodile.util.DateDeserializer;
+import de.team5.super_cute.crocodile.util.DateSerializer;
 import de.team5.super_cute.crocodile.util.Helpers;
+import de.team5.super_cute.crocodile.util.LocalDateTimeAttributeConverter;
 import java.time.LocalDateTime;
 import java.util.List;
+import javax.persistence.Convert;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -40,9 +46,15 @@ public class Event extends C4CEntity implements TickerItemable {
   private EStatusCode status = EStatusCode.OPEN; // offen
 
   @C4CProperty(name = "StartDateTime", metadataType = "c4codata.LOCALNORMALISED_DateTime")
+  @Convert(converter = LocalDateTimeAttributeConverter.class)
+  @JsonSerialize(using = DateSerializer.class)
+  @JsonDeserialize(using = DateDeserializer.class)
   private LocalDateTime startTime;
 
   @C4CProperty(name = "EndDateTime", metadataType = "c4codata.LOCALNORMALISED_DateTime")
+  @Convert(converter = LocalDateTimeAttributeConverter.class)
+  @JsonSerialize(using = DateSerializer.class)
+  @JsonDeserialize(using = DateDeserializer.class)
   private LocalDateTime endTime;
 
   @C4CProperty(name = "LocationName", maxLength = 100)
@@ -71,11 +83,13 @@ public class Event extends C4CEntity implements TickerItemable {
   }
 
   @Override
+  @JsonIgnore
   public String getCollectionName() {
     return "AppointmentCollection";
   }
 
   @Override
+  @JsonIgnore
   public C4CEntity getEmptyObject() {
     return new Event();
   }
@@ -238,10 +252,18 @@ public class Event extends C4CEntity implements TickerItemable {
     return "Party at university from 0:00 to 23:59";
   }
 
+  public void setItemDescription(String s) {
+    // do nothing, fool the json mapper!
+  }
+
   @Override
   @JsonIgnore
   public String getItemHeader() {
     return "Planned event";
+  }
+
+  public void setItemHeader(String s) {
+    // do nothing, fool the json mapper!
   }
 
   //TODO
@@ -251,6 +273,10 @@ public class Event extends C4CEntity implements TickerItemable {
     return EState.PROBLEMATIC;
   }
 
+  public void setItemState(EState s) {
+    // do nothing, fool the json mapper!
+  }
+
   //TODO
   @Override
   @JsonIgnore
@@ -258,19 +284,7 @@ public class Event extends C4CEntity implements TickerItemable {
     return EVENT_BASE_PRIORITY;
   }
 
-  public void setItemDescription(String s){
-    // do nothing, fool the json mapper!
-  }
-
-  public void setItemHeader(String s){
-    // do nothing, fool the json mapper!
-  }
-
-  public void setItemState(EState s){
-    // do nothing, fool the json mapper!
-  }
-
-  public void setItemPriority(int i){
+  public void setItemPriority(int i) {
     // do nothing, fool the json mapper!
   }
 }
