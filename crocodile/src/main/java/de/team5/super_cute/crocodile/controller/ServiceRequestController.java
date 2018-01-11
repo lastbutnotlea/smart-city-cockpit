@@ -1,5 +1,6 @@
 package de.team5.super_cute.crocodile.controller;
 
+import de.team5.super_cute.crocodile.config.AppConfiguration;
 import de.team5.super_cute.crocodile.data.FeedbackGroupData;
 import de.team5.super_cute.crocodile.data.StopData;
 import de.team5.super_cute.crocodile.data.VehicleData;
@@ -28,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/servicerequests")
+@RequestMapping(AppConfiguration.API_PREFIX + "/servicerequests")
 public class ServiceRequestController {
 
   private static final Logger logger = LoggerFactory.getLogger(ServiceRequestController.class);

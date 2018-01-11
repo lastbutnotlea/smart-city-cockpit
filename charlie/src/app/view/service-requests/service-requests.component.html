@@ -20,7 +20,6 @@
     <div class="row" style="overflow-y: auto; height: 100%">
       <ng-container *ngFor="let serviceRequest of filterGroup.getFiltered(serviceRequests)">
         <div class="col p-2 m-1 bg-light">
-          <!--TODO: add <a routerLink="{{serviceRequest.id}}">...</a> once service request detail view is available -->
           <a routerLink="{{serviceRequest.id}}">
             {{ serviceRequest.id }}
           </a>
@@ -31,9 +30,13 @@
         <div class="col p-2 m-1 bg-light">{{ serviceRequest.status }}</div>
         <div class="col p-2 m-1 bg-light">{{ serviceRequest.dueDate }}</div>
         <div class="col p-2 m-1 bg-light">{{ serviceRequest.completionDate }}</div>
-        <div class="col p-2 m-1 bg-light">{{ serviceRequest.description }}</div>
         <div class="col p-2 m-1 bg-light">
-          <div *ngFor="let feedbacks of serviceRequest">
+          <div *ngFor="let description of serviceRequest.serviceRequestDescription">
+            {{description.text}}
+          </div>
+        </div>
+        <div class="col p-2 m-1 bg-light">
+          <div *ngFor="let feedback of serviceRequest.feedbacks">
             {{feedback.messages}}
           </div>
         </div>
@@ -41,7 +44,7 @@
           <span [ngClass]="{'color-fine': serviceRequest.priority === 'FINE',
            'color-problematic': serviceRequest.priority === 'PROBLEMATIC',
           'color-critical': serviceRequest.priority === 'CRITICAL' }">
-            <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+            <i class="fa fa-lightbulb-o" aria-hidden="true"></i>
           </span>
         </div>
         <div class="w-100"></div>

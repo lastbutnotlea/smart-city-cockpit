@@ -31,7 +31,6 @@ export class ServiceRequestAddComponent implements OnInit {
   description: string;
   selectedTime: string = now.toISOString();
   date: NgbDateStruct;
-  time: NgbTimeStruct;
 
   availFeedback: FeedbackData[];
   selectedFeedback: FeedbackData[];
@@ -47,10 +46,8 @@ export class ServiceRequestAddComponent implements OnInit {
     this.selectedPriority = new DropdownValue('FINE', 'FINE');
     this.description = "";
 
-    this.time = {hour: now.getHours(), minute: now.getMinutes(), second: now.getSeconds()};
     this.date = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
     this.updateDate();
-    this.updateTime();
 
     this.selectedFeedback = []
   }
@@ -71,6 +68,7 @@ export class ServiceRequestAddComponent implements OnInit {
     } else if(!this.feedbackChosen) {
       this.selectFeedback();
     } else {
+      debugger;
       this.activeModal.close('Close click');
     }
   }
@@ -114,9 +112,11 @@ export class ServiceRequestAddComponent implements OnInit {
     this.selected.type = this.selectedType.value;
     this.selected.priority = this.selectedPriority.value;
     this.selected.dueDate = this.selectedTime;
-    this.selected.serviceRequestDescription = this.description;
-    this.selected.feedback = this.selectedFeedback;
+    this.selected.serviceRequestDescription = [{"id": "", "text": this.description}];
+    this.selected.feedbacks = this.selectedFeedback;
     this.feedbackChosen = true;
+
+    console.log(this.selected);
 
     this.http.addServiceRequest(this.selected).subscribe(
       data => {
@@ -130,6 +130,7 @@ export class ServiceRequestAddComponent implements OnInit {
           this.activeModal.close('Close click');
         } else {
           console.log('Could not add service request.');
+          this.activeModal.close('Close click');
         }
       }
     );
@@ -165,14 +166,6 @@ export class ServiceRequestAddComponent implements OnInit {
     this.selectedTime = this.dateParser.parseDate(
       this.selectedTime,
       this.date
-    );
-  }
-
-  updateTime(): void {
-    // this.refreshData();
-    this.selectedTime = this.dateParser.parseTime(
-      this.selectedTime,
-      this.time
     );
   }
 

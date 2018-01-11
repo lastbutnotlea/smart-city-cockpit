@@ -9,6 +9,7 @@ import { VehicleData } from '../../shared/data/vehicle-data';
 import { VehicleAddComponent } from '../vehicle-add/vehicle-add.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ServiceRequestAddComponent } from '../service-request-add/service-request-add.component';
+import { FeedbackData } from '../../shared/data/feedback-data';
 
 @Component({
   selector: 'app-service-requests-view',
@@ -40,6 +41,9 @@ export class ServiceRequestsComponent implements OnInit {
     this.http.getServiceRequests().subscribe(
       data => {
         this.serviceRequests = data;
+        for(let s of this.serviceRequests){
+          s.feedbacks = [];
+        }
         this.loaded = true;
         },
       err => console.log('Could not fetch trips.')

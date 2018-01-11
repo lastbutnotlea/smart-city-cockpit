@@ -36,6 +36,7 @@ import { EmbeddedStopOverviewComponent } from './shared/components/embedded-stop
 import { ServiceRequestsComponent } from './view/service-requests/service-requests.component';
 import { ServiceRequestDetailComponent } from './view/service-request-detail/service-request-detail.component';
 import { ServiceRequestAddComponent } from './view/service-request-add/service-request-add.component';
+import { EmbeddedStopComponent } from './shared/components/embedded-stop/embedded-stop.component';
 
 
 @NgModule({
@@ -65,7 +66,8 @@ import { ServiceRequestAddComponent } from './view/service-request-add/service-r
     VehicleAddComponent,
     ServiceRequestsComponent,
     ServiceRequestDetailComponent,
-    ServiceRequestAddComponent
+    ServiceRequestAddComponent,
+    EmbeddedStopComponent
   ],
   imports: [
     BrowserModule,

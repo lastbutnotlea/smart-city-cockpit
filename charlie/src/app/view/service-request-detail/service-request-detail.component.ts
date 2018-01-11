@@ -5,6 +5,8 @@ import {Location} from '@angular/common';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ConfirmDeletionComponent} from '../../shared/components/confirm-popup/confirm-deletion.component';
 import { ServiceRequestData } from '../../shared/data/service-request-data';
+import { VehicleData } from '../../shared/data/vehicle-data';
+import { StopData } from '../../shared/data/stop-data';
 
 @Component({
   selector: 'app-service-request-detail-view',
@@ -36,8 +38,17 @@ export class ServiceRequestDetailComponent implements OnInit {
     this.http.getServiceRequestDetails(serviceRequestId).subscribe(
       data => {
         this.serviceRequest = data;
-        // dummy data
-        this.serviceRequest.feedback = [];
+        // TODO: remove dummy data once data from backend is available
+        let v = new VehicleData();
+        v.id = "Vehicle_104";
+        v.type = "SUBWAY";
+        v.state = "CRITICAL";
+        let s = new StopData();
+        s.id = "490011334E1";
+        s.state = "PROBLEMATIC";
+        this.serviceRequest.target = s;
+
+        this.serviceRequest.feedbacks = [];
         this.loaded = true;
       },
       err => console.log('Could not fetch trip data!')
@@ -80,8 +91,6 @@ export class ServiceRequestDetailComponent implements OnInit {
   }
 
   hasVehicleTarget(){
-    const test = typeof this.serviceRequest.target;
-    return false;
+    return this.serviceRequest.target instanceof VehicleData;
   }
-
 }

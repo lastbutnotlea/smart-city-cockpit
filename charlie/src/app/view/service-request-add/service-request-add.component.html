@@ -35,10 +35,9 @@
     </div>
 
     <ngb-datepicker [(ngModel)]="date" (select)="updateDate()" class="float-left datepicker"></ngb-datepicker>
-    <ngb-timepicker [(ngModel)]="time" (click)="updateTime()"></ngb-timepicker>
   </div>
 
-  <div *ngIf="dataChosen && !feedbackChosen" class="d-block">
+  <div *ngIf="dataChosen" class="d-block">
     <label>Feedback:</label>
     <div class="" *ngFor="let feedback of availFeedback">
       <input #box type="checkbox" [ngModel]="isChecked(feedback)" (change)="includeFeedback(feedback, box.checked)">
@@ -50,6 +49,6 @@
 
 <div class="modal-footer">
   <button type="button" class="btn btn-outline-secondary" (click)="activeModal.close('Close click')">Close</button>
-  <button *ngIf="!feedbackChosen" type="button" class="btn btn-outline-primary" (click)="confirm()">Next</button>
-  <button *ngIf="feedbackChosen" type="button" class="btn btn-outline-primary" (click)="confirm()">Okay</button>
+  <button *ngIf="!dataChosen" type="button" class="btn btn-outline-primary" (click)="confirm()">Next</button>
+  <button *ngIf="dataChosen" type="button" class="btn btn-outline-primary" (click)="confirm()">Okay</button>
 </div>
