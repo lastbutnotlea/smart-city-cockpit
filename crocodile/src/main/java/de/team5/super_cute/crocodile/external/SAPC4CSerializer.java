@@ -120,9 +120,10 @@ public class SAPC4CSerializer
   }
 
   private String localDateTimeToC4CDateString(LocalDateTime time) {
-    return "/Date(" + time.atZone(ZoneId.of("UTC")).toInstant().toEpochMilli() + ")/";
+    return String.format(new StringBuilder().append("/Date(")
+        .append(time.atZone(ZoneId.of("UTC")).toInstant().toEpochMilli()).append(")/")
+        .toString());
   }
-
   /**
    * Gets all relevant fields from entry and sets them in result.
    *

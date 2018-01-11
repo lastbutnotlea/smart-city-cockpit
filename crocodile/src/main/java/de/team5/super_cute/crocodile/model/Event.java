@@ -224,4 +224,8 @@ public class Event extends C4CEntity {
         .append("appointmentNotes", appointmentNotes)
         .toString();
   }
+  @JsonIgnore
+  @JsonIgnore
+  @JsonIgnore
+  @JsonIgnore
 }
