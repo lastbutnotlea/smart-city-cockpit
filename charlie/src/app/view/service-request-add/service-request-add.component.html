@@ -38,17 +38,23 @@
   </div>
 
   <div *ngIf="dataChosen" class="d-block">
-    <label>Feedback:</label>
-    <div class="" *ngFor="let feedback of availFeedback">
-      <input #box type="checkbox" [ngModel]="isChecked(feedback)" (change)="includeFeedback(feedback, box.checked)">
-      <label class="padding-left">{{feedback.message}}</label>
+    <div *ngIf="availFeedback.length === 0">
+      <label>No Feedback available</label>
+    </div>
+    <div *ngIf="availFeedback.length !== 0">
+      <label>Feedback:</label>
+      <div class="" *ngFor="let feedback of availFeedback">
+        <input #box type="checkbox" [ngModel]="isChecked(feedback)" (change)="includeFeedback(feedback, box.checked)">
+        <label class="padding-left">{{feedback.message}}</label>
+      </div>
     </div>
   </div>
-
 </div>
 
 <div class="modal-footer">
-  <button type="button" class="btn btn-outline-secondary" (click)="activeModal.close('Close click')">Close</button>
+  <button *ngIf="targetTypeChosen" type="button" class="btn btn-outline-secondary" (click)="stepBack()">Back</button>
+  <button type="button" class="btn btn-outline-secondary" (click)="activeModal.close('Close click')">Cancel</button>
+
   <button *ngIf="!dataChosen" type="button" class="btn btn-outline-primary" (click)="confirm()">Next</button>
   <button *ngIf="dataChosen" type="button" class="btn btn-outline-primary" (click)="confirm()">Okay</button>
 </div>

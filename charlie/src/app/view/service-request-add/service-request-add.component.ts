@@ -20,7 +20,6 @@ export class ServiceRequestAddComponent implements OnInit {
 
   targetTypeChosen: boolean = false;
   dataChosen: boolean = false;
-  feedbackChosen: boolean = false;
 
   selectedTargetType: DropdownValue;
 
@@ -40,6 +39,9 @@ export class ServiceRequestAddComponent implements OnInit {
               private dateParser: DateParserService) { }
 
   ngOnInit(): void {
+    this.selected = new ServiceRequestData();
+    this.selected.feedbacks = [];
+
     // TODO: Get data from meta data controller, do not set manually
     this.selectedTargetType = new DropdownValue(true, 'Vehicle');
     this.selectedType = new DropdownValue('CLEANING', 'CLEANING');
@@ -107,14 +109,11 @@ export class ServiceRequestAddComponent implements OnInit {
   }
 
   selectFeedback() {
-    this.selected = new ServiceRequestData();
     this.selected.target = this.selectedTarget.value;
     this.selected.type = this.selectedType.value;
     this.selected.priority = this.selectedPriority.value;
     this.selected.dueDate = this.selectedTime;
     this.selected.serviceRequestDescription = [{"id": "", "text": this.description}];
-    this.selected.feedbacks = this.selectedFeedback;
-    this.feedbackChosen = true;
 
     console.log(this.selected);
 
@@ -170,16 +169,27 @@ export class ServiceRequestAddComponent implements OnInit {
   }
 
   isChecked(feedback: FeedbackData) {
-    return this.selectedFeedback.filter(feedback => feedback.message === feedback.message).length === 1;
+    const test = this.selectedFeedback.filter(feedback => {
+      return feedback.message === feedback.message
+    });
+    return test.length === 1;
   }
 
   includeFeedback(feedback: FeedbackData, included: boolean) {
     if (included) {
-      this.selectedFeedback.push(feedback);
+      this.selected.feedbacks.push(feedback);
     } else {
-      this.selectedFeedback = this.selectedFeedback.filter(filteredFeedback =>
+      this.selected.feedbacks = this.selected.feedbacks.filter(filteredFeedback =>
         filteredFeedback.message !== feedback.message);
     }
-    console.log(JSON.stringify(this.selectedFeedback));
+    console.log(JSON.stringify(this.selected.feedbacks));
+  }
+
+  stepBack() {
+    if(this.dataChosen){
+      this.dataChosen = false;
+    } else if(this.targetTypeChosen) {
+      this.targetTypeChosen = false;
+    }
   }
 }
