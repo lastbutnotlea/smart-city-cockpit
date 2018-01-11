@@ -2,18 +2,18 @@
   <h3>Loading...</h3>
 </div>
 
-<div *ngIf="isLoaded()">
+<div *ngIf="isLoaded()" class="fit-screen d-flex flex-column">
 
-  <h3 class="text-center">
+  <h3 class="text-center gray-background">
     <div [ngClass]="{'color-fine': trip.vehicle.state === 'FINE',
        'color-problematic': trip.vehicle.state === 'PROBLEMATIC',
        'color-critical': trip.vehicle.state === 'CRITICAL' }">
-      <i class="fa fa-lightbulb-o fa-2x float-right small-padding-right"
+      <i class="fa fa-lightbulb-o fa-3x float-right padding-right-20"
          aria-hidden="true"></i>
     </div>
     Trip Details
-  </h3>
   <h6 class="text-center margin-bottom">Trip ID: {{trip.id}}</h6>
+  </h3>
 
   <div class="no-float margin-bottom">
     <button class="btn btn-outline-secondary" (click)="goBack()">Back To Trips</button>
@@ -27,7 +27,7 @@
     <!-- stops -->
     <div class="flex-3 bounding-box emb-big-height">
       <h4 class="text-lg-left">
-        <i class="fa fa-map-marker fa-2x float-left small-padding-left text-primary"></i>
+        <i class="fa fa-map-marker fa-2x float-left padding-left-5 text-primary"></i>
         <label class="padding-emb-box-headline">Stops</label>
       </h4>
       <p *ngFor="let stop of trip.stops">
@@ -36,7 +36,7 @@
         <span [ngClass]="{'color-fine': stop.state === 'FINE',
        'color-problematic': stop.state === 'PROBLEMATIC',
        'color-critical': stop.state === 'CRITICAL' }">
-        <i class="fa fa-lightbulb-o float-right small-padding-right"
+        <i class="fa fa-lightbulb-o  fa-2x float-right padding-right-20"
            aria-hidden="true"></i>
       </span>
       </p>

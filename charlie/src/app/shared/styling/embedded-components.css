@@ -1,6 +1,6 @@
 .bounding-box {
   float: left;
-  margin: 0 20px 20px 0;
+  margin: 20px 20px 0 0;
   padding: 10px;
   border-radius: 10px;
   border: 1px solid #007bff;
@@ -8,15 +8,15 @@
 }
 
 .emb-big-height {
-  height: 50vh;
+
 }
 
 .emb-small-height {
-  height: 25vh;
+
 }
 
 .flex-3 {
-  flex-grow: 3;
+  flex-grow: 2;
   max-width: 100%;
 }
 
