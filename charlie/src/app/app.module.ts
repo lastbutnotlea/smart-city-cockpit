@@ -28,11 +28,14 @@ import {Angular2FontawesomeModule} from 'angular2-fontawesome';
 import {TickerComponent} from './view/ticker/ticker.component';
 import {TickerItemComponent} from './view/ticker-item/ticker-item.component';
 import {StopDetailComponent} from './view/stop-detail/stop-detail.component';
+import {TripAddComponent} from './view/trip-add/trip-add.component';
 import {VehiclesComponent} from './view/vehicles/vehicles.component';
 import { VehicleDetailComponent } from './view/vehicle-detail/vehicle-detail.component';
 import { VehicleAddComponent } from './view/vehicle-add/vehicle-add.component';
 import { FilterGroupComponent } from './shared/components/filter-group/filter-group.component';
 import { EmbeddedStopOverviewComponent } from './shared/components/embedded-stop-overview/embedded-stop-overview.component';
+import { FeedbackComponent } from './view/feedback/feedback.component';
+import { FeedbackItemComponent } from './view/feedback-item/feedback-item.component';
 import { ServiceRequestsComponent } from './view/service-requests/service-requests.component';
 import { ServiceRequestDetailComponent } from './view/service-request-detail/service-request-detail.component';
 import { ServiceRequestAddComponent } from './view/service-request-add/service-request-add.component';
@@ -62,9 +65,12 @@ import { ServiceRequestEditComponent } from './view/service-request-edit/service
     ConfirmDeletionComponent,
     TickerComponent,
     TickerItemComponent,
+    TripAddComponent,
     VehiclesComponent,
     VehicleDetailComponent,
     VehicleAddComponent,
+    FeedbackComponent,
+    FeedbackItemComponent,
     ServiceRequestsComponent,
     ServiceRequestDetailComponent,
     ServiceRequestAddComponent,
@@ -93,6 +99,7 @@ import { ServiceRequestEditComponent } from './view/service-request-edit/service
     VehicleAddComponent,
     TripEditDepartureComponent,
     ConfirmDeletionComponent,
+    TripAddComponent,
     ServiceRequestAddComponent,
     ServiceRequestEditComponent
   ]

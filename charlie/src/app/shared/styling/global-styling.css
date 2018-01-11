@@ -32,6 +32,10 @@
   color: red;
 }
 
+.width-100 {
+  width: 100%;
+}
+
 .datepicker {
   margin: 0 20px 20px 0;
 }

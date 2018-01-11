@@ -16,8 +16,8 @@
 
   <div>
     <label>Departure time: {{selectedStop.value.departureTime |  date:'MM/dd/yyyy HH:mm'}}</label>
-    <ngb-datepicker [(ngModel)]="date" (select)="updateDate()" class="float-left"></ngb-datepicker>
-    <ngb-timepicker [(ngModel)]="time" (click)="updateTime()"></ngb-timepicker>
+    <ngb-datepicker [(ngModel)]="date" (select)="updateDate()" class="float-left datepicker"></ngb-datepicker>
+    <ngb-timepicker [(ngModel)]="time" (change)="updateTime()" (click)="updateTime()"></ngb-timepicker>
   </div>
 
 </div>

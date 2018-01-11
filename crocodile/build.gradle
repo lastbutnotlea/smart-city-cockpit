@@ -36,6 +36,9 @@ dependencies {
 	compile("org.apache.olingo:olingo-odata2-core:2.0.9")
 	compile("org.apache.httpcomponents:httpclient:4.5.3")
 	compile("commons-io:commons-io:2.6")
+	compile("com.fasterxml.jackson.module:jackson-module-parameter-names")
+	compile("com.fasterxml.jackson.datatype:jackson-datatype-jdk8")
+	compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310")
 }
 
 jar {

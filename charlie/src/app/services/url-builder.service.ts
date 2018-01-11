@@ -13,6 +13,8 @@ export class UrlBuilderService {
   private serviceRequestsUrl = this.baseUrl + '/servicerequests';
   private feedbackUrl = this.baseUrl + '/feedback';
 
+  private feedbackBaseUrl = this.baseUrl + '/feedback';
+
   public getNetworkUrl(): string {
     return this.networkBaseUrl;
   }
@@ -77,6 +79,10 @@ export class UrlBuilderService {
     return this.getLineDetailsUrl(lineId) + '/vehicles/outbound';
   }
 
+  getFeedback(): string {
+    return this.feedbackBaseUrl;
+  }
+  
   public getVehicleFeedbackUrl(vehicleId: string): string {
     return this.feedbackUrl + '/vehicle/' + vehicleId;
   }
