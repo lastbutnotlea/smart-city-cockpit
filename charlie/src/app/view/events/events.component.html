@@ -1,0 +1,18 @@
+<div *ngIf="!isLoaded()">
+  <h3>Loading...</h3>
+</div>
+
+<div *ngIf="isLoaded()" class="d-flex flex-column fit-screen">
+  <h3 class="text-center margin-bottom-30">{{title}}</h3>
+  <div class="no-float margin-bottom-30">
+    <button class="btn btn-outline-primary no-float" (click)="addEvent()">Add</button>
+  </div>
+
+  <div class="d-flex flex-row">
+    <div class="scrollable">
+
+
+
+    </div>
+  </div>
+</div>
