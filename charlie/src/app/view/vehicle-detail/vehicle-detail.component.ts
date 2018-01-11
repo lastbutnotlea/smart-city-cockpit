@@ -9,7 +9,8 @@ import { LiveDataComponent } from '../../shared/components/live-data/live-data.c
   selector: 'app-vehicle-detail',
   templateUrl: './vehicle-detail.component.html',
   styleUrls: ['./vehicle-detail.component.css',
-    '../../shared/styling/global-styling.css']
+              '../../shared/styling/global-styling.css',
+              '../../shared/styling/embedded-components.css']
 })
 export class VehicleDetailComponent extends LiveDataComponent implements OnInit {
 

@@ -4,19 +4,18 @@
 
 <div *ngIf="isLoaded()" class="fit-screen d-flex flex-column">
 
-  <h3 class="text-center gray-background">
+  <h3 class="text-center">
     <div [ngClass]="{'color-fine': trip.vehicle.state === 'FINE',
        'color-problematic': trip.vehicle.state === 'PROBLEMATIC',
        'color-critical': trip.vehicle.state === 'CRITICAL' }">
       <i class="fa fa-lightbulb-o fa-3x float-right padding-right-20"
          aria-hidden="true"></i>
     </div>
-    Trip Details
-  <h6 class="text-center margin-bottom">Trip ID: {{trip.id}}</h6>
+    Details <label class="text-primary"> {{trip.id}} </label>
   </h3>
 
-  <div class="no-float margin-bottom">
-    <button class="btn btn-outline-secondary" (click)="goBack()">Back To Trips</button>
+  <div class="no-float margin-bottom-30">
+    <button class="btn btn-outline-secondary" (click)="goBack()">Back</button>
     <button class="btn btn-outline-primary" (click)="editStops()">Edit Stops or Vehicle</button>
     <button class="btn btn-outline-primary" (click)="editDepartureTime()">Edit Departure Time
     </button>
@@ -25,7 +24,7 @@
 
   <div class="d-flex">
     <!-- stops -->
-    <div class="flex-3 bounding-box emb-big-height">
+    <div class="flex-3 bounding-box">
       <h4 class="text-lg-left">
         <i class="fa fa-map-marker fa-2x float-left padding-left-5 text-primary"></i>
         <label class="padding-emb-box-headline">Stops</label>
@@ -44,10 +43,10 @@
 
     <div class="d-flex flex-1 flex-column">
     <!-- line -->
-    <app-embedded-line [line]="trip.line" class="flex-1 bounding-box emb-small-height"></app-embedded-line>
+    <app-embedded-line [line]="trip.line" class="flex-1 bounding-box"></app-embedded-line>
 
     <!-- vehicle -->
-    <app-embedded-vehicle [vehicle]="trip.vehicle" class="flex-1 bounding-box emb-small-height"></app-embedded-vehicle>
+    <app-embedded-vehicle [vehicle]="trip.vehicle" class="flex-1 bounding-box"></app-embedded-vehicle>
     </div>
   </div>
 
