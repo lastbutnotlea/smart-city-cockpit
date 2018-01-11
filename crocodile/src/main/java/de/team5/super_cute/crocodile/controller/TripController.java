@@ -100,7 +100,7 @@ public class TripController extends BaseController<Trip> {
 
     // Find offset from first stop to line start
     Map<String, Integer> travelTime =
-        tripInput.isInbound() ? tripInput.getLine().getTravelTimeInbound()
+        tripInput.getIsInbound() ? tripInput.getLine().getTravelTimeInbound()
             : tripInput.getLine().getTravelTimeOutbound();
 
     int tripToLineOffset = travelTime.get(firstStopIdOfTrip);

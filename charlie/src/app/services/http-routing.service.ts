@@ -114,9 +114,8 @@ export class HttpRoutingService {
     return this.getFilterData().map(data => data.types);
   }
 
-  public addTrip(trip: TripData): void {
-    console.log('ADD TRIP, lineID: ' + trip.line.id + ' vehicleID: ' + trip.vehicle.id);
-    this.http.post(this.urlBuilder.getTripsUrl(), trip).subscribe();
+  public addTrip(trip: TripData): Observable<any> {
+    return this.http.post(this.urlBuilder.getTripsUrl(), trip);
   }
 
   public editTrip(trip: TripData): Observable<any> {

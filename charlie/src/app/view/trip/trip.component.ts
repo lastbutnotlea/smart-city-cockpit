@@ -2,6 +2,8 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import { HttpRoutingService } from '../../services/http-routing.service';
 import {FilterComponent} from '../../shared/components/filter/filter.component';
 import { TripData } from '../../shared/data/trip-data';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {TripAddComponent} from '../trip-add/trip-add.component';
 import { FilterGroupComponent } from '../../shared/components/filter-group/filter-group.component';
 import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
 
@@ -19,7 +21,8 @@ export class TripComponent extends LiveDataComponent implements OnInit {
   @ViewChild(FilterGroupComponent)
   filterGroup: FilterGroupComponent;
 
-  constructor(private http: HttpRoutingService) {
+  constructor(private http: HttpRoutingService,
+              private modalService: NgbModal) {
     super();
   }
 
@@ -46,6 +49,11 @@ export class TripComponent extends LiveDataComponent implements OnInit {
         },
       err => console.log('Could not fetch trips.')
     );
+  }
+
+  addTrip(): void {
+    const modal = this.modalService.open(TripAddComponent);
+    modal.componentInstance.initData();
   }
 
   private addFilter(): void {
