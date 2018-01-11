@@ -34,11 +34,23 @@
 }
 
 .color-problematic {
-  color: orange;
+  color: #ffb300;
 }
 
 .color-critical {
-  color: red;
+  color: #dd3645;
+}
+
+.background-fine {
+  background-color: limegreen;
+}
+
+.background-problematic {
+  background-color: #ffb300;
+}
+
+.background-critical {
+  background-color: #dd3645;
 }
 
 .width-100 {
@@ -47,4 +59,9 @@
 
 .datepicker {
   margin: 0 20px 20px 0;
+}
+
+.gray-background {
+  background-color: #efefef;
+  border-radius: 10px 0 0 10px;
 }

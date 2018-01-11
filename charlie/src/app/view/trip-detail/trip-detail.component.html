@@ -4,7 +4,7 @@
 
 <div *ngIf="isLoaded()" class="fit-screen d-flex flex-column">
 
-  <h3 class="text-center">
+  <h3 class="text-center gray-background">
     <div [ngClass]="{'color-fine': trip.vehicle.state === 'FINE',
        'color-problematic': trip.vehicle.state === 'PROBLEMATIC',
        'color-critical': trip.vehicle.state === 'CRITICAL' }">
