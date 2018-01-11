@@ -67,11 +67,8 @@ export class ServiceRequestAddComponent implements OnInit {
       this.selectTarget();
     } else if(!this.dataChosen) {
       this.selectData();
-    } else if(!this.feedbackChosen) {
-      this.selectFeedback();
     } else {
-      debugger;
-      this.activeModal.close('Close click');
+      this.selectFeedback();
     }
   }
 
