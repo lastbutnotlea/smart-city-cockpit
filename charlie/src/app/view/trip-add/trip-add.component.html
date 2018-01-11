@@ -20,7 +20,7 @@
 
   <div class="margin-bottom">
     <label>Direction: </label>
-    <app-dropdown [values]="directionItems()" [(selected)]="selectedDirection" (selectedChange)="updateStops()"></app-dropdown>
+    <app-dropdown [values]="directionItems()" [(selected)]="selectedDirection" (selectedChange)="refreshData()"></app-dropdown>
   </div>
 
   <ngb-datepicker [(ngModel)]="date" (select)="updateDate()" class="float-left datepicker"></ngb-datepicker>

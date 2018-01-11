@@ -85,8 +85,8 @@ export class TripAddComponent implements OnInit {
   }
 
   refreshData(): void {
-    if(this.displayStops) {
-      this.selected.line = this.selectedLine.value;
+    this.selected.line = this.selectedLine.value;
+   // if(this.displayStops) {
       // set selectedLineStops to inbound/outbound stops of current line depending on value in dropdown
       if(this.selectedDirection.value) {
         this.selectedLineStops = this.selected.line.stopsInbound;
@@ -97,11 +97,11 @@ export class TripAddComponent implements OnInit {
 
       this.selected.stops = [];
       for (const stop of this.selectedLineStops) {
-        this.selected.stops.push(new TripStopData(stop.id, dummyDate, stop.commonName, ''));
+        this.selected.stops.push(new TripStopData(stop.id, dummyDate, stop.commonName, stop.state));
       }
 
       this.refreshVehicleAndLineData();
-    }
+ //   }
   }
 
   refreshVehicleAndLineData(): void {
@@ -153,7 +153,6 @@ export class TripAddComponent implements OnInit {
     );
   }
 
-
   isChecked(stop: StopData): boolean {
     // returns true if selected.stops contains one object with the id of stop
     return this.selected.stops.filter(tripStop => tripStop.id === stop.id).length === 1;
@@ -161,7 +160,7 @@ export class TripAddComponent implements OnInit {
 
   includeStop(stop: StopData, included: boolean): void {
     if (included) {
-      this.selected.stops.push(new TripStopData(stop.id, dummyDate, stop.commonName, ''));
+      this.selected.stops.push(new TripStopData(stop.id, dummyDate, stop.commonName, stop.state));
     } else {
       this.selected.stops = this.selected.stops.filter(filteredStop => filteredStop.id !== stop.id);
       this.selected.stops = this.stopSortService.sortStops(this.selected.stops);
