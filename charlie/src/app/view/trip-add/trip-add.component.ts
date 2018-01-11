@@ -62,7 +62,7 @@ export class TripAddComponent implements OnInit {
         // fill selected.stops with inbound stops
         this.selected.stops = [];
         for(const stop of this.selectedLineStops){
-          this.selected.stops.push(new TripStopData(stop.id, dummyDate, stop.commonName, ''));
+          this.selected.stops.push(new TripStopData(stop.id, dummyDate, stop.commonName, stop.state));
         }
       },
       err => console.log('Err'));
@@ -178,7 +178,7 @@ export class TripAddComponent implements OnInit {
   }
 
   toDropdownItemL(item: LineData): DropdownValue {
-    return new DropdownValue(item, item.id);
+    return new DropdownValue(item, item.name);
   }
 
   toDropdownItemsL(items: LineData[]): DropdownValue[] {
