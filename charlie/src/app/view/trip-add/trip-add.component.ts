@@ -124,24 +124,6 @@ export class TripAddComponent implements OnInit {
       data => {
         //debugger;
       },
-      /*data => {
-        // get trips to refresh the trip detail data in trip detail view
-        this.http.getTripDetails(data.id).subscribe(
-          trip => {
-            // copy new data into data object
-            this.selected.line = Object.assign(new LineData(), trip.line);
-            this.selected.vehicle = Object.assign(new VehicleData, trip.vehicle);
-            this.selected.stops = [];
-            for(const stop of trip.stops) {
-              this.selected.stops.push(stop);
-            }
-            this.selected.stops = this.stopSortService.sortStops(this.selected.stops);
-          },
-          err => {
-            console.log('Could not fetch trip data!');
-          }
-        );
-      },*/
       // Currently, we get a http-response here that is interpreted as an error
       // (maybe parsing the response does not work for some reason)
       // The response should contain the http-code 200 (ok) if adding the trip was successful
