@@ -63,7 +63,7 @@ public class ServiceRequest extends C4CEntity {
   @JsonIgnore
   private String processingTypeCode;
 
-  private EServiceType type;
+  private EServiceType serviceType;
 
   @C4CProperty(name = "ServiceRequestDescription", hasAssociatedEntities = true)
   private List<C4CNotes> serviceRequestDescription;
@@ -75,7 +75,8 @@ public class ServiceRequest extends C4CEntity {
   @JsonIgnore
   private String targetId;
 
-  private IdentifiableObject target;
+  //@JsonDeserialize(using = IdentifiableObjectDeserializer.class)
+  private Vehicle target;
 
   /**
    * The id of the feedbackGroup this service request answers to.
@@ -90,12 +91,12 @@ public class ServiceRequest extends C4CEntity {
   }
 
   public ServiceRequest(String name, EState priority,
-      LocalDateTime dueDate, EServiceType type,
+      LocalDateTime dueDate, EServiceType serviceType,
       List<C4CNotes> serviceRequestDescription, String targetId, String referencedFeedback) {
     setName(name);
     setPriority(priority);
     setDueDate(dueDate);
-    setType(type);
+    setServiceType(serviceType);
     setServiceRequestDescription(serviceRequestDescription);
     setTargetId(targetId);
     setReferencedFeedback(referencedFeedback);
@@ -179,27 +180,27 @@ public class ServiceRequest extends C4CEntity {
   }
 
   public String getProcessingTypeCode() {
-    if (this.type != null) {
-      return this.type.getCode();
+    if (this.serviceType != null) {
+      return this.serviceType.getCode();
     }
     return processingTypeCode;
   }
 
   public void setProcessingTypeCode(String processingTypeCode) {
     this.processingTypeCode = processingTypeCode;
-    this.type = EServiceType.getServiceType(processingTypeCode);
+    this.serviceType = EServiceType.getServiceType(processingTypeCode);
   }
 
-  public EServiceType getType() {
+  public EServiceType getServiceType() {
     if (this.processingTypeCode != null) {
       return EServiceType.getServiceType(this.processingTypeCode);
     }
-    return type;
+    return serviceType;
   }
 
-  public void setType(EServiceType type) {
-    this.type = type;
-    this.processingTypeCode = type.getCode();
+  public void setServiceType(EServiceType serviceType) {
+    this.serviceType = serviceType;
+    this.processingTypeCode = serviceType.getCode();
   }
 
   public List<C4CNotes> getServiceRequestDescription() {
@@ -223,7 +224,7 @@ public class ServiceRequest extends C4CEntity {
     return target;
   }
 
-  public void setTarget(IdentifiableObject target) {
+  public void setTarget(Vehicle target) {
     this.target = target;
   }
 
@@ -264,7 +265,7 @@ public class ServiceRequest extends C4CEntity {
         .append(getCompletionDate(), that.getCompletionDate())
         .append(getOriginTypeCode(), that.getOriginTypeCode())
         .append(getProcessingTypeCode(), that.getProcessingTypeCode())
-        .append(getType(), that.getType())
+        .append(getServiceType(), that.getServiceType())
         .append(getServiceRequestDescription(), that.getServiceRequestDescription())
         //.append(getTarget(), that.getTarget())
         //.append(getReferencedFeedback(), that.getReferencedFeedback())
@@ -282,7 +283,7 @@ public class ServiceRequest extends C4CEntity {
         .append(getCompletionDate())
         .append(getOriginTypeCode())
         .append(getProcessingTypeCode())
-        .append(getType())
+        .append(getServiceType())
         .append(getServiceRequestDescription())
         //.append(getTarget())
         //.append(getReferencedFeedback()) todo uncomment if mhp guys created field
@@ -301,7 +302,7 @@ public class ServiceRequest extends C4CEntity {
         .append("completionDate", getCompletionDate())
         .append("originTypeCode", getOriginTypeCode())
         .append("processingTypeCode", getProcessingTypeCode())
-        .append("type", getType())
+        .append("serviceType", getServiceType())
         .append("serviceRequestDescription", getServiceRequestDescription())
         .append("target", getTarget())
         .append("referencedFeedback", getReferencedFeedback())

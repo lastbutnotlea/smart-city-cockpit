@@ -36,4 +36,12 @@ public class FeedbackGroup extends IdentifiableObject {
   public void setFeedbacks(Set<Feedback> feedbacks) {
     this.feedbacks = feedbacks;
   }
+
+  public void addFeedbacksMinusDuplicates(Set<Feedback> feedbacks) {
+    for (Feedback f : feedbacks) {
+      if (!getFeedbacks().contains(f)) {
+        getFeedbacks().add(f);
+      }
+    }
+  }
 }

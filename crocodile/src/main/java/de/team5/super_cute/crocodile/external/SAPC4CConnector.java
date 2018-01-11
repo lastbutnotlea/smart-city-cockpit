@@ -183,10 +183,13 @@ public class SAPC4CConnector {
    */
   public List<Event> getAppointments()
       throws EntityProviderException, EdmException, IOException {
-    return getC4CEntities(new Event()).stream().filter(Event.class::isInstance)
+    logger.info("Getting all Appointments from C4C");
+    List<Event> events = getC4CEntities(new Event()).stream().filter(Event.class::isInstance)
         .map(Event.class::cast)
         .collect(
             Collectors.toList());
+    logger.info("Received all Appointments from C4C");
+    return events;
   }
 
   /**
@@ -194,9 +197,12 @@ public class SAPC4CConnector {
    */
   public List<ServiceRequest> getServiceRequests()
       throws EntityProviderException, EdmException, IOException {
-    return getC4CEntities(new ServiceRequest()).stream().filter(ServiceRequest.class::isInstance)
+    logger.info("Getting all Service Requests from C4C");
+    List<ServiceRequest> serviceRequests = getC4CEntities(new ServiceRequest()).stream().filter(ServiceRequest.class::isInstance)
         .map(ServiceRequest.class::cast).collect(
             Collectors.toList());
+    logger.info("Received all Service Requests from C4C");
+    return serviceRequests;
   }
 
   /**

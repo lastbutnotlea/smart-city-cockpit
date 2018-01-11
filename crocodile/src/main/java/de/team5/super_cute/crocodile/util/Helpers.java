@@ -21,19 +21,29 @@ import org.slf4j.Logger;
 
 public class Helpers {
 
-  public static final List<Line> LINES = new TpDataConnector().getLines(new ArrayList<String>() {{
-    add("10");
-    add("novalidid");
-    add("283");
-    add("46");
-    add("228");
-    add("7");
-    add("bakerloo");
-    add("hammersmith-city");
-    add("jubilee");
-    add("victoria");
-    add("waterloo-city");
-  }});
+  public static final List<Line> LINES = getLines();
+
+  private static boolean hasLines = false;
+  private static List<Line> lines;
+  private static List<Line> getLines() {
+    if (!hasLines) {
+      lines = new TpDataConnector().getLines(new ArrayList<String>() {{
+        add("10");
+        add("novalidid");
+        add("283");
+        add("46");
+        add("228");
+        add("7");
+        add("bakerloo");
+        add("hammersmith-city");
+        add("jubilee");
+        add("victoria");
+        add("waterloo-city");
+      }});
+      hasLines = true;
+    }
+    return lines;
+  }
 
   public static LocalDateTime DUMMY_TIME = LocalDateTime.MIN.withYear(0).withHour(0).withMinute(0);
 

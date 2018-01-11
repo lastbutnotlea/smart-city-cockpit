@@ -109,7 +109,7 @@ export class ServiceRequestAddComponent implements OnInit {
 
   selectFeedback() {
     this.selected.target = this.selectedTarget.value;
-    this.selected.type = this.selectedType.value;
+    this.selected.serviceType = this.selectedType.value;
     this.selected.priority = this.selectedPriority.value;
     this.selected.dueDate = this.selectedTime;
     this.selected.serviceRequestDescription = [{"id": "", "text": this.description}];
