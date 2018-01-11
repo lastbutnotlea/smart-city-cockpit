@@ -15,7 +15,7 @@ import { LiveDataComponent } from '../../shared/components/live-data/live-data.c
 
 export class StopDetailComponent extends LiveDataComponent implements OnInit {
   stop: StopData;
-  title: string = "Stop Details";
+  title: string = "Details";
 
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
