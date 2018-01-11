@@ -4,7 +4,7 @@
     <!--<label>{{filters[i][0]}}</label>
     <input #elem type="checkbox" checked="true" (change)="filters[i][1]=elem.checked">-->
       <label class="btn active" ngbButtonLabel>
-        <input ngbButton type="checkbox" #elem (change)="filters[i][1]=elem.checked"> {{filters[i][0]}}
+        <input type="checkbox" ngbButton #elem (change)="filters[i][1]=elem.checked" class="ng-valid ng-touched ng-dirty"> {{filters[i][0]}}
       </label>
   </div>
 </div>
