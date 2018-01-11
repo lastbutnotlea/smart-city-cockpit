@@ -9,6 +9,7 @@ import {HttpClient} from '@angular/common/http';
 import {StopData} from '../shared/data/stop-data';
 import 'rxjs/add/operator/map';
 import { LinePositionData } from '../shared/data/line-position-data';
+import {FeedbackData} from '../shared/data/feedback-data';
 
 @Injectable()
 export class HttpRoutingService {
@@ -114,9 +115,8 @@ export class HttpRoutingService {
     return this.getFilterData().map(data => data.types);
   }
 
-  public addTrip(trip: TripData): void {
-    console.log('ADD TRIP, lineID: ' + trip.line.id + ' vehicleID: ' + trip.vehicle.id);
-    this.http.post(this.urlBuilder.getTripsUrl(), trip).subscribe();
+  public addTrip(trip: TripData): Observable<any> {
+    return this.http.post(this.urlBuilder.getTripsUrl(), trip);
   }
 
   public editTrip(trip: TripData): Observable<any> {
@@ -141,5 +141,9 @@ export class HttpRoutingService {
 
   public getVehiclePositionOutboundData(lineData: string): Observable<LinePositionData> {
     return this.http.get<LinePositionData>(this.urlBuilder.getVehiclePositionOutboundUrl(lineData));
+  }
+
+  public getFeedback(): Observable<FeedbackData[]> {
+    return this.http.get<FeedbackData[]>(this.urlBuilder.getFeedback());
   }
 }

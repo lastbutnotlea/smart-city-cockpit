@@ -28,11 +28,14 @@ import {Angular2FontawesomeModule} from 'angular2-fontawesome';
 import {TickerComponent} from './view/ticker/ticker.component';
 import {TickerItemComponent} from './view/ticker-item/ticker-item.component';
 import {StopDetailComponent} from './view/stop-detail/stop-detail.component';
+import {TripAddComponent} from './view/trip-add/trip-add.component';
 import {VehiclesComponent} from './view/vehicles/vehicles.component';
 import { VehicleDetailComponent } from './view/vehicle-detail/vehicle-detail.component';
 import { VehicleAddComponent } from './view/vehicle-add/vehicle-add.component';
 import { FilterGroupComponent } from './shared/components/filter-group/filter-group.component';
 import { EmbeddedStopOverviewComponent } from './shared/components/embedded-stop-overview/embedded-stop-overview.component';
+import { FeedbackComponent } from './view/feedback/feedback.component';
+import { FeedbackItemComponent } from './view/feedback-item/feedback-item.component';
 
 
 @NgModule({
@@ -57,9 +60,12 @@ import { EmbeddedStopOverviewComponent } from './shared/components/embedded-stop
     ConfirmDeletionComponent,
     TickerComponent,
     TickerItemComponent,
+    TripAddComponent,
     VehiclesComponent,
     VehicleDetailComponent,
     VehicleAddComponent,
+    FeedbackComponent,
+    FeedbackItemComponent,
   ],
   imports: [
     BrowserModule,
@@ -83,6 +89,7 @@ import { EmbeddedStopOverviewComponent } from './shared/components/embedded-stop
     VehicleAddComponent,
     TripEditDepartureComponent,
     ConfirmDeletionComponent,
+    TripAddComponent
   ]
 })
 export class AppModule { }
