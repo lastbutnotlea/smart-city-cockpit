@@ -5,7 +5,9 @@
 .scrollable {
   height: 100%;
   overflow-y: auto;
+  flex-grow: 1;
 }
-.table-width {
-  width: 70%;
+
+.flex-grow-1 {
+  flex-grow: 1;
 }

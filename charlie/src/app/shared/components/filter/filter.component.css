@@ -9,38 +9,20 @@
   color: #007bff;
   background-color: #ffffff;
   border-color: #007bff;
+  outline: none !important;
+  padding: .0rem .75rem;
 }
 
 .btn.active {
    color: #fff;
-   background-color: #0062cc;
-   border-color: #0062cc;
+   background-color: #007bff;
+   border-color: #007bff;
+   outline: none !important;
  }
 
-/*.ngbButton {
-  color: #007bff;
-  background-color: #000000;
-  border-color: #007bff;
-}
-
-.ngbButton.active {
-  color: #fff;
-  background-color: #000000;
-  border-color: #0062cc;
-}*/
-
-
-/*
 .btn input[type=checkbox] {
   position: absolute;
   clip: rect(0,0,0,0);
   pointer-events: none;
-}
-*/
-
-.btn:not([disabled]):not(.disabled).active, .btn-primary:not([disabled]):not(.disabled):active, .show>.btn-primary.dropdown-toggle {
-  color: #fff;
-  background-color: #0062cc;
-  border-color: #0062cc;
 }
 
