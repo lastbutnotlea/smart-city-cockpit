@@ -37,6 +37,7 @@ import {EmbeddedStopOverviewComponent} from './shared/components/embedded-stop-o
 import {FeedbackComponent} from './view/feedback/feedback.component';
 import {FeedbackItemComponent} from './view/feedback-item/feedback-item.component';
 import {AnnouncementMainComponent} from './view/announcements/announcement-main/announcement-main.component';
+import { AnnouncementAddComponent } from './view/announcements/announcement-add/announcement-add.component';
 
 
 @NgModule({
@@ -68,6 +69,7 @@ import {AnnouncementMainComponent} from './view/announcements/announcement-main/
     FeedbackComponent,
     FeedbackItemComponent,
     AnnouncementMainComponent,
+    AnnouncementAddComponent,
   ],
   imports: [
     BrowserModule,
@@ -92,6 +94,7 @@ import {AnnouncementMainComponent} from './view/announcements/announcement-main/
     TripEditDepartureComponent,
     ConfirmDeletionComponent,
     TripAddComponent,
+    AnnouncementAddComponent,
   ]
 })
 export class AppModule {

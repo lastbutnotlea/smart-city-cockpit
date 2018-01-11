@@ -34,3 +34,11 @@ export class DropdownComponent implements OnInit {
     this.selectedChange.emit(value);
   }
 }
+
+export function toDropdownItems(values: any[], label: (any) => string): DropdownValue[] {
+  return values.map(value => this.toDropdownItem(value, label));
+}
+
+export function toDropdownItem(value: any, label: (any) => string): DropdownValue {
+  return new DropdownValue(value, label(value));
+}
