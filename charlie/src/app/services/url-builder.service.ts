@@ -29,10 +29,6 @@ export class UrlBuilderService {
     return this.stopBaseUrl + '/' + stopId;
   }
 
-  public getStopsUrl(): string {
-    return this.stopBaseUrl;
-  }
-
   public getVehiclesUrl(): string {
     return this.vehicleBaseUrl;
   }
@@ -84,13 +80,14 @@ export class UrlBuilderService {
   public getFeedback(): string {
     return this.feedbackBaseUrl;
   }
-  
+
   public getVehicleFeedbackUrl(vehicleId: string): string {
     return this.feedbackBaseUrl + '/vehicle/' + vehicleId;
   }
 
   public getStopFeedbackUrl(stopId: string): string {
     return this.feedbackBaseUrl + '/stop/' + stopId;
+  }
 
   public getAnnouncements(): string {
     return this.announcementBaseUrl;

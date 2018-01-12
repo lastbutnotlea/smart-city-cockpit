@@ -77,7 +77,7 @@ import {AnnouncementItemComponent} from './view/announcements/announcement-item/
     ServiceRequestDetailComponent,
     ServiceRequestAddComponent,
     EmbeddedStopComponent,
-    ServiceRequestEditComponent
+    ServiceRequestEditComponent,
     AnnouncementMainComponent,
     AnnouncementAddComponent,
     AnnouncementItemComponent,
@@ -106,7 +106,7 @@ import {AnnouncementItemComponent} from './view/announcements/announcement-item/
     ConfirmDeletionComponent,
     TripAddComponent,
     ServiceRequestAddComponent,
-    ServiceRequestEditComponent
+    ServiceRequestEditComponent,
     AnnouncementAddComponent,
   ]
 })
