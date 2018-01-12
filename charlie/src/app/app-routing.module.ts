@@ -10,6 +10,7 @@ import {VehicleDetailComponent} from './view/vehicle-detail/vehicle-detail.compo
 import {FeedbackComponent} from './view/feedback/feedback.component';
 import {AnnouncementMainComponent} from './view/announcements/announcement-main/announcement-main.component';
 import {EventsComponent} from './view/events/events.component';
+import {EventDetailComponent} from './view/event-detail/event-detail.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/network', pathMatch: 'full'},
@@ -22,6 +23,7 @@ const routes: Routes = [
   {path: 'vehicles/:id', component: VehicleDetailComponent},
   {path: 'feedback', component: FeedbackComponent},
   {path: 'events', component: EventsComponent},
+  {path: 'events/detail/:id', component: EventDetailComponent},
   {path: 'announcements', component: AnnouncementMainComponent},
 ];
 

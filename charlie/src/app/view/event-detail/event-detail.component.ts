@@ -1,0 +1,82 @@
+
+import {Component, OnInit} from '@angular/core';
+import {EventData} from '../../shared/data/event-data';
+import {HttpRoutingService} from '../../services/http-routing.service';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {ActivatedRoute} from '@angular/router';
+import {Location} from '@angular/common';
+import {ConfirmDeletionComponent} from '../../shared/components/confirm-popup/confirm-deletion.component';
+
+@Component({
+  selector: 'app-event-detail-view',
+  templateUrl: './event-detail.component.html',
+  styleUrls: ['./event-detail.component.css',
+    '../../shared/styling/embedded-components.css',
+    '../../shared/styling/global-styling.css']
+})
+
+export class EventDetailComponent implements OnInit {
+  title: string;
+
+  event: EventData;
+
+  constructor(private http: HttpRoutingService,
+              private route: ActivatedRoute,
+              private location: Location,
+              private modalService: NgbModal) {
+  }
+
+  ngOnInit(): void {
+    this.title = 'Details'
+    this.getEvent();
+  }
+
+  getEvent(): void {
+    const eventId = this.route.snapshot.paramMap.get('id');
+    this.http.getEventDetails(eventId).subscribe(
+      event => {
+        this.event = event;
+      },
+      err => console.log('Could not fetch event data!')
+    );
+  }
+
+  goBack(): void {
+    this.location.back();
+  }
+
+  editEvent(): void {
+    // const modal = this.modalService.open(TripEditComponent);
+    // modal.componentInstance.data = this.trip;
+    // modal.componentInstance.initData();
+  }
+
+  showConfirmModal(): void {
+    // const modal = this.modalService.open(ConfirmDeletionComponent);
+    // modal.componentInstance.objectToDelete = 'trip ' + this.trip.id;
+    // modal.componentInstance.deletionEvent.subscribe(($event) => {
+    //   this.deleteTrip($event);});
+  }
+
+  deleteTrip(event) : void {
+    // this.http.deleteTrip(this.trip.id).subscribe(
+    //   data => this.location.back(),
+    //   err => {
+    //     // Currently, when deleting a trip, we get a http-response with http-code 200 (ok)
+    //     // This means deleting the trip was successful
+    //     // http-response is interpreted as error, therefore the message must be checked here, not in data
+    //     // TODO: http-response should not always be considered an error / backend should return different value?
+    //     if(err.status === 200){
+    //       this.location.back();
+    //     } else {
+    //       console.log('Could not delete trip!');
+    //       this.refreshData();
+    //     }
+    //   }
+    // );
+  }
+
+  isLoaded(): boolean {
+    return this.event != null;
+  }
+}

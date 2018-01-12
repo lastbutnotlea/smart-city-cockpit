@@ -40,6 +40,7 @@ import {AnnouncementMainComponent} from './view/announcements/announcement-main/
 import { AnnouncementAddComponent } from './view/announcements/announcement-add/announcement-add.component';
 import { AnnouncementItemComponent } from './view/announcements/announcement-item/announcement-item.component';
 import {EventsComponent} from './view/events/events.component';
+import {EventDetailComponent} from './view/event-detail/event-detail.component';
 
 
 @NgModule({
@@ -74,6 +75,7 @@ import {EventsComponent} from './view/events/events.component';
     AnnouncementAddComponent,
     AnnouncementItemComponent,
     EventsComponent,
+    EventDetailComponent,
   ],
   imports: [
     BrowserModule,
