@@ -8,6 +8,7 @@ import {StopDetailComponent} from './view/stop-detail/stop-detail.component';
 import {VehiclesComponent} from './view/vehicles/vehicles.component';
 import {VehicleDetailComponent} from './view/vehicle-detail/vehicle-detail.component';
 import {FeedbackComponent} from './view/feedback/feedback.component';
+import {AnnouncementMainComponent} from './view/announcements/announcement-main/announcement-main.component';
 import {EventsComponent} from './view/events/events.component';
 
 const routes: Routes = [
@@ -20,7 +21,8 @@ const routes: Routes = [
   {path: 'vehicles', component: VehiclesComponent},
   {path: 'vehicles/:id', component: VehicleDetailComponent},
   {path: 'feedback', component: FeedbackComponent},
-  {path: 'events', component: EventsComponent}
+  {path: 'events', component: EventsComponent},
+  {path: 'announcements', component: AnnouncementMainComponent},
 ];
 
 @NgModule({

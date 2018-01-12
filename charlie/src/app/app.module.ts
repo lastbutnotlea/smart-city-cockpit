@@ -30,12 +30,15 @@ import {TickerItemComponent} from './view/ticker-item/ticker-item.component';
 import {StopDetailComponent} from './view/stop-detail/stop-detail.component';
 import {TripAddComponent} from './view/trip-add/trip-add.component';
 import {VehiclesComponent} from './view/vehicles/vehicles.component';
-import { VehicleDetailComponent } from './view/vehicle-detail/vehicle-detail.component';
-import { VehicleAddComponent } from './view/vehicle-add/vehicle-add.component';
-import { FilterGroupComponent } from './shared/components/filter-group/filter-group.component';
-import { EmbeddedStopOverviewComponent } from './shared/components/embedded-stop-overview/embedded-stop-overview.component';
-import { FeedbackComponent } from './view/feedback/feedback.component';
-import { FeedbackItemComponent } from './view/feedback-item/feedback-item.component';
+import {VehicleDetailComponent} from './view/vehicle-detail/vehicle-detail.component';
+import {VehicleAddComponent} from './view/vehicle-add/vehicle-add.component';
+import {FilterGroupComponent} from './shared/components/filter-group/filter-group.component';
+import {EmbeddedStopOverviewComponent} from './shared/components/embedded-stop-overview/embedded-stop-overview.component';
+import {FeedbackComponent} from './view/feedback/feedback.component';
+import {FeedbackItemComponent} from './view/feedback-item/feedback-item.component';
+import {AnnouncementMainComponent} from './view/announcements/announcement-main/announcement-main.component';
+import { AnnouncementAddComponent } from './view/announcements/announcement-add/announcement-add.component';
+import { AnnouncementItemComponent } from './view/announcements/announcement-item/announcement-item.component';
 import {EventsComponent} from './view/events/events.component';
 
 
@@ -67,6 +70,9 @@ import {EventsComponent} from './view/events/events.component';
     VehicleAddComponent,
     FeedbackComponent,
     FeedbackItemComponent,
+    AnnouncementMainComponent,
+    AnnouncementAddComponent,
+    AnnouncementItemComponent,
     EventsComponent,
   ],
   imports: [
@@ -75,14 +81,14 @@ import {EventsComponent} from './view/events/events.component';
     AppRoutingModule,
     FormsModule,
     Angular2FontawesomeModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
   ],
   providers: [
     UrlBuilderService,
     HttpRoutingService,
     MapCreatorService,
     StopSortService,
-    DateParserService
+    DateParserService,
   ],
   bootstrap: [AppComponent],
   // modal dialogs:
@@ -91,7 +97,9 @@ import {EventsComponent} from './view/events/events.component';
     VehicleAddComponent,
     TripEditDepartureComponent,
     ConfirmDeletionComponent,
-    TripAddComponent
+    TripAddComponent,
+    AnnouncementAddComponent,
   ]
 })
-export class AppModule { }
+export class AppModule {
+}
