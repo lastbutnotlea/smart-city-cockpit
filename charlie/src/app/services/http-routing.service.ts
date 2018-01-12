@@ -11,6 +11,7 @@ import 'rxjs/add/operator/map';
 import { LinePositionData } from '../shared/data/line-position-data';
 import {FeedbackData} from '../shared/data/feedback-data';
 import {AnnouncementData} from '../shared/data/announcement-data';
+import {EventData} from '../shared/data/event-data';
 
 @Injectable()
 export class HttpRoutingService {
@@ -158,5 +159,21 @@ export class HttpRoutingService {
 
   public addAnnouncement(announcement: AnnouncementData): Observable<any> {
     return this.http.post<any>(this.urlBuilder.getAnnouncements(), announcement);
+  }
+
+  public getEvents(): Observable<EventData[]> {
+    return this.http.get<EventData[]>(this.urlBuilder.getEventsUrl());
+  }
+
+  public getEventDetails(eventId: string): Observable<EventData> {
+    return this.http.get<EventData>(this.urlBuilder.getEventDetailsUrl(eventId));
+  }
+
+  public addEvent(event: EventData): Observable<any> {
+    return this.http.post<any>(this.urlBuilder.getEventsUrl(), event);
+  }
+
+  public editEvent(event: EventData): Observable<any> {
+    return this.http.put<any>(this.urlBuilder.getEventsUrl(), event);
   }
 }

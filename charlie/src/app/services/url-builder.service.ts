@@ -11,6 +11,7 @@ export class UrlBuilderService {
   private mapBaseUrl = this.baseUrl + '/map';
   private feedbackBaseUrl = this.baseUrl + '/feedback';
   private announcementBaseUrl = this.baseUrl + '/announcement';
+  private eventsBaseUrl = this.baseUrl + '/events';
 
   public getNetworkUrl(): string {
     return this.networkBaseUrl;
@@ -74,5 +75,13 @@ export class UrlBuilderService {
 
   public getAnnouncements(): string {
     return this.announcementBaseUrl;
+  }
+
+  public getEventsUrl(): string {
+    return this.eventsBaseUrl;
+  }
+
+  public getEventDetailsUrl(eventId: string): string {
+    return this.eventsBaseUrl + '/' + eventId;
   }
 }

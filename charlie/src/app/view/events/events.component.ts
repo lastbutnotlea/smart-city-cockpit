@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import { HttpRoutingService } from '../../services/http-routing.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {EventData} from '../../shared/data/event-data';
 
 @Component({
   selector: 'app-event-view',
@@ -12,6 +13,8 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 export class EventsComponent implements OnInit {
   title: String;
 
+  events: EventData[] = [];
+
   constructor(private http: HttpRoutingService,
               private modalService: NgbModal) {
   }
@@ -22,15 +25,13 @@ export class EventsComponent implements OnInit {
   }
 
   public isLoaded(): boolean {
-    // if (this.trips.length > 0) {
-    //   return true;
-    // }
-    // return false;
-    return true;
+    return (this.events.length > 0);
   }
 
   private getEvents(): void {
-
+    this.http.getEvents().subscribe(data => {
+      this.events = data;
+    });
   }
 
   addEvent(): void {
