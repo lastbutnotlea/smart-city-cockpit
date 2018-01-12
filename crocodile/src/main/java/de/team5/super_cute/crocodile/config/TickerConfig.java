@@ -15,6 +15,8 @@ public class TickerConfig {
 
   public static final int STOP_BASE_PRIORITY = 6;
   public static final int VEHICLE_BASE_PRIORITY = 6;
-  public static final int EVENT_BASE_PRIORITY = 10;
+  public static final int EVENT_FINE_PRIORITY = 10;
+  public static final int EVENT_PROBLEMATIC_PRIORITY = 15;
+  public static final int EVENT_CRITICAL_PRIORITY = 20;
   public static final int SEVERITY_DIVISOR = 4;
 }
