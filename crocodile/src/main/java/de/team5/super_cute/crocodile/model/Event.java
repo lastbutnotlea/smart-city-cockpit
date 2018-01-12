@@ -1,6 +1,8 @@
 package de.team5.super_cute.crocodile.model;
 
-import static de.team5.super_cute.crocodile.config.TickerConfig.EVENT_BASE_PRIORITY;
+import static de.team5.super_cute.crocodile.config.TickerConfig.EVENT_CRITICAL_PRIORITY;
+import static de.team5.super_cute.crocodile.config.TickerConfig.EVENT_FINE_PRIORITY;
+import static de.team5.super_cute.crocodile.config.TickerConfig.EVENT_PROBLEMATIC_PRIORITY;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -245,11 +247,13 @@ public class Event extends C4CEntity implements TickerItemable {
         .toString();
   }
 
-  //TODO
   @Override
-  @JsonIgnore
   public String getItemDescription() {
-    return "Party at university from 0:00 to 23:59";
+    if (this.appointmentNotes.size() > 0) {
+      return this.appointmentNotes.get(0).getText();
+    } else {
+      return "";
+    }
   }
 
   public void setItemDescription(String s) {
@@ -257,31 +261,35 @@ public class Event extends C4CEntity implements TickerItemable {
   }
 
   @Override
-  @JsonIgnore
   public String getItemHeader() {
-    return "Planned event";
+    return "Upcomming event";
   }
 
   public void setItemHeader(String s) {
     // do nothing, fool the json mapper!
   }
 
-  //TODO
   @Override
-  @JsonIgnore
   public EState getItemState() {
-    return EState.PROBLEMATIC;
+    return this.priority;
   }
 
   public void setItemState(EState s) {
     // do nothing, fool the json mapper!
   }
 
-  //TODO
   @Override
-  @JsonIgnore
   public int getItemPriority() {
-    return EVENT_BASE_PRIORITY;
+    switch (this.priority) {
+      case FINE:
+        return EVENT_FINE_PRIORITY;
+      case PROBLEMATIC:
+        return EVENT_PROBLEMATIC_PRIORITY;
+      case CRITICAL:
+        return EVENT_CRITICAL_PRIORITY;
+      default:
+        return EVENT_FINE_PRIORITY;
+    }
   }
 
   public void setItemPriority(int i) {

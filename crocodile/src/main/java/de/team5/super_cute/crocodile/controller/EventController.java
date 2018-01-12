@@ -39,7 +39,7 @@ public class EventController {
   public List<Event> getAllEvents()
       throws IOException, EdmException, EntityProviderException {
     logger.info("Got Request for all Events");
-    List<Event> events = connector.getAppointments();
+    List<Event> events = connector.getEvents();
     return events;
   }
 
@@ -47,7 +47,7 @@ public class EventController {
   public Event getAllEvents(@PathVariable String id)
       throws IOException, EdmException, EntityProviderException {
     logger.info("Got Request for Event with id " + id);
-    Event event = connector.getAppointments().stream()
+    Event event = connector.getEvents().stream()
         .filter(sr -> sr.getId().equals(id)).findAny()
         .orElseThrow(() -> new IllegalArgumentException("No Event found for this id."));
     return event;
@@ -66,7 +66,7 @@ public class EventController {
       throws IOException, EdmException, EntityProviderException {
     logger.info("Got Request to delete Event with id " + id);
    return connector.deleteC4CEntity(
-        connector.getAppointments().stream().filter(sr -> sr.getId().equals(id)).findAny()
+        connector.getEvents().stream().filter(sr -> sr.getId().equals(id)).findAny()
             .orElseThrow(() -> new IllegalArgumentException(
                 "No Event found for the given id: " + id)));
   }

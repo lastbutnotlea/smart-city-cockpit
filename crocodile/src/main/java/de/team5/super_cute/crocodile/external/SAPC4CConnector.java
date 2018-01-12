@@ -181,7 +181,7 @@ public class SAPC4CConnector {
   /**
    * Collects all Appointments from the SAP C4C System.
    */
-  public List<Event> getAppointments()
+  public List<Event> getEvents()
       throws EntityProviderException, EdmException, IOException {
     return getC4CEntities(new Event()).stream().filter(Event.class::isInstance)
         .map(Event.class::cast)
