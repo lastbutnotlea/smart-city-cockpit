@@ -152,7 +152,7 @@ export class HttpRoutingService {
   public getFeedback(): Observable<FeedbackData[]> {
     return this.http.get<FeedbackData[]>(this.urlBuilder.getFeedback());
   }
-  
+
   public getServiceRequests(): Observable<any> {
     return this.http.get<any>(this.urlBuilder.getServiceRequestsUrl());
   }
@@ -181,6 +181,7 @@ export class HttpRoutingService {
 
   public getStopFeedback(stopId: string): Observable<FeedbackData[]> {
     return this.http.get<FeedbackData[]>(this.urlBuilder.getStopFeedbackUrl(stopId));
+  }
 
   public getAnnouncements(): Observable<any []> {
     return this.http.get<any []>(this.urlBuilder.getAnnouncements());
