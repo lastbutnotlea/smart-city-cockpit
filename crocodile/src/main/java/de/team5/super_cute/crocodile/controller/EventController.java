@@ -44,7 +44,7 @@ public class EventController {
   }
 
   @GetMapping("/{id}")
-  public Event getAllEvents(@PathVariable String id)
+  public Event getEvent(@PathVariable String id)
       throws IOException, EdmException, EntityProviderException {
     logger.info("Got Request for Event with id " + id);
     Event event = connector.getEvents().stream()
@@ -65,7 +65,7 @@ public class EventController {
   public String deleteEvent(@PathVariable String id)
       throws IOException, EdmException, EntityProviderException {
     logger.info("Got Request to delete Event with id " + id);
-   return connector.deleteC4CEntity(
+    return connector.deleteC4CEntity(
         connector.getEvents().stream().filter(sr -> sr.getId().equals(id)).findAny()
             .orElseThrow(() -> new IllegalArgumentException(
                 "No Event found for the given id: " + id)));
@@ -75,7 +75,7 @@ public class EventController {
   public String editEvent(@RequestBody Event eventInput)
       throws IOException, BatchException, EdmException, EntityProviderException {
     logger.info("Got Request to edit Event: " + eventInput);
-  connector.deleteC4CEntity(eventInput);
+    connector.deleteC4CEntity(eventInput);
     connector.putC4CEntity(eventInput);
     return eventInput.getId();
   }
