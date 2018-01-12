@@ -10,7 +10,8 @@ import {StopData} from '../shared/data/stop-data';
 import 'rxjs/add/operator/map';
 import { ServiceRequestData } from '../shared/data/service-request-data';
 import { LinePositionData } from '../shared/data/line-position-data';
-import { FeedbackData } from '../shared/data/feedback-data';
+import {FeedbackData} from '../shared/data/feedback-data';
+import {AnnouncementData} from '../shared/data/announcement-data';
 
 @Injectable()
 export class HttpRoutingService {
@@ -180,5 +181,12 @@ export class HttpRoutingService {
 
   public getStopFeedback(stopId: string): Observable<FeedbackData[]> {
     return this.http.get<FeedbackData[]>(this.urlBuilder.getStopFeedbackUrl(stopId));
+
+  public getAnnouncements(): Observable<any []> {
+    return this.http.get<any []>(this.urlBuilder.getAnnouncements());
+  }
+
+  public addAnnouncement(announcement: AnnouncementData): Observable<any> {
+    return this.http.post<any>(this.urlBuilder.getAnnouncements(), announcement);
   }
 }

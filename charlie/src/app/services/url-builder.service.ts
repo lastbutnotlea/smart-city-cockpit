@@ -1,9 +1,8 @@
 import {Injectable} from '@angular/core';
-import { environment } from '../../environments/environment';
+import {environment} from '../../environments/environment';
 
 @Injectable()
 export class UrlBuilderService {
-
   private baseUrl = environment.backendUrl;
   private networkBaseUrl = this.baseUrl + '/lines';
   private stopBaseUrl = this.baseUrl + '/stops';
@@ -11,9 +10,8 @@ export class UrlBuilderService {
   private vehicleBaseUrl = this.baseUrl + '/vehicles';
   private mapBaseUrl = this.baseUrl + '/map';
   private serviceRequestsUrl = this.baseUrl + '/servicerequests';
-  private feedbackUrl = this.baseUrl + '/feedback';
-
   private feedbackBaseUrl = this.baseUrl + '/feedback';
+  private announcementBaseUrl = this.baseUrl + '/announcement';
 
   public getNetworkUrl(): string {
     return this.networkBaseUrl;
@@ -29,6 +27,10 @@ export class UrlBuilderService {
 
   public getStopDetailsUrl(stopId: string): string {
     return this.stopBaseUrl + '/' + stopId;
+  }
+
+  public getStopsUrl(): string {
+    return this.stopBaseUrl;
   }
 
   public getVehiclesUrl(): string {
@@ -79,15 +81,18 @@ export class UrlBuilderService {
     return this.getLineDetailsUrl(lineId) + '/vehicles/outbound';
   }
 
-  getFeedback(): string {
+  public getFeedback(): string {
     return this.feedbackBaseUrl;
   }
   
   public getVehicleFeedbackUrl(vehicleId: string): string {
-    return this.feedbackUrl + '/vehicle/' + vehicleId;
+    return this.feedbackBaseUrl + '/vehicle/' + vehicleId;
   }
 
   public getStopFeedbackUrl(stopId: string): string {
-    return this.feedbackUrl + '/stop/' + stopId;
+    return this.feedbackBaseUrl + '/stop/' + stopId;
+
+  public getAnnouncements(): string {
+    return this.announcementBaseUrl;
   }
 }

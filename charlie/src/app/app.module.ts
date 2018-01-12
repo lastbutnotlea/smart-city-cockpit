@@ -30,18 +30,20 @@ import {TickerItemComponent} from './view/ticker-item/ticker-item.component';
 import {StopDetailComponent} from './view/stop-detail/stop-detail.component';
 import {TripAddComponent} from './view/trip-add/trip-add.component';
 import {VehiclesComponent} from './view/vehicles/vehicles.component';
-import { VehicleDetailComponent } from './view/vehicle-detail/vehicle-detail.component';
-import { VehicleAddComponent } from './view/vehicle-add/vehicle-add.component';
-import { FilterGroupComponent } from './shared/components/filter-group/filter-group.component';
-import { EmbeddedStopOverviewComponent } from './shared/components/embedded-stop-overview/embedded-stop-overview.component';
-import { FeedbackComponent } from './view/feedback/feedback.component';
-import { FeedbackItemComponent } from './view/feedback-item/feedback-item.component';
-import { ServiceRequestsComponent } from './view/service-requests/service-requests.component';
-import { ServiceRequestDetailComponent } from './view/service-request-detail/service-request-detail.component';
-import { ServiceRequestAddComponent } from './view/service-request-add/service-request-add.component';
-import { EmbeddedStopComponent } from './shared/components/embedded-stop/embedded-stop.component';
-import { ServiceRequestEditComponent } from './view/service-request-edit/service-request-edit.component';
-
+import {ServiceRequestsComponent} from './view/service-requests/service-requests.component';
+import {ServiceRequestDetailComponent} from './view/service-request-detail/service-request-detail.component';
+import {ServiceRequestAddComponent} from './view/service-request-add/service-request-add.component';
+import {EmbeddedStopComponent} from './shared/components/embedded-stop/embedded-stop.component';
+import {ServiceRequestEditComponent} from './view/service-request-edit/service-request-edit.component';
+import {VehicleDetailComponent} from './view/vehicle-detail/vehicle-detail.component';
+import {VehicleAddComponent} from './view/vehicle-add/vehicle-add.component';
+import {FilterGroupComponent} from './shared/components/filter-group/filter-group.component';
+import {EmbeddedStopOverviewComponent} from './shared/components/embedded-stop-overview/embedded-stop-overview.component';
+import {FeedbackComponent} from './view/feedback/feedback.component';
+import {FeedbackItemComponent} from './view/feedback-item/feedback-item.component';
+import {AnnouncementMainComponent} from './view/announcements/announcement-main/announcement-main.component';
+import {AnnouncementAddComponent} from './view/announcements/announcement-add/announcement-add.component';
+import {AnnouncementItemComponent} from './view/announcements/announcement-item/announcement-item.component';
 
 @NgModule({
   declarations: [
@@ -76,6 +78,9 @@ import { ServiceRequestEditComponent } from './view/service-request-edit/service
     ServiceRequestAddComponent,
     EmbeddedStopComponent,
     ServiceRequestEditComponent
+    AnnouncementMainComponent,
+    AnnouncementAddComponent,
+    AnnouncementItemComponent,
   ],
   imports: [
     BrowserModule,
@@ -83,14 +88,14 @@ import { ServiceRequestEditComponent } from './view/service-request-edit/service
     AppRoutingModule,
     FormsModule,
     Angular2FontawesomeModule,
-    NgbModule.forRoot()
+    NgbModule.forRoot(),
   ],
   providers: [
     UrlBuilderService,
     HttpRoutingService,
     MapCreatorService,
     StopSortService,
-    DateParserService
+    DateParserService,
   ],
   bootstrap: [AppComponent],
   // modal dialogs:
@@ -102,6 +107,8 @@ import { ServiceRequestEditComponent } from './view/service-request-edit/service
     TripAddComponent,
     ServiceRequestAddComponent,
     ServiceRequestEditComponent
+    AnnouncementAddComponent,
   ]
 })
-export class AppModule { }
+export class AppModule {
+}

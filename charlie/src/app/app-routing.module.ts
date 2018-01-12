@@ -9,7 +9,8 @@ import {VehiclesComponent} from './view/vehicles/vehicles.component';
 import {VehicleDetailComponent} from './view/vehicle-detail/vehicle-detail.component';
 import { ServiceRequestsComponent } from './view/service-requests/service-requests.component';
 import { ServiceRequestDetailComponent } from './view/service-request-detail/service-request-detail.component';
-import {FeedbackComponent} from "./view/feedback/feedback.component";
+import {FeedbackComponent} from './view/feedback/feedback.component';
+import {AnnouncementMainComponent} from './view/announcements/announcement-main/announcement-main.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/network', pathMatch: 'full'},
@@ -23,6 +24,7 @@ const routes: Routes = [
   {path: 'feedback', component: FeedbackComponent},
   {path: 'serviceRequests', component: ServiceRequestsComponent},
   {path: 'serviceRequests/:id', component: ServiceRequestDetailComponent},
+  {path: 'announcements', component: AnnouncementMainComponent},
 ];
 
 @NgModule({
