@@ -1,0 +1,9 @@
+<h3 class="text-center">{{title}}</h3>
+
+<div class="no-float m-3">
+  <button class="btn btn-outline-secondary" (click)="add()">Add</button>
+</div>
+
+<div *ngFor="let announcement of data">
+  <app-announcement-item [data]="announcement" class="bounding-box"></app-announcement-item>
+</div>

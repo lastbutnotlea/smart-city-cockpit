@@ -8,6 +8,7 @@ import {StopDetailComponent} from './view/stop-detail/stop-detail.component';
 import {VehiclesComponent} from './view/vehicles/vehicles.component';
 import {VehicleDetailComponent} from './view/vehicle-detail/vehicle-detail.component';
 import {FeedbackComponent} from './view/feedback/feedback.component';
+import {AnnouncementMainComponent} from './view/announcements/announcement-main/announcement-main.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/network', pathMatch: 'full'},
@@ -19,6 +20,7 @@ const routes: Routes = [
   {path: 'vehicles', component: VehiclesComponent},
   {path: 'vehicles/:id', component: VehicleDetailComponent},
   {path: 'feedback', component: FeedbackComponent},
+  {path: 'announcements', component: AnnouncementMainComponent},
 ];
 
 @NgModule({
