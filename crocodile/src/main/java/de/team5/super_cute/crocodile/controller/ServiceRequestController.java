@@ -72,7 +72,7 @@ public class ServiceRequestController {
   }
 
   @GetMapping("/{id}")
-  public ServiceRequest getAllServiceRequests(@PathVariable String id)
+  public ServiceRequest getServiceRequest(@PathVariable String id)
       throws IOException, EdmException, EntityProviderException {
     logger.info("Got Request for Service Request with id " + id);
     Optional<ServiceRequest> serviceR = cacheList.stream().filter(s -> s.getId().equals(id)).findAny();
