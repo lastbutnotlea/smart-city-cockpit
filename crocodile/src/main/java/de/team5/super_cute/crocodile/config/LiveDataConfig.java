@@ -86,7 +86,7 @@ public class LiveDataConfig {
 
   public static final Map<String, Integer> STOP_DEFECTS_SEVERITY = new HashMap<String, Integer>() {{
     put(STOP_DIRTY, 2);
-    put(STOP_SHELTER_BROKEN, 4);
+    put(STOP_SHELTER_BROKEN, 6);
     put(STOP_BENCH_BROKEN, 3);
     put(STOP_ELEVATOR_NOT_WORKING, 6);
     put(STOP_ESCALATOR_NOT_WORKING, 4);
