@@ -87,13 +87,13 @@ public class ServiceRequestController {
   }
 
   @PostMapping
-  public String addServiceRequest(@RequestBody ServiceRequest serviceRequestInput)
+  public ServiceRequest addServiceRequest(@RequestBody ServiceRequest serviceRequestInput)
       throws IOException, BatchException {
     logger.info("Got Request to add Service Request: " + serviceRequestInput);
     handleServiceRequestFromFrontend(serviceRequestInput);
     cacheList.add(serviceRequestInput);
     // todo connector.putC4CEntity(serviceRequestInput);
-    return serviceRequestInput.getId();
+    return serviceRequestInput;
   }
 
   @DeleteMapping("/{id}")

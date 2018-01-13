@@ -119,7 +119,7 @@ export class ServiceRequestAddComponent implements OnInit {
     this.http.addServiceRequest(this.selected).subscribe(
       data => {
         console.log('Added service request.');
-        this.data.push(this.selected);
+        this.data.push(data);
         this.activeModal.close('Close click');
       },
       // TODO: these messages should not be interpreted as errors!
