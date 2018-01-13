@@ -10,3 +10,31 @@
 .flex-grow-1 {
   flex-grow: 1;
 }
+
+table {
+  flex-grow: 1;
+  margin-bottom: 0;
+}
+
+thead, tbody, tr, td, th { display: block; }
+
+thead th {
+  height: 50px;
+  text-align: left;
+  width: 16.4% !important;
+}
+
+tbody {
+  height: 100px;
+}
+
+thead {
+  /* fallback */
+  width: 100%;
+}
+
+
+tbody td, thead th {
+  width: 16.666666666666666666666666%;
+  float: left;
+}
