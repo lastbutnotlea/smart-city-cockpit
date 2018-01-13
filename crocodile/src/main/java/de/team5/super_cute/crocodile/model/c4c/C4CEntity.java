@@ -22,11 +22,13 @@ public abstract class C4CEntity extends IdentifiableObject {
   /**
    * @return the name of the collection (e.g. "ObjectCollection") in which the Objects of the corresponding Type are saved.
    */
+  @JsonIgnore
   public abstract String getCollectionName();
 
   /**
    * @return a default object of the class (convenience for reflection)
    */
+  @JsonIgnore
   public abstract C4CEntity getEmptyObject();
 
   public String getObjectId() {
