@@ -176,4 +176,8 @@ export class HttpRoutingService {
   public editEvent(event: EventData): Observable<any> {
     return this.http.put<any>(this.urlBuilder.getEventsUrl(), event);
   }
+
+  public deleteEvent(eventId: string): Observable<any> {
+    return this.http.delete(this.urlBuilder.getEventDetailsUrl(eventId));
+  }
 }
