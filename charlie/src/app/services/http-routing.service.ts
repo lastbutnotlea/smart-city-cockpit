@@ -11,6 +11,7 @@ import 'rxjs/add/operator/map';
 import { LinePositionData } from '../shared/data/line-position-data';
 import {FeedbackData} from '../shared/data/feedback-data';
 import {TickerData} from '../shared/data/ticker-data';
+import {AnnouncementData} from '../shared/data/announcement-data';
 
 @Injectable()
 export class HttpRoutingService {
@@ -73,6 +74,10 @@ export class HttpRoutingService {
       .pipe(
         tap(stop => console.log('Fetched Stop Details'))
       );
+  }
+
+  public getStops(): Observable<StopData[]> {
+    return this.http.get<StopData[]>(this.urlBuilder.getStopsUrl());
   }
 
   public getMapDataStations(): Observable<any> {
@@ -154,5 +159,13 @@ export class HttpRoutingService {
 
   public deleteTickerItem(data: TickerData): Observable<any> {
     return this.http.delete<any>(this.urlBuilder.getTickerDeleteUrl(data));
+  }
+
+  public getAnnouncements(): Observable<any []> {
+    return this.http.get<any []>(this.urlBuilder.getAnnouncements());
+  }
+
+  public addAnnouncement(announcement: AnnouncementData): Observable<any> {
+    return this.http.post<any>(this.urlBuilder.getAnnouncements(), announcement);
   }
 }

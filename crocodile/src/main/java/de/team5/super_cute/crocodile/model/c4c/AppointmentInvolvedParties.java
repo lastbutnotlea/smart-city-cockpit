@@ -68,11 +68,13 @@ public class AppointmentInvolvedParties extends C4CEntity {
   }
 
   @Override
+  @JsonIgnore
   public String getCollectionName() {
     return "AppointmentInvolvedPartiesCollection";
   }
 
   @Override
+  @JsonIgnore
   public C4CEntity getEmptyObject() {
     return new AppointmentInvolvedParties();
   }

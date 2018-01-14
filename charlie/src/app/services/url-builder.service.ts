@@ -1,24 +1,17 @@
 import {Injectable} from '@angular/core';
-import { environment } from '../../environments/environment';
+import {environment} from '../../environments/environment';
 import {TickerData} from '../shared/data/ticker-data';
 
 @Injectable()
 export class UrlBuilderService {
-
   private baseUrl = environment.backendUrl;
-
   private networkBaseUrl = this.baseUrl + '/lines';
-
   private stopBaseUrl = this.baseUrl + '/stops';
-
   private tripBaseUrl = this.baseUrl + '/trips';
-
   private vehicleBaseUrl = this.baseUrl + '/vehicles';
-
   private mapBaseUrl = this.baseUrl + '/map';
-
   private feedbackBaseUrl = this.baseUrl + '/feedback';
-
+  private announcementBaseUrl = this.baseUrl + '/announcement';
   private tickerBaseUrl = this.baseUrl + '/ticker';
 
   public getNetworkUrl(): string {
@@ -31,6 +24,10 @@ export class UrlBuilderService {
 
   public getStopDetailsUrl(stopId: string): string {
     return this.stopBaseUrl + '/' + stopId;
+  }
+
+  public getStopsUrl(): string {
+    return this.stopBaseUrl;
   }
 
   public getVehiclesUrl(): string {
@@ -73,15 +70,19 @@ export class UrlBuilderService {
     return this.getLineDetailsUrl(lineId) + '/vehicles/outbound';
   }
 
-  getFeedback(): string {
+  public getFeedback(): string {
     return this.feedbackBaseUrl;
   }
 
-  getTickerUrl(): string {
+  public getAnnouncements(): string {
+    return this.announcementBaseUrl;
+  }
+
+  public getTickerUrl(): string {
     return this.tickerBaseUrl;
   }
 
-  getTickerDeleteUrl(item: TickerData): string {
+  public getTickerDeleteUrl(item: TickerData): string {
     return this.tickerBaseUrl + '/' + item.id;
   }
 }

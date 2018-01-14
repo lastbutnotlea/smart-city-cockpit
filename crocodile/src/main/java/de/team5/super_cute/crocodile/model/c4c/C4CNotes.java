@@ -28,13 +28,31 @@ public class C4CNotes extends C4CEntity {
   }
 
   @Override
+  @JsonIgnore
   public String getCollectionName() {
     return "AppointmentNotesCollection";
   }
 
   @Override
+  @JsonIgnore
   public C4CEntity getEmptyObject() {
     return new C4CNotes();
+  }
+
+  public String getText() {
+    return text;
+  }
+
+  public void setText(String text) {
+    this.text = text;
+  }
+
+  public String getTypeCode() {
+    return typeCode;
+  }
+
+  public void setTypeCode(String typeCode) {
+    this.typeCode = typeCode;
   }
 
   @Override
