@@ -12,6 +12,7 @@ import { LinePositionData } from '../shared/data/line-position-data';
 import {FeedbackData} from '../shared/data/feedback-data';
 import {AnnouncementData} from '../shared/data/announcement-data';
 import {EventData} from '../shared/data/event-data';
+import {PartyData} from '../shared/data/party-data';
 
 @Injectable()
 export class HttpRoutingService {
@@ -179,5 +180,9 @@ export class HttpRoutingService {
 
   public deleteEvent(eventId: string): Observable<any> {
     return this.http.delete(this.urlBuilder.getEventDetailsUrl(eventId));
+  }
+
+  public getInvolvedParties(): Observable<PartyData[]> {
+    return this.http.get<PartyData[]>(this.urlBuilder.getInvolvedParteisUrl());
   }
 }

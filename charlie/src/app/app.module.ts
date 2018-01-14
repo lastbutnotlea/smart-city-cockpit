@@ -41,6 +41,7 @@ import { AnnouncementAddComponent } from './view/announcements/announcement-add/
 import { AnnouncementItemComponent } from './view/announcements/announcement-item/announcement-item.component';
 import {EventsComponent} from './view/events/events.component';
 import {EventDetailComponent} from './view/event-detail/event-detail.component';
+import {EventAddComponent} from './view/event-add/event-add.component';
 
 
 @NgModule({
@@ -76,6 +77,7 @@ import {EventDetailComponent} from './view/event-detail/event-detail.component';
     AnnouncementItemComponent,
     EventsComponent,
     EventDetailComponent,
+    EventAddComponent,
   ],
   imports: [
     BrowserModule,
@@ -101,6 +103,7 @@ import {EventDetailComponent} from './view/event-detail/event-detail.component';
     ConfirmDeletionComponent,
     TripAddComponent,
     AnnouncementAddComponent,
+    EventAddComponent,
   ]
 })
 export class AppModule {

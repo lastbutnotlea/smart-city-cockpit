@@ -84,4 +84,8 @@ export class UrlBuilderService {
   public getEventDetailsUrl(eventId: string): string {
     return this.eventsBaseUrl + '/' + eventId;
   }
+
+  public getInvolvedParteisUrl(): string {
+    return this.eventsBaseUrl + '/people';
+  }
 }
