@@ -1,4 +1,3 @@
 export class PartyData {
-  id: string;
-  partyName: string;
+constructor(public id: string, public partyName: string) {  }
 }

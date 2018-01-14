@@ -1,9 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal, NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
-import {now} from '../../shared/data/dates';
+import {dummyDate, now} from '../../shared/data/dates';
 import {DateParserService} from '../../services/date-parser.service';
 import {HttpRoutingService} from '../../services/http-routing.service';
 import {DropdownValue, toDropdownItem, toDropdownItems} from '../../shared/components/dropdown/dropdown.component';
+import {EventData} from '../../shared/data/event-data';
+import {PartyData} from '../../shared/data/party-data';
+import {C4CNotes} from '../../shared/data/c4c-notes';
 
 @Component({
   selector: 'app-event-add',
@@ -16,8 +19,8 @@ export class EventAddComponent implements OnInit {
   availablePriorities: Array<DropdownValue> = [];
   priority: DropdownValue = new DropdownValue('FINE', 'fine');
 
-  from: Date = new Date(now);
-  to: Date = new Date(now);
+  from: string = now.toISOString();
+  to: string = now.toISOString();
 
   fromTime: NgbTimeStruct = {hour: now.getHours(), minute: now.getMinutes(), second: now.getSeconds()};
   fromDate: NgbDateStruct = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
@@ -58,39 +61,38 @@ export class EventAddComponent implements OnInit {
   }
 
   updateFromTime(): void {
-    this.from = this.dateParser.parseNativeTime(this.from, this.fromTime);
+    this.from = this.dateParser.parseTime(this.from, this.fromTime);
   }
 
   updateFromDate(): void {
-    this.from = this.dateParser.parseNativeDate(this.from, this.fromDate);
+    this.from = this.dateParser.parseDate(this.from, this.fromDate);
   }
 
   updateToTime(): void {
-    console.log(this.to.toISOString());
-    this.to = this.dateParser.parseNativeTime(this.to, this.toTime);
-    console.log(this.to.toISOString());
+    this.to = this.dateParser.parseTime(this.to, this.toTime);
   }
 
   updateToDate(): void {
-    this.to = this.dateParser.parseNativeDate(this.to, this.toDate);
+    this.to = this.dateParser.parseDate(this.to, this.toDate);
   }
-
-  addSelectedStop(): void {
-    // this.selectedStops.push(this.selectedStop.value);
-  }
-
-
 
   confirm(): void {
-    // let announcement: AnnouncementData = new AnnouncementData();
-    // announcement.text = this.text;
-    // announcement.stops = this.selectedStops;
-    // announcement.validFrom = this.from;
-    // announcement.validTo = this.to;
-    // this.http.addAnnouncement(announcement).subscribe(
-    //   data => this.activeModal.close('Close click'),
-    //   err => alert('Could not edit trip.' + err)
-    // );
+    let event: EventData = new EventData();
+    event.id = '';
+    event.subject = this.subject;
+    event.priority = this.priority.value;
+    event.startTime = this.from;
+    event.endTime = this.to;
+    event.appointmentInvolvedParties = new Array(new PartyData('', this.party.value));
+    let notesC4C: C4CNotes = new C4CNotes;
+    notesC4C.id = '';
+    notesC4C.text = this.notes;
+    event.appointmentNotes = new Array(notesC4C);
+    console.log(event);
+    this.http.addEvent(event).subscribe(
+      data => this.activeModal.close('Close click'),
+      err => alert('Could not add event.' + err)
+    );
   }
 
   subjectChange($event: Event) {
