@@ -14,7 +14,7 @@ export class EventAddComponent implements OnInit {
   subject: string = "";
 
   availablePriorities: Array<DropdownValue> = [];
-  priority: DropdownValue;
+  priority: DropdownValue = new DropdownValue('FINE', 'fine');
 
   from: Date = new Date(now);
   to: Date = new Date(now);
@@ -24,10 +24,8 @@ export class EventAddComponent implements OnInit {
   toTime: NgbTimeStruct = {hour: now.getHours(), minute: now.getMinutes(), second: now.getSeconds()};
   toDate: NgbDateStruct = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
 
-  locationName: string = "";
-
   availableParties: Array<DropdownValue> = [];
-  party: DropdownValue;
+  party: DropdownValue = new DropdownValue(null, 'loading');
 
   notes: string = "";
 
@@ -38,10 +36,15 @@ export class EventAddComponent implements OnInit {
 
   ngOnInit() {
     this.http.getInvolvedParties().subscribe(data => {
-      this.availableParties = toDropdownItems(data, party => party.partyName)
+      this.party = toDropdownItem(data[0], party => party);
+      this.availableParties = toDropdownItems(data, party => party)
     }, err => alert(err));
 
-    this.priority = toDropdownItem('FINE', () => 'fine');
+    this.http.getInvolvedParties().subscribe(data => {
+      console.log(data);
+    }, err => alert(err));
+
+
     this.availablePriorities = toDropdownItems(
       ['FINE', 'PROBLEMATIC', 'CRITICAL'],
       item => item.toLowerCase());
@@ -92,10 +95,6 @@ export class EventAddComponent implements OnInit {
 
   subjectChange($event: Event) {
     this.subject = (<HTMLTextAreaElement> $event.target).value;
-  }
-
-  locationNameChange($event: Event) {
-    this.locationName = (<HTMLTextAreaElement> $event.target).value;
   }
 
   notesChange($event: Event) {

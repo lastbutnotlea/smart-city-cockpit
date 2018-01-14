@@ -13,11 +13,12 @@
     <textarea class="form-control" rows="5" id="subject" (change)="subjectChange($event)"></textarea>
   </div>
 
-  <!--<div class="d-flex flex-nowrap m-2">-->
-    <!--<app-dropdown class="col" [values]="availablePriorities" [(selected)]="priority"></app-dropdown>-->
-  <!--</div>-->
+  <div class="d-flex flex-nowrap m-2">
+    <label>Priority: </label>
+    <app-dropdown class="col" [values]="availablePriorities" [(selected)]="priority"></app-dropdown>
+  </div>
 
-  <div class="m-2">
+  <div>
     <label class="m-2">Valid from: {{from | date:'MM/dd/yyyy HH:mm'}}</label>
     <ngb-datepicker [(ngModel)]="fromDate" (select)="updateFromDate()"
                     class="float-left datepicker m-2">
@@ -25,22 +26,17 @@
     </ngb-datepicker>
     <ngb-timepicker [(ngModel)]="fromTime" (click)="updateFromTime()" (change)="updateFromTime()"></ngb-timepicker>
   </div>
-  <div class="m-2">
+
+  <div>
     <label class="m-2">Valid until: {{to | date:'MM/dd/yyyy HH:mm'}}</label>
     <ngb-datepicker [(ngModel)]="toDate" (select)="updateToDate()" class="float-left datepicker m-2"></ngb-datepicker>
     <ngb-timepicker [(ngModel)]="toTime" (click)="updateToTime()" (change)="updateToTime()"></ngb-timepicker>
   </div>
 
-  <div class="form-group m-2">
-    <label for="location-name">Location name:</label>
-    <textarea class="form-control" rows="5" id="location-name" (change)="locationNameChange($event)"></textarea>
+  <div class="d-flex flex-nowrap m-2">
+    <label>Involved Party: </label>
+    <app-dropdown class="col" [values]="availableParties" [(selected)]="party"></app-dropdown>
   </div>
-
-  <!--<div class="d-flex flex-nowrap m-2">-->
-    <!--<app-dropdown class="col" [values]="availableParties" [(selected)]="party"></app-dropdown>-->
-    <!--<button type="button" class="btn btn-outline-primary" style="flex-grow: 0" (click)="addSelectedStop()">Add stop-->
-    <!--</button>-->
-  <!--</div>-->
 
   <div class="form-group m-2">
     <label for="notes">Notes:</label>
