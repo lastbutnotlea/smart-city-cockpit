@@ -13,8 +13,20 @@
     {{title}}
     <label class="text-primary">{{stop.commonName}}</label>
   </h3>
-  <h6 class="text-center margin-bottom-30">Stop ID: {{stop.id}}</h6>
+  <h6 class="text-center margin-bottom-30">Stop-ID: {{stop.id}}</h6>
   <h6 class="text-center margin-bottom-30">People waiting: {{stop.peopleWaiting}}</h6>
+  <h6 class="text-center margin-bottom-30">
+    <div class="padding-right-1 text-center">Lines inbound:</div>
+    <div *ngFor="let line of lineForStopDataInbound; let i=index">
+      <div class="text-center">{{line.line}}</div>
+    </div>
+  </h6>
+  <h6 class="text-center margin-bottom-30">
+    <div class="padding-right-1 text-center">Lines outbound:</div>
+    <div *ngFor="let line of lineForStopDataOutbound; let i=index">
+      <div class="text-center">{{line.line}}</div>
+    </div>
+  </h6>
 
   <div class="no-float padding-top-50">
     <button class="btn btn-outline-secondary" (click)="goBack()">Back To Line Details</button>
