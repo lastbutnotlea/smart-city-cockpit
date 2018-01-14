@@ -1,11 +1,9 @@
 package de.team5.super_cute.crocodile.util;
 
 import de.team5.super_cute.crocodile.external.C4CProperty;
-import de.team5.super_cute.crocodile.external.TpDataConnector;
 import de.team5.super_cute.crocodile.model.EServiceType;
 import de.team5.super_cute.crocodile.model.EState;
 import de.team5.super_cute.crocodile.model.IdentifiableObject;
-import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.ServiceRequest;
 import de.team5.super_cute.crocodile.model.c4c.C4CNotes;
 import de.team5.super_cute.crocodile.model.c4c.EC4CNotesTypeCode;
@@ -20,30 +18,6 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 
 public class Helpers {
-
-  public static final List<Line> LINES = getLines();
-
-  private static boolean hasLines = false;
-  private static List<Line> lines;
-  private static List<Line> getLines() {
-    if (!hasLines) {
-      lines = new TpDataConnector().getLines(new ArrayList<String>() {{
-        add("10");
-        add("novalidid");
-        add("283");
-        add("46");
-        add("228");
-        add("7");
-        add("bakerloo");
-        add("hammersmith-city");
-        add("jubilee");
-        add("victoria");
-        add("waterloo-city");
-      }});
-      hasLines = true;
-    }
-    return lines;
-  }
 
   public static LocalDateTime DUMMY_TIME = LocalDateTime.MIN.withYear(0).withHour(0).withMinute(0);
 

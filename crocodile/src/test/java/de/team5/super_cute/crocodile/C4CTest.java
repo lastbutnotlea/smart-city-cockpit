@@ -33,7 +33,7 @@ public class C4CTest {
   private SAPC4CConnector connector;
 
   @Test
-  public void testAppointments() {
+  public void testEvents() {
     List<AppointmentInvolvedParties> aip = new ArrayList<AppointmentInvolvedParties>() {{
       add(new AppointmentInvolvedParties("Fussballclub"));
     }};
