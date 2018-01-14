@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import { environment } from '../../environments/environment';
+import {TickerData} from '../shared/data/ticker-data';
 
 @Injectable()
 export class UrlBuilderService {
@@ -17,6 +18,8 @@ export class UrlBuilderService {
   private mapBaseUrl = this.baseUrl + '/map';
 
   private feedbackBaseUrl = this.baseUrl + '/feedback';
+
+  private tickerBaseUrl = this.baseUrl + '/ticker';
 
   public getNetworkUrl(): string {
     return this.networkBaseUrl;
@@ -72,5 +75,13 @@ export class UrlBuilderService {
 
   getFeedback(): string {
     return this.feedbackBaseUrl;
+  }
+
+  getTickerUrl(): string {
+    return this.tickerBaseUrl;
+  }
+
+  getTickerDeleteUrl(item: TickerData): string {
+    return this.tickerBaseUrl + '/' + item.id;
   }
 }

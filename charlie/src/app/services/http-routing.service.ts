@@ -10,6 +10,7 @@ import {StopData} from '../shared/data/stop-data';
 import 'rxjs/add/operator/map';
 import { LinePositionData } from '../shared/data/line-position-data';
 import {FeedbackData} from '../shared/data/feedback-data';
+import {TickerData} from '../shared/data/ticker-data';
 
 @Injectable()
 export class HttpRoutingService {
@@ -145,5 +146,13 @@ export class HttpRoutingService {
 
   public getFeedback(): Observable<FeedbackData[]> {
     return this.http.get<FeedbackData[]>(this.urlBuilder.getFeedback());
+  }
+
+  public getTickerItems(): Observable<TickerData []> {
+    return this.http.get<TickerData []>(this.urlBuilder.getTickerUrl());
+  }
+
+  public deleteTickerItem(data: TickerData): Observable<any> {
+    return this.http.delete<any>(this.urlBuilder.getTickerDeleteUrl(data));
   }
 }
