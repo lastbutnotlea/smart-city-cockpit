@@ -25,7 +25,7 @@ import {StopSortService} from './services/stop-sort.service';
 import {TripEditDepartureComponent} from './view/trip-edit-departure/trip-edit-departure.component';
 import {DateParserService} from './services/date-parser.service';
 import {Angular2FontawesomeModule} from 'angular2-fontawesome';
-import {TickerComponent} from './view/ticker/ticker/ticker.component';
+import {TickerComponent} from './view/ticker/ticker-main/ticker.component';
 import {TickerItemComponent} from './view/ticker/ticker-item/ticker-item.component';
 import {StopDetailComponent} from './view/stop-detail/stop-detail.component';
 import {TripAddComponent} from './view/trip-add/trip-add.component';
