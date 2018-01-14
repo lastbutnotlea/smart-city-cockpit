@@ -1,12 +1,39 @@
 package de.team5.super_cute.crocodile;
 
-import static de.team5.super_cute.crocodile.util.Helpers.LINES;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import de.team5.super_cute.crocodile.external.TpDataConnector;
+import de.team5.super_cute.crocodile.model.Line;
+import java.util.ArrayList;
+import java.util.List;
 import org.junit.Test;
 
 public class TpDataConnectorTests {
+
+  public static final List<Line> LINES = getLines();
+
+  private static boolean hasLines = false;
+  private static List<Line> lines;
+  private static List<Line> getLines() {
+    if (!hasLines) {
+      lines = new TpDataConnector().getLines(new ArrayList<String>() {{
+        add("10");
+        add("novalidid");
+        add("283");
+        add("46");
+        add("228");
+        add("7");
+        add("bakerloo");
+        add("hammersmith-city");
+        add("jubilee");
+        add("victoria");
+        add("waterloo-city");
+      }});
+      hasLines = true;
+    }
+    return lines;
+  }
 
   @Test
   public void testGetlines_test() {
