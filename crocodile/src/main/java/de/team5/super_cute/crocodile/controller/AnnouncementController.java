@@ -38,16 +38,16 @@ public class AnnouncementController extends BaseController<Announcement> {
 
   @PostMapping
   public String addAnnouncement(@RequestBody Announcement announcement) {
-    return addObject(announcement);
+    return makeIdToJSON(addObject(announcement));
   }
 
   @DeleteMapping("/{id}")
   public String deleteAnnouncement(@PathVariable String id) {
-    return deleteObject(id);
+    return makeIdToJSON(deleteObject(id));
   }
 
   @PutMapping
   public String editAnnouncement(@RequestBody Announcement announcement) {
-    return editObject(announcement);
+    return makeIdToJSON(editObject(announcement));
   }
 }
