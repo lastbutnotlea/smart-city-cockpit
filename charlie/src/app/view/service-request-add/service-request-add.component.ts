@@ -56,6 +56,10 @@ export class ServiceRequestAddComponent implements OnInit {
     this.selectedFeedback = []
   }
 
+  /**
+   * Creates DropdownValue for each possible target-type
+   * @returns {DropdownValue[]}
+   */
   targetItems(): DropdownValue[] {
     // TODO: Get data from meta data controller, do not set manually ?
     let targetItems: DropdownValue[] = [];
@@ -64,17 +68,27 @@ export class ServiceRequestAddComponent implements OnInit {
     return targetItems;
   }
 
+  /**
+   * Executes next step in Add-process
+   * (first choose target type,
+   * then select target, priority, date and add description,
+   * finally choose feedback and send new object to backend)
+   */
   confirm(): void{
     if(!this.targetTypeChosen){
-      this.selectTarget();
+      this.getTargetOfSelectedTargetType();
     } else if(!this.dataChosen) {
-      this.selectData();
+      this.getFeedbackForSelectedTarget();
     } else {
-      this.selectFeedback();
+      this.addServiceRequest();
     }
   }
 
-  selectTarget() {
+  /**
+   * Target type (stop or vehicle) has been selected
+   * Now get all possible targets of that type from backend
+   */
+  getTargetOfSelectedTargetType() {
     // get all available objects of selected target type
     if(this.selectedTargetType.value){
       this.http.getVehicles().subscribe(data => {
@@ -93,7 +107,11 @@ export class ServiceRequestAddComponent implements OnInit {
     }
   }
 
-  selectData() {
+  /**
+   * Target has been chosen
+   * now get all feedback for that target so that feedback can be added to service request
+   */
+  getFeedbackForSelectedTarget() {
     if(this.selectedTargetType.value){
       this.http.getVehicleFeedback(this.selectedTarget.value.id).subscribe( data => {
         this.availFeedback = data;
@@ -107,14 +125,15 @@ export class ServiceRequestAddComponent implements OnInit {
     }
   }
 
-  selectFeedback() {
+  /**
+   * adds service request with selected data
+   */
+  addServiceRequest() {
     this.selected.target = this.selectedTarget.value;
     this.selected.serviceType = this.selectedType.value;
     this.selected.priority = this.selectedPriority.value;
     this.selected.dueDate = this.selectedTime;
     this.selected.serviceRequestDescription = [{"id": "", "text": this.description}];
-
-    console.log(this.selected);
 
     this.http.addServiceRequest(this.selected).subscribe(
       data => {
@@ -162,7 +181,6 @@ export class ServiceRequestAddComponent implements OnInit {
   }
 
   updateDate(): void {
-    // this.refreshData();
     this.selectedTime = this.dateParser.parseDate(
       this.selectedTime,
       this.date

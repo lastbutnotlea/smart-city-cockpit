@@ -24,10 +24,7 @@ export class HttpRoutingService {
    * @returns {Observable<TripData[]>}
    */
   public getTrips(): Observable<TripData[]> {
-    return this.http.get<TripData[]>(this.urlBuilder.getTripsUrl())
-      .pipe(
-        tap(trips => console.log(`Fetched Trips.`))
-      );
+    return this.http.get<TripData[]>(this.urlBuilder.getTripsUrl());
   }
 
   /**
@@ -35,10 +32,7 @@ export class HttpRoutingService {
    * @returns {Observable<TripData[]>}
    */
   public getTripDetails(tripId: string): Observable<TripData> {
-    return this.http.get<TripData>(this.urlBuilder.getTripDetailsUrl(tripId))
-      .pipe(
-        tap(trip => console.log(`Fetched Trip Details.`))
-      );
+    return this.http.get<TripData>(this.urlBuilder.getTripDetailsUrl(tripId));
   }
 
   /**
@@ -46,10 +40,7 @@ export class HttpRoutingService {
    * @returns {Observable<LineData[]>}
    */
   public getLines(): Observable<LineData[]> {
-    return this.http.get<LineData[]>(this.urlBuilder.getNetworkUrl())
-      .pipe(
-        tap(lines => console.log(`Fetched Lines.`))
-      );
+    return this.http.get<LineData[]>(this.urlBuilder.getNetworkUrl());
   }
 
   /**
@@ -57,10 +48,7 @@ export class HttpRoutingService {
    * @returns {Observable<LineData[]>}
    */
   public getLineDetails(lineId: string): Observable<LineData> {
-    return this.http.get<LineData>(this.urlBuilder.getLineDetailsUrl(lineId))
-      .pipe(
-        tap(line => console.log(`Fetched Line Details.`))
-      );
+    return this.http.get<LineData>(this.urlBuilder.getLineDetailsUrl(lineId));
   }
 
   /**
@@ -70,10 +58,7 @@ export class HttpRoutingService {
    * @returns {Observable<StopData>}
    */
   public getStopDetails(stopId: string): Observable<StopData> {
-    return this.http.get<StopData>(this.urlBuilder.getStopDetailsUrl(stopId))
-      .pipe(
-        tap(stop => console.log('Fetched Stop Details'))
-      );
+    return this.http.get<StopData>(this.urlBuilder.getStopDetailsUrl(stopId));
   }
 
   public getStops(): Observable<StopData[]> {
@@ -81,24 +66,15 @@ export class HttpRoutingService {
   }
 
   public getMapDataStations(): Observable<any> {
-    return this.http.get<any>(this.urlBuilder.getMapStationsUrl())
-      .pipe(
-        tap(data => console.log(`Fetched Map-Data for Stations.`))
-      );
+    return this.http.get<any>(this.urlBuilder.getMapStationsUrl());
   }
 
   public getMapDataLines(): Observable<any> {
-    return this.http.get<any>(this.urlBuilder.getMapLinesUrl())
-      .pipe(
-        tap(data => console.log(`Fetched Map-Data for Lines.`))
-      );
+    return this.http.get<any>(this.urlBuilder.getMapLinesUrl());
   }
 
   public getMapDataConnections(): Observable<any> {
-    return this.http.get<any>(this.urlBuilder.getMapConnectionsUrl())
-      .pipe(
-        tap(data => console.log(`Fetched Map-Data for Connections.`))
-      );
+    return this.http.get<any>(this.urlBuilder.getMapConnectionsUrl());
   }
 
   public getVehicles(): Observable<VehicleData[]> {
@@ -126,8 +102,7 @@ export class HttpRoutingService {
   }
 
   public editTrip(trip: TripData): Observable<any> {
-    return this.http.put(this.urlBuilder.getTripsUrl(), trip).pipe(tap(data =>
-      console.log('EDIT TRIP OK')));
+    return this.http.put(this.urlBuilder.getTripsUrl(), trip);
   }
 
   public deleteTrip(tripId: string): Observable<any> {
@@ -135,10 +110,7 @@ export class HttpRoutingService {
   }
 
   public getFilterData(): Observable<any> {
-    return this.http.get<any>(this.urlBuilder.getFilterInfosUrl()).
-      pipe(
-        tap(data => console.log('Data for filters: ' + data))
-    );
+    return this.http.get<any>(this.urlBuilder.getFilterInfosUrl());
   }
 
   public getVehiclePositionInboundData(lineData: string): Observable<LinePositionData> {
@@ -163,7 +135,6 @@ export class HttpRoutingService {
   }
 
   public addServiceRequest(serviceRequest: ServiceRequestData): Observable<any> {
-    console.log('ADD SERVICE REQUEST, ...');
     return this.http.post(this.urlBuilder.getServiceRequestsUrl(), serviceRequest);
   }
 

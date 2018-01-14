@@ -7,6 +7,7 @@ import { now } from '../../shared/data/dates';
 import { DateParserService } from '../../services/date-parser.service';
 import { FeedbackData } from '../../shared/data/feedback-data';
 import { VehicleData } from '../../shared/data/vehicle-data';
+import { StopData } from '../../shared/data/stop-data';
 
 @Component({
   selector: 'app-service-request-edit',
@@ -51,29 +52,31 @@ export class ServiceRequestEditComponent implements OnInit {
   }
 
   confirm(): void {
-    // TODO: switch from general data to feedback or call http and close
     if(!this.dataEdited){
-      this.selectData();
+      this.getFeedbackForTarget();
     } else {
-      this.selectFeedback();
+      this.editServiceRequest();
     }
   }
 
-  selectData(): void {
+  getFeedbackForTarget(): void {
     if(this.data.target instanceof VehicleData){
       this.http.getVehicleFeedback(this.data.target.id).subscribe( data => {
         this.availFeedback = data;
         this.dataEdited = true;
       }, err => console.log('Could not load feedback for vehicle.'));
-    } else {
+    } else if (this.data.target instanceof StopData){
       this.http.getStopFeedback(this.data.target.id).subscribe( data => {
         this.availFeedback = data;
         this.dataEdited = true;
       }, err => console.log('Could not load feedback for vehicle.'));
+    } else {
+      this.availFeedback = [];
+      this.dataEdited = true;
     }
   }
 
-  selectFeedback(): void {
+  editServiceRequest(): void {
     this.data.priority = this.selectedPriority.value;
     this.data.dueDate = this.selectedTime;
     this.data.serviceRequestDescription = [{"id": "", "text": this.description}];

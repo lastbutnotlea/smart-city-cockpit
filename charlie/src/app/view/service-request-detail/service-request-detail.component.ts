@@ -39,17 +39,6 @@ export class ServiceRequestDetailComponent implements OnInit {
     this.http.getServiceRequestDetails(serviceRequestId).subscribe(
       data => {
         this.serviceRequest = data;
-        // TODO: remove dummy data once data from backend is available
-        let v = new VehicleData();
-        v.id = "Vehicle_104";
-        v.type = "SUBWAY";
-        v.state = "CRITICAL";
-        let s = new StopData();
-        s.id = "490011334E1";
-        s.state = "PROBLEMATIC";
-        this.serviceRequest.target = s;
-
-        this.serviceRequest.feedbacks = [];
         this.loaded = true;
       },
       err => console.log('Could not fetch trip data!')
@@ -61,7 +50,6 @@ export class ServiceRequestDetailComponent implements OnInit {
   }
 
   editServiceRequest(): void {
-    // TODO: open edit component once available
     const modal = this.modalService.open(ServiceRequestEditComponent);
     modal.componentInstance.data = this.serviceRequest;
     modal.componentInstance.initData();
@@ -94,5 +82,9 @@ export class ServiceRequestDetailComponent implements OnInit {
 
   hasVehicleTarget(){
     return this.serviceRequest.target instanceof VehicleData;
+  }
+
+  hasStopTarget(){
+    return this.serviceRequest.target instanceof StopData;
   }
 }
