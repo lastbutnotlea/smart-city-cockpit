@@ -52,8 +52,7 @@ public class C4CTest {
     }};
     testC4CEntity(
         new ServiceRequest("Reinigung des Fahrzeugs | " + Math.random(), EState.FINE, LocalDateTime.now().plusDays(5),
-            EServiceType.MAINTENANCE, notes, "Vehicle_0", "Feedback_0"));
-    //todo change type to cleaning if respecitive code was created by mhp
+            EServiceType.CLEANING, notes, "Vehicle_0", "Feedback_0"));
   }
 
   private void testC4CEntity(C4CEntity entity) {

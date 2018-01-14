@@ -58,13 +58,13 @@ public class ServiceRequest extends C4CEntity {
   /**
    * The id of the target entity;
    */
-  //@C4CProperty(name = "RefID", maxLength = 36) todo uncomment if mhp created them
+  @C4CProperty(name = "ReferenceID", maxLength = 36)
   private String target;
 
   /**
    * The id of the feedback this service request answers to.
    */
-  //@C4CProperty(name = "FeedbackReference", maxLength = 36) todo uncomment if mhp created them
+  @C4CProperty(name = "FeedbackReference", maxLength = 36)
   private String referencedFeedback;
 
   public ServiceRequest() {
@@ -229,8 +229,8 @@ public class ServiceRequest extends C4CEntity {
         .append(getProcessingTypeCode(), that.getProcessingTypeCode())
         .append(getType(), that.getType())
         .append(getServiceRequestDescription(), that.getServiceRequestDescription())
-        //.append(getTarget(), that.getTarget())
-        //.append(getReferencedFeedback(), that.getReferencedFeedback())
+        .append(getTarget(), that.getTarget())
+        .append(getReferencedFeedback(), that.getReferencedFeedback())
         .isEquals();
   }
 
@@ -247,8 +247,8 @@ public class ServiceRequest extends C4CEntity {
         .append(getProcessingTypeCode())
         .append(getType())
         .append(getServiceRequestDescription())
-        //.append(getTarget())
-        //.append(getReferencedFeedback()) todo uncomment if mhp guys created field
+        .append(getTarget())
+        .append(getReferencedFeedback())
         .toHashCode();
   }
 
