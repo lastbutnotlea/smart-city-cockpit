@@ -2,6 +2,7 @@ package de.team5.super_cute.crocodile.controller;
 
 import static de.team5.super_cute.crocodile.config.TickerConfig.ITEM_COUNT;
 
+import de.team5.super_cute.crocodile.config.AppConfiguration;
 import de.team5.super_cute.crocodile.data.BaseData;
 import de.team5.super_cute.crocodile.model.TickerItem;
 import java.util.List;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/ticker")
+@RequestMapping(AppConfiguration.API_PREFIX + "/ticker")
 public class TickerItemController extends BaseController<TickerItem> {
 
   private Logger logger = LoggerFactory.getLogger(this.getClass());
