@@ -5,7 +5,7 @@
     <div [ngClass]="{'color-fine': line.state === 'FINE',
        'color-problematic': line.state === 'PROBLEMATIC',
        'color-critical': line.state === 'CRITICAL' }">
-      <i class="fa fa-lightbulb-o fa-2x float-right small-padding-right" aria-hidden="true"></i>
+      <i class="fa fa-lightbulb-o fa-2x float-right padding-right-20" aria-hidden="true"></i>
     </div>
     Line Id: {{line.id}}
   </h3>
@@ -20,6 +20,6 @@
   <app-embedded-stop-overview [linePositionData]="outboundPositionData" [title]="'Outbound'" [color]="line.color"></app-embedded-stop-overview>
 </div>
 
-<div class="no-float big-padding-top">
+<div class="no-float padding-top-50">
   <button class="btn btn-outline-secondary" (click)="goBack()">Back To Network-View</button>
 </div>

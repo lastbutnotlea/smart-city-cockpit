@@ -1,7 +1,8 @@
-<div class="filter-component">
-
-<div *ngFor="let item of (filters); let i = index">
-  <label>{{filters[i][0]}}</label>
-  <input #elem type="checkbox" checked="true" (change)="filters[i][1]=elem.checked">
-</div>
+<div class="filter-component d-flex flex-column">
+  <ng-container *ngFor="let item of (filters); let i = index">
+    <label class="btn {{filters[i][1]? 'active' : ''}}">
+      <input type="checkbox" checked #elem (change)="filters[i][1]=elem.checked" autocomplete="off">
+      {{filters[i][0]}}
+    </label>
+  </ng-container>
 </div>

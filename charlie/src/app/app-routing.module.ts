@@ -33,4 +33,19 @@ const routes: Routes = [
 })
 
 export class AppRoutingModule {
+  static getUrlForId(id: string): string {
+    if (id.startsWith('Trip_')) {
+      return '/trip/detail/' + id;
+    } else if (id.startsWith('Line_')) {
+      return '/network/detail/' + id;
+    } else if (id.startsWith('Stop_')) {
+      return '/network/stop/' + id;
+    } else if (id.startsWith('Vehicle_')) {
+      return '/vehicles/' + id;
+    } else if (id.startsWith('Feedback_')) {
+      return '/feedback';
+    } else {
+      return '';
+    }
+  }
 }

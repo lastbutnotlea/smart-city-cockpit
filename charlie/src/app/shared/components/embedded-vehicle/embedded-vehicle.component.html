@@ -5,7 +5,17 @@
      'color-critical': vehicle.state === 'CRITICAL' }">
       <i class="fa fa-lightbulb-o fa-2x float-right small-padding-right" aria-hidden="true"></i>
     </div>
-    <i class="fa fa-subway fa-2x float-left small-padding-left text-primary"></i>
+    <i class="fa fa-subway fa-2x float-left padding-left-5 text-primary"></i>
     <label class="padding-emb-box-headline">Vehicle</label>
   </h4>
-  <p>ID: {{vehicle.id}}</p>
+  <p class="text-primary"> <label class="text-secondary">ID: </label> {{vehicle.id}}</p>
+  <p> <label class="text-secondary">Type: </label> {{vehicle.type}}</p>
+  <p> <label class="text-secondary">Capacity: </label> {{vehicle.capacity}}</p>
+  <p> <label class="text-secondary">Load: </label> {{vehicle.load}}</p>
+  <p> <label class="text-secondary">Delay: </label> {{(vehicle.delay / 60.0).toFixed(0)}}</p>
+  <p> <label class="text-secondary">Temperature: </label> {{vehicle.temperature}}</p>
+  <div *ngFor="let defect of vehicle.defects; let i=index">
+    <label class="text-secondary">Defects: </label>
+    <label> {{defect}}</label>
+    <label *ngIf="i+1 < vehicle.defects.length">, </label>
+  </div>

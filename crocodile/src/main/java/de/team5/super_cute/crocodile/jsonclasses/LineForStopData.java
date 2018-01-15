@@ -6,10 +6,10 @@ public class LineForStopData {
   @JsonProperty
   boolean isInbound;
   @JsonProperty
-  String lineId;
+  String line;
 
-  public LineForStopData(boolean isInbound, String lineId) {
+  public LineForStopData(boolean isInbound, String line) {
     this.isInbound = isInbound;
-    this.lineId = lineId;
+    this.line = line;
   }
 }

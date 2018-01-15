@@ -1,47 +1,56 @@
-<h3 class="text-center">{{title}}</h3>
+<div class="d-flex flex-column fit-screen">
+  <h3 class="text-center m-3">{{title}}</h3>
 
-<div class="d-flex">
-  <app-filter-group-view></app-filter-group-view>
+  <div *ngIf="!loaded">
+    <h3>Loading...</h3>
+  </div>
 
-  <div class="container d-flex flex-column">
-    <div class="row flex-nowrap" id="table-head">
-      <div class="col p-2 m-1 bg-secondary">VehicleId</div>
-      <div class="col p-2 m-1 bg-secondary">Capacity</div>
-      <div class="col p-2 m-1 bg-secondary">Load</div>
-      <div class="col p-2 m-1 bg-secondary">Current Delay</div>
-      <div class="col p-2 m-1 bg-secondary">Temperature</div>
-      <div class="col p-2 m-1 bg-secondary">Defects</div>
-      <div class="col p-2 m-1 bg-secondary">Type</div>
-      <div class="col p-2 m-1 bg-secondary">Status</div>
+  <div class="d-flex flex-row fit-screen">
+    <div class="fit-screen">
+      <app-filter-group-view></app-filter-group-view>
     </div>
-    <div class="row" style="overflow-y: auto; height: 100%">
-      <ng-container *ngFor="let vehicle of filterGroup.getFiltered(vehicles)">
-        <div class="col p-2 m-1 bg-light">
-          <a routerLink="{{vehicle.id}}">{{ vehicle.id }}</a>
-        </div>
-        <div class="col p-2 m-1 bg-light">{{ vehicle.capacity }}</div>
-        <div class="col p-2 m-1 bg-light">{{ vehicle.load }}</div>
-        <div class="col p-2 m-1 bg-light">{{ vehicle.delay }}</div>
-        <div class="col p-2 m-1 bg-light">{{ vehicle.temperature }}</div>
-        <div class="col p-2 m-1 bg-light">{{ vehicle.defects }}</div>
-        <div class="col p-2 m-1 bg-light">{{ vehicle.type }}</div>
-        <div class="col p-2 m-1 bg-light">
+
+    <div class="d-flex flex-grow-1 fit-screen">
+      <table class="table fit-screen d-flex flex-column">
+        <thead class="flex-grow-1">
+        <tr>
+          <th>Vehicle-ID</th>
+          <th>Capacity</th>
+          <th>Load</th>
+          <th nowrap>Current Delay</th>
+          <th>Temperature</th>
+          <th>Defects</th>
+          <th>Type</th>
+          <th>Status</th>
+        </tr>
+        </thead>
+        <tbody class="d-flex flex-column flex-grow-1 fit-screen">
+        <tr *ngFor="let vehicle of filterGroup.getFiltered(vehicles)">
+          <td>
+            <a routerLink="{{vehicle.id}}">
+              {{ vehicle.id }}
+            </a>
+          </td>
+          <td>{{ vehicle.capacity }}</td>
+          <td>{{ vehicle.load }}</td>
+          <td>{{ (vehicle.delay / 60.0).toFixed(0) }}</td>
+          <td>{{ vehicle.temperature }}</td>
+          <td>{{ vehicle.defects }}</td>
+          <td>{{ vehicle.type }}</td>
+          <td>
           <span [ngClass]="{'color-fine': vehicle.state === 'FINE',
            'color-problematic': vehicle.state === 'PROBLEMATIC',
           'color-critical': vehicle.state === 'CRITICAL' }">
             <i class="fa fa-lightbulb-o" aria-hidden="true"></i>
           </span>
-        </div>
-        <div class="w-100"></div>
-      </ng-container>
-
-      <div *ngIf="!loaded">
-        <h3>Loading...</h3>
-      </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
 
-    <div class="no-float m-3">
-      <button class="btn btn-outline-secondary" (click)="add()">Add new vehicle</button>
-    </div>
+  <div class="no-float m-3 no-m-left">
+    <button class="btn btn-outline-primary" (click)="add()">Add new vehicle</button>
   </div>
 </div>

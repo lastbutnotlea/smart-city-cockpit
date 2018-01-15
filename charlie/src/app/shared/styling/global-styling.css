@@ -1,17 +1,30 @@
+.fit-screen {
+  height: 100%;
+  overflow-y: auto;
+}
+
 .no-float {
   clear: both;
 }
 
-.margin-bottom {
+.margin-bottom-30 {
   margin-bottom: 30px;
 }
 
-.big-padding-top {
+.padding-top-30 {
+  padding-top: 30px;
+}
+
+.padding-top-50 {
   padding-top: 50px;
 }
 
-.small-padding-left {
+.padding-left-5 {
   padding-left: 5px;
+}
+
+.padding-right-20 {
+  padding-right: 20px;
 }
 
 .padding-emb-box-headline {
@@ -25,11 +38,23 @@
 }
 
 .color-problematic {
-  color: orange;
+  color: #ffb300;
 }
 
 .color-critical {
-  color: red;
+  color: #dd3645;
+}
+
+.background-fine {
+  background-color: limegreen;
+}
+
+.background-problematic {
+  background-color: #ffb300;
+}
+
+.background-critical {
+  background-color: #dd3645;
 }
 
 .width-100 {
@@ -38,4 +63,9 @@
 
 .datepicker {
   margin: 0 20px 20px 0;
+}
+
+.gray-background {
+  background-color: #efefef;
+  border-radius: 10px 0 0 10px;
 }
