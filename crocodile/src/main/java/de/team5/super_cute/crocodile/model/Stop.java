@@ -7,6 +7,7 @@ import static de.team5.super_cute.crocodile.config.TickerConfig.SEVERITY_DIVISOR
 import static de.team5.super_cute.crocodile.config.TickerConfig.STOP_BASE_PRIORITY;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import de.team5.super_cute.crocodile.config.LiveDataConfig;
 import de.team5.super_cute.crocodile.util.StateCalculator;
 import java.io.Serializable;
@@ -22,8 +23,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "stop")
+@JsonTypeName("stop")
 public class Stop extends IdentifiableObject implements Serializable, Feedbackable, Stateable,
-    TickerItemable {
+    TickerItemable, ServiceTargetObject {
 
   @Column
   private String commonName;
