@@ -1,7 +1,11 @@
 import {Component, Input, OnInit, Output} from '@angular/core';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbActiveModal, NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 import {EventData} from '../../shared/data/event-data';
 import {HttpRoutingService} from '../../services/http-routing.service';
+import {C4CNotes} from '../../shared/data/c4c-notes';
+import {DropdownValue, toDropdownItem, toDropdownItems} from '../../shared/components/dropdown/dropdown.component';
+import {now} from '../../shared/data/dates';
+import {DateParserService} from '../../services/date-parser.service';
 
 
 @Component({
@@ -16,23 +20,26 @@ export class EventEditComponent implements OnInit {
 
   selected: EventData;
 
+  availablePriorities: Array<DropdownValue> = [];
+  priority: DropdownValue = new DropdownValue('FINE', 'fine');
+
+  fromTime: NgbTimeStruct = {hour: now.getHours(), minute: now.getMinutes(), second: now.getSeconds()};
+  fromDate: NgbDateStruct = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
+  toTime: NgbTimeStruct = {hour: now.getHours(), minute: now.getMinutes(), second: now.getSeconds()};
+  toDate: NgbDateStruct = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
+
+  availableParties: Array<DropdownValue> = [];
+  party: DropdownValue = new DropdownValue(null, 'loading');
+
   // selectedVehicle: DropdownValue;
   //
   // availLines: LineData[] = [];
   // availVehicles: VehicleData[] = [];
 
   constructor(public activeModal: NgbActiveModal,
-              private http: HttpRoutingService) { }
+              private http: HttpRoutingService,
+              public dateParser: DateParserService) { }
 
-  ngOnInit(): void {
-    // this.http.getLines().subscribe(
-    //   data => this.availLines = data,
-    //   err => console.log('Err'));
-    //
-    // this.http.getVehicles().subscribe(
-    //   data => this.availVehicles = data,
-    //   err => console.log('Err'));
-  }
 
   initData(): void {
     if (this.data != null) {
@@ -46,12 +53,52 @@ export class EventEditComponent implements OnInit {
         this.selected.appointmentInvolvedParties.push(party);
       }
       this.selected.appointmentNotes = [];
+      let allNotes = '';
       for(const note of this.data.appointmentNotes) {
-        this.selected.appointmentNotes.push(note);
+        allNotes += note.text;
       }
+      let newC4CNote = new C4CNotes();
+      newC4CNote.id = '';
+      newC4CNote.text = allNotes;
+      this.selected.appointmentNotes.push(newC4CNote);
 
-     //  this.selectedVehicle = this.toDropdownItem(this.selected.vehicle);
+      this.party = toDropdownItem(this.selected.appointmentInvolvedParties[0], party => party.partyName);
+      this.priority = toDropdownItem(this.selected.priority, item => item.toLowerCase());
     }
+  }
+
+  ngOnInit() {
+    this.http.getInvolvedParties().subscribe(data => {
+      this.availableParties = toDropdownItems(data, party => party)
+    }, err => alert(err));
+
+    this.http.getInvolvedParties().subscribe(data => {
+      console.log(data);
+    }, err => alert(err));
+
+
+    this.availablePriorities = toDropdownItems(
+      ['FINE', 'PROBLEMATIC', 'CRITICAL'],
+      item => item.toLowerCase());
+
+    console.log(this.fromTime);
+    console.log(this.toTime);
+  }
+
+  updateFromTime(): void {
+    this.selected.startTime = this.dateParser.parseTime(this.selected.startTime, this.fromTime);
+  }
+
+  updateFromDate(): void {
+    this.selected.startTime = this.dateParser.parseDate(this.selected.startTime, this.fromDate);
+  }
+
+  updateToTime(): void {
+    this.selected.endTime = this.dateParser.parseTime(this.selected.endTime, this.toTime);
+  }
+
+  updateToDate(): void {
+    this.selected.endTime = this.dateParser.parseDate(this.selected.endTime, this.toDate);
   }
 
   confirm(): void {
@@ -77,5 +124,13 @@ export class EventEditComponent implements OnInit {
     //   },
     //   err => console.log('Could not edit trip.')
     // );
+  }
+
+  subjectChange($event: Event) {
+    this.selected.subject = (<HTMLTextAreaElement> $event.target).value;
+  }
+
+  notesChange($event: Event) {
+    this.selected.appointmentNotes[0].text = (<HTMLTextAreaElement> $event.target).value;
   }
 }
