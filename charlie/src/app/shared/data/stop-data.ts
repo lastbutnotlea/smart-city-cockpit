@@ -1,8 +1,9 @@
-export class StopData {
-  id: string;
+import { ServiceRequestTarget } from './service-request-target';
+
+export class StopData extends ServiceRequestTarget {
   commonName: string;
   peopleWaiting: number;
   lat: number;
   lon: number;
-  state: string;
+  identifiableType: String = "stop"; // Caro: brauche ich für die Service Requests zum Deserialisieren im Backend :)
 }

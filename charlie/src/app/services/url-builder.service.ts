@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
+import {TickerData} from '../shared/data/ticker-data';
 
 @Injectable()
 export class UrlBuilderService {
@@ -9,8 +10,10 @@ export class UrlBuilderService {
   private tripBaseUrl = this.baseUrl + '/trips';
   private vehicleBaseUrl = this.baseUrl + '/vehicles';
   private mapBaseUrl = this.baseUrl + '/map';
+  private serviceRequestsUrl = this.baseUrl + '/servicerequests';
   private feedbackBaseUrl = this.baseUrl + '/feedback';
   private announcementBaseUrl = this.baseUrl + '/announcement';
+  private tickerBaseUrl = this.baseUrl + '/ticker';
   private eventsBaseUrl = this.baseUrl + '/events';
 
   public getNetworkUrl(): string {
@@ -21,12 +24,12 @@ export class UrlBuilderService {
     return this.networkBaseUrl + '/' + lineId;
   }
 
-  public getStopDetailsUrl(stopId: string): string {
-    return this.stopBaseUrl + '/' + stopId;
-  }
-
   public getStopsUrl(): string {
     return this.stopBaseUrl;
+  }
+
+  public getStopDetailsUrl(stopId: string): string {
+    return this.stopBaseUrl + '/' + stopId;
   }
 
   public getVehiclesUrl(): string {
@@ -61,6 +64,14 @@ export class UrlBuilderService {
     return this.networkBaseUrl + '/filter-data';
   }
 
+  public getServiceRequestsUrl(): string {
+    return this.serviceRequestsUrl;
+  }
+
+  public getServiceRequestUrl(id: string): string {
+    return this.serviceRequestsUrl + '/' + id;
+  }
+
   public getVehiclePositionInboundUrl(lineId: string): string {
     return this.getLineDetailsUrl(lineId) + '/vehicles/inbound';
   }
@@ -71,6 +82,14 @@ export class UrlBuilderService {
 
   public getFeedback(): string {
     return this.feedbackBaseUrl;
+  }
+
+  public getVehicleFeedbackUrl(vehicleId: string): string {
+    return this.feedbackBaseUrl + '/vehicle/' + vehicleId;
+  }
+
+  public getStopFeedbackUrl(stopId: string): string {
+    return this.feedbackBaseUrl + '/stop/' + stopId;
   }
 
   public getAnnouncements(): string {
@@ -87,5 +106,13 @@ export class UrlBuilderService {
 
   public getInvolvedParteisUrl(): string {
     return this.eventsBaseUrl + '/people';
+  }
+
+  public getTickerUrl(): string {
+    return this.tickerBaseUrl;
+  }
+
+  public getTickerDeleteUrl(item: TickerData): string {
+    return this.tickerBaseUrl + '/' + item.id;
   }
 }

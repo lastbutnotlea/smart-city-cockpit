@@ -7,6 +7,8 @@ import {LineDetailComponent} from './view/line-detail/line-detail.component';
 import {StopDetailComponent} from './view/stop-detail/stop-detail.component';
 import {VehiclesComponent} from './view/vehicles/vehicles.component';
 import {VehicleDetailComponent} from './view/vehicle-detail/vehicle-detail.component';
+import { ServiceRequestsComponent } from './view/service-requests/service-requests.component';
+import { ServiceRequestDetailComponent } from './view/service-request-detail/service-request-detail.component';
 import {FeedbackComponent} from './view/feedback/feedback.component';
 import {AnnouncementMainComponent} from './view/announcements/announcement-main/announcement-main.component';
 import {EventsComponent} from './view/events/events.component';
@@ -24,6 +26,8 @@ const routes: Routes = [
   {path: 'feedback', component: FeedbackComponent},
   {path: 'events', component: EventsComponent},
   {path: 'events/detail/:id', component: EventDetailComponent},
+  {path: 'serviceRequests', component: ServiceRequestsComponent},
+  {path: 'serviceRequests/:id', component: ServiceRequestDetailComponent},
   {path: 'announcements', component: AnnouncementMainComponent},
 ];
 
@@ -33,4 +37,19 @@ const routes: Routes = [
 })
 
 export class AppRoutingModule {
+  static getUrlForId(id: string): string {
+    if (id.startsWith('Trip_')) {
+      return '/trip/detail/' + id;
+    } else if (id.startsWith('Line_')) {
+      return '/network/detail/' + id;
+    } else if (id.startsWith('Stop_')) {
+      return '/network/stop/' + id;
+    } else if (id.startsWith('Vehicle_')) {
+      return '/vehicles/' + id;
+    } else if (id.startsWith('Feedback_')) {
+      return '/feedback';
+    } else {
+      return '';
+    }
+  }
 }
