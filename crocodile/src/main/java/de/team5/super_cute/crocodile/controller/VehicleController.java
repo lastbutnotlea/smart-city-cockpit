@@ -53,7 +53,7 @@ public class VehicleController extends BaseController<Vehicle> {
     input.setId();
     input.setLoad(0);
     input.setTemperature(TEMPERATURE_INITIAL);
-    return addObject(input);
+    return makeIdToJSON(addObject(input));
   }
 
   @DeleteMapping("/{id}")
@@ -69,7 +69,7 @@ public class VehicleController extends BaseController<Vehicle> {
     for (Trip trip:trips) {
       tripData.deleteObject(trip.getId());
     }
-    return deleteObject(id);
+    return makeIdToJSON(deleteObject(id));
   }
 
   @DeleteMapping("/{id}/force")
@@ -81,12 +81,12 @@ public class VehicleController extends BaseController<Vehicle> {
     for (Trip trip:trips) {
       tripData.deleteObject(trip.getId());
     }
-    return deleteObject(id);
+    return makeIdToJSON(deleteObject(id));
   }
 
   @PutMapping
   public String editVehicle(@RequestBody Vehicle input) {
     logger.info("Got Request to edit a vehicle to " + input);
-    return editObject(input);
+    return makeIdToJSON(editObject(input));
   }
 }
