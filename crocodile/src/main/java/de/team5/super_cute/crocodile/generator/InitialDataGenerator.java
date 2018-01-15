@@ -66,7 +66,6 @@ public class InitialDataGenerator {
     int outboundPointer;
     RestTemplate rt = new RestTemplate();
     Map<String, Object> params = new HashMap<>();
-    lines:
     for (int x = 0; x < lines.size(); x++) {
       try {
         Line line = lines.get(x);

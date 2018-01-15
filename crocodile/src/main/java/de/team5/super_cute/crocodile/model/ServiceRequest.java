@@ -3,13 +3,20 @@ package de.team5.super_cute.crocodile.model;
 import static de.team5.super_cute.crocodile.util.Helpers.DUMMY_TIME;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.team5.super_cute.crocodile.external.C4CProperty;
 import de.team5.super_cute.crocodile.model.c4c.C4CEntity;
 import de.team5.super_cute.crocodile.model.c4c.C4CNotes;
 import de.team5.super_cute.crocodile.model.c4c.EStatusCode;
+import de.team5.super_cute.crocodile.util.DateDeserializer;
+import de.team5.super_cute.crocodile.util.DateSerializer;
 import de.team5.super_cute.crocodile.util.Helpers;
+import de.team5.super_cute.crocodile.util.LocalDateTimeAttributeConverter;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
+import javax.persistence.Convert;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -34,12 +41,18 @@ public class ServiceRequest extends C4CEntity {
   private EStatusCode statusCode = EStatusCode.OPEN;
 
   @C4CProperty(name = "CompletionDueDate")
+  @Convert(converter = LocalDateTimeAttributeConverter.class)
+  @JsonSerialize(using = DateSerializer.class)
+  @JsonDeserialize(using = DateDeserializer.class)
   private LocalDateTime dueDate;
 
   /**
    * not set by user, only in SAP
    */
   @C4CProperty(name = "CompletedOnDate")
+  @Convert(converter = LocalDateTimeAttributeConverter.class)
+  @JsonSerialize(using = DateSerializer.class)
+  @JsonDeserialize(using = DateDeserializer.class)
   private LocalDateTime completionDate = DUMMY_TIME;
 
   @C4CProperty(name = "DataOriginTypeCode")
@@ -50,7 +63,7 @@ public class ServiceRequest extends C4CEntity {
   @JsonIgnore
   private String processingTypeCode;
 
-  private EServiceType type;
+  private EServiceType serviceType;
 
   @C4CProperty(name = "ServiceRequestDescription", hasAssociatedEntities = true)
   private List<C4CNotes> serviceRequestDescription;
@@ -59,36 +72,45 @@ public class ServiceRequest extends C4CEntity {
    * The id of the target entity;
    */
   //@C4CProperty(name = "RefID", maxLength = 36) todo uncomment if mhp created them
-  private String target;
+  @JsonIgnore
+  private String targetId;
+
+  //@JsonDeserialize(using = IdentifiableObjectDeserializer.class)
+  private ServiceTargetObject target;
 
   /**
-   * The id of the feedback this service request answers to.
+   * The id of the feedbackGroup this service request answers to.
    */
   //@C4CProperty(name = "FeedbackReference", maxLength = 36) todo uncomment if mhp created them
+  @JsonIgnore
   private String referencedFeedback;
+
+  private Set<Feedback> feedbacks;
 
   public ServiceRequest() {
   }
 
   public ServiceRequest(String name, EState priority,
-      LocalDateTime dueDate, EServiceType type,
-      List<C4CNotes> serviceRequestDescription, String target, String referencedFeedback) {
+      LocalDateTime dueDate, EServiceType serviceType,
+      List<C4CNotes> serviceRequestDescription, String targetId, String referencedFeedback) {
     setName(name);
     setPriority(priority);
     setDueDate(dueDate);
-    setType(type);
+    setServiceType(serviceType);
     setServiceRequestDescription(serviceRequestDescription);
-    setTarget(target);
+    setTargetId(targetId);
     setReferencedFeedback(referencedFeedback);
   }
 
 
   @Override
+  @JsonIgnore
   public String getCollectionName() {
     return "ServiceRequestCollection";
   }
 
   @Override
+  @JsonIgnore
   public C4CEntity getEmptyObject() {
     return new ServiceRequest();
   }
@@ -138,7 +160,7 @@ public class ServiceRequest extends C4CEntity {
   }
 
   public void setDueDate(LocalDateTime dueDate) {
-    this.dueDate = dueDate;
+    this.dueDate = dueDate.withNano(0).withHour(0).withMinute(0).withMinute(0);
   }
 
   public LocalDateTime getCompletionDate() {
@@ -158,27 +180,27 @@ public class ServiceRequest extends C4CEntity {
   }
 
   public String getProcessingTypeCode() {
-    if (this.type != null) {
-      return this.type.getCode();
+    if (this.serviceType != null) {
+      return this.serviceType.getCode();
     }
     return processingTypeCode;
   }
 
   public void setProcessingTypeCode(String processingTypeCode) {
     this.processingTypeCode = processingTypeCode;
-    this.type = EServiceType.getServiceType(processingTypeCode);
+    this.serviceType = EServiceType.getServiceType(processingTypeCode);
   }
 
-  public EServiceType getType() {
+  public EServiceType getServiceType() {
     if (this.processingTypeCode != null) {
       return EServiceType.getServiceType(this.processingTypeCode);
     }
-    return type;
+    return serviceType;
   }
 
-  public void setType(EServiceType type) {
-    this.type = type;
-    this.processingTypeCode = type.getCode();
+  public void setServiceType(EServiceType serviceType) {
+    this.serviceType = serviceType;
+    this.processingTypeCode = serviceType.getCode();
   }
 
   public List<C4CNotes> getServiceRequestDescription() {
@@ -190,11 +212,19 @@ public class ServiceRequest extends C4CEntity {
     this.serviceRequestDescription = serviceRequestDescription;
   }
 
-  public String getTarget() {
+  public String getTargetId() {
+    return targetId;
+  }
+
+  public void setTargetId(String targetId) {
+    this.targetId = targetId;
+  }
+
+  public ServiceTargetObject getTarget() {
     return target;
   }
 
-  public void setTarget(String target) {
+  public void setTarget(ServiceTargetObject target) {
     this.target = target;
   }
 
@@ -204,6 +234,14 @@ public class ServiceRequest extends C4CEntity {
 
   public void setReferencedFeedback(String referencedFeedback) {
     this.referencedFeedback = referencedFeedback;
+  }
+
+  public Set<Feedback> getFeedbacks() {
+    return feedbacks;
+  }
+
+  public void setFeedbacks(Set<Feedback> feedbacks) {
+    this.feedbacks = feedbacks;
   }
 
   @Override
@@ -227,7 +265,7 @@ public class ServiceRequest extends C4CEntity {
         .append(getCompletionDate(), that.getCompletionDate())
         .append(getOriginTypeCode(), that.getOriginTypeCode())
         .append(getProcessingTypeCode(), that.getProcessingTypeCode())
-        .append(getType(), that.getType())
+        .append(getServiceType(), that.getServiceType())
         .append(getServiceRequestDescription(), that.getServiceRequestDescription())
         //.append(getTarget(), that.getTarget())
         //.append(getReferencedFeedback(), that.getReferencedFeedback())
@@ -245,7 +283,7 @@ public class ServiceRequest extends C4CEntity {
         .append(getCompletionDate())
         .append(getOriginTypeCode())
         .append(getProcessingTypeCode())
-        .append(getType())
+        .append(getServiceType())
         .append(getServiceRequestDescription())
         //.append(getTarget())
         //.append(getReferencedFeedback()) todo uncomment if mhp guys created field
@@ -264,7 +302,7 @@ public class ServiceRequest extends C4CEntity {
         .append("completionDate", getCompletionDate())
         .append("originTypeCode", getOriginTypeCode())
         .append("processingTypeCode", getProcessingTypeCode())
-        .append("type", getType())
+        .append("serviceType", getServiceType())
         .append("serviceRequestDescription", getServiceRequestDescription())
         .append("target", getTarget())
         .append("referencedFeedback", getReferencedFeedback())

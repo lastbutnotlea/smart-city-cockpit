@@ -2,6 +2,7 @@ package de.team5.super_cute.crocodile.config;
 
 import de.team5.super_cute.crocodile.model.*;
 
+import de.team5.super_cute.crocodile.model.c4c.FeedbackGroup;
 import java.net.URI;
 import java.net.URISyntaxException;
 import javax.sql.DataSource;
@@ -32,7 +33,7 @@ public class DatabaseConfig {
   public SessionFactory getSessionFactory() {
     return new LocalSessionFactoryBuilder(getDataSource())
         .addAnnotatedClasses(IdentifiableObject.class, Line.class, Stop.class, Trip.class,
-            Vehicle.class, Feedback.class, Announcement.class, TickerItem.class)
+            Vehicle.class, Feedback.class, Announcement.class, TickerItem.class, FeedbackGroup.class)
         .setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect")
         .setProperty("hibernate.hbm2ddl.auto", "create")
         .setProperty("packagesToScan", "de.team5.super_cute.crocodile.model")
