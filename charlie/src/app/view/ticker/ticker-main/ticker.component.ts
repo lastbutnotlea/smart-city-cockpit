@@ -7,7 +7,7 @@ import {LiveDataComponent} from '../../../shared/components/live-data/live-data.
   selector: 'app-ticker',
   templateUrl: './ticker.component.html',
   styleUrls: ['./ticker.component.css',
-    '../../../shared/styling/global-styling.css']
+    '../../../shared/styling/global-styling.css',]
 })
 export class TickerComponent extends LiveDataComponent implements OnInit {
   items: TickerData[] = [];
