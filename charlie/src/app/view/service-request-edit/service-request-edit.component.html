@@ -1,0 +1,45 @@
+<div class="modal-header">
+  <h4 class="modal-title">
+    Edit Service Request
+  </h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+
+  <div *ngIf="!dataEdited">
+    <div class="margin-bottom">
+      <label>Priority: </label>
+      <app-dropdown [values]="priorityItems()" [(selected)]="selectedPriority"></app-dropdown>
+    </div>
+
+    <div class="margin-bottom">
+      <label>Description: </label>
+      <input type="text" [(ngModel)]="description" ng-init="data.description">
+    </div>
+
+    <ngb-datepicker [(ngModel)]="date" (select)="updateDate()" class="float-left datepicker"></ngb-datepicker>
+  </div>
+
+  <div *ngIf="dataEdited" class="d-block">
+    <div *ngIf="availFeedback.length === 0">
+      <label>No Feedback available</label>
+    </div>
+    <div *ngIf="availFeedback.length !== 0">
+      <label>Feedback:</label>
+      <div class="" *ngFor="let feedback of availFeedback">
+        <input #box type="checkbox" [ngModel]="isChecked(feedback)" (change)="includeFeedback(feedback, box.checked)">
+        <label class="padding-left">{{feedback.message}}</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button *ngIf="dataEdited" type="button" class="btn btn-outline-secondary" (click)="stepBack()">Back</button>
+  <button type="button" class="btn btn-outline-secondary" (click)="activeModal.close('Close click')">Cancel</button>
+
+  <button *ngIf="!dataEdited" type="button" class="btn btn-outline-primary" (click)="confirm()">Next</button>
+  <button *ngIf="dataEdited" type="button" class="btn btn-outline-primary" (click)="confirm()">Okay</button>
+</div>

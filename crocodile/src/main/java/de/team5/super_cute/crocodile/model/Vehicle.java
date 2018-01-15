@@ -19,13 +19,13 @@ import static de.team5.super_cute.crocodile.config.TickerConfig.SEVERITY_DIVISOR
 import static de.team5.super_cute.crocodile.config.TickerConfig.VEHICLE_BASE_PRIORITY;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import de.team5.super_cute.crocodile.config.LiveDataConfig;
 import de.team5.super_cute.crocodile.util.StateCalculator;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import javax.persistence.Column;
@@ -38,8 +38,9 @@ import org.hibernate.annotations.Proxy;
 @Entity
 @Table(name = "vehicle")
 @Proxy(lazy = false)
+@JsonTypeName("vehicle")
 public class Vehicle extends IdentifiableObject implements Serializable, Feedbackable, Stateable,
-    TickerItemable {
+    TickerItemable, ServiceTargetObject {
 
   @Column
   private Integer capacity;

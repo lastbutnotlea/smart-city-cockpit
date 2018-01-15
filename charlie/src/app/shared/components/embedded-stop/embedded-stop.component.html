@@ -1,0 +1,11 @@
+
+  <h4 class="text-lg-left">
+    <div [ngClass]="{'color-fine': stop.state === 'FINE',
+     'color-problematic': stop.state === 'PROBLEMATIC',
+     'color-critical': stop.state === 'CRITICAL' }">
+      <i class="fa fa-lightbulb-o fa-2x float-right small-padding-right" aria-hidden="true"></i>
+    </div>
+    <i class="fa fa-map-marker fa-2x float-left small-padding-left text-primary"></i>
+    <label class="padding-emb-box-headline">Stop</label>
+  </h4>
+  <p>ID: {{stop.id}}</p>
