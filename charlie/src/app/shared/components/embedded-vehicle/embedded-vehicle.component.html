@@ -16,6 +16,6 @@
   <p> <label class="text-secondary">Temperature: </label> {{vehicle.temperature}}</p>
   <div *ngFor="let defect of vehicle.defects; let i=index">
     <label class="text-secondary">Defects: </label>
+    <label *ngIf="i>0">,</label>
     <label> {{defect}}</label>
-    <label *ngIf="i+1 < vehicle.defects.length">, </label>
   </div>
