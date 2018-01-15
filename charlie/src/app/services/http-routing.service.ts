@@ -11,6 +11,7 @@ import 'rxjs/add/operator/map';
 import { LinePositionData } from '../shared/data/line-position-data';
 import {FeedbackData} from '../shared/data/feedback-data';
 import {AnnouncementData} from '../shared/data/announcement-data';
+import {LineForStopData} from "../shared/data/LineForStopData";
 
 @Injectable()
 export class HttpRoutingService {
@@ -77,6 +78,10 @@ export class HttpRoutingService {
 
   public getStops(): Observable<StopData[]> {
     return this.http.get<StopData[]>(this.urlBuilder.getStopsUrl());
+  }
+
+  public getLineForStop(stopId: string): Observable<LineForStopData[]> {
+    return this.http.get<LineForStopData[]>(this.urlBuilder.getStopDetailsUrl(stopId) + '/lines');
   }
 
   public getMapDataStations(): Observable<any> {
