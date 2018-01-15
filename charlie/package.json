@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "start-prod": "ng serve --prod --env=prod",
+    "start-prod": "ng serve --env=prod",
     "build-dev": "ng build",
     "build-prod": "ng build --prod --env=prod",
     "test": "ng test --single-run --config karma.conf.js",

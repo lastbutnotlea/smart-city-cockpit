@@ -26,6 +26,7 @@ export class AnnouncementMainComponent implements OnInit {
 
   add(): void {
     const modal = this.modalService.open(AnnouncementAddComponent);
+    modal.componentInstance.onAdd(item => this.data.push(item));
   }
 
   stringify(o: any): string {

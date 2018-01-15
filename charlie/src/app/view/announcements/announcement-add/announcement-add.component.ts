@@ -32,6 +32,8 @@ export class AnnouncementAddComponent implements OnInit {
 
   selectedStops: StopData[] = [];
 
+  private callback: (param) => void;
+
   constructor(public activeModal: NgbActiveModal, public dateParser: DateParserService, public http: HttpRoutingService) {
   }
 
@@ -96,10 +98,15 @@ export class AnnouncementAddComponent implements OnInit {
       data => this.activeModal.close('Close click'),
       err => alert('Could not edit trip.' + err)
     );
+    this.callback.apply(announcement);
   }
 
   textChange($event: Event) {
     console.log($event);
     this.text = (<HTMLTextAreaElement> $event.target).value;
+  }
+
+  public onAdd(callback: (param) => void) {
+    this.callback = callback;
   }
 }
