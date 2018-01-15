@@ -6,6 +6,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {ConfirmDeletionComponent} from '../../shared/components/confirm-popup/confirm-deletion.component';
+import {EventEditComponent} from '../event-edit/event-edit.component';
 
 @Component({
   selector: 'app-event-detail-view',
@@ -46,9 +47,9 @@ export class EventDetailComponent implements OnInit {
   }
 
   editEvent(): void {
-    // const modal = this.modalService.open(TripEditComponent);
-    // modal.componentInstance.data = this.trip;
-    // modal.componentInstance.initData();
+    const modal = this.modalService.open(EventEditComponent);
+    modal.componentInstance.data = this.event;
+    modal.componentInstance.initData();
   }
 
   showConfirmModal(): void {

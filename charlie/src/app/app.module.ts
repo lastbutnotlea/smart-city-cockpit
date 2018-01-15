@@ -47,6 +47,7 @@ import {AnnouncementItemComponent} from './view/announcements/announcement-item/
 import {EventsComponent} from './view/events/events.component';
 import {EventDetailComponent} from './view/event-detail/event-detail.component';
 import {EventAddComponent} from './view/event-add/event-add.component';
+import {EventEditComponent} from './view/event-edit/event-edit.component';
 
 @NgModule({
   declarations: [
@@ -87,6 +88,7 @@ import {EventAddComponent} from './view/event-add/event-add.component';
     EventsComponent,
     EventDetailComponent,
     EventAddComponent,
+    EventEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -115,6 +117,7 @@ import {EventAddComponent} from './view/event-add/event-add.component';
     ServiceRequestEditComponent,
     AnnouncementAddComponent,
     EventAddComponent,
+    EventEditComponent,
   ]
 })
 export class AppModule {
