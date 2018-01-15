@@ -42,10 +42,10 @@ public class StopController extends BaseController<Stop> {
     List<LineForStopData> lineForStopData = new ArrayList<>();
     for (Line line:lines) {
       if(line.getStopsInbound().stream().anyMatch(s -> s.getId().equals(id))){
-        lineForStopData.add(new LineForStopData(true, line.getId()));
+        lineForStopData.add(new LineForStopData(true, line.getName()));
       }
       if(line.getStopsOutbound().stream().anyMatch(s -> s.getId().equals(id))){
-        lineForStopData.add(new LineForStopData(false, line.getId()));
+        lineForStopData.add(new LineForStopData(false, line.getName()));
       }
     }
     return lineForStopData;

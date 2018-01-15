@@ -13,6 +13,7 @@ import {FeedbackData} from '../shared/data/feedback-data';
 import {AnnouncementData} from '../shared/data/announcement-data';
 import {EventData} from '../shared/data/event-data';
 import {PartyData} from '../shared/data/party-data';
+import {LineForStopData} from "../shared/data/LineForStopData";
 
 @Injectable()
 export class HttpRoutingService {
@@ -79,6 +80,10 @@ export class HttpRoutingService {
 
   public getStops(): Observable<StopData[]> {
     return this.http.get<StopData[]>(this.urlBuilder.getStopsUrl());
+  }
+
+  public getLineForStop(stopId: string): Observable<LineForStopData[]> {
+    return this.http.get<LineForStopData[]>(this.urlBuilder.getStopDetailsUrl(stopId) + '/lines');
   }
 
   public getMapDataStations(): Observable<any> {
