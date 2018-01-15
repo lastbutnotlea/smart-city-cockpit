@@ -1,0 +1,35 @@
+.no-m-left {
+  margin-left: 0 !important;
+}
+
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
+table {
+  flex-grow: 1;
+  margin-bottom: 0;
+}
+
+thead, tbody, tr, td, th { display: block; }
+
+thead th {
+  height: 50px;
+  text-align: left;
+  width: 14% !important;
+}
+
+tbody {
+  height: 100px;
+}
+
+thead {
+  /* fallback */
+  width: 100%;
+}
+
+
+tbody td, thead th {
+  width: 14.2857142857%;
+  float: left;
+}
