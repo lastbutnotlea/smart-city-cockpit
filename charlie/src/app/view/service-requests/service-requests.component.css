@@ -14,7 +14,6 @@ table {
 thead, tbody, tr, td, th { display: block; }
 
 thead th {
-  height: 50px;
   text-align: left;
   width: 14% !important;
 }
