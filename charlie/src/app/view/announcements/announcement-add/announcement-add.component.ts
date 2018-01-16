@@ -48,7 +48,6 @@ export class AnnouncementAddComponent implements OnInit {
   selectedStops: Set<StopData> = new Set();
 
   private callback: (param: AnnouncementData) => void;
-
   constructor(public activeModal: NgbActiveModal, public dateParser: DateParserService, public http: HttpRoutingService) {
   }
 
@@ -115,7 +114,7 @@ export class AnnouncementAddComponent implements OnInit {
       data => {
         this.activeModal.close('Close click');
         announcement.id = data.id;
-        this.callback.apply(announcement);
+        this.callback(announcement);
       },
       err => alert('Could not edit trip.' + err)
     );
