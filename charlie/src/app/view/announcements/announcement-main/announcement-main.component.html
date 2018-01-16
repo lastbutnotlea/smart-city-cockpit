@@ -1,9 +1,16 @@
-<h3 class="text-center">{{title}}</h3>
-
-<div class="no-float m-3">
-  <button class="btn btn-outline-secondary" (click)="add()">Add</button>
+<div *ngIf="!loaded">
+  <h3>Loading...</h3>
 </div>
+<div *ngIf="loaded">
+  <h3 class="text-center">{{title}}</h3>
 
-<div *ngFor="let announcement of data">
-  <app-announcement-item [data]="announcement" class="bounding-box"></app-announcement-item>
+  <div class="d-flex flex-column scrollable container">
+    <ng-container *ngFor="let announcement of data">
+      <app-announcement-item class="flex-1" [data]="announcement"></app-announcement-item>
+    </ng-container>
+  </div>
+
+  <div class="no-float m-3 no-m-left">
+    <button class="btn btn-outline-primary no-float" (click)="add()">Add new Announcement</button>
+  </div>
 </div>
