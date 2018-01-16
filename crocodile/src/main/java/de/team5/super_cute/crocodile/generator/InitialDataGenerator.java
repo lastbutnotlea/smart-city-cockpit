@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import javax.annotation.PostConstruct;
@@ -51,7 +52,7 @@ public class InitialDataGenerator {
         tripData);
     LoggerFactory.getLogger(getClass())
         .info("Started initialization");
-    ArrayList<Line> lines = new TpDataConnector().getLines(LINEIDS);
+    List<Line> lines = new TpDataConnector().getLines(LINEIDS);
     LocalDateTime from = LocalDateTime.now().minusMinutes(INITIALIZE_SINCE_MINUTES);
     LocalDateTime to = LocalDateTime.now().plusMinutes(INITIALIZE_FOR_MINUTES);
     generateTripsAndVehicles(from, to, lines);
@@ -60,12 +61,11 @@ public class InitialDataGenerator {
   }
 
   public void generateTripsAndVehicles(LocalDateTime from, LocalDateTime to,
-      ArrayList<Line> lines) {
+      List<Line> lines) {
     int inboundPointer;
     int outboundPointer;
     RestTemplate rt = new RestTemplate();
     Map<String, Object> params = new HashMap<>();
-    lines:
     for (int x = 0; x < lines.size(); x++) {
       try {
         Line line = lines.get(x);

@@ -2,20 +2,20 @@
   <h3>Loading...</h3>
 </div>
 
-<div *ngIf="isLoaded()">
+<div *ngIf="isLoaded()" class="fit-screen d-flex flex-column">
 
   <h3 class="text-center">
     <div [ngClass]="{'color-fine': trip.vehicle.state === 'FINE',
        'color-problematic': trip.vehicle.state === 'PROBLEMATIC',
        'color-critical': trip.vehicle.state === 'CRITICAL' }">
-      <i class="fa fa-lightbulb-o fa-2x float-right small-padding-right"
+      <i class="fa fa-lightbulb-o fa-3x float-right padding-right-20"
          aria-hidden="true"></i>
     </div>
-    Trip Details
+    Details <label class="text-primary"> {{trip.id}} </label>
   </h3>
-  <h6 class="text-center margin-bottom">Trip ID: {{trip.id}}</h6>
 
-  <div class="no-float margin-bottom">
+  <div class="no-float margin-bottom-30">
+    <button class="btn btn-outline-secondary" (click)="goBack()">Back</button>
     <button class="btn btn-outline-primary" (click)="editStops()">Edit Stops or Vehicle</button>
     <button class="btn btn-outline-primary" (click)="editDepartureTime()">Edit Departure Time
     </button>
@@ -26,7 +26,7 @@
     <!-- stops -->
     <div class="flex-3 bounding-box">
       <h4 class="text-lg-left">
-        <i class="fa fa-map-marker fa-2x float-left small-padding-left text-primary"></i>
+        <i class="fa fa-map-marker fa-2x float-left padding-left-5 text-primary"></i>
         <label class="padding-emb-box-headline">Stops</label>
       </h4>
       <p *ngFor="let stop of trip.stops">
@@ -35,7 +35,7 @@
         <span [ngClass]="{'color-fine': stop.state === 'FINE',
        'color-problematic': stop.state === 'PROBLEMATIC',
        'color-critical': stop.state === 'CRITICAL' }">
-        <i class="fa fa-lightbulb-o float-right small-padding-right"
+        <i class="fa fa-lightbulb-o  fa-2x float-right padding-right-20"
            aria-hidden="true"></i>
       </span>
       </p>
@@ -50,7 +50,4 @@
     </div>
   </div>
 
-  <div class="no-float big-padding-top">
-    <button class="btn btn-outline-secondary" (click)="goBack()">Back To Trips</button>
-  </div>
 </div>

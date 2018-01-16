@@ -1,0 +1,61 @@
+<h3 class="text-center">{{title}}</h3>
+<button class="btn btn-outline-primary no-float margin-bottom" (click)="addServiceRequest()">Add</button>
+
+<div class="d-flex">
+  <app-filter-group-view></app-filter-group-view>
+
+  <div *ngIf="loaded" class="container d-flex flex-column">
+    <div class="row flex-nowrap" id="table-head">
+      <div class="col p-2 m-1 bg-secondary">Id</div>
+      <div class="col p-2 m-1 bg-secondary">Name</div>
+      <div class="col p-2 m-1 bg-secondary">Type</div>
+      <div class="col p-2 m-1 bg-secondary">Target</div>
+      <div class="col p-2 m-1 bg-secondary">Status</div>
+      <div class="col p-2 m-1 bg-secondary">DueDate</div>
+      <div class="col p-2 m-1 bg-secondary">CompletionDate</div>
+      <div class="col p-2 m-1 bg-secondary">Description</div>
+      <div class="col p-2 m-1 bg-secondary">Feedback</div>
+      <div class="col p-2 m-1 bg-secondary">Priority</div>
+    </div>
+    <div class="row" style="overflow-y: auto; height: 100%">
+      <ng-container *ngFor="let serviceRequest of filterGroup.getFiltered(serviceRequests)">
+        <div class="col p-2 m-1 bg-light">
+          <a routerLink="{{serviceRequest.id}}">
+            {{ serviceRequest.id }}
+          </a>
+        </div>
+        <div class="col p-2 m-1 bg-light">{{ serviceRequest.name }}</div>
+        <div class="col p-2 m-1 bg-light">{{ serviceRequest.type }}</div>
+        <div class="col p-2 m-1 bg-light">{{ serviceRequest.target }}</div>
+        <div class="col p-2 m-1 bg-light">{{ serviceRequest.status }}</div>
+        <div class="col p-2 m-1 bg-light">{{ serviceRequest.dueDate }}</div>
+        <div class="col p-2 m-1 bg-light">{{ serviceRequest.completionDate }}</div>
+        <div class="col p-2 m-1 bg-light">
+          <div *ngFor="let description of serviceRequest.serviceRequestDescription">
+            {{description.text}}
+          </div>
+        </div>
+        <div class="col p-2 m-1 bg-light">
+          <div *ngFor="let feedback of serviceRequest.feedbacks">
+            {{feedback.messages}}
+          </div>
+        </div>
+        <div class="col p-2 m-1 bg-light">
+          <span [ngClass]="{'color-fine': serviceRequest.priority === 'FINE',
+           'color-problematic': serviceRequest.priority === 'PROBLEMATIC',
+          'color-critical': serviceRequest.priority === 'CRITICAL' }">
+            <i class="fa fa-lightbulb-o" aria-hidden="true"></i>
+          </span>
+        </div>
+        <div class="w-100"></div>
+      </ng-container>
+    </div>
+
+    <div class="no-float m-3">
+      <button class="btn btn-outline-secondary" (click)="add()">Add new serviceRequest</button>
+    </div>
+  </div>
+  <div *ngIf="!loaded">
+    <h3>Loading...</h3>
+  </div>
+</div>

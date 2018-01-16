@@ -1,43 +1,52 @@
-<h3 class="text-center margin-bottom">{{title}}</h3>
-<button class="btn btn-outline-primary no-float margin-bottom" (click)="addTrip()">Add</button>
+<div class="d-flex flex-column fit-screen">
+  <h3 class="text-center m-3">Trips</h3>
 
-<app-filter-group-view></app-filter-group-view>
+  <div *ngIf="!isLoaded()">
+    <h3>Loading...</h3>
+  </div>
 
-<div class="scrollable">
-  <table class="table table-width">
-    <thead>
-    <tr>
-      <th>Trip-ID</th>
-      <th>Vehicle-ID</th>
-      <th nowrap>Vehicle type</th>
-      <th>Line-ID</th>
-      <th></th>
-      <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr *ngFor="let trip of filterGroup.getFiltered(trips)">
-      <td>
-        <a routerLink="detail/{{trip.id}}">
-          {{ trip.id }}
-        </a>
-      </td>
-      <td>{{ trip.vehicle.id }}</td>
-      <td>{{ trip.vehicle.type }}</td>
-      <td>{{ trip.line.name }}</td>
-        <td>
+
+  <div class="d-flex flex-row fit-screen">
+    <div class="fit-screen">
+      <app-filter-group-view></app-filter-group-view>
+    </div>
+    <div class="d-flex flex-grow-1 fit-screen">
+      <table class="table fit-screen d-flex flex-column">
+        <thead class="flex-grow-1">
+        <tr>
+          <th>Trip-ID</th>
+          <th>Vehicle-ID</th>
+          <th nowrap>Vehicle type</th>
+          <th>Line-ID</th>
+          <th>State</th>
+          <th></th>
+        </tr>
+        </thead>
+        <tbody class="d-flex flex-column flex-grow-1 fit-screen">
+        <tr *ngFor="let trip of filterGroup.getFiltered(trips)">
+          <td>
+            <a routerLink="detail/{{trip.id}}">
+              {{ trip.id }}
+            </a>
+          </td>
+          <td>{{ trip.vehicle.id }}</td>
+          <td>{{ trip.vehicle.type }}</td>
+          <td>{{ trip.line.name }}</td>
+          <td>
           <span [ngClass]="{'color-fine': trip.vehicle.state === 'FINE',
            'color-problematic': trip.vehicle.state === 'PROBLEMATIC',
           'color-critical': trip.vehicle.state === 'CRITICAL' }">
             <i class="fa fa-lightbulb-o" aria-hidden="true"></i>
           </span>
-        </td>
-      <td><i class="fa fa-trash fa-2x text-primary"></i></td>
-    </tr>
-    </tbody>
-  </table>
+          </td>
+          <td><i class="fa fa-trash fa-2x text-primary"></i></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-  <div *ngIf="!isLoaded()">
-    <h3>Loading...</h3>
+  <div class="no-float m-3 no-m-left">
+    <button class="btn btn-outline-primary no-float" (click)="addTrip()">Add new trip</button>
   </div>
 </div>

@@ -4,7 +4,7 @@ import { FilterComponent } from '../filter/filter.component';
 @Component({
   selector: 'app-filter-group-view',
   templateUrl: './filter-group.component.html',
-  styleUrls: ['./filter-group.component.css'],
+  styleUrls: ['./filter-group.component.css',],
 })
 export class FilterGroupComponent {
 

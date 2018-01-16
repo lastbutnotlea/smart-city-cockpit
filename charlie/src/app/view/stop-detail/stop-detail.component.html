@@ -2,21 +2,47 @@
   <h3>Loading...</h3>
 </div>
 
-<div *ngIf="isLoaded()">
+<div class="fit-screen d-flex flex-column" *ngIf="isLoaded()">
 
   <h3 class="text-center">
     <div [ngClass]="{'color-fine': stop.state === 'FINE',
        'color-problematic': stop.state === 'PROBLEMATIC',
        'color-critical': stop.state === 'CRITICAL' }">
-      <i class="fa fa-lightbulb-o fa-2x float-right small-padding-right" aria-hidden="true"></i>
+      <i class="fa fa-lightbulb-o fa-2x float-right padding-right-20" aria-hidden="true"></i>
     </div>
     {{title}}
     <label class="text-primary">{{stop.commonName}}</label>
   </h3>
-  <h6 class="text-center margin-bottom">Stop ID: {{stop.id}}</h6>
-  <h6 class="text-center margin-bottom">People waiting: {{stop.peopleWaiting}}</h6>
+  <div class="no-float margin-bottom-30">
+    <button class="btn btn-outline-secondary" (click)="goBack()">Back</button>
+  </div>
 
-  <div class="no-float big-padding-top">
-    <button class="btn btn-outline-secondary" (click)="goBack()">Back To Line Details</button>
+  <div class="flex-1 bounding-box">
+    <h4 class="text-lg-left">
+      <div [ngClass]="{'color-fine': stop.state === 'FINE',
+     'color-problematic': stop.state === 'PROBLEMATIC',
+     'color-critical': stop.state === 'CRITICAL' }">
+        <i class="fa fa-lightbulb-o fa-2x float-right" aria-hidden="true"></i>
+      </div>
+      <i class="fa fa-map-marker fa-2x float-left padding-left-5 text-primary"></i>
+      <label class="padding-emb-box-headline">Stop</label>
+    </h4>
+
+    <p class="text-primary"><label class="text-secondary">ID: </label> {{stop.id}}</p>
+    <p><label class="text-secondary">People waiting: </label> {{stop.peopleWaiting}}</p>
+    <div>
+      <label *ngIf="lineForStopDataInbound.length>0" class="text-secondary">Lines inbound:</label>
+      <label *ngFor="let line of lineForStopDataInbound; let i=index">
+        <label *ngIf="i>0">,</label>
+        <label>{{line.line}}</label>
+      </label>
+    </div>
+    <div>
+      <label *ngIf="lineForStopDataOutbound.length>0" class="text-secondary">Lines outbound:</label>
+      <label *ngFor="let line of lineForStopDataOutbound; let i=index">
+        <label *ngIf="i>0">,</label>
+        <label>{{line.line}}</label>
+      </label>
+    </div>
   </div>
 </div>
