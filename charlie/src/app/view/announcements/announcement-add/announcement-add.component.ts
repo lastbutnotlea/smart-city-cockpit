@@ -4,7 +4,10 @@ import {now} from '../../../shared/data/dates';
 import {DateParserService} from '../../../services/date-parser.service';
 import {StopData} from '../../../shared/data/stop-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
-import {DropdownValue, toDropdownItems} from '../../../shared/components/dropdown/dropdown.component';
+import {
+  DropdownValue,
+  toDropdownItems
+} from '../../../shared/components/dropdown/dropdown.component';
 import {LineData} from '../../../shared/data/line-data';
 import {AnnouncementData} from '../../../shared/data/announcement-data';
 
@@ -19,9 +22,21 @@ export class AnnouncementAddComponent implements OnInit {
   from: Date = new Date(now);
   to: Date = new Date(now);
 
-  fromTime: NgbTimeStruct = {hour: now.getHours(), minute: now.getMinutes(), second: now.getSeconds()};
-  fromDate: NgbDateStruct = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
-  toTime: NgbTimeStruct = {hour: now.getHours(), minute: now.getMinutes(), second: now.getSeconds()};
+  fromTime: NgbTimeStruct = {
+    hour: now.getHours(),
+    minute: now.getMinutes(),
+    second: now.getSeconds()
+  };
+  fromDate: NgbDateStruct = {
+    year: now.getFullYear(),
+    month: now.getMonth() + 1,
+    day: now.getDate()
+  };
+  toTime: NgbTimeStruct = {
+    hour: now.getHours(),
+    minute: now.getMinutes(),
+    second: now.getSeconds()
+  };
   toDate: NgbDateStruct = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
 
   availableStops: DropdownValue[] = [];
@@ -30,7 +45,7 @@ export class AnnouncementAddComponent implements OnInit {
   availableLines: DropdownValue[] = [];
   selectedLine: DropdownValue = new DropdownValue(null, 'Select a line');
 
-  selectedStops: StopData[] = [];
+  selectedStops: Set<StopData> = new Set();
 
   private callback: (param: AnnouncementData) => void;
 
@@ -72,7 +87,7 @@ export class AnnouncementAddComponent implements OnInit {
   }
 
   addSelectedStop(): void {
-    this.selectedStops.push(this.selectedStop.value);
+    if (this.selectedStop.value != null) this.selectedStops.add(this.selectedStop.value);
   }
 
   addSelecedLine(): void {
@@ -81,17 +96,19 @@ export class AnnouncementAddComponent implements OnInit {
   }
 
   addSelecedLineInbound(): void {
-    (<LineData> this.selectedLine.value).stopsInbound.forEach(stop => this.selectedStops.push(stop));
+    if (this.selectedLine.value != null)
+      (<LineData> this.selectedLine.value).stopsInbound.forEach(stop => this.selectedStops.add(stop));
   }
 
   addSelecedLineOutbound(): void {
-    (<LineData> this.selectedLine.value).stopsOutbound.forEach(stop => this.selectedStops.push(stop));
+    if (this.selectedLine.value != null)
+      (<LineData> this.selectedLine.value).stopsOutbound.forEach(stop => this.selectedStops.add(stop));
   }
 
   confirm(): void {
     let announcement: AnnouncementData = new AnnouncementData();
     announcement.text = this.text;
-    announcement.stops = this.selectedStops;
+    announcement.stops = Array.from(this.selectedStops);
     announcement.validFrom = this.from;
     announcement.validTo = this.to;
     this.http.addAnnouncement(announcement).subscribe(

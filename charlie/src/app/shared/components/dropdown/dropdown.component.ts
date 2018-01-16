@@ -36,7 +36,7 @@ export class DropdownComponent implements OnInit {
 }
 
 export function toDropdownItems(values: any[], label: (any) => string): DropdownValue[] {
-  return values.map(value => this.toDropdownItem(value, label));
+  return values.map(value => toDropdownItem(value, label));
 }
 
 export function toDropdownItem(value: any, label: (any) => string): DropdownValue {
