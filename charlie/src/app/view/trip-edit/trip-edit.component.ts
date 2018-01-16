@@ -58,23 +58,23 @@ export class TripEditComponent implements OnInit {
     this.data.stops = this.selected.stops;
     this.activeModal.close('Close click');
     this.http.editTrip(this.data).subscribe(
-      // data => {
-      //   // get trips to refresh the trip detail data in trip detail view
-      //   this.http.getTripDetails(this.data.id).subscribe(
-      //     trip => {
-      //       // copy new data into data object
-      //       this.data.line = Object.assign(new LineData(), trip.line);
-      //       this.data.vehicle = Object.assign(new VehicleData, trip.vehicle);
-      //       this.data.stops = [];
-      //       for(const stop of trip.stops) {
-      //         this.data.stops.push(stop);
-      //       }
-      //       this.data.stops = this.stopSortService.sortStops(this.data.stops);
-      //     },
-      //     err => console.log('Could not fetch trip data!')
-      //   );
-      // },
-      // err => console.log('Could not edit trip.')
+      data => {
+        // get trips to refresh the trip detail data in trip detail view
+        this.http.getTripDetails(this.data.id).subscribe(
+          trip => {
+            // copy new data into data object
+            this.data.line = Object.assign(new LineData(), trip.line);
+            this.data.vehicle = Object.assign(new VehicleData, trip.vehicle);
+            this.data.stops = [];
+            for(const stop of trip.stops) {
+              this.data.stops.push(stop);
+            }
+            this.data.stops = this.stopSortService.sortStops(this.data.stops);
+          },
+          err => console.log('Could not fetch trip data!')
+        );
+      },
+      err => console.log('Could not edit trip.')
     );
   }
 

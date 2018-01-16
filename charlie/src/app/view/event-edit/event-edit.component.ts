@@ -107,52 +107,52 @@ export class EventEditComponent implements OnInit {
     this.data.priority = this.priority.value;
     this.data.startTime = this.selected.startTime;
     this.data.endTime = this.selected.endTime;
-    this.data.appointmentInvolvedParties = new Array(new PartyData('', this.party.value));
+    this.data.appointmentInvolvedParties = new Array(this.party.value);
     this.data.appointmentNotes = this.selected.appointmentNotes;
 
     this.activeModal.close('Close click');
     this.http.editEvent(this.data).subscribe(
-      data => {
-        // get event details to refresh event detail data in event detail view
-        this.http.getEventDetails(this.data.id).subscribe(
-          event => {
-
-            //waruuum muss ich das machen? vgl. trip-edit
-            //stehen in data nicht automatisch die richtigen daten drin???
-
-            this.selected.subject = event.subject;
-            this.selected.priority = event.priority;
-            this.selected.startTime = this.data.startTime;
-            this.selected.endTime = this.data.endTime;
-            this.selected.appointmentInvolvedParties = [];
-            for(const party of this.data.appointmentInvolvedParties) {
-              this.selected.appointmentInvolvedParties.push(party);
-            }
-            this.selected.appointmentNotes = [];
-            let allNotes = '';
-            for(const note of this.data.appointmentNotes) {
-              allNotes += note.text;
-            }
-            let newC4CNote = new C4CNotes();
-            newC4CNote.id = '';
-            newC4CNote.text = allNotes;
-            this.selected.appointmentNotes.push(newC4CNote);
-
-
-
-            // copy new data into data object
-            this.data.line = Object.assign(new LineData(), trip.line);
-            this.data.vehicle = Object.assign(new VehicleData, trip.vehicle);
-            this.data.stops = [];
-            for(const stop of trip.stops) {
-              this.data.stops.push(stop);
-            }
-            this.data.stops = this.stopSortService.sortStops(this.data.stops);
-          },
-          err => console.log('Could not fetch event data!')
-        );
-      },
-      err => console.log('Could not edit event.')
+      // data => {
+      //   // get event details to refresh event detail data in event detail view
+      //   this.http.getEventDetails(this.data.id).subscribe(
+      //     event => {
+      //
+      //       //waruuum muss ich das machen? vgl. trip-edit
+      //       //stehen in data nicht automatisch die richtigen daten drin???
+      //
+      //       this.selected.subject = event.subject;
+      //       this.selected.priority = event.priority;
+      //       this.selected.startTime = this.data.startTime;
+      //       this.selected.endTime = this.data.endTime;
+      //       this.selected.appointmentInvolvedParties = [];
+      //       for(const party of this.data.appointmentInvolvedParties) {
+      //         this.selected.appointmentInvolvedParties.push(party);
+      //       }
+      //       this.selected.appointmentNotes = [];
+      //       let allNotes = '';
+      //       for(const note of this.data.appointmentNotes) {
+      //         allNotes += note.text;
+      //       }
+      //       let newC4CNote = new C4CNotes();
+      //       newC4CNote.id = '';
+      //       newC4CNote.text = allNotes;
+      //       this.selected.appointmentNotes.push(newC4CNote);
+      //
+      //
+      //
+      //       // copy new data into data object
+      //       this.data.line = Object.assign(new LineData(), trip.line);
+      //       this.data.vehicle = Object.assign(new VehicleData, trip.vehicle);
+      //       this.data.stops = [];
+      //       for(const stop of trip.stops) {
+      //         this.data.stops.push(stop);
+      //       }
+      //       this.data.stops = this.stopSortService.sortStops(this.data.stops);
+      //     },
+      //     err => console.log('Could not fetch event data!')
+      //   );
+      // },
+      // err => console.log('Could not edit event.')
     );
   }
 
