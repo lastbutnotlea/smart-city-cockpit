@@ -39,6 +39,6 @@ public class TickerItemController extends BaseController<TickerItem> {
   @DeleteMapping("/{id}")
   public String deleteTickerItem(@PathVariable String id) {
     logger.info("Got Request to delete the tickerItem with id " + id);
-    return deleteObject(id);
+    return makeIdToJSON(deleteObject(id));
   }
 }
