@@ -2,6 +2,7 @@ package de.team5.super_cute.crocodile.controller;
 
 import static de.team5.super_cute.crocodile.config.AppConfiguration.API_PREFIX;
 
+import de.team5.super_cute.crocodile.config.C4CConfig;
 import de.team5.super_cute.crocodile.external.SAPC4CConnector;
 import de.team5.super_cute.crocodile.model.Event;
 import java.io.IOException;
@@ -82,11 +83,6 @@ public class EventController {
 
   @GetMapping("/people")
   public List<String> getPeople() {
-    return new ArrayList<String>() {{
-      add("Fußballverein");
-      add("Opernunternehmen");
-      add("Asoziales Netzwerk");
-      add("Zentrum für Anti-Terror-Anschläge");
-    }};
+    return new ArrayList<>(C4CConfig.PARTY_NAME_TO_ID.keySet());
   }
 }
