@@ -14,10 +14,8 @@ import de.team5.super_cute.crocodile.model.Vehicle;
 import de.team5.super_cute.crocodile.model.c4c.FeedbackGroup;
 import de.team5.super_cute.crocodile.util.Helpers;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import javax.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.olingo.odata2.api.batch.BatchException;
@@ -48,7 +46,7 @@ public class ServiceRequestController {
   private VehicleData vehicleData;
   private StopData stopData;
 
-  private List<ServiceRequest> cacheList;
+  //private List<ServiceRequest> cacheList;
 
   @Autowired
   public ServiceRequestController(SAPC4CConnector connector,
@@ -59,7 +57,7 @@ public class ServiceRequestController {
     this.vehicleData = vehicleData;
     this.stopData = stopData;
     this.feedbackData = feedbackData;
-    cacheList = new ArrayList<>();
+    //cacheList = new ArrayList<>();
   }
 
   @GetMapping
@@ -67,7 +65,7 @@ public class ServiceRequestController {
       throws IOException, EdmException, EntityProviderException {
     logger.info("Got Request for all Service Requests");
     List<ServiceRequest> serviceRequests = connector.getServiceRequests();
-    serviceRequests.addAll(cacheList);
+    //serviceRequests.addAll(cacheList);
     return serviceRequests;
   }
 
@@ -75,10 +73,10 @@ public class ServiceRequestController {
   public ServiceRequest getServiceRequest(@PathVariable String id)
       throws IOException, EdmException, EntityProviderException {
     logger.info("Got Request for Service Request with id " + id);
-    Optional<ServiceRequest> serviceR = cacheList.stream().filter(s -> s.getId().equals(id)).findAny();
-    if (serviceR.isPresent()) {
-      return serviceR.get();
-    }
+    //Optional<ServiceRequest> serviceR = cacheList.stream().filter(s -> s.getId().equals(id)).findAny();
+//    if (serviceR.isPresent()) {
+//      return serviceR.get();
+//    }
     ServiceRequest serviceRequest = connector.getServiceRequests().stream()
         .filter(sr -> sr.getId().equals(id)).findAny()
         .orElseThrow(() -> new IllegalArgumentException("No Service Request found for this id."));
@@ -91,8 +89,8 @@ public class ServiceRequestController {
       throws IOException, BatchException {
     logger.info("Got Request to add Service Request: " + serviceRequestInput);
     handleServiceRequestFromFrontend(serviceRequestInput);
-    cacheList.add(serviceRequestInput);
-    // todo connector.putC4CEntity(serviceRequestInput);
+    //cacheList.add(serviceRequestInput);
+    connector.putC4CEntity(serviceRequestInput, Helpers.POST);
     return serviceRequestInput;
   }
 
@@ -100,22 +98,21 @@ public class ServiceRequestController {
   public String deleteServiceRequest(@PathVariable String id)
       throws IOException, EdmException, EntityProviderException {
     logger.info("Got Request to delete Service Request with id " + id);
-    cacheList.removeIf(s -> s.getId().equals(id));
-    return id;
-//    todo return connector.deleteC4CEntity(
-//        connector.getServiceRequests().stream().filter(sr -> sr.getId().equals(id)).findAny()
-//            .orElseThrow(() -> new IllegalArgumentException(
-//                "No Service Request found for the given id: " + id)));
+//    cacheList.removeIf(s -> s.getId().equals(id));
+//    return id;
+    return connector.deleteC4CEntity(
+        connector.getServiceRequests().stream().filter(sr -> sr.getId().equals(id)).findAny()
+            .orElseThrow(() -> new IllegalArgumentException(
+                "No Service Request found for the given id: " + id)));
   }
 
   @PutMapping
   public String editServiceRequest(@RequestBody ServiceRequest serviceRequestInput)
       throws IOException, BatchException, EdmException, EntityProviderException {
     logger.info("Got Request to edit Service Request: " + serviceRequestInput);
-    deleteServiceRequest(serviceRequestInput.getId());
-    addServiceRequest(serviceRequestInput);
-//   todo connector.deleteC4CEntity(serviceRequestInput);
-//    connector.putC4CEntity(serviceRequestInput);
+    //deleteServiceRequest(serviceRequestInput.getId());
+    //addServiceRequest(serviceRequestInput);
+    connector.putC4CEntity(serviceRequestInput, Helpers.PATCH);
     return serviceRequestInput.getId();
   }
 

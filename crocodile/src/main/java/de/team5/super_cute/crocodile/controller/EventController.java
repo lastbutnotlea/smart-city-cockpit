@@ -5,6 +5,7 @@ import static de.team5.super_cute.crocodile.config.AppConfiguration.API_PREFIX;
 import de.team5.super_cute.crocodile.config.C4CConfig;
 import de.team5.super_cute.crocodile.external.SAPC4CConnector;
 import de.team5.super_cute.crocodile.model.Event;
+import de.team5.super_cute.crocodile.util.Helpers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +59,7 @@ public class EventController {
   public String addEvent(@RequestBody Event eventInput)
       throws IOException, BatchException {
     logger.info("Got Request to add Event: " + eventInput);
-    connector.putC4CEntity(eventInput);
+    connector.putC4CEntity(eventInput, Helpers.POST);
     return eventInput.getId();
   }
 
@@ -76,8 +77,7 @@ public class EventController {
   public String editEvent(@RequestBody Event eventInput)
       throws IOException, BatchException, EdmException, EntityProviderException {
     logger.info("Got Request to edit Event: " + eventInput);
-  connector.deleteC4CEntity(eventInput);
-    connector.putC4CEntity(eventInput);
+    connector.putC4CEntity(eventInput, Helpers.PATCH);
     return eventInput.getId();
   }
 

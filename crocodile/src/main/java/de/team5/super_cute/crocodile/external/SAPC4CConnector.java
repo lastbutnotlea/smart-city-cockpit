@@ -239,7 +239,7 @@ public class SAPC4CConnector {
    * @param entity Is written into the SAP C4C System.
    * @return "Success" or "Failure
    */
-  public String putC4CEntity(C4CEntity entity)
+  public String putC4CEntity(C4CEntity entity, String method)
       throws IOException, BatchException {
     List<BatchPart> batchParts = new ArrayList<>();
 
@@ -251,7 +251,7 @@ public class SAPC4CConnector {
     changeSetHeaders.put(CONTENT_ID_HEADER, contentId);
     changeSetHeaders.put(ACCEPT_HEADER, CONTENT_TYPE);
 
-    BatchChangeSetPart changeRequest = BatchChangeSetPart.method("POST")
+    BatchChangeSetPart changeRequest = BatchChangeSetPart.method(method)
         .uri(entity.getCollectionName()).body(serializer.serializeC4CEntityToString(entity))
         .headers(changeSetHeaders).contentId(contentId).build();
     changeSet.add(changeRequest);
