@@ -10,13 +10,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import de.team5.super_cute.crocodile.model.EVehicleType;
 import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Stop;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+
+import java.util.*;
+import java.util.stream.Collectors;
 import javax.validation.constraints.NotNull;
+
 import org.hibernate.validator.constraints.NotEmpty;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestClientException;
@@ -24,32 +22,28 @@ import org.springframework.web.client.RestTemplate;
 
 public class TpDataConnector {
 
-  public ArrayList<Line> getLines(@NotNull @NotEmpty List<String> lineIds) {
-    ArrayList<Line> lines = new ArrayList<Line>();
-    RestTemplate rt = new RestTemplate();
-    for (String id : lineIds) {
-      ArrayList<Stop> stopsInbound = new ArrayList<Stop>();
-      ArrayList<Stop> stopsOutbound = new ArrayList<Stop>();
-      Map<String, Integer> travelTimeInbound;
-      Map<String, Integer> travelTimeOutbound;
+  public List<Line> getLines(@NotNull @NotEmpty List<String> lineIds) {
+    return lineIds.parallelStream().map(id -> {
       try {
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
         params.put("app_id", app_id);
         params.put("app_key", app_key);
+        RestTemplate rt = new RestTemplate();
         JsonNode node = rt.getForObject(
             "https://api.tfl.gov.uk/Line/{id}/Route/Sequence/all?app_id={app_id}&app_key={app_key}",
             JsonNode.class,
             params);
+        List<Stop> stopsInbound = new ArrayList<>();
+        List<Stop> stopsOutbound = new ArrayList<>();
         getStopsFromNode(node, stopsInbound, stopsOutbound);
-        travelTimeInbound = getTravelTimes(node, stopsInbound);
-        travelTimeOutbound = getTravelTimes(node, stopsOutbound);
+        Map<String, Integer> travelTimeInbound = getTravelTimes(node, stopsInbound);
+        Map<String, Integer> travelTimeOutbound = getTravelTimes(node, stopsOutbound);
         // Bus line ids are always only numbers
         EVehicleType type = id.matches("\\d+") ? EVehicleType.BUS : EVehicleType.SUBWAY;
-        lines.add(
-            new Line(node.get("lineName").asText(), stopsInbound,
-                stopsOutbound, travelTimeInbound, travelTimeOutbound,
-                lineColors.get(node.get("lineName").asText()), type));
+        return new Line(node.get("lineName").asText(), stopsInbound,
+            stopsOutbound, travelTimeInbound, travelTimeOutbound,
+            lineColors.get(node.get("lineName").asText()), type);
       } catch (RestClientException e) {
         LoggerFactory.getLogger(getClass())
             .error("Error while accessing Transport-API while creating lines: " + e.getMessage());
@@ -57,12 +51,12 @@ public class TpDataConnector {
         LoggerFactory.getLogger(getClass())
             .error("Error while accessing JsonNode while creating lines: " + e.getMessage());
       }
-    }
-    return lines;
+      return null; // filter this later
+    }).filter(Objects::nonNull).collect(Collectors.toList());
   }
 
   //maps stops to their delay from start-stop
-  private Map<String, Integer> getTravelTimes(JsonNode node, ArrayList<Stop> stops) {
+  private Map<String, Integer> getTravelTimes(JsonNode node, List<Stop> stops) {
     RestTemplate rt = new RestTemplate();
     Map<String, Object> params = new HashMap<>();
     params.put("id", node.get("lineId").asText());
@@ -90,20 +84,18 @@ public class TpDataConnector {
     return travelTime;
   }
 
-  private void getStopsFromNode(JsonNode node, ArrayList<Stop> stopsInbound,
-      ArrayList<Stop> stopsOutbound) throws IllegalArgumentException {
+  private void getStopsFromNode(JsonNode node, List<Stop> stopsInbound,
+      List<Stop> stopsOutbound) throws IllegalArgumentException {
     for (int i = 0; i < node.get("stopPointSequences").size(); i++) {
       //first sequence is inbound, second is outbound
       for (int x = 0; x < node.get("stopPointSequences").get(i).get("stopPoint").size(); x++) {
         //iterate over all stops and create objects
         Random r = new Random(System.currentTimeMillis());
-        Stop stop = new Stop(
-            node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("id")
-                .asText(),
-            node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("name").asText(),
-            node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("lon").asDouble(),
-            node.get("stopPointSequences").get(i).get("stopPoint").get(x).get("lat").asDouble(),
-            r.nextInt(PEOPLE_WAITING_INITIAL_MAX - PEOPLE_WAITING_INITIAL_MIN + 1) + PEOPLE_WAITING_INITIAL_MIN, new HashSet<>());
+        JsonNode stopNode = node.get("stopPointSequences").get(i).get("stopPoint").get(x);
+        Stop stop = new Stop(stopNode.get("id").asText(), stopNode.get("name").asText(),
+            stopNode.get("lon").asDouble(), stopNode.get("lat").asDouble(),
+            r.nextInt(PEOPLE_WAITING_INITIAL_MAX - PEOPLE_WAITING_INITIAL_MIN + 1)
+                + PEOPLE_WAITING_INITIAL_MIN, new HashSet<>());
         if (node.get("stopPointSequences").get(i).get("direction").asText().equals("inbound")) {
           stopsInbound.add(stop);
         } else if (node.get("stopPointSequences").get(i).get("direction").asText()
