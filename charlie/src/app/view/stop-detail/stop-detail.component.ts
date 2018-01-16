@@ -68,13 +68,12 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
     this.setDataSubscription(
       this.http.getStopDetails(this.stop.id).subscribe( data => {
           this.stop = data;
-          this.getLines()
-          this.subscribeToData();
+          this.getLines();
         },
         err =>
           console.log('Could not fetch new stop-data.')
       ));
-
+    this.subscribeToData();
   }
 
 }

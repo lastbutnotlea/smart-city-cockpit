@@ -91,10 +91,10 @@ export class TripComponent extends LiveDataComponent implements OnInit {
     this.setDataSubscription(
     this.http.getTrips().subscribe( data => {
         this.trips = data;
-        this.subscribeToData();
       },
       err =>
         console.log('Could not fetch new line-data.')
     ));
+    this.subscribeToData();
   }
 }

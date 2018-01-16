@@ -24,9 +24,9 @@ export class TickerComponent extends LiveDataComponent implements OnInit {
     this.setDataSubscription(
       this.http.getTickerItems().subscribe(data => {
           this.items = data;
-          this.subscribeToData();
         },
         err => alert(JSON.stringify(err))
       ));
+    this.subscribeToData();
   }
 }
