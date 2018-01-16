@@ -41,9 +41,8 @@
 
       <!-- for vehicles between stops -->
       <p>
-        <!-- TODO: remove comment in line below to always show empty line between stops,
-        if vehicle is between stops, vehicle is displayed in empty line-->
-        <!--&nbsp;-->
+        <!-- This keeps a empty line between stops even if no vehicle is displayed there -->
+        <span class="invisible-text">.</span>
         <!-- vehicle icons -->
         <span class="float-right" *ngFor="let vehicle of linePositionData.positionAfterStops[i].vehiclePositionData">
           <a href="vehicles/{{vehicle.id}}">
