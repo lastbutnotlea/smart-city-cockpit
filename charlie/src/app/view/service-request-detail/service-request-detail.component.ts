@@ -81,10 +81,11 @@ export class ServiceRequestDetailComponent implements OnInit {
   }
 
   hasVehicleTarget(){
-    return this.serviceRequest.target instanceof VehicleData;
+    return this.serviceRequest.target.id.includes('Vehicle');
   }
 
-  hasStopTarget(){
-    return this.serviceRequest.target instanceof StopData;
+  hasTarget(){
+    const test = this.serviceRequest.target !== null;
+    return test;
   }
 }
