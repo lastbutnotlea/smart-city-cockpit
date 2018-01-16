@@ -8,7 +8,8 @@ import { LiveDataComponent } from '../../shared/components/live-data/live-data.c
   selector: 'app-network-view',
   templateUrl: './network.component.html',
   styleUrls: ['./network.component.css',
-    '../../shared/styling/global-styling.css'],
+    '../../shared/styling/global-styling.css',
+    '../../shared/styling/embedded-components.css'],
 })
 
 export class NetworkComponent extends LiveDataComponent implements OnInit {
@@ -23,7 +24,7 @@ export class NetworkComponent extends LiveDataComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.title = 'Network View';
+    this.title = 'Network';
     // get line data
     this.http.getLines().subscribe( data => {
         this.lines = data;

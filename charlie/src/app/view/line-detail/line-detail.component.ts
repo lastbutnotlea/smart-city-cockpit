@@ -13,7 +13,8 @@ import { VehiclePositionData } from '../../shared/data/vehicle-position-data';
   selector: 'app-line-detail-view',
   templateUrl: './line-detail.component.html',
   styleUrls: ['./line-detail.component.css',
-    '../../shared/styling/global-styling.css']
+    '../../shared/styling/global-styling.css',
+    '../../shared/styling/embedded-components.css']
 })
 
 export class LineDetailComponent extends LiveDataComponent implements OnInit {
