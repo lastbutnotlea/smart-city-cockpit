@@ -23,7 +23,7 @@ export class ServiceRequestEditComponent implements OnInit {
 
   selectedPriority: DropdownValue;
   description: string;
-  selectedTime: string = now.toISOString();
+  selectedDate: string = now.toISOString();
   date: NgbDateStruct;
   availFeedback: FeedbackData[];
   selectedFeedback: FeedbackData[];
@@ -41,9 +41,8 @@ export class ServiceRequestEditComponent implements OnInit {
       if(this.data.serviceRequestDescription.length != 0){
         this.description = this.data.serviceRequestDescription[0].text;
       }
-      this.selectedTime = this.data.dueDate;
-      this.date = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
-      this.updateDate();
+      this.selectedDate = this.data.dueDate;
+      this.date = this.dateParser.parseStringToNgbDateStruct(this.selectedDate);
       this.selectedFeedback = [];
       for(let feedback of this.data.feedbacks){
         this.selectedFeedback.push(feedback);
@@ -78,7 +77,7 @@ export class ServiceRequestEditComponent implements OnInit {
 
   editServiceRequest(): void {
     this.data.priority = this.selectedPriority.value;
-    this.data.dueDate = this.selectedTime;
+    this.data.dueDate = this.selectedDate;
     this.data.serviceRequestDescription = [{"id": "", "text": this.description}];
     this.data.feedbacks = this.selectedFeedback;
     console.log(this.data);
@@ -114,11 +113,15 @@ export class ServiceRequestEditComponent implements OnInit {
     console.log(JSON.stringify(this.data.feedbacks));
   }
 
+  /**
+   * Only use selected date if it is not passed already
+   */
   updateDate(): void {
-    this.selectedTime = this.dateParser.parseDate(
-      this.selectedTime,
-      this.date
-    );
+    if(this.dateParser.checkValidDate(this.date)) {
+      this.selectedDate = this.dateParser.parseDate(this.selectedDate,this.date);
+    } else {
+      this.date = this.dateParser.parseStringToNgbDateStruct(this.selectedDate);
+    }
   }
 
   priorityItems(): DropdownValue[] {

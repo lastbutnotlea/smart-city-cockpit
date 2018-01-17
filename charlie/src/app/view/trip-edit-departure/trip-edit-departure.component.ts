@@ -92,18 +92,23 @@ export class TripEditDepartureComponent implements OnInit {
   }
 
   updateDate(): void {
-    this.selectedStop.value.departureTime = this.dateParser.parseDate(
-      this.selectedStop.value.departureTime,
-      this.date
-    );
+    if(this.dateParser.checkValidDate(this.date)) {
+      this.selectedStop.value.departureTime = this.dateParser.parseDate(
+        this.selectedStop.value.departureTime, this.date);
+      this.updateTime();
+    } else {
+      this.date = this.dateParser.parseStringToNgbDateStruct(this.selectedStop.value.departureTime);
+    }
     console.log(this.selectedStop.value.departureTime);
   }
 
   updateTime(): void {
-    this.selectedStop.value.departureTime = this.dateParser.parseTime(
-      this.selectedStop.value.departureTime,
-      this.time
-    );
+    if(this.dateParser.checkValidTime(this.date, this.time)) {
+      this.selectedStop.value.departureTime = this.dateParser.parseTime(
+        this.selectedStop.value.departureTime, this.time);
+    } else {
+      this.time = this.dateParser.parseDateToNgbTimeStruct(new Date());
+    }
     console.log(this.selectedStop.value.departureTime);
   }
 }

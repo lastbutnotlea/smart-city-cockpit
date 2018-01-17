@@ -186,19 +186,20 @@ export class TripAddComponent implements OnInit {
   }
 
   updateDate(): void {
-    this.selectedTime = this.dateParser.parseDate(
-      this.selectedTime,
-      this.date
-    );
-    if (this.displayStops) console.log(this.selected.stops[0].departureTime);
-    else console.log(this.selectedTime);
+    if(this.dateParser.checkValidDate(this.date)) {
+      this.selectedTime = this.dateParser.parseDate(this.selectedTime, this.date);
+      this.updateTime();
+    } else {
+      this.date = this.dateParser.parseStringToNgbDateStruct(this.selectedTime);
+    }
   }
 
   updateTime(): void {
-    this.selectedTime = this.dateParser.parseTime(
-      this.selectedTime,
-      this.time
-    );
+    if(this.dateParser.checkValidTime(this.date, this.time)) {
+      this.selectedTime = this.dateParser.parseTime(this.selectedTime, this.time);
+    } else {
+      this.time = this.dateParser.parseDateToNgbTimeStruct(new Date());
+    }
     if (this.displayStops) console.log(this.selected.stops[0].departureTime);
     else console.log(this.selectedTime);
   }

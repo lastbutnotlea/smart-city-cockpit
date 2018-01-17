@@ -68,21 +68,39 @@ export class AnnouncementAddComponent implements OnInit {
   }
 
   updateFromTime(): void {
-    this.from = this.dateParser.parseNativeTime(this.from, this.fromTime);
+    if(this.dateParser.checkValidTime(this.fromDate, this.fromTime)) {
+      this.from = this.dateParser.parseNativeTime(this.from, this.fromTime);
+    } else {
+      this.fromTime = this.dateParser.parseDateToNgbTimeStruct(new Date());
+    }
   }
 
   updateFromDate(): void {
-    this.from = this.dateParser.parseNativeDate(this.from, this.fromDate);
+    if(this.dateParser.checkValidDate(this.fromDate)) {
+      this.from = this.dateParser.parseNativeDate(this.from, this.fromDate);
+      this.updateFromTime();
+    } else {
+      this.fromDate = this.dateParser.parseDateToNgbDateStruct(this.from);
+    }
   }
 
   updateToTime(): void {
     console.log(this.to.toISOString());
-    this.to = this.dateParser.parseNativeTime(this.to, this.toTime);
+    if(this.dateParser.checkValidTime(this.toDate, this.toTime)) {
+      this.to = this.dateParser.parseNativeTime(this.to, this.toTime);
+    } else {
+      this.toTime = this.dateParser.parseDateToNgbTimeStruct(new Date());
+    }
     console.log(this.to.toISOString());
   }
 
   updateToDate(): void {
-    this.to = this.dateParser.parseNativeDate(this.to, this.toDate);
+    if(this.dateParser.checkValidDate(this.toDate)) {
+      this.to = this.dateParser.parseNativeDate(this.to, this.toDate);
+      this.updateToTime();
+    } else {
+      this.toDate = this.dateParser.parseDateToNgbDateStruct(this.to);
+    }
   }
 
   addSelectedStop(): void {

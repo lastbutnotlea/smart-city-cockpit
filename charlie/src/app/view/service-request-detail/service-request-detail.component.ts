@@ -41,7 +41,10 @@ export class ServiceRequestDetailComponent implements OnInit {
         this.serviceRequest = data;
         this.loaded = true;
       },
-      err => console.log('Could not fetch trip data!')
+      err => {
+        console.log(err);
+        alert('Could not get details of service request.');
+      }
     );
   }
 
