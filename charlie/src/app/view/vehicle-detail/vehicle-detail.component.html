@@ -17,5 +17,14 @@
     <button class="btn btn-outline-danger" (click)="delete()">Delete</button>
   </div>
 
-  <app-embedded-vehicle [vehicle]="vehicle" class="flex-1 bounding-box"></app-embedded-vehicle>
+  <div class="d-flex">
+    <div class="flex-3 bounding-box">
+      <app-embedded-feedback [feedback]="feedback"></app-embedded-feedback>
+    </div>
+
+    <div class="d-flex flex-1 flex-column">
+      <app-embedded-vehicle [vehicle]="vehicle" class="flex-1 bounding-box"></app-embedded-vehicle>
+    </div>
+  </div>
+
 </div>

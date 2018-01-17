@@ -58,20 +58,20 @@ export class ServiceRequestEditComponent implements OnInit {
   }
 
   getFeedbackForTarget(): void {
-    if (this.data.target === null) {
-      console.log('No Target for service request ' + this.data.id);
-      this.availFeedback = [];
-      this.dataEdited = true;
-    } else if(this.data.target.id.includes('Vehicle')){
+    if(this.data.target.identifiableType === "vehicle") {
       this.http.getVehicleFeedback(this.data.target.id).subscribe( data => {
         this.availFeedback = data;
         this.dataEdited = true;
       }, err => console.log('Could not load feedback for vehicle.'));
-    } else {
+    } else if (this.data.target.identifiableType === "stop"){
       this.http.getStopFeedback(this.data.target.id).subscribe( data => {
         this.availFeedback = data;
         this.dataEdited = true;
       }, err => console.log('Could not load feedback for vehicle.'));
+    } else {
+      console.log('No Target for service request ' + this.data.id);
+      this.availFeedback = [];
+      this.dataEdited = true;
     }
   }
 

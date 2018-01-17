@@ -81,11 +81,14 @@ export class ServiceRequestDetailComponent implements OnInit {
   }
 
   hasVehicleTarget(){
-    return this.serviceRequest.target.id.includes('Vehicle');
+    return this.serviceRequest.target.identifiableType === "vehicle";
+  }
+
+  hasStopTarget(){
+    return this.serviceRequest.target.identifiableType === "stop";
   }
 
   hasTarget(){
-    const test = this.serviceRequest.target !== null;
-    return test;
+    return this.serviceRequest.target !== null;
   }
 }
