@@ -13,7 +13,8 @@ import { VehiclePositionData } from '../../shared/data/vehicle-position-data';
   selector: 'app-line-detail-view',
   templateUrl: './line-detail.component.html',
   styleUrls: ['./line-detail.component.css',
-    '../../shared/styling/global-styling.css']
+    '../../shared/styling/global-styling.css',
+    '../../shared/styling/embedded-components.css']
 })
 
 export class LineDetailComponent extends LiveDataComponent implements OnInit {
@@ -23,10 +24,10 @@ export class LineDetailComponent extends LiveDataComponent implements OnInit {
   inboundPositionData: LinePositionData = new LinePositionData();
   outboundPositionData: LinePositionData = new LinePositionData();
 
-  @ViewChild('inbound')
+/*  @ViewChild('inbound')
   lineMapInbound: LineMapComponent;
   @ViewChild('outbound')
-  lineMapOutbound: LineMapComponent;
+  lineMapOutbound: LineMapComponent;*/
 
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
@@ -44,8 +45,8 @@ export class LineDetailComponent extends LiveDataComponent implements OnInit {
     this.http.getLineDetails(lineId).subscribe(
       line => {
         this.line = line;
-        this.lineMapInbound.getLineMap(line, line.stopsInbound);
-        this.lineMapOutbound.getLineMap(line, line.stopsOutbound);
+        /*this.lineMapInbound.getLineMap(line, line.stopsInbound);
+        this.lineMapOutbound.getLineMap(line, line.stopsOutbound);*/
         this.getPositionData();
         // This starts periodical calls for live-data after first data was received
         super.ngOnInit();

@@ -46,6 +46,7 @@ import {AnnouncementAddComponent} from './view/announcements/announcement-add/an
 import {AnnouncementItemComponent} from './view/announcements/announcement-item/announcement-item.component';
 import { EmbeddedFeedbackComponent } from './shared/components/embedded-feedback/embedded-feedback.component';
 import {SkipStopComponent} from "./view/stop-skip/stop-skip";
+import { EmbeddedAnnouncementsComponent } from './shared/components/embedded-announcements/embedded-announcements.component';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,8 @@ import {SkipStopComponent} from "./view/stop-skip/stop-skip";
     AnnouncementMainComponent,
     AnnouncementAddComponent,
     AnnouncementItemComponent,
-    EmbeddedFeedbackComponent
+    EmbeddedFeedbackComponent,
+    EmbeddedAnnouncementsComponent
   ],
   imports: [
     BrowserModule,
