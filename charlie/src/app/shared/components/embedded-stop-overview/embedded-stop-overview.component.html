@@ -10,8 +10,7 @@
       <p>
         <!-- stop icon -->
         <a href="network/stop/{{data.stopId}}">
-          <i class="fa fa-map-marker float-left padding-left-5" [style.color]="color"></i>
-          At {{data.stopName}}
+          {{data.stopName}}
         </a>
         <!-- status icon -->
         <span [ngClass]="{'color-fine': data.stopState === 'FINE',
@@ -42,17 +41,8 @@
 
       <!-- for vehicles between stops -->
       <p>
-        <!-- stop icon -->
-        <a href="network/stop/{{linePositionData.positionAfterStops[i].stopId}}">
-          <i class="fa fa-map-marker float-left padding-left-5"  [style.color]="color"></i>
-          After {{linePositionData.positionAfterStops[i].stopName}}
-        </a>
-
-        <span [ngClass]="{'color-fine': linePositionData.positionAfterStops[i].stopState === 'FINE',
-                'color-problematic': linePositionData.positionAfterStops[i].stopState === 'PROBLEMATIC',
-                'color-critical': linePositionData.positionAfterStops[i].stopState === 'CRITICAL' }">
-          <i class="fa fa-lightbulb-o padding-right-20" aria-hidden="true"></i>
-        </span>
+        <!-- This keeps a empty line between stops even if no vehicle is displayed there -->
+        <span class="invisible-text">.</span>
         <!-- vehicle icons -->
         <span class="float-right" *ngFor="let vehicle of linePositionData.positionAfterStops[i].vehiclePositionData">
           <a href="vehicles/{{vehicle.id}}">

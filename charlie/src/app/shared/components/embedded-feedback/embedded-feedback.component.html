@@ -1,0 +1,16 @@
+
+  <h4 class="text-lg-left">
+    <i class="fa fa-comments-o fa-2x float-left padding-left-5 text-primary"></i>
+    <label class="padding-emb-box-headline">Feedback</label>
+  </h4>
+  <p *ngFor="let data of feedback">
+    <label class="text-secondary">{{data.timestamp}}</label>
+    {{data.message}}
+    <span [ngClass]="{'color-fine': data.rating === 'FINE',
+       'color-problematic': data.rating === 'PROBLEMATIC',
+       'color-critical': data.rating === 'CRITICAL' }">
+        <i class="fa fa-lightbulb-o  fa-2x float-right padding-right-20"
+           aria-hidden="true"></i>
+      </span>
+  </p>
+  <p *ngIf="feedback.length === 0">No Feedback available</p>

@@ -5,5 +5,5 @@
   </h4>
 </div>
 <div *ngFor="let item of items">
-  <app-ticker-item [data]="item" class="background-problematic"></app-ticker-item>
+  <app-ticker-item [data]="item" (onDelete)="removeItem($event)" class="background-problematic"></app-ticker-item>
 </div>
