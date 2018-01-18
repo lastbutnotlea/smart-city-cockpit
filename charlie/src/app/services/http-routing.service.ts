@@ -111,7 +111,7 @@ export class HttpRoutingService {
   }
 
   public processFeedback(feedback: FeedbackData): Observable<any> {
-    return this.http.put(this.urlBuilder.getStopFeedbackUrl(), feedback);
+    return this.http.put(this.urlBuilder.getFeedbackUrl(feedback.id), feedback);
   }
 
   public deleteTrip(tripId: string): Observable<any> {
