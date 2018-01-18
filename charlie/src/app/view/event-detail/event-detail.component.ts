@@ -28,7 +28,7 @@ export class EventDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.title = 'Details';
+    this.title = 'Details Event';
     this.getEvent();
   }
 

@@ -15,9 +15,10 @@
   <div class="d-flex">
     <!-- info about the event -->
     <div class="bounding-box flex-1">
-      <h5 class="text-lg-left">
-        <label class="padding-emb-box-headline">Info</label>
-      </h5>
+      <h4 class="text-lg-left">
+        <i class="fa fa-calendar fa-2x float-left padding-left-5 text-primary"></i>
+        <label class="padding-emb-box-headline">Information</label>
+      </h4>
       <p>Subject: {{event.subject}}</p>
       <p>Priority: {{event.priority}}</p>
       <p>Start Date: {{event.startTime | date:'MM/dd/yyyy HH:mm'}}</p>
@@ -26,9 +27,10 @@
 
     <!-- involved parties -->
     <div class="bounding-box flex-1">
-      <h5 class="text-lg-left">
+      <h4 class="text-lg-left">
+        <i class="fa fa-users fa-2x float-left padding-left-5 text-primary"></i>
         <label class="padding-emb-box-headline">Involved Parties</label>
-      </h5>
+      </h4>
       <p *ngFor="let party of event.appointmentInvolvedParties">
         {{party.partyName}}
       </p>
@@ -36,9 +38,10 @@
 
     <!-- notes -->
     <div class="bounding-box flex-1">
-      <h5 class="text-lg-left">
+      <h4 class="text-lg-left">
+        <i class="fa fa-sticky-note fa-2x float-left padding-left-5 text-primary"></i>
         <label class="padding-emb-box-headline">Notes</label>
-      </h5>
+      </h4>
       <p *ngFor="let note of event.appointmentNotes">
         {{note.text}}
       </p>
