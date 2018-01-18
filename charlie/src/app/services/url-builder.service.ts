@@ -103,6 +103,10 @@ export class UrlBuilderService {
     return this.tickerBaseUrl + '/' + item.id;
   }
 
+  public getVehiclesStateUrl(): string {
+    return this.vehicleBaseUrl + '/state';
+  }
+  
   public getNetworkStateUrl(): string {
     return this.mapBaseUrl + '/state';
   }

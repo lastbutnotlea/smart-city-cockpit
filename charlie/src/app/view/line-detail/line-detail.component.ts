@@ -19,8 +19,8 @@ import { VehiclePositionData } from '../../shared/data/vehicle-position-data';
 
 export class LineDetailComponent extends LiveDataComponent implements OnInit {
 
+  loaded: boolean = false;
   line: LineData;
-
   inboundPositionData: LinePositionData = new LinePositionData();
   outboundPositionData: LinePositionData = new LinePositionData();
 
@@ -47,6 +47,7 @@ export class LineDetailComponent extends LiveDataComponent implements OnInit {
         /*this.lineMapInbound.getLineMap(line, line.stopsInbound);
         this.lineMapOutbound.getLineMap(line, line.stopsOutbound);*/
         this.getPositionData();
+        this.loaded = true;
         // This starts periodical calls for live-data after first data was received
         super.ngOnInit();
       },
@@ -57,12 +58,6 @@ export class LineDetailComponent extends LiveDataComponent implements OnInit {
 
   goBack(): void {
     this.location.back();
-  }
-
-  isLoaded(): boolean {
-    return (this.line != null
-      && this.inboundPositionData.positionAtStops != null
-      && this.outboundPositionData.positionAtStops != null);
   }
 
   getPositionData(): void {

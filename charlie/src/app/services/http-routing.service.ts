@@ -175,6 +175,10 @@ export class HttpRoutingService {
     return this.http.post<any>(this.urlBuilder.getAnnouncements(), announcement);
   }
 
+  public getVehiclesState(): Observable<string> {
+    return this.http.get<string>(this.urlBuilder.getVehiclesStateUrl());
+  }
+
   public getNetworkState(): Observable<string> {
     return this.http.get<string>(this.urlBuilder.getNetworkStateUrl());
   }
