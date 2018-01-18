@@ -39,7 +39,7 @@ export class VehicleAddComponent implements OnInit {
         if(err == null) {
           alert("Could not add vehicle")
         }
-        console.log(err);
+        console.log(JSON.stringify(err));
       });
   }
 

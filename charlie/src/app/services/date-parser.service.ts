@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {NgbDateAdapter, NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
+import {NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 
 @Injectable()
 export class DateParserService {
@@ -26,6 +26,22 @@ export class DateParserService {
     current.setMonth(dateStruct.month - 1);
     current.setDate(dateStruct.day);
     return current;
+  }
+
+  /**
+   * @param {Date} date holds current date
+   * @returns {NgbDateStruct} output, holds date as NgbDateStruct
+   */
+  convertDateToNgbDateStruct(date: Date): NgbDateStruct {
+    return {year: date.getFullYear(), month:date.getMonth() + 1, day: date.getDate()};
+  }
+
+  /**
+   * @param {Date} date holds current date
+   * @returns {NgbTimeStruct} output, holds time of current date as NgbTimeStruct
+   */
+  convertDateToNgbTimeStruct(date: Date): NgbTimeStruct {
+    return {hour: date.getHours(), minute: date.getMinutes(), second: date.getSeconds()};
   }
 
   /**
@@ -57,4 +73,30 @@ export class DateParserService {
     // cuts the last character 'Z' to obtain the right date format
     return date.substr(0, date.length - 2);
   }
+
+  /**
+   * The timeStruct is only valid, if it contains a date that has not passed already
+   * @param {NgbTimeStruct} timeStruct
+   * @returns {boolean}
+   */
+  public isBeforeDate(now: Date, timeStruct: NgbDateStruct): boolean {
+    return(now.getFullYear() < timeStruct.year
+      || (now.getFullYear() === timeStruct.year && now.getMonth()+1 < timeStruct.month)
+      ||(now.getFullYear() === timeStruct.year && now.getMonth()+1 ===  timeStruct.month && now.getDate() <= timeStruct.day));
+  }
+
+  /**
+   * The timeStruct is only valid, if it contains a time that has not passed already
+   * @param {NgbDateStruct} dateStruct
+   * @param {NgbTimeStruct} timeStruct
+   * @returns {boolean}
+   */
+  public isBeforeTime(now: Date, dateStruct: NgbDateStruct, timeStruct: NgbTimeStruct): boolean {
+    // The time can only be invalid for a current date
+    // All times choosen for future dates are valid
+    return this.isBeforeDate(now, dateStruct)
+    && (!(now.getFullYear() === dateStruct.year && now.getMonth()+1 === dateStruct.month && now.getDate() === dateStruct.day)
+      || !(now.getHours() > timeStruct.hour  || (now.getHours() === timeStruct.hour && now.getMinutes() > timeStruct.minute)));
+  }
+
 }
