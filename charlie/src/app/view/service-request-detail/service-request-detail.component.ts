@@ -42,7 +42,7 @@ export class ServiceRequestDetailComponent implements OnInit {
         this.loaded = true;
       },
       err => {
-        console.log(err);
+        console.log(JSON.stringify(err));
         alert('Could not get details of service request.');
       }
     );

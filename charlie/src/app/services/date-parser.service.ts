@@ -96,15 +96,6 @@ export class DateParserService {
     const now: Date = new Date();
     // The time can only be invalid for a current date
     // All times choosen for future dates are valid
-    /*if(now.getFullYear() === dateStruct.year
-      && now.getMonth()+1 === dateStruct.month
-      && now.getDate() === dateStruct.day) {
-      if(now.getHours() > timeStruct.hour
-        || (now.getHours() === timeStruct.hour && now.getMinutes() > timeStruct.minute)) {
-       return false;
-      }
-    }
-    return true;*/
     return !(now.getFullYear() === dateStruct.year && now.getMonth()+1 === dateStruct.month && now.getDate() === dateStruct.day)
       || !(now.getHours() > timeStruct.hour  || (now.getHours() === timeStruct.hour && now.getMinutes() > timeStruct.minute))
   }
