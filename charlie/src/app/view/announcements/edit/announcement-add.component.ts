@@ -17,6 +17,8 @@ import {AnnouncementData} from '../../../shared/data/announcement-data';
   styleUrls: ['./announcement-add.component.css']
 })
 export class AnnouncementAddComponent implements OnInit {
+  state: number = 0;
+
   text: string = "";
 
   validFrom: Date = new Date(now);
@@ -59,5 +61,21 @@ export class AnnouncementAddComponent implements OnInit {
 
   public onAdd(callback: (param: AnnouncementData) => void) {
     this.callback = callback;
+  }
+
+  next(): void {
+    switch (this.state) {
+      case 0:
+      case 1: this.state++; break;
+      case 2: this.confirm(); break;
+    }
+  }
+
+  back(): void {
+    switch (this.state) {
+      case 0: break;
+      case 1:
+      case 2: this.state--; break;
+    }
   }
 }

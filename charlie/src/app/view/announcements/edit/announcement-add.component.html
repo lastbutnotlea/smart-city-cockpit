@@ -7,11 +7,12 @@
   </button>
 </div>
 <div class="modal-body container d-flex flex-column">
-  <app-edit-announcement-text [(text)]="text"></app-edit-announcement-text>
-  <app-edit-announcement-datetime [(from)]="validFrom" [(to)]="validTo"></app-edit-announcement-datetime>
-  <app-edit-announcement-stops [lines]="availableLines" [stops]="availableStops" (selectedStops)="selectedStops"></app-edit-announcement-stops>
+  <app-edit-announcement-text *ngIf="state === 0" [(text)]="text"></app-edit-announcement-text>
+  <app-edit-announcement-datetime *ngIf="state === 1" [(from)]="validFrom" [(to)]="validTo"></app-edit-announcement-datetime>
+  <app-edit-announcement-stops *ngIf="state === 2" [lines]="availableLines" [stops]="availableStops" (selectedStops)="selectedStops"></app-edit-announcement-stops>
 </div>
 <div class="modal-footer">
   <button type="button" class="btn btn-outline-secondary" (click)="activeModal.close('Close click')">Close</button>
-  <button type="button" class="btn btn-outline-primary" (click)="confirm()">Okay</button>
+  <button type="button" class="btn btn-outline-primary" (click)="back()">Back</button>
+  <button type="button" class="btn btn-outline-primary" (click)="next()">{{state === 2? "Confirm" : "Next"}}</button>
 </div>
