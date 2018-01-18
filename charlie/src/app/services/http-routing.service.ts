@@ -1,7 +1,6 @@
 import {LineData} from '../shared/data/line-data';
 import {Observable} from 'rxjs/Observable';
 import {UrlBuilderService} from './url-builder.service';
-import {tap} from 'rxjs/operators';
 import {TripData} from '../shared/data/trip-data';
 import {VehicleData} from '../shared/data/vehicle-data';
 import {Injectable} from '@angular/core';
@@ -157,7 +156,7 @@ export class HttpRoutingService {
   }
 
   public getStopFeedback(stopId: string): Observable<FeedbackData[]> {
-    return this.http.get<FeedbackData[]>(this.urlBuilder.getStopFeedbackUrl(stopId)); 
+    return this.http.get<FeedbackData[]>(this.urlBuilder.getStopFeedbackUrl(stopId));
   }
 
   public getTickerItems(): Observable<TickerData []> {
@@ -174,5 +173,9 @@ export class HttpRoutingService {
 
   public addAnnouncement(announcement: AnnouncementData): Observable<any> {
     return this.http.post<any>(this.urlBuilder.getAnnouncements(), announcement);
+  }
+
+  public getNetworkState(): Observable<string> {
+    return this.http.get<string>(this.urlBuilder.getNetworkStateUrl());
   }
 }

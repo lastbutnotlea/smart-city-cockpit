@@ -22,10 +22,12 @@ export class AnnouncementMainComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.http.getAnnouncements().subscribe(data => {
-      this.data = data;
-      this.loaded = true;
-    }, err => alert('Could not fetch data'));
+    this.http.getAnnouncements().subscribe(
+      data => {
+        this.data = data;
+        this.loaded = true;
+      },
+    err => alert('Could not fetch data'));
   }
 
   add(): void {
