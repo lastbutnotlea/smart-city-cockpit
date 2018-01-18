@@ -16,6 +16,7 @@ import { LiveDataComponent } from '../../shared/components/live-data/live-data.c
 export class VehiclesComponent extends LiveDataComponent implements OnInit {
   title: string = 'Vehicles';
   loaded: boolean = false;
+  state: string = "";
 
   @ViewChild(FilterGroupComponent)
   filterGroup: FilterGroupComponent;
@@ -51,11 +52,20 @@ export class VehiclesComponent extends LiveDataComponent implements OnInit {
     const modal = this.modalService.open(VehicleAddComponent);
   }
 
+  getVehiclesState(): void {
+    this.http.getVehiclesState().subscribe(data => {
+      this.state = data;
+    }, err => {
+      console.log(err);
+    })
+  }
+
   // update vehicles
   refreshData(): void {
     this.setDataSubscription(
       this.http.getVehicles().subscribe( data => {
           this.vehicles = data;
+          this.getVehiclesState();
           this.subscribeToData();
         },
         err =>
