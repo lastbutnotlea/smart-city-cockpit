@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {AnnouncementData} from '../../../shared/data/announcement-data';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {AnnouncementAddComponent} from '../announcement-add/announcement-add.component';
+import {AnnouncementAddComponent} from '../edit/announcement-add.component';
 
 @Component({
   selector: 'app-announcement',

@@ -1,0 +1,28 @@
+<div class="d-flex flex-nowrap m-2">
+  <app-dropdown class="col" [values]="availableStops" [(selected)]="selectedStop"></app-dropdown>
+  <button type="button" class="btn btn-outline-primary" style="flex-grow: 0"
+          (click)="addSelectedStop()">Add stop
+  </button>
+</div>
+<div class="d-flex flex-nowrap m-2">
+  <app-dropdown class="col" [values]="availableLines" [(selected)]="selectedLine"></app-dropdown>
+  <button type="button" class="btn btn-outline-primary" style="flex-grow: 0"
+          (click)="addSelecedLineInbound()">
+    Add inbound
+  </button>
+  <button type="button" class="btn btn-outline-primary" style="flex-grow: 0"
+          (click)="addSelecedLineOutbound()">
+    Add outbound
+  </button>
+  <button type="button" class="btn btn-outline-primary" style="flex-grow: 0"
+          (click)="addSelecedLine()">
+    Add all
+  </button>
+</div>
+<div class="d-flex flex-column m-2">
+  <ng-container *ngFor="let stop of selectedStopSet; let i = index">
+    <label>{{stop.commonName}}</label>
+    <button class="btn btn-outline-secondary" (click)="removeStop(stop)"><i
+      class="fa fa-trash text-primary"></i></button>
+  </ng-container>
+</div>
