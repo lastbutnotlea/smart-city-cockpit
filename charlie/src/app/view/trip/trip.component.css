@@ -40,7 +40,7 @@ thead {
 
 tbody td, thead th {
   /* 100/6 */
-  width: 16.666666666666666666666666%;
+  width: 12.5%;
   float: left;
 }
 
