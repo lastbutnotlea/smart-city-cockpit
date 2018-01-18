@@ -1,16 +1,11 @@
 <div class="d-flex flex-column fit-screen">
   <h3 class="text-center m-3">Trips</h3>
 
-  <div *ngIf="!isLoaded()">
-    <h3>Loading...</h3>
-  </div>
-
-
   <div class="d-flex flex-row fit-screen">
     <div class="fit-screen filter-fully-visible">
       <app-filter-group-view></app-filter-group-view>
     </div>
-    <div class="d-flex flex-grow-1 fit-screen">
+    <div *ngIf="loaded && filterGroup.getFiltered(trips).length > 0" class="d-flex flex-grow-1 fit-screen">
       <table class="table fit-screen d-flex flex-column">
         <thead class="flex-grow-1">
         <tr>
@@ -55,6 +50,12 @@
         </tr>
         </tbody>
       </table>
+    </div>
+    <div *ngIf="!loaded">
+      <h3>Loading...</h3>
+    </div>
+    <div *ngIf="loaded && filterGroup.getFiltered(trips).length == 0">
+      <h3>No trips available</h3>
     </div>
   </div>
 

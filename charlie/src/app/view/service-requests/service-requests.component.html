@@ -4,7 +4,7 @@
 <div class="d-flex">
   <app-filter-group-view></app-filter-group-view>
 
-  <div *ngIf="loaded" class="container d-flex flex-column">
+  <div *ngIf="loaded && filterGroup.getFiltered(serviceRequests).length > 0" class="container d-flex flex-column">
     <div class="row flex-nowrap" id="table-head">
       <div class="col p-2 m-1 bg-secondary">Id</div>
       <div class="col p-2 m-1 bg-secondary">Name</div>
@@ -57,5 +57,8 @@
   </div>
   <div *ngIf="!loaded">
     <h3>Loading...</h3>
+  </div>
+  <div *ngIf="loaded && filterGroup.getFiltered(serviceRequests).length == 0">
+    <h3>No service request available</h3>
   </div>
 </div>

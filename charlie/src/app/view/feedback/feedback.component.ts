@@ -12,6 +12,7 @@ import {FilterComponent} from '../../shared/components/filter/filter.component';
 export class FeedbackComponent implements OnInit {
   title: string = 'Feedback';
   feedback: FeedbackData[] = [];
+  loaded: boolean = false;
 
   @ViewChild(FilterGroupComponent)
   filterGroup: FilterGroupComponent;
@@ -20,7 +21,7 @@ export class FeedbackComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.http.getFeedback().subscribe(data => this.feedback = data);
+    this.http.getFeedback().subscribe(data => {this.feedback = data; this.loaded = true;});
     let ratingFilter: FilterComponent = new FilterComponent();
     ratingFilter.addFilter("Fine", feedback => feedback.rating === "FINE");
     ratingFilter.addFilter("Problematic", feedback => feedback.rating === "PROBLEMATIC");
