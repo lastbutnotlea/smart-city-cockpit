@@ -41,6 +41,7 @@ thead {
 
 
 tbody td, thead th {
+  /* 100/8 */
   width: 12.5%;
   float: left;
 }

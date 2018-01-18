@@ -1,4 +1,4 @@
-.no-m-left {
+.no-margin-left {
   margin-left: 0 !important;
 }
 
@@ -29,6 +29,7 @@ thead {
 
 
 tbody td, thead th {
+  /* 100/7 */
   width: 14.2857142857%;
   float: left;
 }
