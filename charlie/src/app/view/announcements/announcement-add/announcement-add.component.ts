@@ -14,7 +14,8 @@ import {AnnouncementData} from '../../../shared/data/announcement-data';
 @Component({
   selector: 'app-announcement-add',
   templateUrl: './announcement-add.component.html',
-  styleUrls: ['./announcement-add.component.css']
+  styleUrls: ['./announcement-add.component.css',
+    '../../../shared/styling/global-styling.css']
 })
 export class AnnouncementAddComponent implements OnInit {
   text: string = "";
