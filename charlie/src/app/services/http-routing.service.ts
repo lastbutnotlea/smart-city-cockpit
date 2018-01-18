@@ -13,6 +13,7 @@ import {FeedbackData} from '../shared/data/feedback-data';
 import {TickerData} from '../shared/data/ticker-data';
 import {AnnouncementData} from '../shared/data/announcement-data';
 import {LineForStopData} from "../shared/data/LineForStopData";
+import {SkipData} from "../shared/data/SkipData";
 
 @Injectable()
 export class HttpRoutingService {
@@ -145,6 +146,10 @@ export class HttpRoutingService {
 
   public editServiceRequest(serviceRequest: ServiceRequestData): Observable<any> {
     return this.http.put(this.urlBuilder.getServiceRequestsUrl(), serviceRequest);
+  }
+
+  public skipStop(skipData: SkipData): Observable<any> {
+    return this.http.put(this.urlBuilder.getStopsUrl(), skipData);
   }
 
   public deleteServiceRequest(id: string): Observable<any> {

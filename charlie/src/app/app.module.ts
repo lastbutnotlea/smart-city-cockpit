@@ -45,6 +45,7 @@ import {AnnouncementMainComponent} from './view/announcements/announcement-main/
 import {AnnouncementAddComponent} from './view/announcements/announcement-add/announcement-add.component';
 import {AnnouncementItemComponent} from './view/announcements/announcement-item/announcement-item.component';
 import { EmbeddedFeedbackComponent } from './shared/components/embedded-feedback/embedded-feedback.component';
+import {SkipStopComponent} from "./view/stop-skip/stop-skip";
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { EmbeddedFeedbackComponent } from './shared/components/embedded-feedback
     ServiceRequestsComponent,
     ServiceRequestDetailComponent,
     ServiceRequestAddComponent,
+    SkipStopComponent,
     EmbeddedStopComponent,
     ServiceRequestEditComponent,
     AnnouncementMainComponent,
@@ -110,6 +112,7 @@ import { EmbeddedFeedbackComponent } from './shared/components/embedded-feedback
     ServiceRequestAddComponent,
     ServiceRequestEditComponent,
     AnnouncementAddComponent,
+    SkipStopComponent,
   ]
 })
 export class AppModule {

@@ -66,7 +66,7 @@ export class AnnouncementAddComponent implements OnInit {
   }
 
   updateTimes(): void {
-    this.updateFromDate();
+      this.updateFromDate();
     this.updateFromTime();
     this.updateToDate();
     this.updateToTime();

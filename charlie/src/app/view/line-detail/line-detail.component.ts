@@ -36,6 +36,7 @@ export class LineDetailComponent extends LiveDataComponent implements OnInit {
 
   ngOnInit(): void {
     this.getLine();
+    this.loaded = true;
   }
 
   getLine(): void {
@@ -46,7 +47,6 @@ export class LineDetailComponent extends LiveDataComponent implements OnInit {
         this.lineMapInbound.getLineMap(line, line.stopsInbound);
         this.lineMapOutbound.getLineMap(line, line.stopsOutbound);
         this.getPositionData();
-        this.loaded = true;
         // This starts periodical calls for live-data after first data was received
         super.ngOnInit();
       },
