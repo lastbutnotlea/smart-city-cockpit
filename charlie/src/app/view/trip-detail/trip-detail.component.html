@@ -1,8 +1,8 @@
-<div *ngIf="!isLoaded()">
+<div *ngIf="!loaded">
   <h3>Loading...</h3>
 </div>
 
-<div *ngIf="isLoaded()" class="fit-screen d-flex flex-column">
+<div *ngIf="loaded" class="fit-screen d-flex flex-column">
 
   <h3 class="text-center">
     <div [ngClass]="{'color-fine': trip.vehicle.state === 'FINE',
