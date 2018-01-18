@@ -47,6 +47,7 @@ export class AnnouncementAddComponent implements OnInit {
 
   selectedStops: Set<StopData> = new Set();
 
+  private callback: (param: AnnouncementData) => void;
   constructor(public activeModal: NgbActiveModal, public dateParser: DateParserService, public http: HttpRoutingService) {
   }
 
@@ -110,7 +111,11 @@ export class AnnouncementAddComponent implements OnInit {
     announcement.validFrom = this.from;
     announcement.validTo = this.to;
     this.http.addAnnouncement(announcement).subscribe(
-      data => this.activeModal.close('Close click'),
+      data => {
+        this.activeModal.close('Close click');
+        announcement.id = data.id;
+        this.callback(announcement);
+      },
       err => alert('Could not edit trip.' + err)
     );
   }
@@ -118,5 +123,9 @@ export class AnnouncementAddComponent implements OnInit {
   textChange($event: Event) {
     console.log($event);
     this.text = (<HTMLTextAreaElement> $event.target).value;
+  }
+
+  public onAdd(callback: (param: AnnouncementData) => void) {
+    this.callback = callback;
   }
 }

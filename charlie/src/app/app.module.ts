@@ -48,6 +48,7 @@ import {EventsComponent} from './view/events/events.component';
 import {EventDetailComponent} from './view/event-detail/event-detail.component';
 import {EventAddComponent} from './view/event-add/event-add.component';
 import {EventEditComponent} from './view/event-edit/event-edit.component';
+import { EmbeddedFeedbackComponent } from './shared/components/embedded-feedback/embedded-feedback.component';
 
 @NgModule({
   declarations: [
@@ -89,6 +90,7 @@ import {EventEditComponent} from './view/event-edit/event-edit.component';
     EventDetailComponent,
     EventAddComponent,
     EventEditComponent,
+    EmbeddedFeedbackComponent,
   ],
   imports: [
     BrowserModule,
