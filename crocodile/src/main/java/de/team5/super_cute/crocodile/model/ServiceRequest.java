@@ -76,7 +76,7 @@ public class ServiceRequest extends C4CEntity {
   private String targetId;
 
   //@JsonDeserialize(using = IdentifiableObjectDeserializer.class)
-  private ServiceTargetObject target;
+  private ServiceOrFeedbackTargetObject target;
 
   /**
    * The id of the feedbackGroup this service request answers to.
@@ -220,11 +220,11 @@ public class ServiceRequest extends C4CEntity {
     this.targetId = targetId;
   }
 
-  public ServiceTargetObject getTarget() {
+  public ServiceOrFeedbackTargetObject getTarget() {
     return target;
   }
 
-  public void setTarget(ServiceTargetObject target) {
+  public void setTarget(ServiceOrFeedbackTargetObject target) {
     this.target = target;
   }
 

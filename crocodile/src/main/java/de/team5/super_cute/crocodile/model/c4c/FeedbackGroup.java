@@ -2,6 +2,7 @@ package de.team5.super_cute.crocodile.model.c4c;
 
 import de.team5.super_cute.crocodile.model.Feedback;
 import de.team5.super_cute.crocodile.model.IdentifiableObject;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -23,6 +24,7 @@ public class FeedbackGroup extends IdentifiableObject {
   private Set<Feedback> feedbacks;
 
   public FeedbackGroup() {
+    feedbacks = new HashSet<>();
   }
 
   public FeedbackGroup(Set<Feedback> feedbacks) {

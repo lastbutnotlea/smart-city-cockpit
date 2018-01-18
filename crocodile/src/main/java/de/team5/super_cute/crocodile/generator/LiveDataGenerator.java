@@ -42,7 +42,7 @@ import de.team5.super_cute.crocodile.data.TripData;
 import de.team5.super_cute.crocodile.data.VehicleData;
 import de.team5.super_cute.crocodile.model.EState;
 import de.team5.super_cute.crocodile.model.Feedback;
-import de.team5.super_cute.crocodile.model.Feedbackable;
+import de.team5.super_cute.crocodile.model.ServiceOrFeedbackTargetObject;
 import de.team5.super_cute.crocodile.model.Stop;
 import de.team5.super_cute.crocodile.model.Vehicle;
 import de.team5.super_cute.crocodile.service.VehiclePositionService;
@@ -129,7 +129,7 @@ public class LiveDataGenerator {
     return max(min(oldValue + (r.nextInt(changeAmplitude * 2 + 1) - changeAmplitude), max), min);
   }
 
-  private String generateDefect(Feedbackable feedbackable, boolean forStop) {
+  private String generateDefect(ServiceOrFeedbackTargetObject feedbackable, boolean forStop) {
     Random r = new Random(System.currentTimeMillis());
     String defect = null;
     // check whether there are already a lot of defects (we don't need more)
@@ -163,7 +163,7 @@ public class LiveDataGenerator {
     return defect;
   }
 
-  private void removeDefect(Feedbackable feedbackable, boolean forStop) {
+  private void removeDefect(ServiceOrFeedbackTargetObject feedbackable, boolean forStop) {
     Random r = new Random(System.currentTimeMillis());
     if (forStop) {
       if (((Stop) feedbackable).getDefects().size() != 0) {
@@ -181,7 +181,7 @@ public class LiveDataGenerator {
     }
   }
 
-  private void generateValueFeedback(Feedbackable feedbackable, String fieldName) {
+  private void generateValueFeedback(ServiceOrFeedbackTargetObject feedbackable, String fieldName) {
     Random r = new Random(System.currentTimeMillis());
     if (r.nextInt(100) + 1 <= VALUE_FEEDBACK_PERCENTAGE) {
       EState rating = EState.FINE;
@@ -203,7 +203,7 @@ public class LiveDataGenerator {
     }
   }
 
-  private Feedback getValueFeedbackForField(Feedbackable objective, String fieldname, EState rating,
+  private Feedback getValueFeedbackForField(ServiceOrFeedbackTargetObject objective, String fieldname, EState rating,
       Random random) {
     String message = VALUE_FEEDBACK.get(fieldname).get(rating.ordinal())
         .get(random.nextInt(VALUE_FEEDBACK.get(fieldname).get(rating.ordinal()).size()));

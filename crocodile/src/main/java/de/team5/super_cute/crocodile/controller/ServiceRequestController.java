@@ -8,7 +8,7 @@ import de.team5.super_cute.crocodile.data.VehicleData;
 import de.team5.super_cute.crocodile.external.SAPC4CConnector;
 import de.team5.super_cute.crocodile.model.IdentifiableObject;
 import de.team5.super_cute.crocodile.model.ServiceRequest;
-import de.team5.super_cute.crocodile.model.ServiceTargetObject;
+import de.team5.super_cute.crocodile.model.ServiceOrFeedbackTargetObject;
 import de.team5.super_cute.crocodile.model.Stop;
 import de.team5.super_cute.crocodile.model.Vehicle;
 import de.team5.super_cute.crocodile.model.c4c.FeedbackGroup;
@@ -123,13 +123,13 @@ public class ServiceRequestController {
     } else {
       sr.setFeedbacks(new HashSet<>());
     }
-    ServiceTargetObject target = getTargetObject(sr);
+    ServiceOrFeedbackTargetObject target = getTargetObject(sr);
     if (target != null) {
       sr.setTarget(target);
     }
   }
 
-  private ServiceTargetObject getTargetObject(ServiceRequest sr) {
+  private ServiceOrFeedbackTargetObject getTargetObject(ServiceRequest sr) {
     if (sr.getTargetId() == null) {
       return null;
     }
