@@ -2,66 +2,81 @@
   <h3>Loading...</h3>
 </div>
 
-<div *ngIf="loaded">
-    <h3 class="text-center">
-      <div [ngClass]="{'color-fine': serviceRequest.priority === 'FINE',
+<div class="fit-screen d-flex flex-column" *ngIf="loaded">
+  <h3 class="text-center">
+    <div [ngClass]="{'color-fine': serviceRequest.priority === 'FINE',
        'color-problematic': serviceRequest.priority === 'PROBLEMATIC',
        'color-critical': serviceRequest.priority === 'CRITICAL' }">
-        <i class="fa fa-lightbulb-o fa-2x float-right small-padding-right" aria-hidden="true"></i>
-      </div>
-      {{title}}
-    </h3>
-  <h6 class="text-center margin-bottom">Service Request ID: {{serviceRequest.id}}</h6>
+      <i class="fa fa-lightbulb-o fa-3x float-right padding-right-20" aria-hidden="true"></i>
+    </div>
+    Details <label class="text-primary">{{serviceRequest.id}}</label>
+  </h3>
 
-  <div class="no-float margin-bottom">
-    <button class="btn btn-outline-primary" (click)="editServiceRequest()">Edit Service Request</button>
+  <div class="no-float margin-bottom-30">
+    <button class="btn btn-outline-secondary" (click)="goBack()">Back</button>
+    <button class="btn btn-outline-primary" (click)="editServiceRequest()">Edit service request
+    </button>
     <button class="btn btn-outline-danger" (click)="showConfirmModal()">Delete</button>
   </div>
 
-  <!-- feedback -->
-  <div class="bounding-box bg-light">
-    <h5 class="text-lg-left">
-      <label class="padding-emb-box-headline">Feedback</label>
-    </h5>
-    <p *ngFor="let feedback of serviceRequest.feedbacks">
-      <label class="text-secondary">{{feedback.message}}</label>
-      <span [ngClass]="{'color-fine': serviceRequest.priority === 'FINE',
+  <div class="d-flex">
+
+    <!-- info about service request -->
+    <div class="bounding-box flex-1">
+      <h4 class="text-lg-left">
+        <div [ngClass]="{'color-fine': serviceRequest.priority === 'FINE',
+       'color-problematic': serviceRequest.priority === 'PROBLEMATIC',
+       'color-critical': serviceRequest.priority === 'CRITICAL' }">
+          <i class="fa fa-lightbulb-o fa-2x float-right small-padding-right" aria-hidden="true"></i>
+        </div>
+        <i class="fa fa-cogs fa-2x float-left padding-left-5 text-primary"></i>
+        <label class="padding-emb-box-headline">Service request</label>
+      </h4>
+
+      <p class="text-primary"><label class="text-secondary">ID: </label> {{serviceRequest.id}}</p>
+      <p><label class="text-secondary">Name: </label> {{serviceRequest.name}}</p>
+      <p><label class="text-secondary">Type: </label> {{serviceRequest.serviceType}}</p>
+      <p><label class="text-secondary">Status Code: </label> {{serviceRequest.statusCode}}</p>
+      <p><label class="text-secondary">Due Date: </label> {{(serviceRequest.dueDate)}}</p>
+      <p><label class="text-secondary">Completion Date: </label> {{serviceRequest.completionDate}}
+      </p>
+      <p><label class="text-secondary">Priority: </label> {{serviceRequest.priority}}</p>
+      <p><label *ngIf="serviceRequest.serviceRequestDescription.length > 0" class="text-secondary">Description: </label>
+        <span *ngFor="let description of serviceRequest.serviceRequestDescription">
+        {{description.text}}
+      </span>
+      </p>
+    </div>
+
+    <div class="d-flex flex-1 flex-column">
+      <!-- feedback -->
+      <div class="bounding-box">
+        <h4 class="text-lg-left">
+          <i class="fa fa-comments-o fa-2x float-left padding-left-5 text-primary"></i>
+          <label class="padding-emb-box-headline">Feedback</label>
+        </h4>
+        <p *ngFor="let feedback of serviceRequest.feedbacks">
+          <label class="text-secondary">{{feedback.message}}</label>
+          <span [ngClass]="{'color-fine': serviceRequest.priority === 'FINE',
        'color-problematic': serviceRequest.priority === 'PROBLEMATIC',
        'color-critical': serviceRequest.priority === 'CRITICAL' }">
         <i class="fa fa-lightbulb-o float-right small-padding-right" aria-hidden="true"></i>
       </span>
-    </p>
-  </div>
+        </p>
+      </div>
 
-  <!-- info about service request -->
-  <div class="bounding-box bg-light">
-    <h5 class="text-lg-left">
-      <label class="padding-emb-box-headline">Info</label>
-    </h5>
-    <p>Name: {{serviceRequest.name}}</p>
-    <p>Type: {{serviceRequest.serviceType}}</p>
-    <p>Status Code: {{serviceRequest.statusCode}}</p>
-    <p>Due Date: {{serviceRequest.dueDate}}</p>
-    <p>Completion Date: {{serviceRequest.completionDate}}</p>
-    <p>Priority: {{serviceRequest.priority}}</p>
-    <p>Description:
-      <span *ngFor="let description of serviceRequest.serviceRequestDescription">
-        {{description.text}}
-      </span>
-    </p>
-  </div>
 
-  <!-- target (vehicle or stop) -->
-  <div *ngIf="hasVehicleTarget()" class="d-flex flex-1 flex-column">
-    <!-- vehicle -->
-    <app-embedded-vehicle [vehicle]="serviceRequest.target" class="flex-1 bounding-box"></app-embedded-vehicle>
-  </div>
-  <div *ngIf="hasStopTarget()" class="d-flex flex-1 flex-column">
-    <!-- stop -->
-    <app-embedded-stop [stop]="serviceRequest.target" class="flex-1 bounding-box"></app-embedded-stop>
-  </div>
-
-  <div class="no-float big-padding-top">
-    <button class="btn btn-outline-secondary" (click)="goBack()">Back To Trips</button>
+      <!-- target (vehicle or stop) -->
+      <div *ngIf="hasVehicleTarget()" class="d-flex flex-1 flex-column">
+        <!-- vehicle -->
+        <app-embedded-vehicle [vehicle]="serviceRequest.target"
+                              class="flex-1 bounding-box"></app-embedded-vehicle>
+      </div>
+      <div *ngIf="hasStopTarget()" class="d-flex flex-1 flex-column">
+        <!-- stop -->
+        <app-embedded-stop [stop]="serviceRequest.target"
+                           class="flex-1 bounding-box"></app-embedded-stop>
+      </div>
+    </div>
   </div>
 </div>

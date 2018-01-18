@@ -1,6 +1,8 @@
-<app-datetime-picker [(model)]="from"
-                     (modelChanged)="onFromChange()"
-                     [text]="'From: '"></app-datetime-picker>
-<app-datetime-picker [(model)]="to"
-                     (modelChanged)="onToChange()"
-                     [text]="'To: '"></app-datetime-picker>
+<app-datetime-picker [model]="from"
+                     (modelChanged)="onFromChange($event)"
+                     [text]="'Valid from: '"
+                     [isValid]="isValidFrom"></app-datetime-picker>
+<app-datetime-picker [model]="to"
+                     (modelChanged)="onToChange($event)"
+                     [text]="'Valid until: '"
+                     [isValid]="isValidTo"></app-datetime-picker>

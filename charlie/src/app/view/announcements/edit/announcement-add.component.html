@@ -8,7 +8,7 @@
 </div>
 <div class="modal-body container d-flex flex-column">
   <app-edit-announcement-text [(text)]="text"></app-edit-announcement-text>
-  <app-edit-announcement-datetime [(from)]="fromDate" [(to)]="toDate"></app-edit-announcement-datetime>
+  <app-edit-announcement-datetime [(from)]="validFrom" [(to)]="validTo"></app-edit-announcement-datetime>
   <app-edit-announcement-stops [lines]="availableLines" [stops]="availableStops" (selectedStops)="selectedStops"></app-edit-announcement-stops>
 </div>
 <div class="modal-footer">

@@ -13,29 +13,36 @@ export class DatetimePickerComponent {
 
   @Input()
   set model(model: Date) {
-    this._model = model;
-    // TODO init date time model
+    if (this.isValid(model)) {
+      this._model = model;
+    }
+    this.time = this.converter.convertDateToNgbTimeStruct(this._model);
+    this.date = this.converter.convertDateToNgbDateStruct(this._model);
+    this.modelChanged.emit(this._model);
   }
+  get model(): Date {
+    return this._model;
+  }
+
+  @Input() isValid: (Date) => boolean = d => true;
 
   _model: Date;
 
   @Output()
   modelChanged: EventEmitter<Date> = new EventEmitter();
 
-  time: NgbTimeStruct = {hour: 0, minute: 0, second: 0};
-  date: NgbDateStruct = {year: 0, month: 0, day: 0};
+  time: NgbTimeStruct;// = this.converter.convertDateToNgbTimeStruct(this.model);
+  date: NgbDateStruct;// = this.converter.convertDateToNgbDateStruct(this.model);
 
   constructor(private converter: DateParserService) {
   }
 
   updateDate(): void {
-    this.model = this.converter.parseNativeDate(this._model, this.date);
-    this.modelChanged.emit(this._model);
+    this.model = this.converter.parseNativeDate(this.model, this.date);
   }
 
   updateTime(): void {
-    this.model = this.converter.parseNativeTime(this._model, this.time);
-    this.modelChanged.emit(this._model);
+    this.model = this.converter.parseNativeTime(this.model, this.time);
   }
 
 }

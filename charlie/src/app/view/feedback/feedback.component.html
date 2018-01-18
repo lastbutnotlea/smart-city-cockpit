@@ -3,9 +3,15 @@
 <div class="d-flex">
   <app-filter-group-view></app-filter-group-view>
 
-  <div class="d-flex flex-column scrollable container">
+  <div *ngIf="loaded && filterGroup.getFiltered(feedback).length > 0" class="d-flex flex-column scrollable container">
     <ng-container *ngFor="let fb of filterGroup.getFiltered(feedback)">
       <app-feedback-item [item]="fb"></app-feedback-item>
     </ng-container>
+  </div>
+  <div *ngIf="!loaded">
+    <h3>Loading...</h3>
+  </div>
+  <div *ngIf="loaded && filterGroup.getFiltered(feedback).length == 0">
+    <h3>No feedback available</h3>
   </div>
 </div>

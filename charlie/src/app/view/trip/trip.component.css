@@ -4,6 +4,10 @@
   flex-direction: column;
 }
 
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
 .no-m-left {
   margin-left: 0 !important;
 }
@@ -20,9 +24,8 @@ table {
 thead, tbody, tr, td, th { display: block; }
 
 thead th {
-  height: 50px;
   text-align: left;
-  width: 12.35% !important;
+  width: 16.4% !important;
 }
 
 tbody {
@@ -36,6 +39,7 @@ thead {
 
 
 tbody td, thead th {
+  /* 100/6 */
   width: 12.5%;
   float: left;
 }

@@ -107,4 +107,8 @@ export class UrlBuilderService {
   public getAnnouncement(item: AnnouncementData): string {
     return this.announcementBaseUrl + '/' + item.id;
   }
+
+  public getNetworkStateUrl(): string {
+    return this.mapBaseUrl + '/state';
+  }
 }

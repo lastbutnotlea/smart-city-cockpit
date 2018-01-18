@@ -19,8 +19,8 @@ import {AnnouncementData} from '../../../shared/data/announcement-data';
 export class AnnouncementAddComponent implements OnInit {
   text: string = "";
 
-  from: Date = new Date(now);
-  to: Date = new Date(now);
+  validFrom: Date = new Date(now);
+  validTo: Date = new Date(now);
 
   availableLines: LineData[] = [];
   availableStops: StopData[] = [];
@@ -45,8 +45,8 @@ export class AnnouncementAddComponent implements OnInit {
     let announcement: AnnouncementData = new AnnouncementData();
     announcement.text = this.text;
     announcement.stops = Array.from(this.selectedStops);
-    announcement.validFrom = this.from;
-    announcement.validTo = this.to;
+    announcement.validFrom = this.validFrom;
+    announcement.validTo = this.validTo;
     this.http.addAnnouncement(announcement).subscribe(
       data => {
         this.activeModal.close('Close click');

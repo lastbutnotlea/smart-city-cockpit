@@ -1,14 +1,18 @@
-<div class="bounding-box" *ngIf="!deleted">
+<div class="bounding-box" *ngIf="!deleted" style="width: 100%;">
+  <h4 class="text-lg-left">
+    <i class="fa fa-bullhorn fa-2x float-left padding-left-5 text-primary"></i>
+    <label class="padding-emb-box-headline">{{data.text}}</label>
+  </h4>
+
+  <p class="text-primary"> <label class="text-secondary">ID: </label> {{data.id}}</p>
   <p>
-    Announcement {{data.id}}:
-  </p>
-  <p>
-    From {{data.validFrom}} to {{data.validTo}}
-  </p>
-  <p>
-    {{data.text}}
+    <label class="text-secondary">Valid from </label>
+    {{data.validFrom}}
+    <label class="text-secondary"> to </label>
+    {{data.validTo}}
   </p>
   <button class="btn btn-outline-secondary" (click)="editItem()">Edit</button>
   <button class="btn btn-outline-secondary" (click)="deleteItem()"><i
     class="fa fa-trash text-primary"></i></button>
 </div>
+

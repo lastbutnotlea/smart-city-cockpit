@@ -7,7 +7,8 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
   selector: 'app-announcement-item',
   templateUrl: './announcement-item.component.html',
   styleUrls: ['./announcement-item.component.css',
-    '../../../shared/styling/embedded-components.css'
+    '../../../shared/styling/embedded-components.css',
+    '../../../shared/styling/global-styling.css',
   ],
 })
 export class AnnouncementItemComponent implements OnInit {
@@ -22,7 +23,6 @@ export class AnnouncementItemComponent implements OnInit {
   }
 
   editItem(): void {
-
   }
 
   deleteItem(): void {
