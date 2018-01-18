@@ -181,7 +181,7 @@ export class ServiceRequestAddComponent implements OnInit {
   }
 
   updateDate(): void {
-    if(this.dateParser.isBeforeDate(this.date)) {
+    if(this.dateParser.isBeforeDate(new Date(), this.date)) {
       this.selectedDate = this.dateParser.parseDate(
         this.selectedDate,
         this.date

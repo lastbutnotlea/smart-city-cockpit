@@ -117,7 +117,7 @@ export class ServiceRequestEditComponent implements OnInit {
    * Only use selected date if it is not passed already
    */
   updateDate(): void {
-    if(this.dateParser.isBeforeDate(this.date)) {
+    if(this.dateParser.isBeforeDate(new Date(), this.date)) {
       this.selectedDate = this.dateParser.parseDate(this.selectedDate,this.date);
     } else {
       this.date = this.dateParser.convertDateToNgbDateStruct(new Date(this.selectedDate));
