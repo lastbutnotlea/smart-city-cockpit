@@ -70,11 +70,11 @@ export class NetworkComponent extends LiveDataComponent implements OnInit {
     this.setDataSubscription(
       this.http.getLines().subscribe( data => {
         this.lines = data;
-        this.subscribeToData();
       },
       err =>
-        console.log('Could not fetch new line-data.')
+        console.log('Could not fetch new line-data.'),
       ));
+    this.subscribeToData();
   }
 
 }

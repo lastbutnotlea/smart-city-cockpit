@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {NgbDateAdapter, NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
+import { now } from '../shared/data/dates';
 
 @Injectable()
 export class DateParserService {
@@ -27,6 +28,18 @@ export class DateParserService {
     current.setDate(dateStruct.day);
     return current;
   }
+
+  /**
+   * @param {string} dateString: holds current date
+   * @returns {NgbDateStruct} output, holds date from dateString as NgbDateStruct
+   */
+  parseString(dateString: string): NgbDateStruct {
+    const date = new Date(dateString);
+    const ngbStruct =  {year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate()};
+    return ngbStruct;
+  }
+
+
 
   /**
    * @param {string} timeString: input string, holds the old date

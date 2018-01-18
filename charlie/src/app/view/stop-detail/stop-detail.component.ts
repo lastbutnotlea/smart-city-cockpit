@@ -5,6 +5,7 @@ import { Location } from '@angular/common';
 import { HttpRoutingService } from '../../services/http-routing.service';
 import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
 import {LineForStopData} from "../../shared/data/LineForStopData";
+import { FeedbackData } from '../../shared/data/feedback-data';
 
 @Component({
   selector: 'app-stop-detail-view',
@@ -19,6 +20,8 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
   title: string = "Details";
   lineForStopDataInbound: LineForStopData [];
   lineForStopDataOutbound: LineForStopData [];
+  loaded: boolean = false;
+  feedback: FeedbackData[];
 
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
@@ -35,8 +38,9 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
     // TODO: add live data once live data generator from backend works
     this.http.getStopDetails(stopId).subscribe(
       stop => {
-        this.stop = stop
+        this.stop = stop;
         this.getLines();
+        this.getFeedback();
         // This starts periodical calls for live-data after first data was received
         super.ngOnInit();
       },
@@ -49,9 +53,22 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
       data => {
         this.lineForStopDataInbound = data.filter(line => line.isInbound);
         this.lineForStopDataOutbound = data.filter(line => !line.isInbound);
+        this.loaded = true;
         // This starts periodical calls for live-data after first data was received
       },
       err => console.log('Could not fetch stop data!')
+    );
+  }
+
+  getFeedback(): void {
+    this.http.getStopFeedback(this.stop.id).subscribe(
+      data => {
+        this.feedback = data;
+      }, err => {
+        alert("Could not fetch feedback for vehicle! " +
+          "Please check your internet connection or inform your system administrator.");
+        console.log(err);
+      }
     );
   }
 
@@ -59,22 +76,18 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
     this.location.back();
   }
 
-  isLoaded(): boolean {
-    return this.stop != null;
-  }
-
   // update stop data
   refreshData(): void {
     this.setDataSubscription(
       this.http.getStopDetails(this.stop.id).subscribe( data => {
           this.stop = data;
-          this.getLines()
-          this.subscribeToData();
+          this.getLines();
+          this.getFeedback();
         },
         err =>
           console.log('Could not fetch new stop-data.')
       ));
-
+    this.subscribeToData();
   }
 
 }
