@@ -1,7 +1,6 @@
 import {LineData} from '../shared/data/line-data';
 import {Observable} from 'rxjs/Observable';
 import {UrlBuilderService} from './url-builder.service';
-import {tap} from 'rxjs/operators';
 import {TripData} from '../shared/data/trip-data';
 import {VehicleData} from '../shared/data/vehicle-data';
 import {Injectable} from '@angular/core';
@@ -178,5 +177,9 @@ export class HttpRoutingService {
 
   public getVehiclesState(): Observable<string> {
     return this.http.get<string>(this.urlBuilder.getVehiclesStateUrl());
+  }
+
+  public getNetworkState(): Observable<string> {
+    return this.http.get<string>(this.urlBuilder.getNetworkStateUrl());
   }
 }

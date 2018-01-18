@@ -106,4 +106,8 @@ export class UrlBuilderService {
   public getVehiclesStateUrl(): string {
     return this.vehicleBaseUrl + '/state';
   }
+  
+  public getNetworkStateUrl(): string {
+    return this.mapBaseUrl + '/state';
+  }
 }
