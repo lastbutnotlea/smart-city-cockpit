@@ -6,6 +6,8 @@ import { HttpRoutingService } from '../../services/http-routing.service';
 import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
 import {LineForStopData} from "../../shared/data/LineForStopData";
 import { FeedbackData } from '../../shared/data/feedback-data';
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {StopSkipComponent} from "../stop-skip/stop-skip";
 
 @Component({
   selector: 'app-stop-detail-view',
@@ -25,12 +27,19 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
 
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
-              private location: Location) {
+              private location: Location,
+              private modalService: NgbModal) {
     super();
   }
 
   ngOnInit(): void {
     this.getStop();
+  }
+
+  skipStop(): void {
+    const modal = this.modalService.open(StopSkipComponent);
+    modal.componentInstance.data = this.stop;
+    modal.componentInstance.initData();
   }
 
   getStop(): void {
