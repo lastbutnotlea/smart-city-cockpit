@@ -110,6 +110,10 @@ export class HttpRoutingService {
     return this.http.put(this.urlBuilder.getTripsUrl(), trip);
   }
 
+  public processFeedback(feedback: FeedbackData): Observable<any> {
+    return this.http.put(this.urlBuilder.getStopFeedbackUrl(), feedback);
+  }
+
   public deleteTrip(tripId: string): Observable<any> {
     return this.http.delete(this.urlBuilder.getTripDetailsUrl(tripId));
   }

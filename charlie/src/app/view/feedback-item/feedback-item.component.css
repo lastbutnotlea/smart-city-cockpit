@@ -1,1 +1,24 @@
+.no-margin-bottom {
+  margin-bottom: 0;
+}
 
+.margin-left-20 {
+  margin-left: 20px;
+}
+
+.box {
+  padding: 2px 40px 2px 40px ;
+  border-radius: 5px;
+  border: 1px solid #007bff;
+  overflow-y: auto;
+}
+
+.check-style {
+  color: #007bff;
+  margin-left: 7px;
+}
+
+.processed {
+  margin-bottom: 0;
+  margin-top: 4px;
+}

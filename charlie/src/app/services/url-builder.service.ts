@@ -91,6 +91,10 @@ export class UrlBuilderService {
     return this.feedbackBaseUrl + '/stop/' + stopId;
   }
 
+  public getFeedbackUrl(feedbackId: string): string {
+    return this.feedbackBaseUrl + '/' + feedbackId;
+  }
+
   public getAnnouncements(): string {
     return this.announcementBaseUrl;
   }
@@ -106,7 +110,7 @@ export class UrlBuilderService {
   public getVehiclesStateUrl(): string {
     return this.vehicleBaseUrl + '/state';
   }
-  
+
   public getNetworkStateUrl(): string {
     return this.mapBaseUrl + '/state';
   }
