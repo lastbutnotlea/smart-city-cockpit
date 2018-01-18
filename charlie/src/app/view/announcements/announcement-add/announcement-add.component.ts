@@ -68,38 +68,40 @@ export class AnnouncementAddComponent implements OnInit {
   }
 
   updateFromTime(): void {
-    if(this.dateParser.checkValidTime(this.fromDate, this.fromTime)) {
+    if(this.dateParser.isBeforeTime(this.fromDate, this.fromTime)) {
       this.from = this.dateParser.parseNativeTime(this.from, this.fromTime);
     } else {
-      this.fromTime = this.dateParser.parseDateToNgbTimeStruct(new Date());
+      this.fromTime = this.dateParser.convertDateToNgbTimeStruct(new Date());
     }
   }
 
   updateFromDate(): void {
-    if(this.dateParser.checkValidDate(this.fromDate)) {
+    if(this.dateParser.isBeforeDate(this.fromDate)) {
       this.from = this.dateParser.parseNativeDate(this.from, this.fromDate);
+      // Date might have been set to current date. Time could now be invalid (passed) time. Check time again
       this.updateFromTime();
     } else {
-      this.fromDate = this.dateParser.parseDateToNgbDateStruct(this.from);
+      this.fromDate = this.dateParser.convertDateToNgbDateStruct(this.from);
     }
   }
 
   updateToTime(): void {
     console.log(this.to.toISOString());
-    if(this.dateParser.checkValidTime(this.toDate, this.toTime)) {
+    if(this.dateParser.isBeforeTime(this.toDate, this.toTime)) {
       this.to = this.dateParser.parseNativeTime(this.to, this.toTime);
     } else {
-      this.toTime = this.dateParser.parseDateToNgbTimeStruct(new Date());
+      this.toTime = this.dateParser.convertDateToNgbTimeStruct(new Date());
     }
     console.log(this.to.toISOString());
   }
 
   updateToDate(): void {
-    if(this.dateParser.checkValidDate(this.toDate)) {
+    if(this.dateParser.isBeforeDate(this.toDate)) {
       this.to = this.dateParser.parseNativeDate(this.to, this.toDate);
+      // Date might have been set to current date. Time could now be invalid (passed) time. Check time again
       this.updateToTime();
     } else {
-      this.toDate = this.dateParser.parseDateToNgbDateStruct(this.to);
+      this.toDate = this.dateParser.convertDateToNgbDateStruct(this.to);
     }
   }
 

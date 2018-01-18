@@ -42,7 +42,7 @@ export class ServiceRequestEditComponent implements OnInit {
         this.description = this.data.serviceRequestDescription[0].text;
       }
       this.selectedDate = this.data.dueDate;
-      this.date = this.dateParser.parseStringToNgbDateStruct(this.selectedDate);
+      this.date = this.dateParser.convertDateToNgbDateStruct(new Date(this.selectedDate));
       this.selectedFeedback = [];
       for(let feedback of this.data.feedbacks){
         this.selectedFeedback.push(feedback);
@@ -117,10 +117,10 @@ export class ServiceRequestEditComponent implements OnInit {
    * Only use selected date if it is not passed already
    */
   updateDate(): void {
-    if(this.dateParser.checkValidDate(this.date)) {
+    if(this.dateParser.isBeforeDate(this.date)) {
       this.selectedDate = this.dateParser.parseDate(this.selectedDate,this.date);
     } else {
-      this.date = this.dateParser.parseStringToNgbDateStruct(this.selectedDate);
+      this.date = this.dateParser.convertDateToNgbDateStruct(new Date(this.selectedDate));
     }
   }
 

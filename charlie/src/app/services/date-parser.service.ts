@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-import {NgbDateAdapter, NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
-import { now } from '../shared/data/dates';
+import {NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 
 @Injectable()
 export class DateParserService {
@@ -30,18 +29,10 @@ export class DateParserService {
   }
 
   /**
-   * @param {string} dateString: holds current date
-   * @returns {NgbDateStruct} output, holds date from dateString as NgbDateStruct
-   */
-  parseStringToNgbDateStruct(dateString: string): NgbDateStruct {
-    return this.parseDateToNgbDateStruct(new Date(dateString));
-  }
-
-  /**
    * @param {Date} date holds current date
    * @returns {NgbDateStruct} output, holds date as NgbDateStruct
    */
-  parseDateToNgbDateStruct(date: Date): NgbDateStruct {
+  convertDateToNgbDateStruct(date: Date): NgbDateStruct {
     return {year: date.getFullYear(), month:date.getMonth() + 1, day: date.getDate()};
   }
 
@@ -49,7 +40,7 @@ export class DateParserService {
    * @param {Date} date holds current date
    * @returns {NgbTimeStruct} output, holds time of current date as NgbTimeStruct
    */
-  parseDateToNgbTimeStruct(date: Date): NgbTimeStruct {
+  convertDateToNgbTimeStruct(date: Date): NgbTimeStruct {
     return {hour: date.getHours(), minute: date.getMinutes(), second: date.getSeconds()};
   }
 
@@ -88,14 +79,11 @@ export class DateParserService {
    * @param {NgbTimeStruct} timeStruct
    * @returns {boolean}
    */
-  public checkValidDate(timeStruct: NgbDateStruct): boolean {
+  public isBeforeDate(timeStruct: NgbDateStruct): boolean {
     const now: Date = new Date();
-    if(now.getFullYear() < timeStruct.year
+    return(now.getFullYear() < timeStruct.year
       || (now.getFullYear() === timeStruct.year && now.getMonth()+1 < timeStruct.month)
-      ||(now.getFullYear() === timeStruct.year && now.getMonth()+1 ===  timeStruct.month && now.getDate() <= timeStruct.day)) {
-      return true;
-    }
-    return false;
+      ||(now.getFullYear() === timeStruct.year && now.getMonth()+1 ===  timeStruct.month && now.getDate() <= timeStruct.day));
   }
 
   /**
@@ -104,11 +92,11 @@ export class DateParserService {
    * @param {NgbTimeStruct} timeStruct
    * @returns {boolean}
    */
-  public checkValidTime(dateStruct: NgbDateStruct, timeStruct: NgbTimeStruct): boolean {
+  public isBeforeTime(dateStruct: NgbDateStruct, timeStruct: NgbTimeStruct): boolean {
     const now: Date = new Date();
     // The time can only be invalid for a current date
     // All times choosen for future dates are valid
-    if(now.getFullYear() === dateStruct.year
+    /*if(now.getFullYear() === dateStruct.year
       && now.getMonth()+1 === dateStruct.month
       && now.getDate() === dateStruct.day) {
       if(now.getHours() > timeStruct.hour
@@ -116,7 +104,9 @@ export class DateParserService {
        return false;
       }
     }
-    return true;
+    return true;*/
+    return !(now.getFullYear() === dateStruct.year && now.getMonth()+1 === dateStruct.month && now.getDate() === dateStruct.day)
+      || !(now.getHours() > timeStruct.hour  || (now.getHours() === timeStruct.hour && now.getMinutes() > timeStruct.minute))
   }
 
 }

@@ -92,22 +92,23 @@ export class TripEditDepartureComponent implements OnInit {
   }
 
   updateDate(): void {
-    if(this.dateParser.checkValidDate(this.date)) {
+    if(this.dateParser.isBeforeDate(this.date)) {
       this.selectedStop.value.departureTime = this.dateParser.parseDate(
         this.selectedStop.value.departureTime, this.date);
+      // Date might have been set to current date. Time could now be invalid (passed) time. Check time again
       this.updateTime();
     } else {
-      this.date = this.dateParser.parseStringToNgbDateStruct(this.selectedStop.value.departureTime);
+      this.date = this.dateParser.convertDateToNgbDateStruct(new Date(this.selectedStop.value.departureTime));
     }
     console.log(this.selectedStop.value.departureTime);
   }
 
   updateTime(): void {
-    if(this.dateParser.checkValidTime(this.date, this.time)) {
+    if(this.dateParser.isBeforeTime(this.date, this.time)) {
       this.selectedStop.value.departureTime = this.dateParser.parseTime(
         this.selectedStop.value.departureTime, this.time);
     } else {
-      this.time = this.dateParser.parseDateToNgbTimeStruct(new Date());
+      this.time = this.dateParser.convertDateToNgbTimeStruct(new Date());
     }
     console.log(this.selectedStop.value.departureTime);
   }

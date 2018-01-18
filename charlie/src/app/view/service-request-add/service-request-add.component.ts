@@ -181,13 +181,13 @@ export class ServiceRequestAddComponent implements OnInit {
   }
 
   updateDate(): void {
-    if(this.dateParser.checkValidDate(this.date)) {
+    if(this.dateParser.isBeforeDate(this.date)) {
       this.selectedDate = this.dateParser.parseDate(
         this.selectedDate,
         this.date
       );
     } else {
-      this.date = this.dateParser.parseStringToNgbDateStruct(this.selectedDate);
+      this.date = this.dateParser.convertDateToNgbDateStruct(new Date(this.selectedDate));
     }
   }
 
