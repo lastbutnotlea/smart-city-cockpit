@@ -26,7 +26,7 @@ export class NetworkComponent extends LiveDataComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.title = 'Network View';
+    this.title = 'Network';
     // get line data
     this.http.getLines().subscribe( data => {
         this.lines = data;
