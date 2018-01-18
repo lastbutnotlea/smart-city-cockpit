@@ -13,14 +13,14 @@
   </div>
   <div class="m-2">
     <label class="m-2">Valid from: {{from | date:'MM/dd/yyyy HH:mm'}}</label>
-    <ngb-datepicker [(ngModel)]="fromDate" (select)="updateFromDate()"
+    <ngb-datepicker [(ngModel)]="fromDate" (select)="updateTimes()"
                     class="float-left datepicker m-2"></ngb-datepicker>
-    <ngb-timepicker [(ngModel)]="fromTime" (click)="updateFromTime()" (change)="updateFromTime()"></ngb-timepicker>
+    <ngb-timepicker [(ngModel)]="fromTime" (click)="updateTimes()" (change)="updateFromTime()"></ngb-timepicker>
   </div>
   <div class="m-2">
     <label class="m-2">Valid until: {{to | date:'MM/dd/yyyy HH:mm'}}</label>
-    <ngb-datepicker [(ngModel)]="toDate" (select)="updateToDate()" class="float-left datepicker m-2"></ngb-datepicker>
-    <ngb-timepicker [(ngModel)]="toTime" (click)="updateToTime()" (change)="updateToTime()"></ngb-timepicker>
+    <ngb-datepicker [(ngModel)]="toDate" (select)="updateTimes()" class="float-left datepicker m-2"></ngb-datepicker>
+    <ngb-timepicker [(ngModel)]="toTime" (click)="updateTimes()" (change)="updateToTime()"></ngb-timepicker>
   </div>
   <div class="d-flex flex-nowrap m-2">
     <app-dropdown class="col" [values]="availableStops" [(selected)]="selectedStop"></app-dropdown>
