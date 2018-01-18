@@ -40,7 +40,7 @@ public class ServiceRequest extends C4CEntity {
   @C4CProperty(name = "ServiceRequestLifeCycleStatusCode")
   private EStatusCode statusCode = EStatusCode.OPEN;
 
-  @C4CProperty(name = "CompletionDueDate")
+  @C4CProperty(name = "RequestedEnd")
   @Convert(converter = LocalDateTimeAttributeConverter.class)
   @JsonSerialize(using = DateSerializer.class)
   @JsonDeserialize(using = DateDeserializer.class)
@@ -261,7 +261,7 @@ public class ServiceRequest extends C4CEntity {
         .append(getCustomerId(), that.getCustomerId())
         .append(getPriority(), that.getPriority())
         .append(getStatusCode(), that.getStatusCode())
-        //.append(getDueDate(), that.getDueDate())
+        .append(getDueDate(), that.getDueDate())
         .append(getCompletionDate(), that.getCompletionDate())
         .append(getOriginTypeCode(), that.getOriginTypeCode())
         .append(getProcessingTypeCode(), that.getProcessingTypeCode())
@@ -279,7 +279,7 @@ public class ServiceRequest extends C4CEntity {
         .append(getCustomerId())
         .append(getPriority())
         .append(getStatusCode())
-        //.append(getDueDate())
+        .append(getDueDate())
         .append(getCompletionDate())
         .append(getOriginTypeCode())
         .append(getProcessingTypeCode())
