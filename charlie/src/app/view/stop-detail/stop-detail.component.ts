@@ -9,6 +9,7 @@ import { FeedbackData } from '../../shared/data/feedback-data';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {SkipStopComponent} from "../stop-skip/stop-skip";
 import { AnnouncementData } from '../../shared/data/announcement-data';
+import {SkipData} from "../../shared/data/SkipData";
 
 @Component({
   selector: 'app-stop-detail-view',

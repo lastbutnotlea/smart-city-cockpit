@@ -17,13 +17,14 @@
     <button class="btn btn-outline-secondary" (click)="goBack()">Back</button>
     <button class="btn btn-outline-primary" (click)="skipStop()">Skip stop</button>
   </div>
+  <!--TODO add *ngIf="stop.skipData.length > 0"-->
   <div class="bounding-box">
-  <h4 class="text-danger text-left">
-    Stop skipped:
-  </h4>
-  <h5 *ngFor="let number of [0,1,2]">
-    from {{stop.commonName}} to {{stop.commonName}} because of {{stop.commonName}}
-  </h5>
+    <h4 class="text-danger text-left">
+      Stop skipped:
+    </h4>
+    <h5 *ngFor="let skipData of stop.skipData">
+      from {{skipData.from}} to {{skipData.to}} because of {{skipData.reason}}
+    </h5>
   </div>
 
   <div class="fit-screen d-flex flex-row">
