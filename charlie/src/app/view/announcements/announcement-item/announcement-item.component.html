@@ -1,9 +1,15 @@
-<p>
-Announcement {{data.id}}:
-</p>
-<p>
-  From {{data.validFrom}} to {{data.validTo}}
-</p>
-<p>
-  {{data.text}}
-</p>
+<div class="bounding-box" style="width: 100%;">
+  <h4 class="text-lg-left">
+    <i class="fa fa-bullhorn fa-2x float-left padding-left-5 text-primary"></i>
+    <label class="padding-emb-box-headline">{{data.text}}</label>
+  </h4>
+
+  <p class="text-primary"> <label class="text-secondary">ID: </label> {{data.id}}</p>
+  <p>
+    <label class="text-secondary">Valid from </label>
+    {{data.validFrom}}
+    <label class="text-secondary"> to </label>
+    {{data.validTo}}
+  </p>
+</div>
+
