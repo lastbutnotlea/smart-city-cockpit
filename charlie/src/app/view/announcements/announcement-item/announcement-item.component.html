@@ -1,9 +1,14 @@
-<p>
-Announcement {{data.id}}:
-</p>
-<p>
-  From {{data.validFrom}} to {{data.validTo}}
-</p>
-<p>
-  {{data.text}}
-</p>
+<div class="bounding-box" *ngIf="!deleted">
+  <p>
+    Announcement {{data.id}}:
+  </p>
+  <p>
+    From {{data.validFrom}} to {{data.validTo}}
+  </p>
+  <p>
+    {{data.text}}
+  </p>
+  <button class="btn btn-outline-secondary" (click)="editItem()">Edit</button>
+  <button class="btn btn-outline-secondary" (click)="deleteItem()"><i
+    class="fa fa-trash text-primary"></i></button>
+</div>
