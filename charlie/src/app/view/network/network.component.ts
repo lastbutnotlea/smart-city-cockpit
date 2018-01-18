@@ -8,13 +8,15 @@ import { LiveDataComponent } from '../../shared/components/live-data/live-data.c
   selector: 'app-network-view',
   templateUrl: './network.component.html',
   styleUrls: ['./network.component.css',
-    '../../shared/styling/global-styling.css',
-    '../../shared/styling/embedded-components.css'],
+    '../../shared/styling/embedded-components.css',
+    '../../shared/styling/global-styling.css'],
 })
 
 export class NetworkComponent extends LiveDataComponent implements OnInit {
   title: String;
   lines: LineData[] = [];
+  state: string = "";
+  loaded: boolean = false;
 
   @ViewChild(MapComponent)
   networkMap: MapComponent;
@@ -28,13 +30,15 @@ export class NetworkComponent extends LiveDataComponent implements OnInit {
     // get line data
     this.http.getLines().subscribe( data => {
         this.lines = data;
+        this.getNetworkState();
         super.ngOnInit();
+        this.loaded = true;
+        this.getMapData();
       },
       err => {
         console.log('Could not fetch lines.');
       }
     );
-    this.getMapData();
   }
 
   private getMapData(): void {
@@ -55,15 +59,16 @@ export class NetworkComponent extends LiveDataComponent implements OnInit {
     });
   }
 
-  /**
-   * Returns true if lines contains at least one line, false otherwise
-   * @returns {boolean}
-   */
-  public isLoaded(): boolean {
-    if (this.lines.length > 0) {
-      return true;
-    }
-    return false;
+  private getNetworkState(): void {
+    this.http.getNetworkState().subscribe(
+      data => {
+        this.state = data;
+      },
+      err => {
+        console.log(err);
+        alert('Could not get state of network from backend.');
+      }
+    );
   }
 
   // update network data
@@ -71,6 +76,7 @@ export class NetworkComponent extends LiveDataComponent implements OnInit {
     this.setDataSubscription(
       this.http.getLines().subscribe( data => {
         this.lines = data;
+        this.getNetworkState();
         this.subscribeToData();
       },
       err =>

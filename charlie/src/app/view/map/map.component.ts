@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-network-map',
   templateUrl: './map.component.html',
-  styleUrls: ['../../shared/styling/map.css']
+  styleUrls: ['./map.component.css', '../../shared/styling/map.css']
 })
 @Injectable()
 export class MapComponent {
