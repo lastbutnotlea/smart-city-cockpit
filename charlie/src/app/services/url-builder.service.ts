@@ -102,4 +102,8 @@ export class UrlBuilderService {
   public getTickerDeleteUrl(item: TickerData): string {
     return this.tickerBaseUrl + '/' + item.id;
   }
+
+  public getVehiclesStateUrl(): string {
+    return this.vehicleBaseUrl + '/state';
+  }
 }
