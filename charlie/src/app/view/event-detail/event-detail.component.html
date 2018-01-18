@@ -2,45 +2,47 @@
   <h3>Loading...</h3>
 </div>
 
-<div *ngIf="isLoaded()">
+<div class="fit-screen d-flex flex-column" *ngIf="isLoaded()">
 
-   <h3> {{title}} <label class="text-primary">{{event.id}}</label></h3>
+  <h3 class="text-center margin-bottom-30"> {{title}} <label class="text-primary">{{event.id}}</label></h3>
 
-  <div class="no-float margin-bottom">
+  <div class="no-float margin-bottom-30">
     <button class="btn btn-outline-secondary" (click)="goBack()">Back</button>
     <button class="btn btn-outline-primary" (click)="editEvent()">Edit Event</button>
     <button class="btn btn-outline-danger" (click)="showConfirmModal()">Delete</button>
   </div>
 
-  <!-- info about the event -->
-  <div class="bounding-box bg-light">
-    <h5 class="text-lg-left">
-      <label class="padding-emb-box-headline">Info</label>
-    </h5>
-    <p>Subject: {{event.subject}}</p>
-    <p>Priority: {{event.priority}}</p>
-    <p>Start Date: {{event.startTime | date:'MM/dd/yyyy HH:mm'}}</p>
-    <p>Start Date: {{event.endTime | date:'MM/dd/yyyy HH:mm'}}</p>
-  </div>
+  <div class="d-flex">
+    <!-- info about the event -->
+    <div class="bounding-box flex-1">
+      <h5 class="text-lg-left">
+        <label class="padding-emb-box-headline">Info</label>
+      </h5>
+      <p>Subject: {{event.subject}}</p>
+      <p>Priority: {{event.priority}}</p>
+      <p>Start Date: {{event.startTime | date:'MM/dd/yyyy HH:mm'}}</p>
+      <p>Start Date: {{event.endTime | date:'MM/dd/yyyy HH:mm'}}</p>
+    </div>
 
-  <!-- involved parties -->
-  <div class="bounding-box bg-light">
-    <h5 class="text-lg-left">
-      <label class="padding-emb-box-headline">Involved Parties</label>
-    </h5>
+    <!-- involved parties -->
+    <div class="bounding-box flex-1">
+      <h5 class="text-lg-left">
+        <label class="padding-emb-box-headline">Involved Parties</label>
+      </h5>
       <p *ngFor="let party of event.appointmentInvolvedParties">
         {{party.partyName}}
       </p>
-  </div>
+    </div>
 
-  <!-- notes -->
-  <div class="bounding-box bg-light">
-    <h5 class="text-lg-left">
-      <label class="padding-emb-box-headline">Notes</label>
-    </h5>
-    <p *ngFor="let note of event.appointmentNotes">
-      {{note.text}}
-    </p>
+    <!-- notes -->
+    <div class="bounding-box flex-1">
+      <h5 class="text-lg-left">
+        <label class="padding-emb-box-headline">Notes</label>
+      </h5>
+      <p *ngFor="let note of event.appointmentNotes">
+        {{note.text}}
+      </p>
+    </div>
   </div>
 
 </div>
