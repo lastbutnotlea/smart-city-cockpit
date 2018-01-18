@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import { StopData } from '../../data/stop-data';
+import {LineForStopData} from "../../data/LineForStopData";
 
 @Component({
   selector: 'app-embedded-stop',
@@ -12,6 +13,8 @@ import { StopData } from '../../data/stop-data';
 export class EmbeddedStopComponent implements OnInit {
 
   @Input() stop: StopData;
+  @Input() lineForStopDataInbound: LineForStopData [];
+  @Input() lineForStopDataOutbound: LineForStopData [];
 
   public ngOnInit(): void {
   }
