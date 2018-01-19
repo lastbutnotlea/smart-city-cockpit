@@ -4,8 +4,7 @@ import { AnnouncementData } from '../../data/announcement-data';
 @Component({
   selector: 'app-embedded-announcements',
   templateUrl: './embedded-announcements.component.html',
-  styleUrls: ['../../styling/embedded-components.css',
-    '../../styling/global-styling.css']
+  styleUrls: []
 })
 
 export class EmbeddedAnnouncementsComponent{

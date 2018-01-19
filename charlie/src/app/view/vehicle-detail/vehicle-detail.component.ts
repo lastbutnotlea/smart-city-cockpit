@@ -9,9 +9,7 @@ import { FeedbackData } from '../../shared/data/feedback-data';
 @Component({
   selector: 'app-vehicle-detail',
   templateUrl: './vehicle-detail.component.html',
-  styleUrls: ['./vehicle-detail.component.css',
-              '../../shared/styling/global-styling.css',
-              '../../shared/styling/embedded-components.css']
+  styleUrls: ['./vehicle-detail.component.css']
 })
 export class VehicleDetailComponent extends LiveDataComponent implements OnInit {
 
