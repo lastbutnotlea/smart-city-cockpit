@@ -4,6 +4,7 @@ import de.team5.super_cute.crocodile.model.Trip;
 import de.team5.super_cute.crocodile.model.Vehicle;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
@@ -69,4 +70,22 @@ public class TripData extends BaseData<Trip> {
     return getData().stream().filter(t -> t.getVehicle().getId().equals(vehicleId)).collect(Collectors.toList());
   }
 
+  public void setCurrentLine(Vehicle vehicle) {
+    Trip currentTrip = getCurrentTripOfVehicle(vehicle, LocalDateTime.now());
+    if (currentTrip != null) {
+      vehicle.setCurrentLine(currentTrip.getLine());
+    } else {
+      vehicle.setCurrentLine(null);
+    }
+  }
+
+  public void setFreeFrom(Vehicle vehicle) {
+    List<Trip> vehicleTrips = getAllTripsOfVehicle(vehicle.getId());
+    Optional<LocalDateTime> lastStopTime = vehicleTrips.stream().flatMap(t -> t.getStops().values().stream()).max(LocalDateTime::compareTo);
+    if (lastStopTime.isPresent()) {
+      vehicle.setFreeFrom(lastStopTime.get());
+    } else {
+      vehicle.setFreeFrom(LocalDateTime.now());
+    }
+  }
 }

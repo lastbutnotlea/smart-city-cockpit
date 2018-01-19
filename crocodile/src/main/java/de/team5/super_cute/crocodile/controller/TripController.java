@@ -3,6 +3,7 @@ package de.team5.super_cute.crocodile.controller;
 import de.team5.super_cute.crocodile.config.AppConfiguration;
 import de.team5.super_cute.crocodile.data.BaseData;
 import de.team5.super_cute.crocodile.data.LineData;
+import de.team5.super_cute.crocodile.data.TripData;
 import de.team5.super_cute.crocodile.model.Trip;
 import de.team5.super_cute.crocodile.util.Helpers;
 import de.team5.super_cute.crocodile.validation.VehicleValidation;
@@ -10,6 +11,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -41,29 +43,36 @@ public class TripController extends BaseController<Trip> {
   public List<Trip> getAllTrips() {
     return data.getData().stream()
         .peek(t -> t.getLine().setState(lineData.calculateLineState(t.getLine())))
+        .peek(t -> ((TripData) data).setCurrentLine(t.getVehicle()))
+        .peek(t -> ((TripData) data).setFreeFrom(t.getVehicle()))
         .collect(Collectors.toList());
   }
 
   @GetMapping("/vehicle/{vehicleId}")
   public List<Trip> getAllTripsForVehicle(@PathVariable String vehicleId) {
-    return data.getData().stream()
-        .filter(t -> StringUtils.isEmpty(vehicleId) || t.getVehicle().getId().equals(vehicleId))
-        .peek(t -> t.getLine().setState(lineData.calculateLineState(t.getLine()))).collect(
-            Collectors.toList());
+    return getTripsWithPredicate(t -> StringUtils.isEmpty(vehicleId) || t.getVehicle().getId().equals(vehicleId));
   }
 
   @GetMapping("/stop/{stopId}")
   public List<Trip> getAllTripsForStop(@PathVariable String stopId) {
+    return getTripsWithPredicate(t -> StringUtils.isEmpty(stopId) || t.getStops().get(stopId) != null);
+  }
+
+  private List<Trip> getTripsWithPredicate(Predicate<Trip> predicate) {
     return data.getData().stream()
-        .filter(t -> StringUtils.isEmpty(stopId) || t.getStops().get(stopId) != null)
-        .peek(t -> t.getLine().setState(lineData.calculateLineState(t.getLine()))).collect(
-            Collectors.toList());
+        .filter(predicate)
+        .peek(t -> t.getLine().setState(lineData.calculateLineState(t.getLine())))
+        .peek(t -> ((TripData) data).setCurrentLine(t.getVehicle()))
+        .peek(t -> ((TripData) data).setFreeFrom(t.getVehicle()))
+        .collect(Collectors.toList());
   }
 
   @GetMapping("/{id}")
   public Trip getTrip(@PathVariable String id) {
     Trip trip = getObjectForId(id);
     trip.getLine().setState(lineData.calculateLineState(trip.getLine()));
+    ((TripData) data).setCurrentLine(trip.getVehicle());
+    ((TripData) data).setFreeFrom(trip.getVehicle());
     return trip;
   }
 

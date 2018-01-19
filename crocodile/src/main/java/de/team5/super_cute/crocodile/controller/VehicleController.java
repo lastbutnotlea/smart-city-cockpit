@@ -8,10 +8,8 @@ import de.team5.super_cute.crocodile.data.TripData;
 import de.team5.super_cute.crocodile.model.EState;
 import de.team5.super_cute.crocodile.model.Trip;
 import de.team5.super_cute.crocodile.model.Vehicle;
-import java.time.LocalDateTime;
 import de.team5.super_cute.crocodile.util.StateCalculator;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,8 +41,8 @@ public class VehicleController extends BaseController<Vehicle> {
   public List<Vehicle> getAllVehicles() {
     logger.info("Got Request to return all vehicles");
     return data.getData().stream()
-        .peek(this::setCurrentLine)
-        .peek(this::setFreeFrom)
+        .peek(tripData::setCurrentLine)
+        .peek(tripData::setFreeFrom)
         .sorted((v1, v2) -> v1.getId().compareTo(v2.getId()))
         .collect(Collectors.toList());
   }
@@ -53,8 +51,8 @@ public class VehicleController extends BaseController<Vehicle> {
   public Vehicle getVehicle(@PathVariable String id) {
     logger.info("Got Request to return the vehicle with id " + id);
     Vehicle v =  getObjectForId(id);
-    setFreeFrom(v);
-    setCurrentLine(v);
+    tripData.setFreeFrom(v);
+    tripData.setCurrentLine(v);
     return v;
   }
 
@@ -98,24 +96,5 @@ public class VehicleController extends BaseController<Vehicle> {
   @GetMapping("/state")
   public EState getOverallVehiclesState() {
     return StateCalculator.getState((int) data.getData().stream().mapToInt(Vehicle::getSeverity).average().getAsDouble());
-  }
-
-  private void setCurrentLine(Vehicle vehicle) {
-    Trip currentTrip = tripData.getCurrentTripOfVehicle(vehicle, LocalDateTime.now());
-    if (currentTrip != null) {
-      vehicle.setCurrentLine(currentTrip.getLine());
-    } else {
-      vehicle.setCurrentLine(null);
-    }
-  }
-
-  private void setFreeFrom(Vehicle vehicle) {
-    List<Trip> vehicleTrips = tripData.getAllTripsOfVehicle(vehicle.getId());
-    Optional<LocalDateTime> lastStopTime = vehicleTrips.stream().flatMap(t -> t.getStops().values().stream()).max(LocalDateTime::compareTo);
-    if (lastStopTime.isPresent()) {
-      vehicle.setFreeFrom(lastStopTime.get());
-    } else {
-      vehicle.setFreeFrom(LocalDateTime.now());
-    }
   }
 }
