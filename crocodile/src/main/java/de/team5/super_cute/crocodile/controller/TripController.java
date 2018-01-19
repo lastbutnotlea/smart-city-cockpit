@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -31,22 +30,34 @@ public class TripController extends BaseController<Trip> {
   private VehicleValidation vehicleValidation;
 
   @Autowired
-  public TripController(BaseData<Trip> tripData, LineData lineData, VehicleValidation vehicleValidation) {
+  public TripController(BaseData<Trip> tripData, LineData lineData,
+      VehicleValidation vehicleValidation) {
     data = tripData;
     this.lineData = lineData;
     this.vehicleValidation = vehicleValidation;
   }
 
   @GetMapping
-  public List<Trip> getAllTrips(@RequestParam(defaultValue = "") String vehicleId,
-      @RequestParam(defaultValue = "") String lineId,
-      @RequestParam(defaultValue = "") String stopId) {
+  public List<Trip> getAllTrips() {
     return data.getData().stream()
-        .filter(t -> StringUtils.isEmpty(lineId) || t.getLine().getId().equals(lineId))
-        .filter(t -> StringUtils.isEmpty(stopId) || t.getStops().get(stopId) != null)
-        .filter(t -> StringUtils.isEmpty(vehicleId) || t.getVehicle().getId().equals(vehicleId))
         .peek(t -> t.getLine().setState(lineData.calculateLineState(t.getLine())))
         .collect(Collectors.toList());
+  }
+
+  @GetMapping("/vehicle/{vehicleId}")
+  public List<Trip> getAllTripsForVehicle(@PathVariable String vehicleId) {
+    return data.getData().stream()
+        .filter(t -> StringUtils.isEmpty(vehicleId) || t.getVehicle().getId().equals(vehicleId))
+        .peek(t -> t.getLine().setState(lineData.calculateLineState(t.getLine()))).collect(
+            Collectors.toList());
+  }
+
+  @GetMapping("/stop/{stopId}")
+  public List<Trip> getAllTripsForStop(@PathVariable String stopId) {
+    return data.getData().stream()
+        .filter(t -> StringUtils.isEmpty(stopId) || t.getStops().get(stopId) != null)
+        .peek(t -> t.getLine().setState(lineData.calculateLineState(t.getLine()))).collect(
+            Collectors.toList());
   }
 
   @GetMapping("/{id}")
@@ -59,8 +70,8 @@ public class TripController extends BaseController<Trip> {
   @PostMapping
   public String addTrip(@RequestBody Trip tripInput) {
     insertCorrectTimesForTrip(tripInput);
-    if(tripInput.getVehicle() != null){
-      if(!vehicleValidation.checkVehicleAvailability(tripInput)){
+    if (tripInput.getVehicle() != null) {
+      if (!vehicleValidation.checkVehicleAvailability(tripInput)) {
         return "Vehicle not available!";
       }
     }
@@ -75,8 +86,8 @@ public class TripController extends BaseController<Trip> {
   @PutMapping
   public String editTrip(@RequestBody Trip tripInput) {
     insertCorrectTimesForTrip(tripInput);
-    if(tripInput.getVehicle() != null){
-      if(!vehicleValidation.checkVehicleAvailability(tripInput)){
+    if (tripInput.getVehicle() != null) {
+      if (!vehicleValidation.checkVehicleAvailability(tripInput)) {
         return "Vehicle not available!";
       }
     }
