@@ -11,9 +11,7 @@ import { AnnouncementData } from '../../shared/data/announcement-data';
 @Component({
   selector: 'app-stop-detail-view',
   templateUrl: './stop-detail.component.html',
-  styleUrls: ['./stop-detail.component.css',
-    '../../shared/styling/embedded-components.css',
-    '../../shared/styling/global-styling.css']
+  styleUrls: ['./stop-detail.component.css']
 })
 
 export class StopDetailComponent extends LiveDataComponent implements OnInit {
