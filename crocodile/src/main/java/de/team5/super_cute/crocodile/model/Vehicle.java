@@ -23,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import de.team5.super_cute.crocodile.config.LiveDataConfig;
 import de.team5.super_cute.crocodile.util.StateCalculator;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -62,6 +63,10 @@ public class Vehicle extends IdentifiableObject implements Serializable, Stateab
 
   @Column
   private EVehicleType type;
+
+  private Line currentLine;
+
+  private LocalDateTime freeFrom;
 
   public Vehicle() {
     super();
@@ -165,6 +170,22 @@ public class Vehicle extends IdentifiableObject implements Serializable, Stateab
 
   public void setType(EVehicleType type) {
     this.type = type;
+  }
+
+  public Line getCurrentLine() {
+    return currentLine;
+  }
+
+  public void setCurrentLine(Line currentLine) {
+    this.currentLine = currentLine;
+  }
+
+  public LocalDateTime getFreeFrom() {
+    return freeFrom;
+  }
+
+  public void setFreeFrom(LocalDateTime freeFrom) {
+    this.freeFrom = freeFrom;
   }
 
   @JsonIgnore
