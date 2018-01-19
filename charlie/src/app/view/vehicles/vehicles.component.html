@@ -28,7 +28,7 @@
         </tr>
         </thead>
         <tbody class="d-flex flex-column flex-grow-1 fit-screen">
-        <tr *ngFor="let vehicle of filterGroup.getFiltered(vehicles)">
+        <tr *ngFor="let vehicle of filterGroup.getFiltered(vehicles)" *ngIf="!vehicle.isShutDown">
           <td>
             <a routerLink="{{vehicle.id}}">
               {{ vehicle.id }}
