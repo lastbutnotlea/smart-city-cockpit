@@ -5,8 +5,10 @@ import static de.team5.super_cute.crocodile.config.LiveDataConfig.TEMPERATURE_IN
 import de.team5.super_cute.crocodile.config.AppConfiguration;
 import de.team5.super_cute.crocodile.data.BaseData;
 import de.team5.super_cute.crocodile.data.TripData;
+import de.team5.super_cute.crocodile.model.EState;
 import de.team5.super_cute.crocodile.model.Trip;
 import de.team5.super_cute.crocodile.model.Vehicle;
+import de.team5.super_cute.crocodile.util.StateCalculator;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
@@ -88,5 +90,10 @@ public class VehicleController extends BaseController<Vehicle> {
   public String editVehicle(@RequestBody Vehicle input) {
     logger.info("Got Request to edit a vehicle to " + input);
     return makeIdToJSON(editObject(input));
+  }
+
+  @GetMapping("/state")
+  public EState getOverallVehiclesState() {
+    return StateCalculator.getState((int) data.getData().stream().mapToInt(Vehicle::getSeverity).average().getAsDouble());
   }
 }
