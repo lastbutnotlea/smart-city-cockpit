@@ -6,6 +6,7 @@ import { HttpRoutingService } from '../../services/http-routing.service';
 import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
 import {LineForStopData} from "../../shared/data/LineForStopData";
 import { FeedbackData } from '../../shared/data/feedback-data';
+import { AnnouncementData } from '../../shared/data/announcement-data';
 
 @Component({
   selector: 'app-stop-detail-view',
@@ -21,7 +22,8 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
   lineForStopDataInbound: LineForStopData [];
   lineForStopDataOutbound: LineForStopData [];
   loaded: boolean = false;
-  feedback: FeedbackData[];
+  feedback: FeedbackData[] = [];
+  announcements: AnnouncementData[] = [];
 
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
@@ -40,7 +42,7 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
       stop => {
         this.stop = stop;
         this.getLines();
-        this.getFeedback();
+        this.getAdditionalData();
         // This starts periodical calls for live-data after first data was received
         super.ngOnInit();
       },
@@ -60,14 +62,19 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
     );
   }
 
-  getFeedback(): void {
+  getAdditionalData(): void {
     this.http.getStopFeedback(this.stop.id).subscribe(
       data => {
         this.feedback = data;
       }, err => {
-        alert("Could not fetch feedback for vehicle! " +
-          "Please check your internet connection or inform your system administrator.");
-        console.log(err);
+        console.log(JSON.stringify(err));
+      }
+    );
+    this.http.getStopAnnouncements(this.stop.id).subscribe(
+      data => {
+        this.announcements = data;
+      }, err => {
+        console.log(JSON.stringify(err));
       }
     );
   }
@@ -82,7 +89,7 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
       this.http.getStopDetails(this.stop.id).subscribe( data => {
           this.stop = data;
           this.getLines();
-          this.getFeedback();
+          this.getAdditionalData();
         },
         err =>
           console.log('Could not fetch new stop-data.')

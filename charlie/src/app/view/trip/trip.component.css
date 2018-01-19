@@ -12,6 +12,10 @@
   margin-left: 0 !important;
 }
 
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
 table {
   flex-grow: 1;
   margin-bottom: 0;
@@ -20,7 +24,6 @@ table {
 thead, tbody, tr, td, th { display: block; }
 
 thead th {
-  height: 50px;
   text-align: left;
   width: 16.4% !important;
 }
@@ -36,6 +39,11 @@ thead {
 
 
 tbody td, thead th {
-  width: 16.666666666666666666666666%;
+  /* 100/6 */
+  width: 12.5%;
   float: left;
+}
+
+.filter-fully-visible {
+  width: 30%;
 }

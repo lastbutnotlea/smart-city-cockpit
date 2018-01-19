@@ -13,3 +13,7 @@
 .stop-list {
   list-style-type: circle;
 }
+
+.decreased-size {
+  width: 60%;
+}
