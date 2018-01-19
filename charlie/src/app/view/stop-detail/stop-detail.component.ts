@@ -90,12 +90,11 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
           this.stop = data;
           this.getLines();
           this.getAdditionalData();
-          this.subscribeToData();
         },
         err =>
           console.log('Could not fetch new stop-data.')
       ));
-
+    this.subscribeToData();
   }
 
 }

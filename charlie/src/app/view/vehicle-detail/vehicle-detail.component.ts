@@ -66,11 +66,11 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
       this.http.getVehicle(this.vehicle.id).subscribe( data => {
           this.vehicle = data;
           this.getFeedback();
-          this.subscribeToData();
         },
         err =>
           console.log('Could not fetch new line-data.')
       ));
+    this.subscribeToData();
   }
 
 }

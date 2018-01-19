@@ -19,6 +19,9 @@ import org.slf4j.Logger;
 
 public class Helpers {
 
+  public static String PATCH = "PATCH";
+  public static String POST = "POST";
+
   public static LocalDateTime DUMMY_TIME = LocalDateTime.MIN.withYear(0).withHour(0).withMinute(0);
 
   public static String SAP_ACCOUNT_ID = "4000560"; // wohl unser Account 'Uni Augsburg02'

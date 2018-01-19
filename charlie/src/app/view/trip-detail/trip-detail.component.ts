@@ -99,11 +99,11 @@ export class TripDetailComponent extends LiveDataComponent implements OnInit {
       this.http.getTripDetails(this.trip.id).subscribe( data => {
           this.trip = data;
           this.trip.stops = this.stopSortService.sortStops(this.trip.stops);
-          this.subscribeToData();
         },
         err =>
           console.log('Could not fetch new line-data.')
       ));
+    this.subscribeToData();
   }
 
 }
