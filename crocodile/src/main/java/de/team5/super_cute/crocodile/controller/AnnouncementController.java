@@ -29,7 +29,7 @@ public class AnnouncementController extends BaseController<Announcement> {
     return data.getData();
   }
 
-  @GetMapping("/stop/{id}")
+  @GetMapping("/stop/{stopId}")
   public List<Announcement> getAnnouncements(@PathVariable String stopId) {
     return data.getData().stream()
         .filter(a -> a.getStops().stream().anyMatch(s -> s.getId().equals(stopId)))
