@@ -47,7 +47,6 @@ export class TripComponent extends LiveDataComponent implements OnInit {
       data => {
         this.trips = data;
         this.trips.forEach(trip => trip.stops = this.stopSortService.sortStops(trip.stops));
-        debugger;
         // This starts periodical calls for live-data after first data was received
         super.ngOnInit();
         },
