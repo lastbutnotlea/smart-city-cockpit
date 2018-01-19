@@ -6,6 +6,7 @@ import de.team5.super_cute.crocodile.data.FeedbackGroupData;
 import de.team5.super_cute.crocodile.data.StopData;
 import de.team5.super_cute.crocodile.data.VehicleData;
 import de.team5.super_cute.crocodile.external.SAPC4CConnector;
+import de.team5.super_cute.crocodile.model.Feedback;
 import de.team5.super_cute.crocodile.model.IdentifiableObject;
 import de.team5.super_cute.crocodile.model.ServiceRequest;
 import de.team5.super_cute.crocodile.model.ServiceOrFeedbackTargetObject;
@@ -138,7 +139,9 @@ public class ServiceRequestController {
       fbg = new FeedbackGroup();
       feedbackGroupData.addObject(fbg);
     }
-    fbg.addFeedbacksMinusDuplicates(sr.getFeedbacks(), feedbackData);
+    for (Feedback f : sr.getFeedbacks()) {
+      fbg.addFeedback(f);
+    }
     sr.setReferencedFeedback(fbg.getId());
 
     if (StringUtils.isBlank(sr.getName())) {
@@ -157,12 +160,14 @@ public class ServiceRequestController {
     switch (sr.getServiceType()) {
       case MAINTENANCE:
         name.append("Maintenance of ");
+        break;
       case CLEANING:
         name.append("Cleaning of ");
+        break;
     }
     if (sr.getTarget() instanceof Stop) {
       name.append("Stop ").append(((Stop) sr.getTarget()).getCommonName()).append(" (")
-          .append(sr.getId()).append(")");
+          .append(((Stop) sr.getTarget()).getId()).append(")");
     } else if (sr.getTarget() instanceof Vehicle) {
       name.append("Vehicle ").append(((Vehicle) sr.getTarget()).getId());
     }

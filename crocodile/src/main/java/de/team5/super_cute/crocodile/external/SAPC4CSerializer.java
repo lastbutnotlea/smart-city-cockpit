@@ -98,7 +98,7 @@ public class SAPC4CSerializer {
               Integer.toString(((EStatusCode) field.get(entity)).getValue()));
 
         } // EState
-        else if (field.getType().equals(EStatusCode.class)) {
+        else if (field.getType().equals(EState.class)) {
           propMap.put(c4CAnnotation.name(),
               ((EState) field.get(entity)).stateToC4CPriority());
 

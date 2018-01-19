@@ -94,10 +94,14 @@ public class Feedback extends IdentifiableObject implements Serializable, Ticker
     return this.message;
   }
 
+  public void setItemDescription(String s) {
+    // do nothing, fool the json mapper!
+  }
+
   @Override
   public String getItemHeader() {
     String feedbackType = "";
-    switch (this.getFeedbackType()){
+    switch (this.getFeedbackType()) {
       case VEHICLE_FEEDBACK:
         feedbackType = "vehicles";
         break;
@@ -111,15 +115,23 @@ public class Feedback extends IdentifiableObject implements Serializable, Ticker
     return "Customer feedback about one of our " + feedbackType;
   }
 
+  public void setItemHeader(String s) {
+    // do nothing, fool the json mapper!
+  }
+
   @Override
   public EState getItemState() {
     return this.rating;
   }
 
+  public void setItemState(EState s) {
+    // do nothing, fool the json mapper!
+  }
+
   @Override
   public int getItemPriority() {
     int priority = 0;
-    switch (this.rating){
+    switch (this.rating) {
       case FINE:
         priority = FEEDBACK_FINE_PRIORITY;
         break;
@@ -133,19 +145,7 @@ public class Feedback extends IdentifiableObject implements Serializable, Ticker
     return FEEDBACK_BASE_PRIORITY + priority;
   }
 
-  public void setItemDescription(String s){
-    // do nothing, fool the json mapper!
-  }
-
-  public void setItemHeader(String s){
-    // do nothing, fool the json mapper!
-  }
-
-  public void setItemState(EState s){
-    // do nothing, fool the json mapper!
-  }
-
-  public void setItemPriority(int i){
+  public void setItemPriority(int i) {
     // do nothing, fool the json mapper!
   }
 }
