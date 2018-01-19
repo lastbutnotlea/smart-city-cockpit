@@ -4,9 +4,7 @@ import { FeedbackData } from '../../data/feedback-data';
 @Component({
   selector: 'app-embedded-feedback',
   templateUrl: './embedded-feedback.component.html',
-  styleUrls: ['./embedded-feedback.component.css',
-              '../../styling/embedded-components.css',
-              '../../styling/global-styling.css']
+  styleUrls: ['./embedded-feedback.component.css']
 })
 
 export class EmbeddedFeedbackComponent{

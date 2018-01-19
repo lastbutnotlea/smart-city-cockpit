@@ -11,7 +11,7 @@ import { FeedbackData } from '../../shared/data/feedback-data';
 @Component({
   selector: 'app-service-request-add',
   templateUrl: './service-request-add.component.html',
-  styleUrls: ['./service-request-add.component.css',  '../../shared/styling/global-styling.css']
+  styleUrls: ['./service-request-add.component.css']
 })
 
 export class ServiceRequestAddComponent implements OnInit {

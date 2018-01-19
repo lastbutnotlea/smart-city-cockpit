@@ -10,7 +10,7 @@ import { FeedbackData } from '../../shared/data/feedback-data';
 @Component({
   selector: 'app-service-request-edit',
   templateUrl: './service-request-edit.component.html',
-  styleUrls: ['./service-request-edit.component.css',  '../../shared/styling/global-styling.css']
+  styleUrls: ['./service-request-edit.component.css']
 })
 
 export class ServiceRequestEditComponent implements OnInit {

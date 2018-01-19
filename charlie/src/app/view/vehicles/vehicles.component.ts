@@ -10,8 +10,7 @@ import { LiveDataComponent } from '../../shared/components/live-data/live-data.c
 @Component({
   selector: 'app-vehicles-component',
   templateUrl: './vehicles.component.html',
-  styleUrls: ['./vehicles.component.css',
-    '../../shared/styling/global-styling.css']
+  styleUrls: ['./vehicles.component.css']
 })
 export class VehiclesComponent extends LiveDataComponent implements OnInit {
   title: string = 'Vehicles';
