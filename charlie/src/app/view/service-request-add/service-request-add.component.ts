@@ -30,7 +30,7 @@ export class ServiceRequestAddComponent implements OnInit {
   selectedType: DropdownValue;
   selectedPriority: DropdownValue;
   description: string;
-  selectedTime: string = now.toISOString();
+  selectedDate: string = now.toISOString();
   date: NgbDateStruct;
 
   availFeedback: FeedbackData[];
@@ -132,8 +132,9 @@ export class ServiceRequestAddComponent implements OnInit {
     this.selected.target = this.selectedTarget.value;
     this.selected.serviceType = this.selectedType.value;
     this.selected.priority = this.selectedPriority.value;
-    this.selected.dueDate = this.selectedTime;
+    this.selected.dueDate = this.selectedDate;
     this.selected.serviceRequestDescription = [{"id": "", "text": this.description}];
+    console.log(this.selected);
 
     this.http.addServiceRequest(this.selected).subscribe(
       data => {
@@ -181,14 +182,18 @@ export class ServiceRequestAddComponent implements OnInit {
   }
 
   updateDate(): void {
-    this.selectedTime = this.dateParser.parseDate(
-      this.selectedTime,
-      this.date
-    );
+    if(this.dateParser.isBeforeDate(new Date(), this.date)) {
+      this.selectedDate = this.dateParser.parseDate(
+        this.selectedDate,
+        this.date
+      );
+    } else {
+      this.date = this.dateParser.convertDateToNgbDateStruct(new Date(this.selectedDate));
+    }
   }
 
   isChecked(feedback: FeedbackData) {
-    return this.selectedFeedback.filter(feedback => feedback.id === feedback.id);
+    return this.selectedFeedback.filter(feedback => feedback.id === feedback.id).length === 1;
   }
 
   includeFeedback(feedback: FeedbackData, included: boolean) {

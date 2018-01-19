@@ -41,7 +41,10 @@ export class ServiceRequestDetailComponent implements OnInit {
         this.serviceRequest = data;
         this.loaded = true;
       },
-      err => console.log('Could not fetch trip data!')
+      err => {
+        console.log(JSON.stringify(err));
+        alert('Could not get details of service request.');
+      }
     );
   }
 
@@ -81,10 +84,14 @@ export class ServiceRequestDetailComponent implements OnInit {
   }
 
   hasVehicleTarget(){
-    return this.serviceRequest.target instanceof VehicleData;
+    return this.serviceRequest.target.identifiableType === "vehicle";
   }
 
   hasStopTarget(){
-    return this.serviceRequest.target instanceof StopData;
+    return this.serviceRequest.target.identifiableType === "stop";
+  }
+
+  hasTarget(){
+    return this.serviceRequest.target !== null;
   }
 }

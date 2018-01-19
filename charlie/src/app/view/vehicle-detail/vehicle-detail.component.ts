@@ -45,7 +45,7 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
       }, err => {
         alert("Could not fetch feedback for vehicle! " +
           "Please check your internet connection or inform your system administrator.");
-        console.log(err);
+        console.log(JSON.stringify(err));
       }
     );
   }
@@ -66,11 +66,11 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
       this.http.getVehicle(this.vehicle.id).subscribe( data => {
           this.vehicle = data;
           this.getFeedback();
-          this.subscribeToData();
         },
         err =>
           console.log('Could not fetch new line-data.')
       ));
+    this.subscribeToData();
   }
 
 }

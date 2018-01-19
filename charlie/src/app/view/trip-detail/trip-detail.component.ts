@@ -23,6 +23,7 @@ import { LiveDataComponent } from '../../shared/components/live-data/live-data.c
 export class TripDetailComponent extends LiveDataComponent implements OnInit {
 
   trip: TripData;
+  loaded: boolean = false;
 
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
@@ -42,6 +43,7 @@ export class TripDetailComponent extends LiveDataComponent implements OnInit {
       trip => {
         this.trip = trip;
         this.trip.stops = this.stopSortService.sortStops(this.trip.stops);
+        this.loaded = true;
         // This starts periodical calls for live-data after first data was received
         super.ngOnInit();
       },
@@ -91,21 +93,17 @@ export class TripDetailComponent extends LiveDataComponent implements OnInit {
     );
   }
 
-  isLoaded(): boolean {
-    return this.trip != null;
-  }
-
   // update trip data
   refreshData(): void {
     this.setDataSubscription(
       this.http.getTripDetails(this.trip.id).subscribe( data => {
           this.trip = data;
           this.trip.stops = this.stopSortService.sortStops(this.trip.stops);
-          this.subscribeToData();
         },
         err =>
           console.log('Could not fetch new line-data.')
       ));
+    this.subscribeToData();
   }
 
 }

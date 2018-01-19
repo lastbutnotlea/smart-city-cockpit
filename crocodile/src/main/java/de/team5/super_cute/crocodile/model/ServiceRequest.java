@@ -40,7 +40,7 @@ public class ServiceRequest extends C4CEntity {
   @C4CProperty(name = "ServiceRequestLifeCycleStatusCode")
   private EStatusCode statusCode = EStatusCode.OPEN;
 
-  @C4CProperty(name = "CompletionDueDate")
+  @C4CProperty(name = "RequestedEnd")
   @Convert(converter = LocalDateTimeAttributeConverter.class)
   @JsonSerialize(using = DateSerializer.class)
   @JsonDeserialize(using = DateDeserializer.class)
@@ -71,17 +71,17 @@ public class ServiceRequest extends C4CEntity {
   /**
    * The id of the target entity;
    */
-  //@C4CProperty(name = "RefID", maxLength = 36) todo uncomment if mhp created them
+  @C4CProperty(name = "ReferenceID", maxLength = 36)
   @JsonIgnore
   private String targetId;
 
   //@JsonDeserialize(using = IdentifiableObjectDeserializer.class)
-  private ServiceTargetObject target;
+  private ServiceOrFeedbackTargetObject target;
 
   /**
    * The id of the feedbackGroup this service request answers to.
    */
-  //@C4CProperty(name = "FeedbackReference", maxLength = 36) todo uncomment if mhp created them
+  @C4CProperty(name = "FeedbackReference", maxLength = 36)
   @JsonIgnore
   private String referencedFeedback;
 
@@ -220,11 +220,11 @@ public class ServiceRequest extends C4CEntity {
     this.targetId = targetId;
   }
 
-  public ServiceTargetObject getTarget() {
+  public ServiceOrFeedbackTargetObject getTarget() {
     return target;
   }
 
-  public void setTarget(ServiceTargetObject target) {
+  public void setTarget(ServiceOrFeedbackTargetObject target) {
     this.target = target;
   }
 
@@ -261,14 +261,14 @@ public class ServiceRequest extends C4CEntity {
         .append(getCustomerId(), that.getCustomerId())
         .append(getPriority(), that.getPriority())
         .append(getStatusCode(), that.getStatusCode())
-        //.append(getDueDate(), that.getDueDate())
+        .append(getDueDate(), that.getDueDate())
         .append(getCompletionDate(), that.getCompletionDate())
         .append(getOriginTypeCode(), that.getOriginTypeCode())
         .append(getProcessingTypeCode(), that.getProcessingTypeCode())
         .append(getServiceType(), that.getServiceType())
         .append(getServiceRequestDescription(), that.getServiceRequestDescription())
-        //.append(getTarget(), that.getTarget())
-        //.append(getReferencedFeedback(), that.getReferencedFeedback())
+        .append(getTarget(), that.getTarget())
+        .append(getReferencedFeedback(), that.getReferencedFeedback())
         .isEquals();
   }
 
@@ -279,33 +279,37 @@ public class ServiceRequest extends C4CEntity {
         .append(getCustomerId())
         .append(getPriority())
         .append(getStatusCode())
-        //.append(getDueDate())
+        .append(getDueDate())
         .append(getCompletionDate())
         .append(getOriginTypeCode())
         .append(getProcessingTypeCode())
         .append(getServiceType())
         .append(getServiceRequestDescription())
-        //.append(getTarget())
-        //.append(getReferencedFeedback()) todo uncomment if mhp guys created field
+        .append(getTarget())
+        .append(getReferencedFeedback())
         .toHashCode();
   }
 
   @Override
   public String toString() {
     return new ToStringBuilder(this)
-        .append("name", getName())
-        .append("customerId", getCustomerId())
-        .append("createdBy", getCreatedBy())
-        .append("priority", getPriority())
-        .append("statusCode", getStatusCode())
-        .append("dueDate", getDueDate())
-        .append("completionDate", getCompletionDate())
-        .append("originTypeCode", getOriginTypeCode())
-        .append("processingTypeCode", getProcessingTypeCode())
-        .append("serviceType", getServiceType())
-        .append("serviceRequestDescription", getServiceRequestDescription())
-        .append("target", getTarget())
-        .append("referencedFeedback", getReferencedFeedback())
+        .append("id", getId())
+        .append("name", name)
+        .append("customerId", customerId)
+        .append("createdBy", createdBy)
+        .append("priority", priority)
+        .append("statusCode", statusCode)
+        .append("dueDate", dueDate)
+        .append("completionDate", completionDate)
+        .append("originTypeCode", originTypeCode)
+        .append("processingTypeCode", processingTypeCode)
+        .append("serviceType", serviceType)
+        .append("serviceRequestDescription", serviceRequestDescription)
+        .append("targetId", targetId)
+        .append("target", target)
+        .append("referencedFeedback", referencedFeedback)
+        .append("feedbacks", feedbacks)
+        .append("objectId", objectId)
         .toString();
   }
 }

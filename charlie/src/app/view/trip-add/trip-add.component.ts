@@ -186,19 +186,20 @@ export class TripAddComponent implements OnInit {
   }
 
   updateDate(): void {
-    this.selectedTime = this.dateParser.parseDate(
-      this.selectedTime,
-      this.date
-    );
-    if (this.displayStops) console.log(this.selected.stops[0].departureTime);
-    else console.log(this.selectedTime);
+    if(this.dateParser.isBeforeDate(new Date(), this.date)) {
+      this.selectedTime = this.dateParser.parseDate(this.selectedTime, this.date);
+      // Date might have been set to current date. Time could now be invalid (passed) time. Check time again
+      this.updateTime();
+    } else {
+      this.date = this.dateParser.convertDateToNgbDateStruct(new Date(this.selectedTime));
+    }
   }
 
   updateTime(): void {
-    this.selectedTime = this.dateParser.parseTime(
-      this.selectedTime,
-      this.time
-    );
+    if(!this.dateParser.isBeforeTime(new Date(), this.date, this.time)) {
+      this.time = this.dateParser.convertDateToNgbTimeStruct(new Date());
+    }
+    this.selectedTime = this.dateParser.parseTime(this.selectedTime, this.time);
     if (this.displayStops) console.log(this.selected.stops[0].departureTime);
     else console.log(this.selectedTime);
   }
