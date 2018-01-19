@@ -5,7 +5,6 @@ import static de.team5.super_cute.crocodile.config.AppConfiguration.API_PREFIX;
 import de.team5.super_cute.crocodile.config.C4CConfig;
 import de.team5.super_cute.crocodile.external.SAPC4CConnector;
 import de.team5.super_cute.crocodile.model.Event;
-import de.team5.super_cute.crocodile.util.Helpers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,25 +40,21 @@ public class EventController {
   public List<Event> getAllEvents()
       throws IOException, EdmException, EntityProviderException {
     logger.info("Got Request for all Events");
-    List<Event> events = connector.getEvents();
-    return events;
+    return connector.getEvents();
   }
 
   @GetMapping("/{id}")
   public Event getAllEvents(@PathVariable String id)
       throws IOException, EdmException, EntityProviderException {
     logger.info("Got Request for Event with id " + id);
-    Event event = connector.getEvents().stream()
-        .filter(sr -> sr.getId().equals(id)).findAny()
-        .orElseThrow(() -> new IllegalArgumentException("No Event found for this id."));
-    return event;
+    return (Event) connector.getC4CEntityById(new Event(), id);
   }
 
   @PostMapping
   public String addEvent(@RequestBody Event eventInput)
       throws IOException, BatchException {
     logger.info("Got Request to add Event: " + eventInput);
-    connector.putC4CEntity(eventInput, Helpers.POST);
+    connector.putC4CEntity(eventInput);
     return eventInput.getId();
   }
 
@@ -67,17 +62,14 @@ public class EventController {
   public String deleteEvent(@PathVariable String id)
       throws IOException, EdmException, EntityProviderException {
     logger.info("Got Request to delete Event with id " + id);
-   return connector.deleteC4CEntity(
-        connector.getEvents().stream().filter(sr -> sr.getId().equals(id)).findAny()
-            .orElseThrow(() -> new IllegalArgumentException(
-                "No Event found for the given id: " + id)));
+   return connector.deleteC4CEntity(connector.getC4CEntityById(new Event(), id));
   }
 
   @PutMapping
   public String editEvent(@RequestBody Event eventInput)
       throws IOException, BatchException, EdmException, EntityProviderException {
     logger.info("Got Request to edit Event: " + eventInput);
-    connector.putC4CEntity(eventInput, Helpers.PATCH);
+    connector.patchC4CEntity(eventInput);
     return eventInput.getId();
   }
 

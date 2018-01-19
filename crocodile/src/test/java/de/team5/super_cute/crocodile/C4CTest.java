@@ -9,7 +9,6 @@ import de.team5.super_cute.crocodile.model.c4c.AppointmentInvolvedParties;
 import de.team5.super_cute.crocodile.model.c4c.C4CEntity;
 import de.team5.super_cute.crocodile.model.c4c.C4CNotes;
 import de.team5.super_cute.crocodile.model.c4c.EC4CNotesTypeCode;
-import de.team5.super_cute.crocodile.util.Helpers;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -58,26 +57,32 @@ public class C4CTest {
 
   private void testC4CEntity(C4CEntity entity) {
     try {
-      if (connector.getC4CEntities(entity.getEmptyObject()).contains(entity)) {
+      if (connector.getAllC4CEntities(entity.getEmptyObject()).contains(entity)) {
         Assert.fail(
             "Test " + entity.getClass() + "\n" + entity + "\n is already present in " + entity
                 .getCollectionName());
       }
-      connector.putC4CEntity(entity, Helpers.POST);
-      List<C4CEntity> entities = connector.getC4CEntities(entity.getEmptyObject());
+      connector.putC4CEntity(entity);
+      List<C4CEntity> entities = connector.getAllC4CEntities(entity.getEmptyObject());
       Assert.assertTrue(entities.contains(entity));
 
-      entity.setId("TEST_ID_CHANGED_TO");
-      connector.putC4CEntity(entity, Helpers.PATCH);
-      List<C4CEntity> entitiesChanged = connector.getC4CEntities(entity.getEmptyObject());
-      Assert.assertTrue(entitiesChanged.contains(entity));
-
-      List<C4CEntity> objects = connector.getC4CEntities(entity.getEmptyObject());
+      List<C4CEntity> objects = connector.getAllC4CEntities(entity.getEmptyObject());
       C4CEntity entityWithObjectId = objects.get(objects.indexOf(entity));
-      connector.deleteC4CEntity(entityWithObjectId);
 
-      List<C4CEntity> entitiesAfterDeletion = connector.getC4CEntities(entity.getEmptyObject());
-      Assert.assertTrue(!entitiesAfterDeletion.contains(entity));
+      if (entityWithObjectId instanceof ServiceRequest) {
+        ((ServiceRequest) entityWithObjectId).setName("TESTCHANGEDNAME");
+      } else if (entityWithObjectId instanceof  Event) {
+        ((Event) entityWithObjectId).setLocationName("TESTCHANGEDLOCATION");
+      }
+
+
+      connector.patchC4CEntity(entityWithObjectId);
+      List<C4CEntity> entitiesChanged = connector.getAllC4CEntities(entityWithObjectId.getEmptyObject());
+      Assert.assertTrue(entitiesChanged.contains(entityWithObjectId));
+
+      connector.deleteC4CEntity(entityWithObjectId);
+      List<C4CEntity> entitiesAfterDeletion = connector.getAllC4CEntities(entityWithObjectId.getEmptyObject());
+      Assert.assertTrue(!entitiesAfterDeletion.contains(entityWithObjectId));
 
     } catch (EntityProviderException | IOException | BatchException | EdmException e) {
       e.printStackTrace();

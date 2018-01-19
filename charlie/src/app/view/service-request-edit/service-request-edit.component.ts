@@ -106,12 +106,12 @@ export class ServiceRequestEditComponent implements OnInit {
 
   includeFeedback(feedback: FeedbackData, included: boolean): void {
     if (included) {
-      this.data.feedbacks.push(feedback);
+      this.selectedFeedback.push(feedback);
     } else {
-      this.data.feedbacks = this.data.feedbacks.filter(filteredFeedback =>
+      this.selectedFeedback = this.selectedFeedback.filter(filteredFeedback =>
         filteredFeedback.id !== feedback.id);
     }
-    console.log(JSON.stringify(this.data.feedbacks));
+    console.log(JSON.stringify(this.selectedFeedback));
   }
 
   updateDate(): void {

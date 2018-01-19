@@ -46,8 +46,6 @@ public class ServiceRequestController {
   private VehicleData vehicleData;
   private StopData stopData;
 
-  //private List<ServiceRequest> cacheList;
-
   @Autowired
   public ServiceRequestController(SAPC4CConnector connector,
       FeedbackGroupData feedbackGroupData, VehicleData vehicleData,
@@ -57,7 +55,6 @@ public class ServiceRequestController {
     this.vehicleData = vehicleData;
     this.stopData = stopData;
     this.feedbackData = feedbackData;
-    //cacheList = new ArrayList<>();
   }
 
   @GetMapping
@@ -65,7 +62,7 @@ public class ServiceRequestController {
       throws IOException, EdmException, EntityProviderException {
     logger.info("Got Request for all Service Requests");
     List<ServiceRequest> serviceRequests = connector.getServiceRequests();
-    //serviceRequests.addAll(cacheList);
+    serviceRequests.forEach(this::prepareServiceRequestForFrontend);
     return serviceRequests;
   }
 
@@ -73,46 +70,35 @@ public class ServiceRequestController {
   public ServiceRequest getServiceRequest(@PathVariable String id)
       throws IOException, EdmException, EntityProviderException {
     logger.info("Got Request for Service Request with id " + id);
-    //Optional<ServiceRequest> serviceR = cacheList.stream().filter(s -> s.getId().equals(id)).findAny();
-//    if (serviceR.isPresent()) {
-//      return serviceR.get();
-//    }
-    ServiceRequest serviceRequest = connector.getServiceRequests().stream()
-        .filter(sr -> sr.getId().equals(id)).findAny()
-        .orElseThrow(() -> new IllegalArgumentException("No Service Request found for this id."));
+    ServiceRequest serviceRequest = (ServiceRequest) connector.getC4CEntityById(new ServiceRequest(), id);
     prepareServiceRequestForFrontend(serviceRequest);
     return serviceRequest;
   }
 
   @PostMapping
   public ServiceRequest addServiceRequest(@RequestBody ServiceRequest serviceRequestInput)
-      throws IOException, BatchException {
+      throws IOException, BatchException, EdmException, EntityProviderException {
     logger.info("Got Request to add Service Request: " + serviceRequestInput);
     handleServiceRequestFromFrontend(serviceRequestInput);
-    //cacheList.add(serviceRequestInput);
-    connector.putC4CEntity(serviceRequestInput, Helpers.POST);
-    return serviceRequestInput;
+    String objectId = connector.putC4CEntity(serviceRequestInput);
+    ServiceRequest serviceRequest = (ServiceRequest) connector.getC4CEntityByObjectId(new ServiceRequest(), objectId);
+    prepareServiceRequestForFrontend(serviceRequest);
+    return serviceRequest;
   }
 
   @DeleteMapping("/{id}")
   public String deleteServiceRequest(@PathVariable String id)
       throws IOException, EdmException, EntityProviderException {
     logger.info("Got Request to delete Service Request with id " + id);
-//    cacheList.removeIf(s -> s.getId().equals(id));
-//    return id;
-    return connector.deleteC4CEntity(
-        connector.getServiceRequests().stream().filter(sr -> sr.getId().equals(id)).findAny()
-            .orElseThrow(() -> new IllegalArgumentException(
-                "No Service Request found for the given id: " + id)));
+    return connector.deleteC4CEntity(connector.getC4CEntityById(new ServiceRequest(), id));
   }
 
   @PutMapping
   public String editServiceRequest(@RequestBody ServiceRequest serviceRequestInput)
       throws IOException, BatchException, EdmException, EntityProviderException {
     logger.info("Got Request to edit Service Request: " + serviceRequestInput);
-    //deleteServiceRequest(serviceRequestInput.getId());
-    //addServiceRequest(serviceRequestInput);
-    connector.putC4CEntity(serviceRequestInput, Helpers.PATCH);
+    handleServiceRequestFromFrontend(serviceRequestInput);
+    connector.patchC4CEntity(serviceRequestInput);
     return serviceRequestInput.getId();
   }
 
@@ -150,8 +136,9 @@ public class ServiceRequestController {
     }
     if (fbg == null) {
       fbg = new FeedbackGroup();
+      feedbackGroupData.addObject(fbg);
     }
-    fbg.addFeedbacksMinusDuplicates(sr.getFeedbacks());
+    fbg.addFeedbacksMinusDuplicates(sr.getFeedbacks(), feedbackData);
     sr.setReferencedFeedback(fbg.getId());
 
     if (StringUtils.isBlank(sr.getName())) {

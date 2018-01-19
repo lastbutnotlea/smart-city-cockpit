@@ -1,11 +1,14 @@
 package de.team5.super_cute.crocodile.model.c4c;
 
+import de.team5.super_cute.crocodile.data.FeedbackData;
 import de.team5.super_cute.crocodile.model.Feedback;
 import de.team5.super_cute.crocodile.model.IdentifiableObject;
 import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
@@ -21,6 +24,11 @@ public class FeedbackGroup extends IdentifiableObject {
 
   @OneToMany(fetch = FetchType.LAZY)
   @PrimaryKeyJoinColumn
+  @JoinTable(
+      name = "feedbacks",
+      joinColumns = @JoinColumn(name = "fb_group_id"),
+      inverseJoinColumns = @JoinColumn(name = "fb_id")
+  )
   private Set<Feedback> feedbacks;
 
   public FeedbackGroup() {
@@ -39,10 +47,19 @@ public class FeedbackGroup extends IdentifiableObject {
     this.feedbacks = feedbacks;
   }
 
-  public void addFeedbacksMinusDuplicates(Set<Feedback> feedbacks) {
+  public void addFeedbacksMinusDuplicates(Set<Feedback> feedbacks, FeedbackData feedbackData) {
+    if (feedbacks == null) {
+      return;
+    }
     for (Feedback f : feedbacks) {
-      if (!getFeedbacks().contains(f)) {
-        getFeedbacks().add(f);
+      Feedback fromDatabase = feedbackData.getObjectForId(f.getId());
+      if (!getFeedbacks().contains(fromDatabase)) {
+        getFeedbacks().add(fromDatabase);
+      }
+    }
+    for (Feedback f : this.feedbacks) {
+      if (!feedbacks.contains(f)) {
+        this.feedbacks.remove(f);
       }
     }
   }

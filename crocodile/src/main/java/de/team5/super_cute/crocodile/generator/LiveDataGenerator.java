@@ -68,14 +68,12 @@ public class LiveDataGenerator {
   @Autowired
   private VehiclePositionService vehiclePositionService;
 
+  private int currentFeedbackCount;
+
   @Scheduled(fixedDelay = LIVEDATA_FREQUENCY)
   public void generateLiveData() {
     LoggerFactory.getLogger(getClass())
         .info("Started generating LiveData");
-    // delete old feedback
-    feedbackData.getData().stream()
-        .filter(f -> f.getTimestamp().compareTo(LocalDateTime.now().minusMinutes(30)) < 0)
-        .forEach(f -> feedbackData.deleteObject(f.getId()));
 
     List<Stop> stops = stopData.getData();
     List<Vehicle> vehicles = vehicleData.getData();

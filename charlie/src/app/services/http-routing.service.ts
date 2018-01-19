@@ -157,7 +157,7 @@ export class HttpRoutingService {
   }
 
   public getStopFeedback(stopId: string): Observable<FeedbackData[]> {
-    return this.http.get<FeedbackData[]>(this.urlBuilder.getStopFeedbackUrl(stopId)); 
+    return this.http.get<FeedbackData[]>(this.urlBuilder.getStopFeedbackUrl(stopId));
   }
 
   public getTickerItems(): Observable<TickerData []> {
