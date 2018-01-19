@@ -37,6 +37,7 @@ public class DatabaseConfig {
         .setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect")
         .setProperty("hibernate.hbm2ddl.auto", "create")
         .setProperty("packagesToScan", "de.team5.super_cute.crocodile.model")
+        .setProperty("hibernate.enable_lazy_load_no_trans", "true")
         .buildSessionFactory();
   }
 

@@ -12,6 +12,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
     @Type(value = Stop.class, name = "stop"),
     @Type(value = Vehicle.class, name = "vehicle"),
 })
-public interface ServiceTargetObject {
+public interface ServiceOrFeedbackTargetObject {
 
 }

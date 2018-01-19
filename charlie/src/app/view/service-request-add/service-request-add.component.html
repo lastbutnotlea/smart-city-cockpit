@@ -43,9 +43,11 @@
     </div>
     <div *ngIf="availFeedback.length !== 0">
       <label>Feedback:</label>
-      <div class="" *ngFor="let feedback of availFeedback">
-        <input #box type="checkbox" [ngModel]="isChecked(feedback)" (change)="includeFeedback(feedback, box.checked)">
-        <label class="padding-left">{{feedback.message}}</label>
+      <div *ngFor="let feedback of availFeedback">
+        <label class="btn {{box.checked? 'active' : ''}}">
+          <input #box type="checkbox" [ngModel]="isChecked(feedback)" (change)="includeFeedback(feedback, box.checked)">
+          {{feedback.message}}
+        </label>
       </div>
     </div>
   </div>

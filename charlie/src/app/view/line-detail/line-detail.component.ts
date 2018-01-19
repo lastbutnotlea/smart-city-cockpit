@@ -83,10 +83,10 @@ export class LineDetailComponent extends LiveDataComponent implements OnInit {
       this.http.getLineDetails(this.line.id).subscribe( data => {
           this.line = data;
           this.getPositionData();
-          this.subscribeToData();
         },
         err =>
           console.log('Could not fetch new line-data.')
       ));
+    this.subscribeToData();
   }
 }

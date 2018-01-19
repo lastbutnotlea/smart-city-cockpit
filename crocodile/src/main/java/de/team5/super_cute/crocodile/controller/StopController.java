@@ -28,7 +28,9 @@ public class StopController extends BaseController<Stop> {
 
   @GetMapping
   public List<Stop> getAllStops() {
-    return data.getData();
+    List<Stop> stops = data.getData();
+    stops.sort((s1, s2) -> s1.getId().compareTo(s2.getId()));
+    return stops;
   }
 
   @GetMapping("/{id}")
