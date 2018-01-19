@@ -9,5 +9,5 @@ export class VehicleData extends ServiceRequestTarget {
   type: string;
   state: string;
   identifiableType: String = "vehicle";
-  isShutDown: boolean;
+ // isShutDown: boolean;
 }
