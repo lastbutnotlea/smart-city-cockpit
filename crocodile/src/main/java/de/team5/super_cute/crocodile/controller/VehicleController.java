@@ -40,7 +40,9 @@ public class VehicleController extends BaseController<Vehicle> {
   @GetMapping
   public List<Vehicle> getAllVehicles() {
     logger.info("Got Request to return all vehicles");
-    return data.getData();
+    List<Vehicle> vehicles = data.getData();
+    vehicles.sort((v1, v2) -> v1.getId().compareTo(v2.getId()));
+    return vehicles;
   }
 
   @GetMapping("/{id}")

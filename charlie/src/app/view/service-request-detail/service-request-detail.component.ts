@@ -12,9 +12,7 @@ import { ServiceRequestEditComponent } from '../service-request-edit/service-req
 @Component({
   selector: 'app-service-request-detail-view',
   templateUrl: './service-request-detail.component.html',
-  styleUrls: ['./service-request-detail.component.css',
-              '../../shared/styling/embedded-components.css',
-              '../../shared/styling/global-styling.css']
+  styleUrls: ['./service-request-detail.component.css']
 })
 
 export class ServiceRequestDetailComponent implements OnInit {
@@ -84,10 +82,14 @@ export class ServiceRequestDetailComponent implements OnInit {
   }
 
   hasVehicleTarget(){
-    return this.serviceRequest.target instanceof VehicleData;
+    return this.serviceRequest.target.identifiableType === "vehicle";
   }
 
   hasStopTarget(){
-    return this.serviceRequest.target instanceof StopData;
+    return this.serviceRequest.target.identifiableType === "stop";
+  }
+
+  hasTarget(){
+    return this.serviceRequest.target !== null;
   }
 }

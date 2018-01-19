@@ -85,8 +85,12 @@ public class SAPC4CSerializer {
 
         } // LocalDateTime
         else if (field.getType().equals(LocalDateTime.class)) {
-          propMap.put(c4CAnnotation.name(),
-              localDateTimeToC4CDateString((LocalDateTime) field.get(entity)));
+          if (field.getName().equals("dueDate")) {
+            propMap.put(c4CAnnotation.name(), ((LocalDateTime) field.get(entity)).toString() + "Z");
+          } else {
+            propMap.put(c4CAnnotation.name(),
+                localDateTimeToC4CDateString((LocalDateTime) field.get(entity)));
+          }
 
         } // EStatusCode
         else if (field.getType().equals(EStatusCode.class)) {
@@ -94,7 +98,7 @@ public class SAPC4CSerializer {
               Integer.toString(((EStatusCode) field.get(entity)).getValue()));
 
         } // EState
-        else if (field.getType().equals(EStatusCode.class)) {
+        else if (field.getType().equals(EState.class)) {
           propMap.put(c4CAnnotation.name(),
               ((EState) field.get(entity)).stateToC4CPriority());
 
@@ -149,6 +153,9 @@ public class SAPC4CSerializer {
               field.set(result, EStatusCode.getStatusCode((String) value));
             } else if (field.getType().equals(EState.class)) {
               field.set(result, EState.c4CPriorityToState((String) value));
+            } else if (field.getName().equals("dueDate")) {
+              String dateWithTimeZone = (String) value;
+              field.set(result, LocalDateTime.parse(dateWithTimeZone.substring(0, dateWithTimeZone.length() - 1)));
             } else {
               field.set(result, value);
             }

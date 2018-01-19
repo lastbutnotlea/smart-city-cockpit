@@ -9,9 +9,7 @@ import { FeedbackData } from '../../shared/data/feedback-data';
 @Component({
   selector: 'app-vehicle-detail',
   templateUrl: './vehicle-detail.component.html',
-  styleUrls: ['./vehicle-detail.component.css',
-              '../../shared/styling/global-styling.css',
-              '../../shared/styling/embedded-components.css']
+  styleUrls: ['./vehicle-detail.component.css']
 })
 export class VehicleDetailComponent extends LiveDataComponent implements OnInit {
 
@@ -66,11 +64,11 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
       this.http.getVehicle(this.vehicle.id).subscribe( data => {
           this.vehicle = data;
           this.getFeedback();
-          this.subscribeToData();
         },
         err =>
           console.log('Could not fetch new line-data.')
       ));
+    this.subscribeToData();
   }
 
 }

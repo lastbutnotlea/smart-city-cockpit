@@ -10,8 +10,7 @@ import { LiveDataComponent } from '../../shared/components/live-data/live-data.c
 @Component({
   selector: 'app-vehicles-component',
   templateUrl: './vehicles.component.html',
-  styleUrls: ['./vehicles.component.css',
-    '../../shared/styling/global-styling.css']
+  styleUrls: ['./vehicles.component.css']
 })
 export class VehiclesComponent extends LiveDataComponent implements OnInit {
   title: string = 'Vehicles';
@@ -66,10 +65,10 @@ export class VehiclesComponent extends LiveDataComponent implements OnInit {
       this.http.getVehicles().subscribe( data => {
           this.vehicles = data;
           this.getVehiclesState();
-          this.subscribeToData();
         },
         err =>
           console.log('Could not fetch new line-data.')
       ));
+    this.subscribeToData();
   }
 }
