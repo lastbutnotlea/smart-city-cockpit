@@ -17,7 +17,7 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
 
   vehicle: VehicleData;
   loaded: boolean = false;
-  feedback: FeedbackData[];
+  feedback: FeedbackData[] = [];
 
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
