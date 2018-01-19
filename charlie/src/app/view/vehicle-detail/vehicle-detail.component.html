@@ -23,7 +23,7 @@
 
     <div class="d-flex flex-1 flex-column">
       <app-embedded-feedback [feedback]="feedback" class="flex-1 bounding-box"></app-embedded-feedback>
-      <app-embedded-line [line]="vehicle.currentLine" class="flex-1 bounding-box"></app-embedded-line>
+      <app-embedded-line *ngIf="vehicle.currentLine !== null" [line]="vehicle.currentLine" class="flex-1 bounding-box"></app-embedded-line>
     </div>
   </div>
 
