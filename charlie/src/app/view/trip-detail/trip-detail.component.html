@@ -29,7 +29,7 @@
         <i class="fa fa-map-marker fa-2x float-left padding-left-5 text-primary"></i>
         <label class="padding-emb-box-headline">Stops</label>
       </h4>
-      <p *ngFor="let stop of trip.stops">
+      <p *ngFor='let stop of trip.stops'>
         <label class="text-secondary">{{stop.departureTime | date:'MM/dd/yyyy HH:mm'}}</label>
         {{stop.name}}
         <span [ngClass]="{'color-fine': stop.state === 'FINE',

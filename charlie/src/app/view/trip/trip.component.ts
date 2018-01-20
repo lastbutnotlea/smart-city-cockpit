@@ -6,6 +6,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {TripAddComponent} from '../trip-add/trip-add.component';
 import { FilterGroupComponent } from '../../shared/components/filter-group/filter-group.component';
 import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
+import {StopSortService} from '../../services/stop-sort.service';
 
 @Component({
   selector: 'app-trip-view',
@@ -22,7 +23,8 @@ export class TripComponent extends LiveDataComponent implements OnInit {
   filterGroup: FilterGroupComponent;
 
   constructor(private http: HttpRoutingService,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private stopSortService: StopSortService) {
     super();
   }
 
@@ -38,6 +40,7 @@ export class TripComponent extends LiveDataComponent implements OnInit {
       data => {
         this.trips = data;
         this.loaded = true;
+        this.trips.forEach(trip => trip.stops = this.stopSortService.sortStops(trip.stops));
         // This starts periodical calls for live-data after first data was received
         super.ngOnInit();
         },
@@ -85,6 +88,8 @@ export class TripComponent extends LiveDataComponent implements OnInit {
     this.setDataSubscription(
     this.http.getTrips().subscribe( data => {
         this.trips = data;
+        this.trips.forEach(trip => trip.stops = this.stopSortService.sortStops(trip.stops));
+        this.subscribeToData();
       },
       err =>
         console.log('Could not fetch new line-data.')
