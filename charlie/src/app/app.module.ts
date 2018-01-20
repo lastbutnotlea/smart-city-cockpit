@@ -46,6 +46,7 @@ import {AnnouncementAddComponent} from './view/announcements/announcement-add/an
 import {AnnouncementItemComponent} from './view/announcements/announcement-item/announcement-item.component';
 import { EmbeddedFeedbackComponent } from './shared/components/embedded-feedback/embedded-feedback.component';
 import { EmbeddedAnnouncementsComponent } from './shared/components/embedded-announcements/embedded-announcements.component';
+import { EmbeddedServiceRequestComponent } from './shared/components/embedded-service-request/embedded-service-request.component';
 
 @NgModule({
   declarations: [
@@ -84,7 +85,8 @@ import { EmbeddedAnnouncementsComponent } from './shared/components/embedded-ann
     AnnouncementAddComponent,
     AnnouncementItemComponent,
     EmbeddedFeedbackComponent,
-    EmbeddedAnnouncementsComponent
+    EmbeddedAnnouncementsComponent,
+    EmbeddedServiceRequestComponent
   ],
   imports: [
     BrowserModule,

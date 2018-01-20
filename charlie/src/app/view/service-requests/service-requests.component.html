@@ -42,11 +42,6 @@
         </tbody>
       </table>
     </div>
-    <div class="no-float m-3 no-margin-left">
-      <button class="btn btn-outline-primary" (click)="addServiceRequest()">Add new service
-        request
-      </button>
-    </div>
 
     <div *ngIf="!loaded">
       <h3>Loading...</h3>
@@ -54,5 +49,11 @@
     <div *ngIf="loaded && filterGroup.getFiltered(serviceRequests).length == 0">
       <h3>No service request available</h3>
     </div>
+  </div>
+
+  <div class="no-float m-3 no-margin-left">
+    <button class="btn btn-outline-primary" (click)="addServiceRequest()">Add new service
+      request
+    </button>
   </div>
 </div>

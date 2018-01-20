@@ -10,7 +10,7 @@ export class UrlBuilderService {
   private tripBaseUrl = this.baseUrl + '/trips';
   private vehicleBaseUrl = this.baseUrl + '/vehicles';
   private mapBaseUrl = this.baseUrl + '/map';
-  private serviceRequestsUrl = this.baseUrl + '/servicerequests';
+  private serviceRequestsBaseUrl = this.baseUrl + '/servicerequests';
   private feedbackBaseUrl = this.baseUrl + '/feedback';
   private announcementBaseUrl = this.baseUrl + '/announcement';
   private tickerBaseUrl = this.baseUrl + '/ticker';
@@ -64,11 +64,11 @@ export class UrlBuilderService {
   }
 
   public getServiceRequestsUrl(): string {
-    return this.serviceRequestsUrl;
+    return this.serviceRequestsBaseUrl;
   }
 
   public getServiceRequestUrl(id: string): string {
-    return this.serviceRequestsUrl + '/' + id;
+    return this.serviceRequestsBaseUrl + '/' + id;
   }
 
   public getVehiclePositionInboundUrl(lineId: string): string {
@@ -106,12 +106,20 @@ export class UrlBuilderService {
   public getVehiclesStateUrl(): string {
     return this.vehicleBaseUrl + '/state';
   }
-  
+
   public getNetworkStateUrl(): string {
     return this.mapBaseUrl + '/state';
   }
 
   public getStopAnnouncementsUrl(stopId: string): string {
     return this.getStopDetailsUrl(stopId) + '/announcements';
+  }
+
+  public getVehicleServiceRequestsUrl(vehicleId: string): string {
+    return this.serviceRequestsBaseUrl + '/vehicle/' + vehicleId;
+  }
+
+  public getStopServiceRequestsUrl(stopId: string): string {
+    return this.serviceRequestsBaseUrl + '/stop/' + stopId;
   }
 }

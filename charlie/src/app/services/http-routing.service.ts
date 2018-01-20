@@ -186,4 +186,13 @@ export class HttpRoutingService {
   public getStopAnnouncements(stopId: string): Observable<AnnouncementData[]> {
     return this.http.get<AnnouncementData[]>(this.urlBuilder.getStopAnnouncementsUrl(stopId));
   }
+
+  public getVehicleServiceRequests(vehicleId: string): Observable<ServiceRequestData[]> {
+    return this.http.get<ServiceRequestData[]>(this.urlBuilder.getVehicleServiceRequestsUrl(vehicleId));
+  }
+
+  public getStopServiceRequests(stopId: string): Observable<ServiceRequestData[]> {
+    return this.http.get<ServiceRequestData[]>(this.urlBuilder.getStopServiceRequestsUrl(stopId));
+  }
+
 }

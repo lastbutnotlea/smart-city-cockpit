@@ -3,11 +3,15 @@
   <label class="padding-emb-box-headline">Service requests</label>
 </h4>
 
+<div *ngIf="serviceRequests.length === 0">
+  <p>No Service Requests available</p>
+</div>
+
 <!-- open service requests-->
 <div *ngFor="let serviceRequest of serviceRequests">
-  <div *ngIf="serviceRequest.statusCode !== COMPLETED && serviceRequest.statusCode !== CLOSED">
+  <div *ngIf="serviceRequest.statusCode !== 'COMPLETED' && serviceRequest.statusCode !== 'CLOSED'">
     <p>
-      <a href="serviceRequests/detail/{{line.id}}">
+      <a href="serviceRequests/detail/{{serviceRequest.id}}">
         {{serviceRequest.name}}
       </a>
       <span [ngClass]="{'color-fine': serviceRequest.priority === 'FINE',
@@ -27,7 +31,7 @@
 <div *ngFor="let serviceRequest of serviceRequests">
   <div *ngIf="serviceRequest.statusCode !== 'COMPLETED' && serviceRequest.statusCode !== 'CLOSED'">
     <p>
-      <a href="serviceRequests/detail/{{line.id}}">
+      <a href="serviceRequests/detail/{{serviceRequest.id}}">
         {{serviceRequest.name}}
       </a>
       <span [ngClass]="{'color-fine': serviceRequest.priority === 'FINE',
