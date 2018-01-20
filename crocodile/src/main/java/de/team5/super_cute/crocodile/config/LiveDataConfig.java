@@ -14,6 +14,8 @@ public class LiveDataConfig {
   public static final int DEFECT_FEEDBACK_PERCENTAGE = 5;
   public static final int VALUE_FEEDBACK_PERCENTAGE = 1;
 
+  public static final int MAX_FEEDBACK_COUNT = 100;
+
   public static final String STOP_DIRTY = "dirty";
   public static final String STOP_SHELTER_BROKEN = "shelter broken";
   public static final String STOP_BENCH_BROKEN = "bench broken";

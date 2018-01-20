@@ -179,7 +179,15 @@ export class HttpRoutingService {
     return this.http.delete(this.urlBuilder.getAnnouncement(data));
   }
 
+  public getVehiclesState(): Observable<string> {
+    return this.http.get<string>(this.urlBuilder.getVehiclesStateUrl());
+  }
+
   public getNetworkState(): Observable<string> {
     return this.http.get<string>(this.urlBuilder.getNetworkStateUrl());
+  }
+
+  public getStopAnnouncements(stopId: string): Observable<AnnouncementData[]> {
+    return this.http.get<AnnouncementData[]>(this.urlBuilder.getStopAnnouncementsUrl(stopId));
   }
 }

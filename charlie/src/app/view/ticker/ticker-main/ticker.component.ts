@@ -6,8 +6,7 @@ import {LiveDataComponent} from '../../../shared/components/live-data/live-data.
 @Component({
   selector: 'app-ticker',
   templateUrl: './ticker.component.html',
-  styleUrls: ['./ticker.component.css',
-    '../../../shared/styling/global-styling.css',]
+  styleUrls: ['./ticker.component.css']
 })
 export class TickerComponent extends LiveDataComponent implements OnInit {
   items: TickerData[] = [];
@@ -24,10 +23,10 @@ export class TickerComponent extends LiveDataComponent implements OnInit {
     this.setDataSubscription(
       this.http.getTickerItems().subscribe(data => {
           this.items = data;
-          this.subscribeToData();
         },
         err => alert(JSON.stringify(err))
       ));
+    this.subscribeToData();
   }
 
   removeItem(item: TickerData): void {

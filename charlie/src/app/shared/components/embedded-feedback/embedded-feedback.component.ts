@@ -1,20 +1,14 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {VehicleData} from '../../data/vehicle-data';
+import {Component, Input} from '@angular/core';
 import { FeedbackData } from '../../data/feedback-data';
 
 @Component({
   selector: 'app-embedded-feedback',
   templateUrl: './embedded-feedback.component.html',
-  styleUrls: ['./embedded-feedback.component.css',
-              '../../styling/embedded-components.css',
-              '../../styling/global-styling.css']
+  styleUrls: ['./embedded-feedback.component.css']
 })
 
-export class EmbeddedFeedbackComponent implements OnInit {
+export class EmbeddedFeedbackComponent{
 
   @Input() feedback: FeedbackData[] = [];
-
-  public ngOnInit(): void {
-  }
 
 }

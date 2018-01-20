@@ -14,7 +14,7 @@ import {dummyDate, now} from '../../shared/data/dates';
 @Component({
   selector: 'app-trip-add',
   templateUrl: './trip-add.component.html',
-  styleUrls: ['./trip-add.component.css', '../../shared/styling/global-styling.css']
+  styleUrls: ['./trip-add.component.css']
 })
 
 export class TripAddComponent implements OnInit {

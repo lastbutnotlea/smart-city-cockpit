@@ -5,9 +5,7 @@ import {LineForStopData} from "../../data/LineForStopData";
 @Component({
   selector: 'app-embedded-stop',
   templateUrl: './embedded-stop.component.html',
-  styleUrls: ['./embedded-stop.component.css',
-              '../../styling/embedded-components.css',
-              '../../styling/global-styling.css']
+  styleUrls: ['./embedded-stop.component.css']
 })
 
 export class EmbeddedStopComponent implements OnInit {

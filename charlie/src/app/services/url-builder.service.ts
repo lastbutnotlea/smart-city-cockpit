@@ -108,7 +108,15 @@ export class UrlBuilderService {
     return this.announcementBaseUrl + '/' + item.id;
   }
 
+  public getVehiclesStateUrl(): string {
+    return this.vehicleBaseUrl + '/state';
+  }
+
   public getNetworkStateUrl(): string {
     return this.mapBaseUrl + '/state';
+  }
+
+  public getStopAnnouncementsUrl(stopId: string): string {
+    return this.announcementBaseUrl + '/stop/' + stopId;
   }
 }

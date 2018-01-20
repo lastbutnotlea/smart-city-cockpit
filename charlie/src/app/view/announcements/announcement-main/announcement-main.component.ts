@@ -7,10 +7,7 @@ import {AnnouncementAddComponent} from '../edit/announcement-add.component';
 @Component({
   selector: 'app-announcement',
   templateUrl: './announcement-main.component.html',
-  styleUrls: [
-    './announcement-main.component.css',
-    '../../../shared/styling/embedded-components.css',
-  ]
+  styleUrls: ['./announcement-main.component.css']
 })
 export class AnnouncementMainComponent implements OnInit {
 

@@ -6,10 +6,7 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 @Component({
   selector: 'app-announcement-item',
   templateUrl: './announcement-item.component.html',
-  styleUrls: ['./announcement-item.component.css',
-    '../../../shared/styling/embedded-components.css',
-    '../../../shared/styling/global-styling.css',
-  ],
+  styleUrls: ['./announcement-item.component.css'],
 })
 export class AnnouncementItemComponent implements OnInit {
   @Input()

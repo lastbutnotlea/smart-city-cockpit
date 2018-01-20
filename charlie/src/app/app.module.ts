@@ -49,6 +49,7 @@ import {EditAnnounementTextComponent} from './view/announcements/edit/text/edit-
 import {EditAnnouncementDatetimeComponent} from './view/announcements/edit/datetime/edit-announcement-datetime.component';
 import {EditAnnouncementStopsComponent} from './view/announcements/edit/stops/edit-announcement-stops.component';
 import {DatetimePickerComponent} from './shared/components/datetime-picker/datetime-picker.component';
+import { EmbeddedAnnouncementsComponent } from './shared/components/embedded-announcements/embedded-announcements.component';
 
 @NgModule({
   declarations: [
@@ -90,7 +91,8 @@ import {DatetimePickerComponent} from './shared/components/datetime-picker/datet
     EditAnnounementTextComponent,
     EditAnnouncementDatetimeComponent,
     EditAnnouncementStopsComponent,
-    DatetimePickerComponent
+    DatetimePickerComponent,
+    EmbeddedAnnouncementsComponent,
   ],
   imports: [
     BrowserModule,

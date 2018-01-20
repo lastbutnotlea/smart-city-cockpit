@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
-import {isNullOrUndefined} from "util";
 
 @Injectable()
 export class DateParserService {
@@ -30,11 +29,20 @@ export class DateParserService {
   }
 
   /**
+   * @param {string} dateString: holds current date
+   * @returns {NgbDateStruct} output, holds date from dateString as NgbDateStruct
+   */
+  parseString(dateString: string): NgbDateStruct {
+    const date = new Date(dateString);
+    const ngbStruct =  {year: date.getFullYear(), month: date.getMonth() + 1, day: date.getDate()};
+    return ngbStruct;
+  }
+
+  /**
    * @param {Date} date holds current date
    * @returns {NgbDateStruct} output, holds date as NgbDateStruct
    */
   convertDateToNgbDateStruct(date: Date): NgbDateStruct {
-    if (isNullOrUndefined(date)) debugger;
     return {year: date.getFullYear(), month:date.getMonth() + 1, day: date.getDate()};
   }
 
@@ -43,7 +51,6 @@ export class DateParserService {
    * @returns {NgbTimeStruct} output, holds time of current date as NgbTimeStruct
    */
   convertDateToNgbTimeStruct(date: Date): NgbTimeStruct {
-    if (isNullOrUndefined(date)) debugger;
     return {hour: date.getHours(), minute: date.getMinutes(), second: date.getSeconds()};
   }
 

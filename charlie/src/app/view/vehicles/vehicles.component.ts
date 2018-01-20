@@ -10,12 +10,12 @@ import { LiveDataComponent } from '../../shared/components/live-data/live-data.c
 @Component({
   selector: 'app-vehicles-component',
   templateUrl: './vehicles.component.html',
-  styleUrls: ['./vehicles.component.css',
-    '../../shared/styling/global-styling.css']
+  styleUrls: ['./vehicles.component.css']
 })
 export class VehiclesComponent extends LiveDataComponent implements OnInit {
   title: string = 'Vehicles';
   loaded: boolean = false;
+  state: string = "";
 
   @ViewChild(FilterGroupComponent)
   filterGroup: FilterGroupComponent;
@@ -51,15 +51,24 @@ export class VehiclesComponent extends LiveDataComponent implements OnInit {
     const modal = this.modalService.open(VehicleAddComponent);
   }
 
+  getVehiclesState(): void {
+    this.http.getVehiclesState().subscribe(data => {
+      this.state = data;
+    }, err => {
+      console.log(err);
+    })
+  }
+
   // update vehicles
   refreshData(): void {
     this.setDataSubscription(
       this.http.getVehicles().subscribe( data => {
           this.vehicles = data;
-          this.subscribeToData();
+          this.getVehiclesState();
         },
         err =>
           console.log('Could not fetch new line-data.')
       ));
+    this.subscribeToData();
   }
 }
