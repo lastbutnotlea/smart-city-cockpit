@@ -72,6 +72,7 @@ public class ServiceRequestController {
     List<ServiceRequest> serviceRequests = connector.getServiceRequests();
     serviceRequests.forEach(this::prepareServiceRequestForFrontend);
 
+    cache.clear();
     cache.addAll(serviceRequests);
     isCached = true;
 
@@ -126,7 +127,7 @@ public class ServiceRequestController {
     cache.add(serviceRequestInput);
 
     connector.patchC4CEntity(serviceRequestInput);
-    return serviceRequestInput.getId();
+    return Helpers.makeIdToJSON(serviceRequestInput.getId());
   }
 
   private List<ServiceRequest> getCache(Predicate<ServiceRequest> predicate)

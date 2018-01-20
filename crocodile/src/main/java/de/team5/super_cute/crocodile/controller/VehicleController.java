@@ -8,6 +8,7 @@ import de.team5.super_cute.crocodile.data.TripData;
 import de.team5.super_cute.crocodile.model.EState;
 import de.team5.super_cute.crocodile.model.Trip;
 import de.team5.super_cute.crocodile.model.Vehicle;
+import de.team5.super_cute.crocodile.util.Helpers;
 import de.team5.super_cute.crocodile.util.StateCalculator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -57,7 +58,7 @@ public class VehicleController extends BaseController<Vehicle> {
     input.setId();
     input.setLoad(0);
     input.setTemperature(TEMPERATURE_INITIAL);
-    return makeIdToJSON(addObject(input));
+    return Helpers.makeIdToJSON(addObject(input));
   }
 
   @DeleteMapping("/{id}")
@@ -73,7 +74,7 @@ public class VehicleController extends BaseController<Vehicle> {
     for (Trip trip:trips) {
       tripData.deleteObject(trip.getId());
     }
-    return makeIdToJSON(deleteObject(id));
+    return Helpers.makeIdToJSON(deleteObject(id));
   }
 
   @DeleteMapping("/{id}/force")
@@ -85,13 +86,13 @@ public class VehicleController extends BaseController<Vehicle> {
     for (Trip trip:trips) {
       tripData.deleteObject(trip.getId());
     }
-    return makeIdToJSON(deleteObject(id));
+    return Helpers.makeIdToJSON(deleteObject(id));
   }
 
   @PutMapping
   public String editVehicle(@RequestBody Vehicle input) {
     logger.info("Got Request to edit a vehicle to " + input);
-    return makeIdToJSON(editObject(input));
+    return Helpers.makeIdToJSON(editObject(input));
   }
 
   @GetMapping("/state")

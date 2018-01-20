@@ -8,6 +8,7 @@
 </div>
 
 <!-- open service requests-->
+<p>Open:</p>
 <div *ngFor="let serviceRequest of serviceRequests">
   <div *ngIf="serviceRequest.statusCode !== 'COMPLETED' && serviceRequest.statusCode !== 'CLOSED'">
     <p>
@@ -28,8 +29,9 @@
 </div>
 
 <!-- completed service requests -->
+<p>Completed:</p>
 <div *ngFor="let serviceRequest of serviceRequests">
-  <div *ngIf="serviceRequest.statusCode !== 'COMPLETED' && serviceRequest.statusCode !== 'CLOSED'">
+  <div *ngIf="serviceRequest.statusCode == 'COMPLETED' && serviceRequest.statusCode == 'CLOSED'">
     <p>
       <a href="serviceRequests/detail/{{serviceRequest.id}}">
         {{serviceRequest.name}}
