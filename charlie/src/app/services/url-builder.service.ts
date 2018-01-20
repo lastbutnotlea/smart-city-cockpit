@@ -119,12 +119,12 @@ export class UrlBuilderService {
   public getVehiclesStateUrl(): string {
     return this.vehicleBaseUrl + '/state';
   }
-  
+
   public getNetworkStateUrl(): string {
     return this.mapBaseUrl + '/state';
   }
 
   public getStopAnnouncementsUrl(stopId: string): string {
-    return this.getStopDetailsUrl(stopId) + '/announcements';
+    return this.announcementBaseUrl + '/stop/' + stopId;
   }
 }

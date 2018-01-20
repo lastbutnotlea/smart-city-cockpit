@@ -16,7 +16,7 @@
 
   <div class="d-block">
     <label>Stops:</label>
-    <div class="" *ngFor="let stop of data.line.stopsInbound; let i = index">
+    <div *ngFor="let stop of (data.isInbound ? data.line.stopsInbound : data.line.stopsOutbound); let i = index">
       <input #box type="checkbox" [ngModel]="isChecked(stop)" (change)="includeStop(stop, box.checked)">
       <label class="padding-left">{{stop.commonName}}</label>
     </div>
