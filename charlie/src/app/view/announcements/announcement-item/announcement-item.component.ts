@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {AnnouncementData} from "../../../shared/data/announcement-data";
 import {HttpRoutingService} from "../../../services/http-routing.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {AnnouncementAddComponent} from "../edit/announcement-add.component";
 
 @Component({
   selector: 'app-announcement-item',
@@ -14,12 +15,15 @@ export class AnnouncementItemComponent implements OnInit {
 
   deleted: boolean = false;
 
-  constructor(private http: HttpRoutingService, private modalService: NgbModal) { }
+  constructor(private http: HttpRoutingService, private modalService: NgbModal) {
+  }
 
   ngOnInit() {
   }
 
   editItem(): void {
+    const modal = this.modalService.open(AnnouncementAddComponent);
+    modal.componentInstance.setModel(this.data);
   }
 
   deleteItem(): void {

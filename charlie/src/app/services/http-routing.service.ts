@@ -175,8 +175,12 @@ export class HttpRoutingService {
     return this.http.post(this.urlBuilder.getAnnouncements(), announcement);
   }
 
-  deleteAnnouncement(data: AnnouncementData): Observable<any> {
+  public deleteAnnouncement(data: AnnouncementData): Observable<any> {
     return this.http.delete(this.urlBuilder.getAnnouncement(data));
+  }
+
+  public editAnnouncement(data: AnnouncementData): Observable<any> {
+    return this.http.put(this.urlBuilder.getAnnouncement(data), data);
   }
 
   public getVehiclesState(): Observable<string> {

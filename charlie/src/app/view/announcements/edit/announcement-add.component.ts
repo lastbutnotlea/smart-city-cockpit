@@ -10,6 +10,7 @@ import {
 } from '../../../shared/components/dropdown/dropdown.component';
 import {LineData} from '../../../shared/data/line-data';
 import {AnnouncementData} from '../../../shared/data/announcement-data';
+import {isNullOrUndefined} from "util";
 
 @Component({
   selector: 'app-announcement-add',
@@ -28,9 +29,23 @@ export class AnnouncementAddComponent implements OnInit {
   availableStops: StopData[] = [];
   selectedStops: StopData[] = [];
 
+  private data: AnnouncementData = new AnnouncementData();
+
   private callback: (param: AnnouncementData) => void;
 
   constructor(public activeModal: NgbActiveModal, public http: HttpRoutingService) {
+  }
+
+  public setModel(data: AnnouncementData): void {
+    this.data = data;
+    this.text = data.text;
+    this.validFrom = data.validFrom;
+    this.validTo = data.validTo;
+    this.selectedStops = data.stops;
+  }
+
+  public onAdd(callback: (param: AnnouncementData) => void) {
+    this.callback = callback;
   }
 
   ngOnInit() {
@@ -44,38 +59,55 @@ export class AnnouncementAddComponent implements OnInit {
   }
 
   confirm(): void {
-    let announcement: AnnouncementData = new AnnouncementData();
-    announcement.text = this.text;
-    announcement.stops = Array.from(this.selectedStops);
-    announcement.validFrom = this.validFrom;
-    announcement.validTo = this.validTo;
-    this.http.addAnnouncement(announcement).subscribe(
-      data => {
+    this.data.text = this.text;
+    this.data.stops = Array.from(this.selectedStops);
+    this.data.validFrom = this.validFrom;
+    this.data.validTo = this.validTo;
+    if (isNullOrUndefined(this.data.id)) {
+      this.http.addAnnouncement(this.data).subscribe(data => {
         this.activeModal.close('Close click');
-        announcement.id = data.id;
-        this.callback(announcement);
-      },
-      err => alert('Could not edit trip.' + err)
-    );
+        this.data.id = data.id;
+        this.callback(this.data);
+      }, AnnouncementAddComponent.onErr);
+    } else {
+      this.http.editAnnouncement(this.data).subscribe(data => {
+        this.activeModal.close('Close click');
+        this.data.id = data.id;
+        this.callback(this.data);
+      }, AnnouncementAddComponent.onErr);
+    }
   }
 
-  public onAdd(callback: (param: AnnouncementData) => void) {
-    this.callback = callback;
+  onSuccess(data: AnnouncementData): void {
+    this.activeModal.close('Close click');
+    this.data.id = data.id;
+    this.callback(this.data);
+  }
+
+  static onErr(err: any): void {
+    alert('Could not add/edit announcement: ' + JSON.stringify(err));
   }
 
   next(): void {
     switch (this.state) {
       case 0:
-      case 1: this.state++; break;
-      case 2: this.confirm(); break;
+      case 1:
+        this.state++;
+        break;
+      case 2:
+        this.confirm();
+        break;
     }
   }
 
   back(): void {
     switch (this.state) {
-      case 0: break;
+      case 0:
+        break;
       case 1:
-      case 2: this.state--; break;
+      case 2:
+        this.state--;
+        break;
     }
   }
 }
