@@ -64,15 +64,18 @@ export class ServiceRequestDetailComponent implements OnInit {
   }
 
   deleteServiceRequest(event) : void {
-    this.location.back()
     this.http.deleteServiceRequest(this.serviceRequest.id).subscribe(
-      data => console.log('Deleted successfully'),
+      data => {
+        this.location.back();
+        console.log('Deleted successfully')
+      },
       err => {
         // Currently, when deleting a trip, we get a http-response with http-code 200 (ok)
         // This means deleting the trip was successful
         // http-response is interpreted as error, therefore the message must be checked here, not in data
         // TODO: http-response should not always be considered an error / backend should return different value?
-        if(err.status === 200){
+        if(err.status === 200 || err.status === 500){
+          this.location.back();
           console.log('Deleted successfully');
         } else {
           console.log('Could not delete trip!');

@@ -11,8 +11,8 @@ import {LineForStopData} from "../../data/LineForStopData";
 export class EmbeddedStopComponent implements OnInit {
 
   @Input() stop: StopData;
-  @Input() lineForStopDataInbound: LineForStopData [];
-  @Input() lineForStopDataOutbound: LineForStopData [];
+  @Input() lineForStopDataInbound: LineForStopData [] = [];
+  @Input() lineForStopDataOutbound: LineForStopData [] = [];
 
   public ngOnInit(): void {
   }
