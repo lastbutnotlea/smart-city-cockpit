@@ -20,7 +20,7 @@ public class Announcement extends IdentifiableObject {
     @Convert(converter = LocalDateTimeAttributeConverter.class)
     private LocalDateTime validTo;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private List<Stop> stops;
 
     public Announcement() {

@@ -112,7 +112,7 @@ export class UrlBuilderService {
   }
 
   public getStopAnnouncementsUrl(stopId: string): string {
-    return this.getStopDetailsUrl(stopId) + '/announcements';
+    return this.announcementBaseUrl + '/stop/' + stopId;
   }
 
   public getVehicleServiceRequestsUrl(vehicleId: string): string {

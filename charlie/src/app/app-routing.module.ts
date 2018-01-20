@@ -46,7 +46,7 @@ export class AppRoutingModule {
     } else if (id.startsWith('Feedback_')) {
       return '/feedback';
     } else {
-      console.log('No target for \'' + id + '\' found, assuming it is a stop');
+      console.debug('No target for \'' + id + '\' found, assuming it is a stop');
       return '/network/stop/' + id;
     }
   }
