@@ -12,21 +12,20 @@ import { VehiclePositionData } from '../../shared/data/vehicle-position-data';
 @Component({
   selector: 'app-line-detail-view',
   templateUrl: './line-detail.component.html',
-  styleUrls: ['./line-detail.component.css',
-    '../../shared/styling/global-styling.css']
+  styleUrls: ['./line-detail.component.css']
 })
 
 export class LineDetailComponent extends LiveDataComponent implements OnInit {
 
+  loaded: boolean = false;
   line: LineData;
-
   inboundPositionData: LinePositionData = new LinePositionData();
   outboundPositionData: LinePositionData = new LinePositionData();
 
-  @ViewChild('inbound')
+/*  @ViewChild('inbound')
   lineMapInbound: LineMapComponent;
   @ViewChild('outbound')
-  lineMapOutbound: LineMapComponent;
+  lineMapOutbound: LineMapComponent;*/
 
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
@@ -43,9 +42,10 @@ export class LineDetailComponent extends LiveDataComponent implements OnInit {
     this.http.getLineDetails(lineId).subscribe(
       line => {
         this.line = line;
-        this.lineMapInbound.getLineMap(line, line.stopsInbound);
-        this.lineMapOutbound.getLineMap(line, line.stopsOutbound);
+        /*this.lineMapInbound.getLineMap(line, line.stopsInbound);
+        this.lineMapOutbound.getLineMap(line, line.stopsOutbound);*/
         this.getPositionData();
+        this.loaded = true;
         // This starts periodical calls for live-data after first data was received
         super.ngOnInit();
       },
@@ -56,12 +56,6 @@ export class LineDetailComponent extends LiveDataComponent implements OnInit {
 
   goBack(): void {
     this.location.back();
-  }
-
-  isLoaded(): boolean {
-    return (this.line != null
-      && this.inboundPositionData.positionAtStops != null
-      && this.outboundPositionData.positionAtStops != null);
   }
 
   getPositionData(): void {
@@ -87,10 +81,10 @@ export class LineDetailComponent extends LiveDataComponent implements OnInit {
       this.http.getLineDetails(this.line.id).subscribe( data => {
           this.line = data;
           this.getPositionData();
-          this.subscribeToData();
         },
         err =>
           console.log('Could not fetch new line-data.')
       ));
+    this.subscribeToData();
   }
 }

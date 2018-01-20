@@ -1,18 +1,16 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
-import { NgbActiveModal, NgbDateStruct, NgbTimeStruct } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import {HttpRoutingService} from '../../services/http-routing.service';
 import {DropdownValue} from '../../shared/components/dropdown/dropdown.component';
 import { ServiceRequestData } from '../../shared/data/service-request-data';
 import { now } from '../../shared/data/dates';
 import { DateParserService } from '../../services/date-parser.service';
 import { FeedbackData } from '../../shared/data/feedback-data';
-import { VehicleData } from '../../shared/data/vehicle-data';
-import { StopData } from '../../shared/data/stop-data';
 
 @Component({
   selector: 'app-service-request-edit',
   templateUrl: './service-request-edit.component.html',
-  styleUrls: ['./service-request-edit.component.css',  '../../shared/styling/global-styling.css']
+  styleUrls: ['./service-request-edit.component.css']
 })
 
 export class ServiceRequestEditComponent implements OnInit {
@@ -23,7 +21,7 @@ export class ServiceRequestEditComponent implements OnInit {
 
   selectedPriority: DropdownValue;
   description: string;
-  selectedTime: string = now.toISOString();
+  selectedDate: string = now.toISOString();
   date: NgbDateStruct;
   availFeedback: FeedbackData[];
   selectedFeedback: FeedbackData[];
@@ -41,9 +39,8 @@ export class ServiceRequestEditComponent implements OnInit {
       if(this.data.serviceRequestDescription.length != 0){
         this.description = this.data.serviceRequestDescription[0].text;
       }
-      this.selectedTime = this.data.dueDate;
-      this.date = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
-      this.updateDate();
+      this.selectedDate = this.data.dueDate;
+      this.date = this.dateParser.convertDateToNgbDateStruct(new Date(this.selectedDate));
       this.selectedFeedback = [];
       for(let feedback of this.data.feedbacks){
         this.selectedFeedback.push(feedback);
@@ -60,17 +57,18 @@ export class ServiceRequestEditComponent implements OnInit {
   }
 
   getFeedbackForTarget(): void {
-    if(this.data.target instanceof VehicleData){
+    if(this.data.target.identifiableType === "vehicle") {
       this.http.getVehicleFeedback(this.data.target.id).subscribe( data => {
         this.availFeedback = data;
         this.dataEdited = true;
       }, err => console.log('Could not load feedback for vehicle.'));
-    } else if (this.data.target instanceof StopData){
+    } else if (this.data.target.identifiableType === "stop"){
       this.http.getStopFeedback(this.data.target.id).subscribe( data => {
         this.availFeedback = data;
         this.dataEdited = true;
       }, err => console.log('Could not load feedback for vehicle.'));
     } else {
+      console.log('No Target for service request ' + this.data.id);
       this.availFeedback = [];
       this.dataEdited = true;
     }
@@ -78,13 +76,14 @@ export class ServiceRequestEditComponent implements OnInit {
 
   editServiceRequest(): void {
     this.data.priority = this.selectedPriority.value;
-    this.data.dueDate = this.selectedTime;
+    this.data.dueDate = this.selectedDate;
     this.data.serviceRequestDescription = [{"id": "", "text": this.description}];
     this.data.feedbacks = this.selectedFeedback;
     console.log(this.data);
 
     this.http.editServiceRequest(this.data).subscribe(
       data => {
+        debugger;
         console.log('Added service request.');
         this.activeModal.close('Close click');
       },
@@ -106,19 +105,23 @@ export class ServiceRequestEditComponent implements OnInit {
 
   includeFeedback(feedback: FeedbackData, included: boolean): void {
     if (included) {
-      this.data.feedbacks.push(feedback);
+      this.selectedFeedback.push(feedback);
     } else {
-      this.data.feedbacks = this.data.feedbacks.filter(filteredFeedback =>
+      this.selectedFeedback = this.selectedFeedback.filter(filteredFeedback =>
         filteredFeedback.id !== feedback.id);
     }
-    console.log(JSON.stringify(this.data.feedbacks));
+    console.log(JSON.stringify(this.selectedFeedback));
   }
 
+  /**
+   * Only use selected date if it is not passed already
+   */
   updateDate(): void {
-    this.selectedTime = this.dateParser.parseDate(
-      this.selectedTime,
-      this.date
-    );
+    if(this.dateParser.isBeforeDate(new Date(), this.date)) {
+      this.selectedDate = this.dateParser.parseDate(this.selectedDate,this.date);
+    } else {
+      this.date = this.dateParser.convertDateToNgbDateStruct(new Date(this.selectedDate));
+    }
   }
 
   priorityItems(): DropdownValue[] {

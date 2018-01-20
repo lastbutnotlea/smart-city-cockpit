@@ -39,8 +39,8 @@ import org.hibernate.annotations.Proxy;
 @Table(name = "vehicle")
 @Proxy(lazy = false)
 @JsonTypeName("vehicle")
-public class Vehicle extends IdentifiableObject implements Serializable, Feedbackable, Stateable,
-    TickerItemable, ServiceTargetObject {
+public class Vehicle extends IdentifiableObject implements Serializable, Stateable, TickerItemable,
+    ServiceOrFeedbackTargetObject {
 
   @Column
   private Integer capacity;
@@ -86,6 +86,24 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
     this.type = type;
     this.load = load;
     this.defects = new HashSet<String>(Arrays.asList(defects));
+  }
+
+  public static Vehicle createRandom(EVehicleType vehicleType) {
+
+    Vehicle vehicle = new Vehicle(
+        getInitialValue(CAPACITY_INITIAL_MIN, CAPACITY_INITIAL_MAX),
+        0,
+        getInitialValue(DELAY_INITIAL_MIN, DELAY_INITIAL_MAX),
+        getInitialValue(TEMPERATURE_INITIAL_MIN, TEMPERATURE_INITIAL_MAX),
+        vehicleType, new HashSet<>());
+    Random r = new Random(System.currentTimeMillis());
+    vehicle.setLoad((int) ((r.nextInt(100) + 1) * 0.01 * vehicle.getCapacity()));
+    return vehicle;
+  }
+
+  public static int getInitialValue(int min, int max) {
+    Random r = new Random(System.currentTimeMillis());
+    return r.nextInt(max - min + 1) + min;
   }
 
   public Integer getCapacity() {
@@ -204,19 +222,6 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
     return severity + getLoadSeverity() + getTemperatureSeverity() + getDelaySeverity();
   }
 
-  public static Vehicle createRandom(EVehicleType vehicleType) {
-
-    Vehicle vehicle = new Vehicle(
-        getInitialValue(CAPACITY_INITIAL_MIN, CAPACITY_INITIAL_MAX),
-        0,
-        getInitialValue(DELAY_INITIAL_MIN, DELAY_INITIAL_MAX),
-        getInitialValue(TEMPERATURE_INITIAL_MIN, TEMPERATURE_INITIAL_MAX),
-        vehicleType, new HashSet<>());
-    Random r = new Random(System.currentTimeMillis());
-    vehicle.setLoad((int) ((r.nextInt(100) + 1) * 0.01 * vehicle.getCapacity()));
-    return vehicle;
-  }
-
   @Override
   public String getItemDescription() {
     String description = this.getId() + ":\n"
@@ -225,8 +230,8 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
         + "delay: " + this.getDelay() + "\n"
         + "defects: ";
     Iterator<String> defects = this.getDefects().iterator();
-    for(int i = 0; i < this.getDefects().size(); i++){
-      if(i != 0){
+    for (int i = 0; i < this.getDefects().size(); i++) {
+      if (i != 0) {
         description += ", ";
       }
       description += defects.next();
@@ -234,9 +239,17 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
     return description;
   }
 
+  public void setItemDescription(String s) {
+    // do nothing, fool the json mapper!
+  }
+
   @Override
   public String getItemHeader() {
     return "Vehicle state is critical";
+  }
+
+  public void setItemHeader(String s) {
+    // do nothing, fool the json mapper!
   }
 
   @Override
@@ -244,29 +257,16 @@ public class Vehicle extends IdentifiableObject implements Serializable, Feedbac
     return this.getState();
   }
 
+  public void setItemState(EState s) {
+    // do nothing, fool the json mapper!
+  }
+
   @Override
   public int getItemPriority() {
     return VEHICLE_BASE_PRIORITY + (this.getSeverity() - 11) / SEVERITY_DIVISOR;
   }
 
-  public static int getInitialValue(int min, int max){
-    Random r = new Random(System.currentTimeMillis());
-    return r.nextInt(max - min + 1) + min;
-  }
-
-  public void setItemDescription(String s){
-    // do nothing, fool the json mapper!
-  }
-
-  public void setItemHeader(String s){
-    // do nothing, fool the json mapper!
-  }
-
-  public void setItemState(EState s){
-    // do nothing, fool the json mapper!
-  }
-
-  public void setItemPriority(int i){
+  public void setItemPriority(int i) {
     // do nothing, fool the json mapper!
   }
 }

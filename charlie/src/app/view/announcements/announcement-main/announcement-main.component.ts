@@ -7,21 +7,24 @@ import {AnnouncementAddComponent} from '../announcement-add/announcement-add.com
 @Component({
   selector: 'app-announcement',
   templateUrl: './announcement-main.component.html',
-  styleUrls: [
-    './announcement-main.component.css',
-    '../../../shared/styling/embedded-components.css',
-  ]
+  styleUrls: ['./announcement-main.component.css']
 })
 export class AnnouncementMainComponent implements OnInit {
 
   data: AnnouncementData[] = [];
   title: string = 'Announcements';
+  loaded: boolean = false;
 
   constructor(private http: HttpRoutingService, private modalService: NgbModal) {
   }
 
   ngOnInit() {
-    this.http.getAnnouncements().subscribe(data => this.data = data, err => alert('Could not fetch data'));
+    this.http.getAnnouncements().subscribe(
+      data => {
+        this.data = data;
+        this.loaded = true;
+      },
+    err => alert('Could not fetch data'));
   }
 
   add(): void {

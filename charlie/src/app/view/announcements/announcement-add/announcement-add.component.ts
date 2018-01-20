@@ -59,30 +59,52 @@ export class AnnouncementAddComponent implements OnInit {
     this.http.getLines().subscribe(data => this.availableLines = toDropdownItems(data, line => line.name),
       err => alert(err));
 
-    this.updateFromDate();
-    this.updateFromTime();
-    this.updateToDate();
-    this.updateToTime();
+    this.updateTimes();
     console.log(this.fromTime);
     console.log(this.toTime);
   }
 
+  updateTimes(): void {
+    this.updateFromDate();
+    this.updateFromTime();
+    this.updateToDate();
+    this.updateToTime();
+  }
+
   updateFromTime(): void {
+    if(!this.dateParser.isBeforeTime(new Date(), this.fromDate, this.fromTime)) {
+      this.fromTime = this.dateParser.convertDateToNgbTimeStruct(new Date());
+    }
     this.from = this.dateParser.parseNativeTime(this.from, this.fromTime);
   }
 
   updateFromDate(): void {
-    this.from = this.dateParser.parseNativeDate(this.from, this.fromDate);
+    if(this.dateParser.isBeforeDate(new Date(), this.fromDate)) {
+      this.from = this.dateParser.parseNativeDate(this.from, this.fromDate);
+      // Date might have been set to current date. Time could now be invalid (passed) time. Check time again
+      this.updateFromTime();
+    } else {
+      this.fromDate = this.dateParser.convertDateToNgbDateStruct(this.from);
+    }
   }
 
   updateToTime(): void {
     console.log(this.to.toISOString());
+    if(!this.dateParser.isBeforeTime(new Date(this.from), this.toDate, this.toTime)) {
+      this.toTime = this.dateParser.convertDateToNgbTimeStruct(new Date(this.from));
+    }
     this.to = this.dateParser.parseNativeTime(this.to, this.toTime);
     console.log(this.to.toISOString());
   }
 
   updateToDate(): void {
-    this.to = this.dateParser.parseNativeDate(this.to, this.toDate);
+    if(this.dateParser.isBeforeDate(this.from, this.toDate)) {
+      this.to = this.dateParser.parseNativeDate(this.to, this.toDate);
+      // Date might have been set to current date. Time could now be invalid (passed) time. Check time again
+      this.updateToTime();
+    } else {
+      this.toDate = this.dateParser.convertDateToNgbDateStruct(this.from);
+    }
   }
 
   addSelectedStop(): void {

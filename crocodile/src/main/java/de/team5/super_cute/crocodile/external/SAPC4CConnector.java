@@ -2,9 +2,9 @@ package de.team5.super_cute.crocodile.external;
 
 import static de.team5.super_cute.crocodile.util.Helpers.getC4CProperties;
 
-import de.team5.super_cute.crocodile.model.c4c.C4CEntity;
 import de.team5.super_cute.crocodile.model.Event;
 import de.team5.super_cute.crocodile.model.ServiceRequest;
+import de.team5.super_cute.crocodile.model.c4c.C4CEntity;
 import de.team5.super_cute.crocodile.util.Helpers;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import javax.annotation.PostConstruct;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpEntity;
@@ -25,6 +26,7 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.config.CookieSpecs;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpDelete;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.HttpClientContext;
@@ -71,9 +73,9 @@ public class SAPC4CConnector {
   private static final String CONTENT_TYPE_HEADER = "Content-Type";
   private static final String ACCEPT_HEADER = "Accept";
   private static final String CONTENT_ID_HEADER = "Content-ID";
-  private static final String FILTER_QUERY = "?$filter=CreatedBy%20eq%20%27Uni%20Augsburg02%27";
-  private final String boundary = "batch_" + UUID.randomUUID().toString();
+  private static final String FILTER_QUERY_ONLY_OUR_GROUP = "?$filter=CreatedBy%20eq%20%27Uni%20Augsburg02%27";
   private static final Logger logger = LoggerFactory.getLogger(SAPC4CConnector.class);
+  private final String boundary = "batch_" + UUID.randomUUID().toString();
   private HttpClient httpClient = null;
   private Edm metadataDefinition = null;
   private String csrfToken = null;
@@ -83,6 +85,19 @@ public class SAPC4CConnector {
   @Autowired
   public SAPC4CConnector(SAPC4CSerializer serializer) {
     this.serializer = serializer;
+  }
+
+  @PostConstruct
+  public void removeAllServiceRequestsFromC4C() {
+    try {
+      List<ServiceRequest> serviceRequests = getServiceRequests();
+      for (ServiceRequest s : serviceRequests) {
+        deleteC4CEntity(s);
+      }
+    } catch (IOException | EntityProviderException | EdmException e) {
+      Helpers.logException(logger, e);
+    }
+    logger.info("Removed all Service Requests from C4C");
   }
 
   private HttpClient getHttpClient() {
@@ -184,7 +199,8 @@ public class SAPC4CConnector {
   public List<Event> getEvents()
       throws EntityProviderException, EdmException, IOException {
     logger.info("Getting all Appointments from C4C");
-    List<Event> events = getC4CEntities(new Event()).stream().filter(Event.class::isInstance)
+    List<Event> events = getC4CEntities(new Event(), FILTER_QUERY_ONLY_OUR_GROUP).stream()
+        .filter(Event.class::isInstance)
         .map(Event.class::cast)
         .collect(
             Collectors.toList());
@@ -198,7 +214,8 @@ public class SAPC4CConnector {
   public List<ServiceRequest> getServiceRequests()
       throws EntityProviderException, EdmException, IOException {
     logger.info("Getting all Service Requests from C4C");
-    List<ServiceRequest> serviceRequests = getC4CEntities(new ServiceRequest()).stream().filter(ServiceRequest.class::isInstance)
+    List<ServiceRequest> serviceRequests = getC4CEntities(new ServiceRequest(),
+        FILTER_QUERY_ONLY_OUR_GROUP).stream().filter(ServiceRequest.class::isInstance)
         .map(ServiceRequest.class::cast).collect(
             Collectors.toList());
     logger.info("Received all Service Requests from C4C");
@@ -208,7 +225,43 @@ public class SAPC4CConnector {
   /**
    * @return Collects all items of the Type corresponding to T from the SAP C4C System
    */
-  public List<C4CEntity> getC4CEntities(C4CEntity exampleEntity)
+  public List<C4CEntity> getAllC4CEntities(C4CEntity exampleEntity)
+      throws IOException, EdmException, EntityProviderException {
+    return getC4CEntities(exampleEntity, FILTER_QUERY_ONLY_OUR_GROUP);
+  }
+
+  /**
+   * @return The item of the type from exampleEntity with the given id, if it exists in C4C
+   */
+  public C4CEntity getC4CEntityById(C4CEntity exampleEntity, String id)
+      throws IOException, EdmException, EntityProviderException {
+    List<C4CEntity> entityList = getC4CEntities(exampleEntity,
+        "?$filter=ID%20eq%20%27" + id + "%27");
+    if (entityList.size() < 1) {
+      throw new IllegalArgumentException("No C4C Entity found for Id " + id);
+    } else {
+      return entityList.get(0);
+    }
+  }
+
+  /**
+   * @return The item of the type from exampleEntity with the given objectId, if it exists in C4C
+   */
+  public C4CEntity getC4CEntityByObjectId(C4CEntity exampleEntity, String objectId)
+      throws IOException, EdmException, EntityProviderException {
+    List<C4CEntity> entityList = getC4CEntities(exampleEntity,
+        "?$filter=ObjectID%20eq%20%27" + objectId + "%27");
+    if (entityList.size() < 1) {
+      throw new IllegalArgumentException("No C4C Entity found for ObjectId " + objectId);
+    } else {
+      return entityList.get(0);
+    }
+  }
+
+  /**
+   * @return Collects all items of the Type corresponding to T from the SAP C4C System
+   */
+  private List<C4CEntity> getC4CEntities(C4CEntity exampleEntity, String filterQuery)
       throws EntityProviderException, EdmException, IOException {
     List<C4CEntity> items = new ArrayList<>();
 
@@ -227,7 +280,7 @@ public class SAPC4CConnector {
     }
 
     ODataFeed feed = readFeed(BASE_URL, exampleEntity.getCollectionName(),
-        FILTER_QUERY + expandOptions.toString());
+        filterQuery + expandOptions.toString());
     for (ODataEntry entry : feed.getEntries()) {
       items.add(serializer.mapEntryToC4CEntity(entry, exampleEntity.getEmptyObject()));
     }
@@ -236,10 +289,22 @@ public class SAPC4CConnector {
   }
 
   /**
-   * @param entity Is written into the SAP C4C System.
-   * @return "Success" or "Failure
+   * @param entity is patched into the sap system
+   * @return ObjectId of patched object or "Failure"
    */
-  public String putC4CEntity(C4CEntity entity)
+  public void patchC4CEntity(C4CEntity entity) throws IOException, BatchException {
+    putC4CEntity(entity, createUri("", entity.getCollectionName(), entity.getObjectId(), ""), Helpers.PATCH);
+  }
+
+  /**
+   * @param entity Is written into the SAP C4C System.
+   * @return ObjectId of created object or "Failure"
+   */
+  public String putC4CEntity(C4CEntity entity) throws IOException, BatchException {
+    return putC4CEntity(entity, entity.getCollectionName(), Helpers.POST);
+  }
+
+  private String putC4CEntity(C4CEntity entity, String uri, String method)
       throws IOException, BatchException {
     List<BatchPart> batchParts = new ArrayList<>();
 
@@ -251,8 +316,8 @@ public class SAPC4CConnector {
     changeSetHeaders.put(CONTENT_ID_HEADER, contentId);
     changeSetHeaders.put(ACCEPT_HEADER, CONTENT_TYPE);
 
-    BatchChangeSetPart changeRequest = BatchChangeSetPart.method("POST")
-        .uri(entity.getCollectionName()).body(serializer.serializeC4CEntityToString(entity))
+    BatchChangeSetPart changeRequest = BatchChangeSetPart.method(method)
+        .uri(uri).body(serializer.serializeC4CEntityToString(entity))
         .headers(changeSetHeaders).contentId(contentId).build();
     changeSet.add(changeRequest);
     batchParts.add(changeSet);
@@ -276,9 +341,11 @@ public class SAPC4CConnector {
         // Format is https://<service_url>/<Collection>('key')
         String locationUrl = rsp.getHeader("location");
         if (!StringUtils.isBlank(locationUrl)) {
-          //String ticketUUID = StringUtils.substringBetween(locationUrl, "'");
-          return "Success";
+          String ticketUUID = StringUtils.substringBetween(locationUrl, "'");
+          return ticketUUID;
         }
+      } else if (Integer.parseInt(rsp.getStatusCode()) == 204) { // 204 - No Content
+        return "Success";
       }
     }
     System.out.println(response);
@@ -295,6 +362,8 @@ public class SAPC4CConnector {
 
     HttpResponse response = getHttpClient().execute(delete);
     if (response.getStatusLine().getStatusCode() == 204) {
+      logger.info(
+          "Deleted C4C Entity from " + entity.getCollectionName() + " with id " + entity.getId());
       return "Success";
     }
     return "Probably Failure";
@@ -302,7 +371,7 @@ public class SAPC4CConnector {
 
   private HttpResponse executeBatchCall(String body)
       throws ClientProtocolException, IOException {
-    HttpPost post = new HttpPost(URI.create(BASE_URL + "/$batch"));
+    HttpEntityEnclosingRequestBase post = new HttpPost(URI.create(BASE_URL + "/$batch"));
     post.setHeader(CONTENT_TYPE_HEADER, "multipart/mixed;boundary=" + boundary);
     post.setHeader(AUTHORIZATION_HEADER, AUTHORIZATION);
     post.setHeader(CSRF_TOKEN_HEADER, getCsrfToken());
