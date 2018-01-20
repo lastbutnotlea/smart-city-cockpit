@@ -12,6 +12,7 @@ import static de.team5.super_cute.crocodile.config.LiveDataConfig.LOAD;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.LOAD_CHANGE_AMPLITUDE;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.LOAD_MAX_FACTOR;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.LOAD_MIN;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.MAX_FEEDBACK_COUNT;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.PEOPLE_WAITING;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.PEOPLE_WAITING_CHANGE_AMPLITUDE;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.PEOPLE_WAITING_MAX;
@@ -145,6 +146,9 @@ public class LiveDataGenerator {
       defect = (forStop ? STOP_DEFECTS.get(r.nextInt(STOP_DEFECTS.size()))
           : VEHICLE_DEFECTS.get(r.nextInt(VEHICLE_DEFECTS.size())));
 
+      if (currentFeedbackCount > MAX_FEEDBACK_COUNT) {
+        return defect;
+      }
       if (r.nextInt(100) + 1 <= DEFECT_FEEDBACK_PERCENTAGE) {
         feedbackData.addObject(new Feedback((
             forStop ?
@@ -156,6 +160,7 @@ public class LiveDataGenerator {
             forStop ? STOP_FEEDBACK : VEHICLE_FEEDBACK,
             forStop ? getState(STOP_DEFECTS_SEVERITY.get(defect))
                 : getState(VEHICLE_DEFECTS_SEVERITY.get(defect))));
+        currentFeedbackCount++;
       }
     }
     return defect;
@@ -180,6 +185,9 @@ public class LiveDataGenerator {
   }
 
   private void generateValueFeedback(ServiceOrFeedbackTargetObject feedbackable, String fieldName) {
+    if (currentFeedbackCount > MAX_FEEDBACK_COUNT) {
+      return;
+    }
     Random r = new Random(System.currentTimeMillis());
     if (r.nextInt(100) + 1 <= VALUE_FEEDBACK_PERCENTAGE) {
       EState rating = EState.FINE;
@@ -198,6 +206,7 @@ public class LiveDataGenerator {
           break;
       }
       feedbackData.addObject(getValueFeedbackForField(feedbackable, fieldName, rating, r));
+      currentFeedbackCount++;
     }
   }
 

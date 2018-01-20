@@ -15,9 +15,7 @@ import { LiveDataComponent } from '../../shared/components/live-data/live-data.c
 @Component({
   selector: 'app-trip-detail-view',
   templateUrl: './trip-detail.component.html',
-  styleUrls: ['./trip-detail.component.css',
-              '../../shared/styling/embedded-components.css',
-              '../../shared/styling/global-styling.css']
+  styleUrls: ['./trip-detail.component.css']
 })
 
 export class TripDetailComponent extends LiveDataComponent implements OnInit {

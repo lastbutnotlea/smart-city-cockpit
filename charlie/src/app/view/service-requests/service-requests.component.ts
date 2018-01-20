@@ -9,8 +9,7 @@ import { ServiceRequestAddComponent } from '../service-request-add/service-reque
 @Component({
   selector: 'app-service-requests-view',
   templateUrl: './service-requests.component.html',
-  styleUrls: ['./service-requests.component.css',
-    '../../shared/styling/global-styling.css']
+  styleUrls: ['./service-requests.component.css']
 })
 
 export class ServiceRequestsComponent implements OnInit {

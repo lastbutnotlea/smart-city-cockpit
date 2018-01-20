@@ -7,9 +7,7 @@ import { LiveDataComponent } from '../../shared/components/live-data/live-data.c
 @Component({
   selector: 'app-network-view',
   templateUrl: './network.component.html',
-  styleUrls: ['./network.component.css',
-    '../../shared/styling/embedded-components.css',
-    '../../shared/styling/global-styling.css'],
+  styleUrls: ['./network.component.css'],
 })
 
 export class NetworkComponent extends LiveDataComponent implements OnInit {
