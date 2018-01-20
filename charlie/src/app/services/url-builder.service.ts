@@ -110,4 +110,8 @@ export class UrlBuilderService {
   public getNetworkStateUrl(): string {
     return this.mapBaseUrl + '/state';
   }
+
+  public getStopAnnouncementsUrl(stopId: string): string {
+    return this.getStopDetailsUrl(stopId) + '/announcements';
+  }
 }

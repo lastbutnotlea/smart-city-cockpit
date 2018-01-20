@@ -10,8 +10,7 @@ import { LiveDataComponent } from '../../shared/components/live-data/live-data.c
 @Component({
   selector: 'app-trip-view',
   templateUrl: './trip.component.html',
-  styleUrls: ['./trip.component.css',
-    '../../shared/styling/global-styling.css']
+  styleUrls: ['./trip.component.css']
 })
 
 export class TripComponent extends LiveDataComponent implements OnInit {
@@ -86,10 +85,10 @@ export class TripComponent extends LiveDataComponent implements OnInit {
     this.setDataSubscription(
     this.http.getTrips().subscribe( data => {
         this.trips = data;
-        this.subscribeToData();
       },
       err =>
         console.log('Could not fetch new line-data.')
     ));
+    this.subscribeToData();
   }
 }

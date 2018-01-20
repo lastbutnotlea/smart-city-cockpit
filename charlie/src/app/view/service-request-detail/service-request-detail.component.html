@@ -55,9 +55,9 @@
         </h4>
         <p *ngFor="let feedback of serviceRequest.feedbacks">
           <label class="text-secondary">{{feedback.message}}</label>
-          <span [ngClass]="{'color-fine': serviceRequest.priority === 'FINE',
-       'color-problematic': serviceRequest.priority === 'PROBLEMATIC',
-       'color-critical': serviceRequest.priority === 'CRITICAL' }">
+      <span [ngClass]="{'color-fine': feedback.rating === 'FINE',
+       'color-problematic': feedback.rating === 'PROBLEMATIC',
+       'color-critical': feedback.rating === 'CRITICAL' }">
         <i class="fa fa-lightbulb-o float-right small-padding-right" aria-hidden="true"></i>
       </span>
         </p>
@@ -65,16 +65,17 @@
 
 
       <!-- target (vehicle or stop) -->
-      <div *ngIf="hasVehicleTarget()" class="d-flex flex-1 flex-column">
+  <div *ngIf="hasTarget()&&hasVehicleTarget()" class="d-flex flex-1 flex-column">
         <!-- vehicle -->
         <app-embedded-vehicle [vehicle]="serviceRequest.target"
                               class="flex-1 bounding-box"></app-embedded-vehicle>
       </div>
-      <div *ngIf="hasStopTarget()" class="d-flex flex-1 flex-column">
+  <div *ngIf="hasTarget()&&hasStopTarget()" class="d-flex flex-1 flex-column">
         <!-- stop -->
         <app-embedded-stop [stop]="serviceRequest.target"
                            class="flex-1 bounding-box"></app-embedded-stop>
       </div>
     </div>
+
   </div>
 </div>

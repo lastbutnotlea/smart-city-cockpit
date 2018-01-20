@@ -12,6 +12,7 @@ import static de.team5.super_cute.crocodile.config.LiveDataConfig.LOAD;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.LOAD_CHANGE_AMPLITUDE;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.LOAD_MAX_FACTOR;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.LOAD_MIN;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.MAX_FEEDBACK_COUNT;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.PEOPLE_WAITING;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.PEOPLE_WAITING_CHANGE_AMPLITUDE;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.PEOPLE_WAITING_MAX;
@@ -42,7 +43,7 @@ import de.team5.super_cute.crocodile.data.TripData;
 import de.team5.super_cute.crocodile.data.VehicleData;
 import de.team5.super_cute.crocodile.model.EState;
 import de.team5.super_cute.crocodile.model.Feedback;
-import de.team5.super_cute.crocodile.model.Feedbackable;
+import de.team5.super_cute.crocodile.model.ServiceOrFeedbackTargetObject;
 import de.team5.super_cute.crocodile.model.Stop;
 import de.team5.super_cute.crocodile.model.Vehicle;
 import de.team5.super_cute.crocodile.service.VehiclePositionService;
@@ -68,14 +69,12 @@ public class LiveDataGenerator {
   @Autowired
   private VehiclePositionService vehiclePositionService;
 
+  private int currentFeedbackCount;
+
   @Scheduled(fixedDelay = LIVEDATA_FREQUENCY)
   public void generateLiveData() {
     LoggerFactory.getLogger(getClass())
         .info("Started generating LiveData");
-    // delete old feedback
-    feedbackData.getData().stream()
-        .filter(f -> f.getTimestamp().compareTo(LocalDateTime.now().minusMinutes(30)) < 0)
-        .forEach(f -> feedbackData.deleteObject(f.getId()));
 
     List<Stop> stops = stopData.getData();
     List<Vehicle> vehicles = vehicleData.getData();
@@ -129,7 +128,7 @@ public class LiveDataGenerator {
     return max(min(oldValue + (r.nextInt(changeAmplitude * 2 + 1) - changeAmplitude), max), min);
   }
 
-  private String generateDefect(Feedbackable feedbackable, boolean forStop) {
+  private String generateDefect(ServiceOrFeedbackTargetObject feedbackable, boolean forStop) {
     Random r = new Random(System.currentTimeMillis());
     String defect = null;
     // check whether there are already a lot of defects (we don't need more)
@@ -147,6 +146,9 @@ public class LiveDataGenerator {
       defect = (forStop ? STOP_DEFECTS.get(r.nextInt(STOP_DEFECTS.size()))
           : VEHICLE_DEFECTS.get(r.nextInt(VEHICLE_DEFECTS.size())));
 
+      if (currentFeedbackCount > MAX_FEEDBACK_COUNT) {
+        return defect;
+      }
       if (r.nextInt(100) + 1 <= DEFECT_FEEDBACK_PERCENTAGE) {
         feedbackData.addObject(new Feedback((
             forStop ?
@@ -158,12 +160,13 @@ public class LiveDataGenerator {
             forStop ? STOP_FEEDBACK : VEHICLE_FEEDBACK,
             forStop ? getState(STOP_DEFECTS_SEVERITY.get(defect))
                 : getState(VEHICLE_DEFECTS_SEVERITY.get(defect))));
+        currentFeedbackCount++;
       }
     }
     return defect;
   }
 
-  private void removeDefect(Feedbackable feedbackable, boolean forStop) {
+  private void removeDefect(ServiceOrFeedbackTargetObject feedbackable, boolean forStop) {
     Random r = new Random(System.currentTimeMillis());
     if (forStop) {
       if (((Stop) feedbackable).getDefects().size() != 0) {
@@ -181,7 +184,10 @@ public class LiveDataGenerator {
     }
   }
 
-  private void generateValueFeedback(Feedbackable feedbackable, String fieldName) {
+  private void generateValueFeedback(ServiceOrFeedbackTargetObject feedbackable, String fieldName) {
+    if (currentFeedbackCount > MAX_FEEDBACK_COUNT) {
+      return;
+    }
     Random r = new Random(System.currentTimeMillis());
     if (r.nextInt(100) + 1 <= VALUE_FEEDBACK_PERCENTAGE) {
       EState rating = EState.FINE;
@@ -200,10 +206,11 @@ public class LiveDataGenerator {
           break;
       }
       feedbackData.addObject(getValueFeedbackForField(feedbackable, fieldName, rating, r));
+      currentFeedbackCount++;
     }
   }
 
-  private Feedback getValueFeedbackForField(Feedbackable objective, String fieldname, EState rating,
+  private Feedback getValueFeedbackForField(ServiceOrFeedbackTargetObject objective, String fieldname, EState rating,
       Random random) {
     String message = VALUE_FEEDBACK.get(fieldname).get(rating.ordinal())
         .get(random.nextInt(VALUE_FEEDBACK.get(fieldname).get(rating.ordinal()).size()));

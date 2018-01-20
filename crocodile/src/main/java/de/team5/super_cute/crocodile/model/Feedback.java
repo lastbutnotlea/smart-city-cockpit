@@ -1,16 +1,18 @@
 package de.team5.super_cute.crocodile.model;
 
+import static de.team5.super_cute.crocodile.config.TickerConfig.FEEDBACK_BASE_PRIORITY;
+import static de.team5.super_cute.crocodile.config.TickerConfig.FEEDBACK_CRITICAl_PRIORITY;
+import static de.team5.super_cute.crocodile.config.TickerConfig.FEEDBACK_FINE_PRIORITY;
+import static de.team5.super_cute.crocodile.config.TickerConfig.FEEDBACK_PROBLEMATIC_PRIORITY;
+
 import de.team5.super_cute.crocodile.util.FeedbackableAttributeConverter;
 import de.team5.super_cute.crocodile.util.LocalDateTimeAttributeConverter;
-
+import java.io.Serializable;
+import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.io.Serializable;
-import java.time.LocalDateTime;
-
-import static de.team5.super_cute.crocodile.config.TickerConfig.*;
 
 @Entity
 @Table(name = "feedback")
@@ -25,7 +27,7 @@ public class Feedback extends IdentifiableObject implements Serializable, Ticker
 
   @Column
   @Convert(converter = FeedbackableAttributeConverter.class)
-  private Feedbackable objective;
+  private ServiceOrFeedbackTargetObject objective;
 
   @Column
   private EFeedbackType feedbackType;
@@ -37,7 +39,7 @@ public class Feedback extends IdentifiableObject implements Serializable, Ticker
     super();
   }
 
-  public Feedback(String message, LocalDateTime timestamp, Feedbackable objective,
+  public Feedback(String message, LocalDateTime timestamp, ServiceOrFeedbackTargetObject objective,
       EFeedbackType feedbackType, EState rating) {
     super();
     this.message = message;
@@ -63,11 +65,11 @@ public class Feedback extends IdentifiableObject implements Serializable, Ticker
     this.timestamp = timestamp;
   }
 
-  public Feedbackable getObjective() {
+  public ServiceOrFeedbackTargetObject getObjective() {
     return objective;
   }
 
-  public void setObjective(Feedbackable objective) {
+  public void setObjective(ServiceOrFeedbackTargetObject objective) {
     this.objective = objective;
   }
 
@@ -92,10 +94,14 @@ public class Feedback extends IdentifiableObject implements Serializable, Ticker
     return this.message;
   }
 
+  public void setItemDescription(String s) {
+    // do nothing, fool the json mapper!
+  }
+
   @Override
   public String getItemHeader() {
     String feedbackType = "";
-    switch (this.getFeedbackType()){
+    switch (this.getFeedbackType()) {
       case VEHICLE_FEEDBACK:
         feedbackType = "vehicles";
         break;
@@ -109,15 +115,23 @@ public class Feedback extends IdentifiableObject implements Serializable, Ticker
     return "Customer feedback about one of our " + feedbackType;
   }
 
+  public void setItemHeader(String s) {
+    // do nothing, fool the json mapper!
+  }
+
   @Override
   public EState getItemState() {
     return this.rating;
   }
 
+  public void setItemState(EState s) {
+    // do nothing, fool the json mapper!
+  }
+
   @Override
   public int getItemPriority() {
     int priority = 0;
-    switch (this.rating){
+    switch (this.rating) {
       case FINE:
         priority = FEEDBACK_FINE_PRIORITY;
         break;
@@ -131,19 +145,7 @@ public class Feedback extends IdentifiableObject implements Serializable, Ticker
     return FEEDBACK_BASE_PRIORITY + priority;
   }
 
-  public void setItemDescription(String s){
-    // do nothing, fool the json mapper!
-  }
-
-  public void setItemHeader(String s){
-    // do nothing, fool the json mapper!
-  }
-
-  public void setItemState(EState s){
-    // do nothing, fool the json mapper!
-  }
-
-  public void setItemPriority(int i){
+  public void setItemPriority(int i) {
     // do nothing, fool the json mapper!
   }
 }

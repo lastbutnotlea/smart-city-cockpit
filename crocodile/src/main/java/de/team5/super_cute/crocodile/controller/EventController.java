@@ -2,6 +2,7 @@ package de.team5.super_cute.crocodile.controller;
 
 import static de.team5.super_cute.crocodile.config.AppConfiguration.API_PREFIX;
 
+import de.team5.super_cute.crocodile.config.C4CConfig;
 import de.team5.super_cute.crocodile.external.SAPC4CConnector;
 import de.team5.super_cute.crocodile.model.Event;
 import java.io.IOException;
@@ -39,18 +40,14 @@ public class EventController {
   public List<Event> getAllEvents()
       throws IOException, EdmException, EntityProviderException {
     logger.info("Got Request for all Events");
-    List<Event> events = connector.getEvents();
-    return events;
+    return connector.getEvents();
   }
 
   @GetMapping("/{id}")
   public Event getAllEvents(@PathVariable String id)
       throws IOException, EdmException, EntityProviderException {
     logger.info("Got Request for Event with id " + id);
-    Event event = connector.getEvents().stream()
-        .filter(sr -> sr.getId().equals(id)).findAny()
-        .orElseThrow(() -> new IllegalArgumentException("No Event found for this id."));
-    return event;
+    return (Event) connector.getC4CEntityById(new Event(), id);
   }
 
   @PostMapping
@@ -65,28 +62,19 @@ public class EventController {
   public String deleteEvent(@PathVariable String id)
       throws IOException, EdmException, EntityProviderException {
     logger.info("Got Request to delete Event with id " + id);
-   return connector.deleteC4CEntity(
-        connector.getEvents().stream().filter(sr -> sr.getId().equals(id)).findAny()
-            .orElseThrow(() -> new IllegalArgumentException(
-                "No Event found for the given id: " + id)));
+   return connector.deleteC4CEntity(connector.getC4CEntityById(new Event(), id));
   }
 
   @PutMapping
   public String editEvent(@RequestBody Event eventInput)
       throws IOException, BatchException, EdmException, EntityProviderException {
     logger.info("Got Request to edit Event: " + eventInput);
-  connector.deleteC4CEntity(eventInput);
-    connector.putC4CEntity(eventInput);
+    connector.patchC4CEntity(eventInput);
     return eventInput.getId();
   }
 
   @GetMapping("/people")
   public List<String> getPeople() {
-    return new ArrayList<String>() {{
-      add("Fußballverein");
-      add("Opernunternehmen");
-      add("Asoziales Netzwerk");
-      add("Zentrum für Anti-Terror-Anschläge");
-    }};
+    return new ArrayList<>(C4CConfig.PARTY_NAME_TO_ID.keySet());
   }
 }
