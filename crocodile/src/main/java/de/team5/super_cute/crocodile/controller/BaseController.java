@@ -27,7 +27,4 @@ abstract class BaseController<T extends IdentifiableObject> {
     return input.getId();
   }
 
-  String makeIdToJSON(String id) {
-    return "{\"id\":\"" + id + "\"}";
-  }
 }

@@ -5,6 +5,8 @@ import static de.team5.super_cute.crocodile.config.AppConfiguration.API_PREFIX;
 import de.team5.super_cute.crocodile.config.C4CConfig;
 import de.team5.super_cute.crocodile.external.SAPC4CConnector;
 import de.team5.super_cute.crocodile.model.Event;
+import de.team5.super_cute.crocodile.model.c4c.EC4CNotesTypeCode;
+import de.team5.super_cute.crocodile.util.Helpers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,27 +56,32 @@ public class EventController {
   public String addEvent(@RequestBody Event eventInput)
       throws IOException, BatchException {
     logger.info("Got Request to add Event: " + eventInput);
-    connector.putC4CEntity(eventInput);
-    return eventInput.getId();
+    handleEventFromFrontend(eventInput);
+    String objectId = connector.putC4CEntity(eventInput);
+    return Helpers.makeIdToJSON(eventInput.getId());
   }
 
   @DeleteMapping("/{id}")
   public String deleteEvent(@PathVariable String id)
       throws IOException, EdmException, EntityProviderException {
     logger.info("Got Request to delete Event with id " + id);
-   return connector.deleteC4CEntity(connector.getC4CEntityById(new Event(), id));
+   return Helpers.makeIdToJSON(connector.deleteC4CEntity(connector.getC4CEntityById(new Event(), id)));
   }
 
   @PutMapping
-  public String editEvent(@RequestBody Event eventInput)
+  public Event editEvent(@RequestBody Event eventInput)
       throws IOException, BatchException, EdmException, EntityProviderException {
     logger.info("Got Request to edit Event: " + eventInput);
     connector.patchC4CEntity(eventInput);
-    return eventInput.getId();
+    return eventInput;
   }
 
   @GetMapping("/people")
   public List<String> getPeople() {
     return new ArrayList<>(C4CConfig.PARTY_NAME_TO_ID.keySet());
+  }
+
+  private void handleEventFromFrontend(Event e) {
+    e.getAppointmentNotes().forEach(note -> note.setTypeCode(EC4CNotesTypeCode.APPOINTMENT_NOTES.toString()));
   }
 }

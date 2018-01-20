@@ -111,7 +111,8 @@ export class EventEditComponent implements OnInit {
 
     this.activeModal.close('Close click');
     this.http.editEvent(this.data).subscribe(
-      // data => {
+      data => {
+        console.log('Received for Edit: ' + data)
       //   // get event details to refresh event detail data in event detail view
       //   this.http.getEventDetails(this.data.id).subscribe(
       //     event => {
@@ -150,8 +151,8 @@ export class EventEditComponent implements OnInit {
       //     },
       //     err => console.log('Could not fetch event data!')
       //   );
-      // },
-      // err => console.log('Could not edit event.')
+      },
+      err => console.log('Could not edit event.')
     );
   }
 
