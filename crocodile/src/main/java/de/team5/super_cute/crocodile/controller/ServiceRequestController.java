@@ -6,18 +6,17 @@ import de.team5.super_cute.crocodile.data.FeedbackGroupData;
 import de.team5.super_cute.crocodile.data.StopData;
 import de.team5.super_cute.crocodile.data.VehicleData;
 import de.team5.super_cute.crocodile.external.SAPC4CConnector;
+import de.team5.super_cute.crocodile.model.Feedback;
 import de.team5.super_cute.crocodile.model.IdentifiableObject;
 import de.team5.super_cute.crocodile.model.ServiceRequest;
-import de.team5.super_cute.crocodile.model.ServiceTargetObject;
+import de.team5.super_cute.crocodile.model.ServiceOrFeedbackTargetObject;
 import de.team5.super_cute.crocodile.model.Stop;
 import de.team5.super_cute.crocodile.model.Vehicle;
 import de.team5.super_cute.crocodile.model.c4c.FeedbackGroup;
 import de.team5.super_cute.crocodile.util.Helpers;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 import javax.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.olingo.odata2.api.batch.BatchException;
@@ -48,8 +47,6 @@ public class ServiceRequestController {
   private VehicleData vehicleData;
   private StopData stopData;
 
-  private List<ServiceRequest> cacheList;
-
   @Autowired
   public ServiceRequestController(SAPC4CConnector connector,
       FeedbackGroupData feedbackGroupData, VehicleData vehicleData,
@@ -59,7 +56,6 @@ public class ServiceRequestController {
     this.vehicleData = vehicleData;
     this.stopData = stopData;
     this.feedbackData = feedbackData;
-    cacheList = new ArrayList<>();
   }
 
   @GetMapping
@@ -67,7 +63,7 @@ public class ServiceRequestController {
       throws IOException, EdmException, EntityProviderException {
     logger.info("Got Request for all Service Requests");
     List<ServiceRequest> serviceRequests = connector.getServiceRequests();
-    serviceRequests.addAll(cacheList);
+    serviceRequests.forEach(this::prepareServiceRequestForFrontend);
     return serviceRequests;
   }
 
@@ -75,47 +71,35 @@ public class ServiceRequestController {
   public ServiceRequest getServiceRequest(@PathVariable String id)
       throws IOException, EdmException, EntityProviderException {
     logger.info("Got Request for Service Request with id " + id);
-    Optional<ServiceRequest> serviceR = cacheList.stream().filter(s -> s.getId().equals(id)).findAny();
-    if (serviceR.isPresent()) {
-      return serviceR.get();
-    }
-    ServiceRequest serviceRequest = connector.getServiceRequests().stream()
-        .filter(sr -> sr.getId().equals(id)).findAny()
-        .orElseThrow(() -> new IllegalArgumentException("No Service Request found for this id."));
+    ServiceRequest serviceRequest = (ServiceRequest) connector.getC4CEntityById(new ServiceRequest(), id);
     prepareServiceRequestForFrontend(serviceRequest);
     return serviceRequest;
   }
 
   @PostMapping
   public ServiceRequest addServiceRequest(@RequestBody ServiceRequest serviceRequestInput)
-      throws IOException, BatchException {
+      throws IOException, BatchException, EdmException, EntityProviderException {
     logger.info("Got Request to add Service Request: " + serviceRequestInput);
     handleServiceRequestFromFrontend(serviceRequestInput);
-    cacheList.add(serviceRequestInput);
-    // todo connector.putC4CEntity(serviceRequestInput);
-    return serviceRequestInput;
+    String objectId = connector.putC4CEntity(serviceRequestInput);
+    ServiceRequest serviceRequest = (ServiceRequest) connector.getC4CEntityByObjectId(new ServiceRequest(), objectId);
+    prepareServiceRequestForFrontend(serviceRequest);
+    return serviceRequest;
   }
 
   @DeleteMapping("/{id}")
   public String deleteServiceRequest(@PathVariable String id)
       throws IOException, EdmException, EntityProviderException {
     logger.info("Got Request to delete Service Request with id " + id);
-    cacheList.removeIf(s -> s.getId().equals(id));
-    return id;
-//    todo return connector.deleteC4CEntity(
-//        connector.getServiceRequests().stream().filter(sr -> sr.getId().equals(id)).findAny()
-//            .orElseThrow(() -> new IllegalArgumentException(
-//                "No Service Request found for the given id: " + id)));
+    return connector.deleteC4CEntity(connector.getC4CEntityById(new ServiceRequest(), id));
   }
 
   @PutMapping
   public String editServiceRequest(@RequestBody ServiceRequest serviceRequestInput)
       throws IOException, BatchException, EdmException, EntityProviderException {
     logger.info("Got Request to edit Service Request: " + serviceRequestInput);
-    deleteServiceRequest(serviceRequestInput.getId());
-    addServiceRequest(serviceRequestInput);
-//   todo connector.deleteC4CEntity(serviceRequestInput);
-//    connector.putC4CEntity(serviceRequestInput);
+    handleServiceRequestFromFrontend(serviceRequestInput);
+    connector.patchC4CEntity(serviceRequestInput);
     return serviceRequestInput.getId();
   }
 
@@ -126,13 +110,13 @@ public class ServiceRequestController {
     } else {
       sr.setFeedbacks(new HashSet<>());
     }
-    ServiceTargetObject target = getTargetObject(sr);
+    ServiceOrFeedbackTargetObject target = getTargetObject(sr);
     if (target != null) {
       sr.setTarget(target);
     }
   }
 
-  private ServiceTargetObject getTargetObject(ServiceRequest sr) {
+  private ServiceOrFeedbackTargetObject getTargetObject(ServiceRequest sr) {
     if (sr.getTargetId() == null) {
       return null;
     }
@@ -153,8 +137,11 @@ public class ServiceRequestController {
     }
     if (fbg == null) {
       fbg = new FeedbackGroup();
+      feedbackGroupData.addObject(fbg);
     }
-    fbg.addFeedbacksMinusDuplicates(sr.getFeedbacks());
+    for (Feedback f : sr.getFeedbacks()) {
+      fbg.addFeedback(f);
+    }
     sr.setReferencedFeedback(fbg.getId());
 
     if (StringUtils.isBlank(sr.getName())) {
@@ -173,12 +160,14 @@ public class ServiceRequestController {
     switch (sr.getServiceType()) {
       case MAINTENANCE:
         name.append("Maintenance of ");
+        break;
       case CLEANING:
         name.append("Cleaning of ");
+        break;
     }
     if (sr.getTarget() instanceof Stop) {
       name.append("Stop ").append(((Stop) sr.getTarget()).getCommonName()).append(" (")
-          .append(sr.getId()).append(")");
+          .append(((Stop) sr.getTarget()).getId()).append(")");
     } else if (sr.getTarget() instanceof Vehicle) {
       name.append("Vehicle ").append(((Vehicle) sr.getTarget()).getId());
     }

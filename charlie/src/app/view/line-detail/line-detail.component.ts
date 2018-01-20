@@ -12,9 +12,7 @@ import { VehiclePositionData } from '../../shared/data/vehicle-position-data';
 @Component({
   selector: 'app-line-detail-view',
   templateUrl: './line-detail.component.html',
-  styleUrls: ['./line-detail.component.css',
-    '../../shared/styling/global-styling.css',
-    '../../shared/styling/embedded-components.css']
+  styleUrls: ['./line-detail.component.css']
 })
 
 export class LineDetailComponent extends LiveDataComponent implements OnInit {
@@ -83,10 +81,10 @@ export class LineDetailComponent extends LiveDataComponent implements OnInit {
       this.http.getLineDetails(this.line.id).subscribe( data => {
           this.line = data;
           this.getPositionData();
-          this.subscribeToData();
         },
         err =>
           console.log('Could not fetch new line-data.')
       ));
+    this.subscribeToData();
   }
 }

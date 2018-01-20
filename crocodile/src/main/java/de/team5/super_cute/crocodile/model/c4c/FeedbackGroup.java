@@ -2,11 +2,11 @@ package de.team5.super_cute.crocodile.model.c4c;
 
 import de.team5.super_cute.crocodile.model.Feedback;
 import de.team5.super_cute.crocodile.model.IdentifiableObject;
+import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 import org.hibernate.annotations.Proxy;
 
@@ -19,10 +19,10 @@ import org.hibernate.annotations.Proxy;
 public class FeedbackGroup extends IdentifiableObject {
 
   @OneToMany(fetch = FetchType.LAZY)
-  @PrimaryKeyJoinColumn
   private Set<Feedback> feedbacks;
 
   public FeedbackGroup() {
+    feedbacks = new HashSet<>();
   }
 
   public FeedbackGroup(Set<Feedback> feedbacks) {
@@ -37,11 +37,7 @@ public class FeedbackGroup extends IdentifiableObject {
     this.feedbacks = feedbacks;
   }
 
-  public void addFeedbacksMinusDuplicates(Set<Feedback> feedbacks) {
-    for (Feedback f : feedbacks) {
-      if (!getFeedbacks().contains(f)) {
-        getFeedbacks().add(f);
-      }
-    }
+  public void addFeedback(Feedback feedback) {
+    this.feedbacks.add(feedback);
   }
 }
