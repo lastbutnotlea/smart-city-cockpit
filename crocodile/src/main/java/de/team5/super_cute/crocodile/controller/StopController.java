@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -56,10 +57,10 @@ public class StopController extends BaseController<Stop> {
     return lineForStopData;
   }
 
-  @PostMapping("/skip")
-  public SkipStop skipStop(SkipStop skipStop) {
-    Stop stop = getObjectForId(skipStop.getStopId());
-    tripData.skipStopsInTimeFrameForAllTrips(skipStop.getStopId(), skipStop.getFrom(), skipStop.getTo());
+  @PostMapping("/{id}/skip")
+  public SkipStop skipStop(@PathVariable String id, @RequestBody SkipStop skipStop) {
+    Stop stop = getObjectForId(id);
+    tripData.skipStopsInTimeFrameForAllTrips(id, skipStop.getFrom(), skipStop.getTo());
     stop.addSkipStop(skipStop);
     return skipStop;
   }

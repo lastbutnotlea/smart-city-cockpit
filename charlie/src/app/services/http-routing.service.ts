@@ -148,8 +148,8 @@ export class HttpRoutingService {
     return this.http.put(this.urlBuilder.getServiceRequestsUrl(), serviceRequest);
   }
 
-  public skipStop(skipData: SkipData): Observable<any> {
-    return this.http.post<SkipData>(this.urlBuilder.getStopSkipUrl(), skipData);
+  public skipStop(stopId: string, skipData: SkipData): Observable<any> {
+    return this.http.post(this.urlBuilder.getStopSkipUrl(stopId), skipData);
   }
 
   public deleteServiceRequest(id: string): Observable<any> {
