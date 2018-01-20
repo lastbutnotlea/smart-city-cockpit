@@ -12,8 +12,7 @@ import {PartyData} from '../../shared/data/party-data';
 @Component({
   selector: 'app-event-edit',
   templateUrl: './event-edit.component.html',
-  styleUrls: ['./event-edit.component.css',
-              '../../shared/styling/global-styling.css']
+  styleUrls: ['./event-edit.component.css']
 })
 
 export class EventEditComponent implements OnInit {

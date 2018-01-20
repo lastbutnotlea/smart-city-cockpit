@@ -7,8 +7,7 @@ import {EventAddComponent} from '../event-add/event-add.component';
 @Component({
   selector: 'app-event-view',
   templateUrl: './events.component.html',
-  styleUrls: ['./events.component.css',
-    '../../shared/styling/global-styling.css']
+  styleUrls: ['./events.component.css']
 })
 
 export class EventsComponent implements OnInit {

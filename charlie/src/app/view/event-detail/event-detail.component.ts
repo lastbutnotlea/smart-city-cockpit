@@ -11,9 +11,7 @@ import {EventEditComponent} from '../event-edit/event-edit.component';
 @Component({
   selector: 'app-event-detail-view',
   templateUrl: './event-detail.component.html',
-  styleUrls: ['./event-detail.component.css',
-    '../../shared/styling/embedded-components.css',
-    '../../shared/styling/global-styling.css']
+  styleUrls: ['./event-detail.component.css']
 })
 
 export class EventDetailComponent implements OnInit {
