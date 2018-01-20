@@ -41,11 +41,7 @@ public class TripController extends BaseController<Trip> {
 
   @GetMapping
   public List<Trip> getAllTrips() {
-    return data.getData().stream()
-        .peek(t -> t.getLine().setState(lineData.calculateLineState(t.getLine())))
-        .peek(t -> ((TripData) data).setCurrentLine(t.getVehicle()))
-        .peek(t -> ((TripData) data).setFreeFrom(t.getVehicle()))
-        .collect(Collectors.toList());
+    return getTripsWithPredicate(t -> true);
   }
 
   @GetMapping("/vehicle/{vehicleId}")
@@ -62,7 +58,7 @@ public class TripController extends BaseController<Trip> {
     return data.getData().stream()
         .filter(predicate)
         .peek(t -> t.getLine().setState(lineData.calculateLineState(t.getLine())))
-        .peek(t -> ((TripData) data).setCurrentLine(t.getVehicle()))
+        .peek(t -> t.getVehicle().setCurrentLine(t.getLine()))
         .peek(t -> ((TripData) data).setFreeFrom(t.getVehicle()))
         .collect(Collectors.toList());
   }
@@ -71,7 +67,7 @@ public class TripController extends BaseController<Trip> {
   public Trip getTrip(@PathVariable String id) {
     Trip trip = getObjectForId(id);
     trip.getLine().setState(lineData.calculateLineState(trip.getLine()));
-    ((TripData) data).setCurrentLine(trip.getVehicle());
+    trip.getVehicle().setCurrentLine(trip.getLine());
     ((TripData) data).setFreeFrom(trip.getVehicle());
     return trip;
   }

@@ -70,22 +70,16 @@ public class TripData extends BaseData<Trip> {
     return getData().stream().filter(t -> t.getVehicle().getId().equals(vehicleId)).collect(Collectors.toList());
   }
 
-  public void setCurrentLine(Vehicle vehicle) {
-    Trip currentTrip = getCurrentTripOfVehicle(vehicle, LocalDateTime.now());
-    if (currentTrip != null) {
-      vehicle.setCurrentLine(currentTrip.getLine());
-    } else {
-      vehicle.setCurrentLine(null);
-    }
+  private Optional<LocalDateTime> getLastStopTimeOfVehicle(Vehicle vehicle) {
+    return getAllTripsOfVehicle(vehicle.getId()).stream().flatMap(t -> t.getStops().values().stream()).max(LocalDateTime::compareTo);
   }
 
   public void setFreeFrom(Vehicle vehicle) {
-    List<Trip> vehicleTrips = getAllTripsOfVehicle(vehicle.getId());
-    Optional<LocalDateTime> lastStopTime = vehicleTrips.stream().flatMap(t -> t.getStops().values().stream()).max(LocalDateTime::compareTo);
+    Optional<LocalDateTime> lastStopTime = getLastStopTimeOfVehicle(vehicle);
     if (lastStopTime.isPresent()) {
       vehicle.setFreeFrom(lastStopTime.get());
     } else {
-      vehicle.setFreeFrom(LocalDateTime.now());
+      vehicle.setFreeFrom(null);
     }
   }
 }

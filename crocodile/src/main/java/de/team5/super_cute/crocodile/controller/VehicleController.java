@@ -9,6 +9,7 @@ import de.team5.super_cute.crocodile.model.EState;
 import de.team5.super_cute.crocodile.model.Trip;
 import de.team5.super_cute.crocodile.model.Vehicle;
 import de.team5.super_cute.crocodile.util.StateCalculator;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
@@ -41,7 +42,7 @@ public class VehicleController extends BaseController<Vehicle> {
   public List<Vehicle> getAllVehicles() {
     logger.info("Got Request to return all vehicles");
     return data.getData().stream()
-        .peek(tripData::setCurrentLine)
+        .peek(this::setCurrentLine)
         .peek(tripData::setFreeFrom)
         .sorted((v1, v2) -> v1.getId().compareTo(v2.getId()))
         .collect(Collectors.toList());
@@ -50,9 +51,9 @@ public class VehicleController extends BaseController<Vehicle> {
   @GetMapping("/{id}")
   public Vehicle getVehicle(@PathVariable String id) {
     logger.info("Got Request to return the vehicle with id " + id);
-    Vehicle v =  getObjectForId(id);
+    Vehicle v = getObjectForId(id);
     tripData.setFreeFrom(v);
-    tripData.setCurrentLine(v);
+    setCurrentLine(v);
     return v;
   }
 
@@ -96,5 +97,14 @@ public class VehicleController extends BaseController<Vehicle> {
   @GetMapping("/state")
   public EState getOverallVehiclesState() {
     return StateCalculator.getState((int) data.getData().stream().mapToInt(Vehicle::getSeverity).average().getAsDouble());
+  }
+
+  private void setCurrentLine(Vehicle vehicle) {
+    Trip currentTrip = tripData.getCurrentTripOfVehicle(vehicle, LocalDateTime.now());
+    if (currentTrip != null) {
+      vehicle.setCurrentLine(currentTrip.getLine());
+    } else {
+      vehicle.setCurrentLine(null);
+    }
   }
 }
