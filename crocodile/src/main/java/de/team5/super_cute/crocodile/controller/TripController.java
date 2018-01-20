@@ -63,22 +63,6 @@ public class TripController extends BaseController<Trip> {
         .collect(Collectors.toList());
   }
 
-  @GetMapping("/vehicle/{vehicleId}")
-  public List<Trip> getAllTripsForVehicle(@PathVariable String vehicleId) {
-    return data.getData().stream()
-        .filter(t -> StringUtils.isEmpty(vehicleId) || t.getVehicle().getId().equals(vehicleId))
-        .peek(t -> t.getLine().setState(lineData.calculateLineState(t.getLine()))).collect(
-            Collectors.toList());
-  }
-
-  @GetMapping("/stop/{stopId}")
-  public List<Trip> getAllTripsForStop(@PathVariable String stopId) {
-    return data.getData().stream()
-        .filter(t -> StringUtils.isEmpty(stopId) || t.getStops().get(stopId) != null)
-        .peek(t -> t.getLine().setState(lineData.calculateLineState(t.getLine()))).collect(
-            Collectors.toList());
-  }
-
   @GetMapping("/{id}")
   public Trip getTrip(@PathVariable String id) {
     Trip trip = getObjectForId(id);
