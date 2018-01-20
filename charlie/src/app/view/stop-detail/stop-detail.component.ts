@@ -41,7 +41,7 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
 
   skipStop(): void {
     const modal = this.modalService.open(SkipStopComponent);
-    modal.componentInstance.data = stop;
+    modal.componentInstance.data = this.stop;
   }
 
   getStop(): void {

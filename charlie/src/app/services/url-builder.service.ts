@@ -27,6 +27,10 @@ export class UrlBuilderService {
     return this.stopBaseUrl;
   }
 
+  public getStopSkipUrl(stopId: string): string {
+    return this.stopBaseUrl + '/skip';
+  }
+
   public getStopDetailsUrl(stopId: string): string {
     return this.stopBaseUrl + '/' + stopId;
   }
@@ -106,7 +110,7 @@ export class UrlBuilderService {
   public getVehiclesStateUrl(): string {
     return this.vehicleBaseUrl + '/state';
   }
-  
+
   public getNetworkStateUrl(): string {
     return this.mapBaseUrl + '/state';
   }

@@ -99,8 +99,11 @@ export class SkipStopComponent implements OnInit {
     skipData.reason = this.text;
     skipData.from = this.from;
     skipData.to = this.to;
+    skipData.stopId = this.data.id;
+    debugger;
     this.http.skipStop(skipData).subscribe(
       data => {
+        this.data.skipData.push(data);
         this.activeModal.close('Close click');
       },
       err => alert('Could not skip stop.' + err)

@@ -32,6 +32,19 @@ public class TripData extends BaseData<Trip> {
     return list;
   }
 
+  public void skipStopsInTimeFrameForAllTrips(String stopId, LocalDateTime from,
+      LocalDateTime to) {
+    getData().forEach(t -> skipStopInTimeFrame(t, stopId, from, to));
+  }
+
+  private void skipStopInTimeFrame(Trip trip, String stopId, LocalDateTime from,
+      LocalDateTime to) {
+    LocalDateTime stopTime = trip.getStops().get(stopId);
+    if (stopTime != null && stopTime.isAfter(from) && stopTime.isBefore(to)) {
+      trip.getStops().remove(stopId);
+    }
+  }
+
   public List<Trip> getActiveTrips() {
     LocalDateTime now = LocalDateTime.now();
     return getData().stream()
@@ -61,8 +74,10 @@ public class TripData extends BaseData<Trip> {
         .filter(t -> t.getVehicle().equals(vehicle)).findAny().orElse(null);
   }
 
-  public boolean getPresentAndFutureTripsForVehicle(String vehicleId){
-    return getData().stream().anyMatch(t -> t.getVehicle().getId().equals(vehicleId) && t.getStops().values().stream().max(LocalDateTime::compareTo).orElse(null).isAfter(LocalDateTime.now()));
+  public boolean getPresentAndFutureTripsForVehicle(String vehicleId) {
+    return getData().stream().anyMatch(
+        t -> t.getVehicle().getId().equals(vehicleId) && t.getStops().values().stream()
+            .max(LocalDateTime::compareTo).orElse(null).isAfter(LocalDateTime.now()));
   }
 
 }
