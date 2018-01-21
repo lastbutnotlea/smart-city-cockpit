@@ -14,9 +14,7 @@ import {SkipData} from "../../shared/data/skip-data";
 @Component({
   selector: 'app-stop-detail-view',
   templateUrl: './stop-detail.component.html',
-  styleUrls: ['./stop-detail.component.css',
-    '../../shared/styling/embedded-components.css',
-    '../../shared/styling/global-styling.css']
+  styleUrls: ['./stop-detail.component.css']
 })
 
 export class StopDetailComponent extends LiveDataComponent implements OnInit {
@@ -99,12 +97,11 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
           this.stop = data;
           this.getLines();
           this.getAdditionalData();
-          this.subscribeToData();
         },
         err =>
           console.log('Could not fetch new stop-data.')
       ));
-
+    this.subscribeToData();
   }
 
 }

@@ -25,8 +25,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "stop")
 @JsonTypeName("stop")
-public class Stop extends IdentifiableObject implements Serializable, Feedbackable, Stateable,
-    TickerItemable, ServiceTargetObject {
+public class Stop extends IdentifiableObject implements Serializable, Stateable, TickerItemable,
+    ServiceOrFeedbackTargetObject {
 
   @Column
   private String commonName;
@@ -183,9 +183,17 @@ public class Stop extends IdentifiableObject implements Serializable, Feedbackab
     return description.toString();
   }
 
+  public void setItemDescription(String s) {
+    // do nothing, fool the json mapper!
+  }
+
   @Override
   public String getItemHeader() {
     return "Stop state is critical";
+  }
+
+  public void setItemHeader(String s) {
+    // do nothing, fool the json mapper!
   }
 
   @Override
@@ -193,24 +201,16 @@ public class Stop extends IdentifiableObject implements Serializable, Feedbackab
     return this.getState();
   }
 
+  public void setItemState(EState s) {
+    // do nothing, fool the json mapper!
+  }
+
   @Override
   public int getItemPriority() {
     return STOP_BASE_PRIORITY + (this.getSeverity() - 11) / SEVERITY_DIVISOR;
   }
 
-  public void setItemDescription(String s){
-    // do nothing, fool the json mapper!
-  }
-
-  public void setItemHeader(String s){
-    // do nothing, fool the json mapper!
-  }
-
-  public void setItemState(EState s){
-    // do nothing, fool the json mapper!
-  }
-
-  public void setItemPriority(int i){
+  public void setItemPriority(int i) {
     // do nothing, fool the json mapper!
   }
 }

@@ -52,27 +52,37 @@ public class C4CTest {
     }};
     testC4CEntity(
         new ServiceRequest("Reinigung des Fahrzeugs | " + Math.random(), EState.FINE, LocalDateTime.now().plusDays(5),
-            EServiceType.MAINTENANCE, notes, "Vehicle_0", "Feedback_0"));
-    //todo change type to cleaning if respecitive code was created by mhp
+            EServiceType.CLEANING, notes, "Vehicle_0", "Feedback_0"));
   }
 
   private void testC4CEntity(C4CEntity entity) {
     try {
-      if (connector.getC4CEntities(entity.getEmptyObject()).contains(entity)) {
+      if (connector.getAllC4CEntities(entity.getEmptyObject()).contains(entity)) {
         Assert.fail(
             "Test " + entity.getClass() + "\n" + entity + "\n is already present in " + entity
                 .getCollectionName());
       }
       connector.putC4CEntity(entity);
-      List<C4CEntity> entities = connector.getC4CEntities(entity.getEmptyObject());
+      List<C4CEntity> entities = connector.getAllC4CEntities(entity.getEmptyObject());
       Assert.assertTrue(entities.contains(entity));
 
-      List<C4CEntity> objects = connector.getC4CEntities(entity.getEmptyObject());
+      List<C4CEntity> objects = connector.getAllC4CEntities(entity.getEmptyObject());
       C4CEntity entityWithObjectId = objects.get(objects.indexOf(entity));
-      connector.deleteC4CEntity(entityWithObjectId);
 
-      List<C4CEntity> entitiesAfterDeletion = connector.getC4CEntities(entity.getEmptyObject());
-      Assert.assertTrue(!entitiesAfterDeletion.contains(entity));
+      if (entityWithObjectId instanceof ServiceRequest) {
+        ((ServiceRequest) entityWithObjectId).setName("TESTCHANGEDNAME");
+      } else if (entityWithObjectId instanceof  Event) {
+        ((Event) entityWithObjectId).setLocationName("TESTCHANGEDLOCATION");
+      }
+
+
+      connector.patchC4CEntity(entityWithObjectId);
+      List<C4CEntity> entitiesChanged = connector.getAllC4CEntities(entityWithObjectId.getEmptyObject());
+      Assert.assertTrue(entitiesChanged.contains(entityWithObjectId));
+
+      connector.deleteC4CEntity(entityWithObjectId);
+      List<C4CEntity> entitiesAfterDeletion = connector.getAllC4CEntities(entityWithObjectId.getEmptyObject());
+      Assert.assertTrue(!entitiesAfterDeletion.contains(entityWithObjectId));
 
     } catch (EntityProviderException | IOException | BatchException | EdmException e) {
       e.printStackTrace();

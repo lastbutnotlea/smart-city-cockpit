@@ -13,4 +13,5 @@ export class ServiceRequestData {
   serviceRequestDescription: C4CNotes[];
   feedbacks: FeedbackData[];
   priority: string; // FINE, PROBLEMATIC or CRITICAL, like state
+  objectId: string; // Caro: Braucht das Backend um patch requests zu realisieren ohne vor das Objekt neu anfragen zu müssen :)
 }

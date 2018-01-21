@@ -1,21 +1,15 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import { HttpRoutingService } from '../../services/http-routing.service';
 import {FilterComponent} from '../../shared/components/filter/filter.component';
-import { TripData } from '../../shared/data/trip-data';
 import { FilterGroupComponent } from '../../shared/components/filter-group/filter-group.component';
-import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
 import { ServiceRequestData } from '../../shared/data/service-request-data';
-import { VehicleData } from '../../shared/data/vehicle-data';
-import { VehicleAddComponent } from '../vehicle-add/vehicle-add.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ServiceRequestAddComponent } from '../service-request-add/service-request-add.component';
-import { FeedbackData } from '../../shared/data/feedback-data';
 
 @Component({
   selector: 'app-service-requests-view',
   templateUrl: './service-requests.component.html',
-  styleUrls: ['./service-requests.component.css',
-    '../../shared/styling/global-styling.css']
+  styleUrls: ['./service-requests.component.css']
 })
 
 export class ServiceRequestsComponent implements OnInit {
@@ -53,14 +47,23 @@ export class ServiceRequestsComponent implements OnInit {
   private addFilter(): void {
     this.http.getFilterData().subscribe(
       data => {
-        // TODO: add filter for service type (cleaning or maintenance)
-        // TODO: add filter for target type (vehicle or stop)
         // TODO: change this if needed data can be requested from backend
         let stateFilter = new FilterComponent();
         stateFilter.addFilter('Fine', serviceRequest => serviceRequest.priority === 'FINE');
         stateFilter.addFilter('Problematic', serviceRequest => serviceRequest.priority === 'PROBLEMATIC');
         stateFilter.addFilter('Critical', serviceRequest => serviceRequest.priority === 'CRITICAL');
         this.filterGroup.addFilterComponent(stateFilter);
+
+        let serviceTypeFilter = new FilterComponent();
+        serviceTypeFilter.addFilter('Cleaning', serviceRequest => serviceRequest.serviceType === 'CLEANING');
+        serviceTypeFilter.addFilter('Maintenance', serviceRequest => serviceRequest.serviceType === 'MAINTENANCE');
+        this.filterGroup.addFilterComponent(serviceTypeFilter);
+
+        // TODO: This filter does not work yet because some requests in backend do not contain targets
+       /* let targetTypeFilter = new FilterComponent();
+        targetTypeFilter.addFilter('Vehicle', serviceRequest => serviceRequest.target.identifiableType === 'vehicle');
+        targetTypeFilter.addFilter('Stop', serviceRequest => serviceRequest.target.identifiableType === 'stop');
+        this.filterGroup.addFilterComponent(targetTypeFilter);*/
       },
       err => {
         console.log('Could not fetch filter data!');
@@ -69,7 +72,6 @@ export class ServiceRequestsComponent implements OnInit {
   }
 
   addServiceRequest(): void {
-    // TODO: open add component once available
     const modal = this.modalService.open(ServiceRequestAddComponent);
     modal.componentInstance.data = this.serviceRequests;
   }
