@@ -43,6 +43,7 @@ public class VehicleController extends BaseController<Vehicle> {
     logger.info("Got Request to return all vehicles");
     return data.getData().stream()
         .filter(v -> !v.getIsShutDown())
+        //.peek(tripData::setFreeFrom)
         .peek(this::setCurrentTrip)
         .sorted((v1, v2) -> v1.getId().compareTo(v2.getId()))
         .collect(Collectors.toList());
@@ -52,6 +53,7 @@ public class VehicleController extends BaseController<Vehicle> {
   public Vehicle getVehicle(@PathVariable String id) {
     logger.info("Got Request to return the vehicle with id " + id);
     Vehicle v = getObjectForId(id);
+    //tripData.setFreeFrom(v);
     setCurrentTrip(v);
     return v;
   }

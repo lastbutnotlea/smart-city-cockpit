@@ -21,6 +21,7 @@ import static de.team5.super_cute.crocodile.config.TickerConfig.VEHICLE_BASE_PRI
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import de.team5.super_cute.crocodile.config.LiveDataConfig;
+import de.team5.super_cute.crocodile.util.LocalDateTimeAttributeConverter;
 import de.team5.super_cute.crocodile.util.StateCalculator;
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -30,6 +31,7 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -72,12 +74,14 @@ public class Vehicle extends IdentifiableObject implements Serializable, Stateab
   private Trip currentTrip;
 
   @Column
-  private LocalDateTime outdateCurrentTrip = LocalDateTime.MIN;
+  @Convert(converter = LocalDateTimeAttributeConverter.class)
+  private LocalDateTime outdateCurrentTrip = LocalDateTime.now();
 
   private Line currentLine;
 
   @Column
-  private LocalDateTime freeFrom = LocalDateTime.MIN;
+  @Convert(converter = LocalDateTimeAttributeConverter.class)
+  private LocalDateTime freeFrom = LocalDateTime.now();
 
   public Vehicle() {
     super();

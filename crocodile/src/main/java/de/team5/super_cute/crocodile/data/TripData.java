@@ -62,20 +62,23 @@ public class TripData extends BaseData<Trip> {
         .filter(t -> t.getVehicle().equals(vehicle)).findAny().orElse(null);
   }
 
-  public boolean hasPresentOrFutureTrips(String vehicleId){
-    return getData().stream().anyMatch(t -> t.getVehicle().getId().equals(vehicleId) && t.getStops().values().stream().max(LocalDateTime::compareTo).orElse(null).isAfter(LocalDateTime.now()));
+  public boolean hasPresentOrFutureTrips(String vehicleId) {
+    return getData().stream().anyMatch(
+        t -> t.getVehicle().getId().equals(vehicleId) && t.getStops().values().stream()
+            .max(LocalDateTime::compareTo).orElse(null).isAfter(LocalDateTime.now()));
   }
 
   public List<Trip> getAllTripsOfVehicle(String vehicleId) {
-    return getData().stream().filter(t -> t.getVehicle().getId().equals(vehicleId)).collect(Collectors.toList());
+    return getData().stream().filter(t -> t.getVehicle().getId().equals(vehicleId))
+        .collect(Collectors.toList());
   }
 
   private Optional<LocalDateTime> getLastStopTimeOfVehicle(Vehicle vehicle) {
-    return getAllTripsOfVehicle(vehicle.getId()).stream().flatMap(t -> t.getStops().values().stream()).max(LocalDateTime::compareTo);
+    return getAllTripsOfVehicle(vehicle.getId()).stream()
+        .flatMap(t -> t.getStops().values().stream()).max(LocalDateTime::compareTo);
   }
 
   public void setFreeFrom(Vehicle vehicle) {
-
     Optional<LocalDateTime> lastStopTime = getLastStopTimeOfVehicle(vehicle);
     if (lastStopTime.isPresent()) {
       vehicle.setFreeFrom(lastStopTime.get());
