@@ -2,7 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {AnnouncementData} from "../../../shared/data/announcement-data";
 import {HttpRoutingService} from "../../../services/http-routing.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {AnnouncementAddComponent} from "../edit/announcement-add.component";
+import {AnnouncementEditComponent} from "../edit/announcement-edit.component";
 
 @Component({
   selector: 'app-announcement-item',
@@ -22,7 +22,7 @@ export class AnnouncementItemComponent implements OnInit {
   }
 
   editItem(): void {
-    const modal = this.modalService.open(AnnouncementAddComponent);
+    const modal = this.modalService.open(AnnouncementEditComponent);
     modal.componentInstance.setModel(this.data);
   }
 

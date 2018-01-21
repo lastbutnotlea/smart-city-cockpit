@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
   selector: 'app-edit-announcement-text',
@@ -8,9 +8,6 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 export class EditAnnounementTextComponent {
   @Output() textChange = new EventEmitter<string>();
   @Input() text: string;
-
-  constructor() {
-  }
 
   onTextChange(event: Event): void {
     this.textChange.emit(this.text);

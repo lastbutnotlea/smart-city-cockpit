@@ -42,9 +42,6 @@ export class EditAnnouncementStopsComponent {
     this.selectedStopsChanged.emit(selectedStops);
   }
 
-  constructor() {
-  }
-
   removeStop(stop: StopData): void {
     this.selectedStopMap.delete(stop.id);
     this.emitChanged();

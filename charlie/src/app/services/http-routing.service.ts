@@ -168,19 +168,19 @@ export class HttpRoutingService {
   }
 
   public getAnnouncements(): Observable<any []> {
-    return this.http.get<any []>(this.urlBuilder.getAnnouncements());
+    return this.http.get<any []>(this.urlBuilder.getAnnouncementsUrl());
   }
 
   public addAnnouncement(announcement: AnnouncementData): Observable<any> {
-    return this.http.post(this.urlBuilder.getAnnouncements(), announcement);
+    return this.http.post(this.urlBuilder.getAnnouncementsUrl(), announcement);
   }
 
   public deleteAnnouncement(data: AnnouncementData): Observable<any> {
-    return this.http.delete(this.urlBuilder.getAnnouncement(data));
+    return this.http.delete(this.urlBuilder.getAnnouncementUrl(data));
   }
 
   public editAnnouncement(data: AnnouncementData): Observable<any> {
-    return this.http.put(this.urlBuilder.getAnnouncements(), data);
+    return this.http.put(this.urlBuilder.getAnnouncementsUrl(), data);
   }
 
   public getVehiclesState(): Observable<string> {

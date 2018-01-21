@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {NgbDateStruct, NgbTimeStruct} from "@ng-bootstrap/ng-bootstrap";
 import {DateParserService} from "../../../services/date-parser.service";
 
@@ -20,6 +20,7 @@ export class DatetimePickerComponent {
     this.date = this.converter.convertDateToNgbDateStruct(this._model);
     this.modelChanged.emit(this._model);
   }
+
   get model(): Date {
     return this._model;
   }
@@ -31,8 +32,8 @@ export class DatetimePickerComponent {
   @Output()
   modelChanged: EventEmitter<Date> = new EventEmitter();
 
-  time: NgbTimeStruct;// = this.converter.convertDateToNgbTimeStruct(this.model);
-  date: NgbDateStruct;// = this.converter.convertDateToNgbDateStruct(this.model);
+  time: NgbTimeStruct;
+  date: NgbDateStruct;
 
   constructor(private converter: DateParserService) {
   }

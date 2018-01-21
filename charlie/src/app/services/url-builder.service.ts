@@ -92,7 +92,7 @@ export class UrlBuilderService {
     return this.feedbackBaseUrl + '/stop/' + stopId;
   }
 
-  public getAnnouncements(): string {
+  public getAnnouncementsUrl(): string {
     return this.announcementBaseUrl;
   }
 
@@ -104,7 +104,7 @@ export class UrlBuilderService {
     return this.tickerBaseUrl + '/' + item.id;
   }
 
-  public getAnnouncement(item: AnnouncementData): string {
+  public getAnnouncementUrl(item: AnnouncementData): string {
     return this.announcementBaseUrl + '/' + item.id;
   }
 
