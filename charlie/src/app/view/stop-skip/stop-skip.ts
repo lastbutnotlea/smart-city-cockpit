@@ -9,7 +9,7 @@ import {SkipData} from "../../shared/data/skip-data";
 @Component({
   selector: 'app-service-request-edit',
   templateUrl: './stop-skip.html',
-  styleUrls: ['./stop-skip.css', '../../shared/styling/global-styling.css']
+  styleUrls: ['./stop-skip.css']
 })
 
 export class SkipStopComponent implements OnInit {

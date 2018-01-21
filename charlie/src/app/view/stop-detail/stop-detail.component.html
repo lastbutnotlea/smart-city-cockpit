@@ -17,8 +17,7 @@
     <button class="btn btn-outline-secondary" (click)="goBack()">Back</button>
     <button class="btn btn-outline-primary" (click)="skipStop()">Skip stop</button>
   </div>
-  <!--TODO add *ngIf="stop.skipData.length > 0"-->
-  <div class="bounding-box">
+  <div *ngIf="stop.skipData.length > 0" class="bounding-box">
     <h4 class="text-danger text-left">
       Stop skipped:
     </h4>
