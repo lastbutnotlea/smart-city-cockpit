@@ -1,5 +1,5 @@
 import { ServiceRequestTarget } from './service-request-target';
-import {SkipData} from "./SkipData";
+import {SkipData} from "./skip-data";
 
 export class StopData extends ServiceRequestTarget {
   commonName: string;

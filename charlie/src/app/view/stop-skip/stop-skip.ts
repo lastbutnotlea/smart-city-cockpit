@@ -4,7 +4,7 @@ import {HttpRoutingService} from '../../services/http-routing.service';
 import {now} from '../../shared/data/dates';
 import {DateParserService} from '../../services/date-parser.service';
 import {StopData} from '../../shared/data/stop-data';
-import {SkipData} from "../../shared/data/SkipData";
+import {SkipData} from "../../shared/data/skip-data";
 
 @Component({
   selector: 'app-service-request-edit',

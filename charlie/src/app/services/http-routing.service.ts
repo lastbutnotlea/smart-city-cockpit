@@ -12,8 +12,8 @@ import { LinePositionData } from '../shared/data/line-position-data';
 import {FeedbackData} from '../shared/data/feedback-data';
 import {TickerData} from '../shared/data/ticker-data';
 import {AnnouncementData} from '../shared/data/announcement-data';
-import {LineForStopData} from "../shared/data/LineForStopData";
-import {SkipData} from "../shared/data/SkipData";
+import {LineForStopData} from "../shared/data/line-for-stop-data";
+import {SkipData} from "../shared/data/skip-data";
 
 @Injectable()
 export class HttpRoutingService {

@@ -4,12 +4,12 @@ import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { HttpRoutingService } from '../../services/http-routing.service';
 import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
-import {LineForStopData} from "../../shared/data/LineForStopData";
+import {LineForStopData} from "../../shared/data/line-for-stop-data";
 import { FeedbackData } from '../../shared/data/feedback-data';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {SkipStopComponent} from "../stop-skip/stop-skip";
 import { AnnouncementData } from '../../shared/data/announcement-data';
-import {SkipData} from "../../shared/data/SkipData";
+import {SkipData} from "../../shared/data/skip-data";
 
 @Component({
   selector: 'app-stop-detail-view',
