@@ -2,8 +2,10 @@ import {Component, Input, OnInit, Output} from '@angular/core';
 import {NgbActiveModal, NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 import {EventData} from '../../shared/data/event-data';
 import {HttpRoutingService} from '../../services/http-routing.service';
-import {C4CNotes} from '../../shared/data/c4c-notes';
-import {DropdownValue, toDropdownItem, toDropdownItems} from '../../shared/components/dropdown/dropdown.component';
+import {
+  DropdownValue, toDropdownItem,
+  toDropdownItems
+} from '../../shared/components/dropdown/dropdown.component';
 import {now} from '../../shared/data/dates';
 import {DateParserService} from '../../services/date-parser.service';
 import {PartyData} from '../../shared/data/party-data';
@@ -24,9 +26,21 @@ export class EventEditComponent implements OnInit {
   availablePriorities: Array<DropdownValue> = [];
   priority: DropdownValue = new DropdownValue('FINE', 'fine');
 
-  fromTime: NgbTimeStruct = {hour: now.getHours(), minute: now.getMinutes(), second: now.getSeconds()};
-  fromDate: NgbDateStruct = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
-  toTime: NgbTimeStruct = {hour: now.getHours(), minute: now.getMinutes(), second: now.getSeconds()};
+  fromTime: NgbTimeStruct = {
+    hour: now.getHours(),
+    minute: now.getMinutes(),
+    second: now.getSeconds()
+  };
+  fromDate: NgbDateStruct = {
+    year: now.getFullYear(),
+    month: now.getMonth() + 1,
+    day: now.getDate()
+  };
+  toTime: NgbTimeStruct = {
+    hour: now.getHours(),
+    minute: now.getMinutes(),
+    second: now.getSeconds()
+  };
   toDate: NgbDateStruct = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
 
   availableParties: Array<DropdownValue> = [];
@@ -39,7 +53,8 @@ export class EventEditComponent implements OnInit {
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
-              public dateParser: DateParserService) { }
+              public dateParser: DateParserService) {
+  }
 
 
   initData(): void {
@@ -57,7 +72,7 @@ export class EventEditComponent implements OnInit {
       this.toTime = this.dateParser.convertDateToNgbTimeStruct(new Date(this.selected.endTime));
 
       this.selected.appointmentInvolvedParties = [];
-      for(const party of this.data.appointmentInvolvedParties) {
+      for (const party of this.data.appointmentInvolvedParties) {
         this.selected.appointmentInvolvedParties.push(party);
       }
       // this.selected.appointmentNotes = [];
@@ -69,7 +84,7 @@ export class EventEditComponent implements OnInit {
       // newC4CNote.id = '';
       // newC4CNote.text = allNotes;
       this.selected.appointmentNotes = [];
-      for(const note of this.data.appointmentNotes) {
+      for (const note of this.data.appointmentNotes) {
         this.selected.appointmentNotes.push(note);
       }
 
@@ -114,51 +129,15 @@ export class EventEditComponent implements OnInit {
     this.data.priority = this.priority.value;
     this.data.startTime = this.selected.startTime;
     this.data.endTime = this.selected.endTime;
-    this.data.appointmentInvolvedParties = new Array(this.party.value);
+    this.data.appointmentInvolvedParties = new Array(
+      new PartyData(this.data.appointmentInvolvedParties[0].id, this.party.value,
+        this.data.appointmentInvolvedParties[0].objectId));
     this.data.appointmentNotes = this.selected.appointmentNotes;
 
     this.activeModal.close('Close click');
     this.http.editEvent(this.data).subscribe(
       data => {
         console.log('Received for Edit: ' + data)
-      //   // get event details to refresh event detail data in event detail view
-      //   this.http.getEventDetails(this.data.id).subscribe(
-      //     event => {
-      //
-      //       //waruuum muss ich das machen? vgl. trip-edit
-      //       //stehen in data nicht automatisch die richtigen daten drin???
-      //
-      //       this.selected.subject = event.subject;
-      //       this.selected.priority = event.priority;
-      //       this.selected.startTime = this.data.startTime;
-      //       this.selected.endTime = this.data.endTime;
-      //       this.selected.appointmentInvolvedParties = [];
-      //       for(const party of this.data.appointmentInvolvedParties) {
-      //         this.selected.appointmentInvolvedParties.push(party);
-      //       }
-      //       this.selected.appointmentNotes = [];
-      //       let allNotes = '';
-      //       for(const note of this.data.appointmentNotes) {
-      //         allNotes += note.text;
-      //       }
-      //       let newC4CNote = new C4CNotes();
-      //       newC4CNote.id = '';
-      //       newC4CNote.text = allNotes;
-      //       this.selected.appointmentNotes.push(newC4CNote);
-      //
-      //
-      //
-      //       // copy new data into data object
-      //       this.data.line = Object.assign(new LineData(), trip.line);
-      //       this.data.vehicle = Object.assign(new VehicleData, trip.vehicle);
-      //       this.data.stops = [];
-      //       for(const stop of trip.stops) {
-      //         this.data.stops.push(stop);
-      //       }
-      //       this.data.stops = this.stopSortService.sortStops(this.data.stops);
-      //     },
-      //     err => console.log('Could not fetch event data!')
-      //   );
       },
       err => console.log('Could not edit event.')
     );
