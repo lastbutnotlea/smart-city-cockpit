@@ -64,6 +64,7 @@ public class VehicleController extends BaseController<Vehicle> {
     input.setId();
     input.setLoad(0);
     input.setTemperature(TEMPERATURE_INITIAL);
+    input.setIsShutDown(false);
     return makeIdToJSON(addObject(input));
   }
 
@@ -83,11 +84,12 @@ public class VehicleController extends BaseController<Vehicle> {
     logger.info("Got Request to delete the vehicle with id " + id);
     //delete trips for this vehicle
     List<Trip> trips = tripData.getAllTripsOfVehicle(id);
-    for (Trip trip:trips) {
+    for (Trip trip: trips) {
       tripData.deleteObject(trip.getId());
     }
-    getObjectForId(id).setIsShutDown(true);
-    return makeIdToJSON(id);
+    Vehicle v = getObjectForId(id);
+    v.setIsShutDown(true);
+    return makeIdToJSON(editObject(v));
   }
 
   @PutMapping
