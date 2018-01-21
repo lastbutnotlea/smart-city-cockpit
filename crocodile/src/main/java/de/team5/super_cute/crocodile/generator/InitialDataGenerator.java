@@ -17,7 +17,6 @@ import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Vehicle;
 import de.team5.super_cute.crocodile.util.NetworkDataBuilder;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -133,9 +132,9 @@ public class InitialDataGenerator {
       } catch (RestClientException e) {
         LoggerFactory.getLogger(getClass())
             .error("Error while accessing Transport-API while creating trips: " + e.getMessage());
-      } catch (NullPointerException e) {
-        LoggerFactory.getLogger(getClass())
-            .error("Error while accessing JsonNode while creating trips: " + e.getMessage());
+//      } catch (NullPointerException e) {
+//        LoggerFactory.getLogger(getClass())
+//            .error("Error while accessing JsonNode while creating trips: " + e.getMessage());
       }
     }
   }

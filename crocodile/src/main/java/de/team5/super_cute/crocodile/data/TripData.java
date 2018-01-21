@@ -75,6 +75,7 @@ public class TripData extends BaseData<Trip> {
   }
 
   public void setFreeFrom(Vehicle vehicle) {
+
     Optional<LocalDateTime> lastStopTime = getLastStopTimeOfVehicle(vehicle);
     if (lastStopTime.isPresent()) {
       vehicle.setFreeFrom(lastStopTime.get());

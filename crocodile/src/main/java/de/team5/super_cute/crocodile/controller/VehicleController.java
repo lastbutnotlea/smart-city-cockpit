@@ -42,8 +42,8 @@ public class VehicleController extends BaseController<Vehicle> {
   public List<Vehicle> getAllVehicles() {
     logger.info("Got Request to return all vehicles");
     return data.getData().stream()
-        .peek(this::setCurrentLine)
-        .peek(tripData::setFreeFrom)
+        .filter(v -> !v.getIsShutDown())
+        .peek(this::setCurrentTrip)
         .sorted((v1, v2) -> v1.getId().compareTo(v2.getId()))
         .collect(Collectors.toList());
   }
@@ -52,8 +52,7 @@ public class VehicleController extends BaseController<Vehicle> {
   public Vehicle getVehicle(@PathVariable String id) {
     logger.info("Got Request to return the vehicle with id " + id);
     Vehicle v = getObjectForId(id);
-    tripData.setFreeFrom(v);
-    setCurrentLine(v);
+    setCurrentTrip(v);
     return v;
   }
 
@@ -85,7 +84,8 @@ public class VehicleController extends BaseController<Vehicle> {
     for (Trip trip:trips) {
       tripData.deleteObject(trip.getId());
     }
-    return makeIdToJSON(deleteObject(id));
+    getObjectForId(id).setIsShutDown(true);
+    return makeIdToJSON(id);
   }
 
   @PutMapping
@@ -99,12 +99,9 @@ public class VehicleController extends BaseController<Vehicle> {
     return StateCalculator.getState((int) data.getData().stream().mapToInt(Vehicle::getSeverity).average().getAsDouble());
   }
 
-  private void setCurrentLine(Vehicle vehicle) {
-    Trip currentTrip = tripData.getCurrentTripOfVehicle(vehicle, LocalDateTime.now());
-    if (currentTrip != null) {
-      vehicle.setCurrentLine(currentTrip.getLine());
-    } else {
-      vehicle.setCurrentLine(null);
+  private void setCurrentTrip(Vehicle vehicle) {
+    if (vehicle.getOutdateCurrentTrip().isBefore(LocalDateTime.now())) {
+      vehicle.setCurrentTrip(tripData.getCurrentTripOfVehicle(vehicle, LocalDateTime.now()));
     }
   }
 }

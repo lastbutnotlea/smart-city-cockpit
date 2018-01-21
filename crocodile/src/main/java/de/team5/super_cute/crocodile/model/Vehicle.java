@@ -64,9 +64,20 @@ public class Vehicle extends IdentifiableObject implements Serializable, Stateab
   @Column
   private EVehicleType type;
 
+  @Column
+  private boolean isShutDown;
+
+  @Column
+  @JsonIgnore
+  private Trip currentTrip;
+
+  @Column
+  private LocalDateTime outdateCurrentTrip = LocalDateTime.MIN;
+
   private Line currentLine;
 
-  private LocalDateTime freeFrom;
+  @Column
+  private LocalDateTime freeFrom = LocalDateTime.MIN;
 
   public Vehicle() {
     super();
@@ -173,11 +184,14 @@ public class Vehicle extends IdentifiableObject implements Serializable, Stateab
   }
 
   public Line getCurrentLine() {
-    return currentLine;
+    if (currentTrip == null) {
+      return null;
+    }
+    return currentTrip.getLine();
   }
 
-  public void setCurrentLine(Line currentLine) {
-    this.currentLine = currentLine;
+  public void setCurrentLine() {
+    // do nothing, fool the json mapper!
   }
 
   public LocalDateTime getFreeFrom() {
@@ -186,6 +200,35 @@ public class Vehicle extends IdentifiableObject implements Serializable, Stateab
 
   public void setFreeFrom(LocalDateTime freeFrom) {
     this.freeFrom = freeFrom;
+  }
+
+  public boolean getIsShutDown() {
+    return isShutDown;
+  }
+
+  public void setIsShutDown(boolean shutDown) {
+    isShutDown = shutDown;
+  }
+
+  public Trip getCurrentTrip() {
+    return currentTrip;
+  }
+
+  public void setCurrentTrip(Trip currentTrip) {
+    if (currentTrip == null) {
+      outdateCurrentTrip = LocalDateTime.MIN;
+    } else {
+      outdateCurrentTrip = currentTrip.getLastStopTime();
+    }
+    this.currentTrip = currentTrip;
+  }
+
+  public LocalDateTime getOutdateCurrentTrip() {
+    return outdateCurrentTrip;
+  }
+
+  public void setOutdateCurrentTrip(LocalDateTime outdateCurrentTrip) {
+    this.outdateCurrentTrip = outdateCurrentTrip;
   }
 
   @JsonIgnore
