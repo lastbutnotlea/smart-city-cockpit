@@ -26,7 +26,7 @@ export class DatetimePickerComponent {
 
   @Input() isValid: (Date) => boolean = d => true;
 
-  _model: Date;
+  _model: Date = new Date();
 
   @Output()
   modelChanged: EventEmitter<Date> = new EventEmitter();

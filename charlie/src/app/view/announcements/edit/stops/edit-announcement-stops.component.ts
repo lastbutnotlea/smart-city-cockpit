@@ -18,7 +18,7 @@ export class EditAnnouncementStopsComponent {
   availableLines: DropdownValue[];
   selectedLine: DropdownValue = new DropdownValue(null, 'Select a line');
 
-  selectedStopSet: Set<StopData> = new Set();
+  selectedStopMap: Map<string, StopData> = new Map();
 
   toStopId: (StopData) => string = (s: StopData) => s.commonName + ' (' + s.id + ')';
 
@@ -33,13 +33,28 @@ export class EditAnnouncementStopsComponent {
   }
 
   @Output()
-  selectedStops: EventEmitter<Set<StopData>> = new EventEmitter<Set<StopData>>();
+  selectedStopsChanged: EventEmitter<StopData[]> = new EventEmitter<StopData[]>();
+
+  @Input()
+  set selectedStops(selectedStops: StopData[]) {
+    this.selectedStopMap.clear();
+    selectedStops.forEach(s => this.addStop(s));
+    this.selectedStopsChanged.emit(selectedStops);
+  }
 
   constructor() {
   }
 
+  removeStop(stop: StopData): void {
+    this.selectedStopMap.delete(stop.id);
+    this.emitChanged();
+  }
+
   addSelectedStop(): void {
-    if (this.selectedStop.value != null) this.selectedStopSet.add(this.selectedStop.value);
+    if (this.selectedStop.value != null) {
+      this.addStop(this.selectedStop.value);
+      this.emitChanged();
+    }
   }
 
   addSelecedLine(): void {
@@ -56,9 +71,22 @@ export class EditAnnouncementStopsComponent {
 
   private addFromSelectedLine(getStops: (LineData) => StopData[]): void {
     if (this.selectedLine.value != null) {
-      getStops(<LineData> this.selectedLine.value).forEach(stop => this.selectedStopSet.add(stop));
-      this.selectedStops.emit(this.selectedStopSet);
+      getStops(<LineData> this.selectedLine.value).forEach(stop => this.addStop(stop));
+      this.emitChanged();
     }
+  }
+
+  private addStop(stop: StopData): void {
+    if (stop == null) return;
+    this.selectedStopMap.set(stop.id, stop);
+  }
+
+  private emitChanged(): void {
+    this.selectedStopsChanged.emit(Array.from(this.selectedStopMap.values()));
+  }
+
+  getSelectedStops(): StopData[] {
+    return Array.from(this.selectedStopMap.values());
   }
 
 }

@@ -31,7 +31,8 @@ export class AnnouncementAddComponent implements OnInit {
 
   private data: AnnouncementData = new AnnouncementData();
 
-  private callback: (param: AnnouncementData) => void;
+  private callback: (param: AnnouncementData) => void = () => {
+  };
 
   constructor(public activeModal: NgbActiveModal, public http: HttpRoutingService) {
   }
@@ -39,13 +40,17 @@ export class AnnouncementAddComponent implements OnInit {
   public setModel(data: AnnouncementData): void {
     this.data = data;
     this.text = data.text;
-    this.validFrom = data.validFrom;
-    this.validTo = data.validTo;
+    this.validFrom = new Date(data.validFrom);
+    this.validTo = new Date(data.validTo);
     this.selectedStops = data.stops;
   }
 
   public onAdd(callback: (param: AnnouncementData) => void) {
     this.callback = callback;
+  }
+
+  setStops(stops: StopData[]): void {
+    this.selectedStops = stops;
   }
 
   ngOnInit() {

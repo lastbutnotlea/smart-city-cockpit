@@ -180,7 +180,7 @@ export class HttpRoutingService {
   }
 
   public editAnnouncement(data: AnnouncementData): Observable<any> {
-    return this.http.put(this.urlBuilder.getAnnouncement(data), data);
+    return this.http.put(this.urlBuilder.getAnnouncements(), data);
   }
 
   public getVehiclesState(): Observable<string> {
