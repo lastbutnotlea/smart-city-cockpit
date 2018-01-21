@@ -1,5 +1,5 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import { HttpRoutingService } from '../../services/http-routing.service';
+import {Component, OnInit} from '@angular/core';
+import {HttpRoutingService} from '../../services/http-routing.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {EventData} from '../../shared/data/event-data';
 import {EventAddComponent} from '../event-add/event-add.component';
@@ -36,6 +36,7 @@ export class EventsComponent implements OnInit {
 
   addEvent(): void {
     const modal = this.modalService.open(EventAddComponent);
+    modal.componentInstance.data = this.events;
   }
 
   // update trips

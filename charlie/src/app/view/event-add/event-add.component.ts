@@ -1,9 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output} from '@angular/core';
 import {NgbActiveModal, NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
-import {dummyDate, now} from '../../shared/data/dates';
+import {now} from '../../shared/data/dates';
 import {DateParserService} from '../../services/date-parser.service';
 import {HttpRoutingService} from '../../services/http-routing.service';
-import {DropdownValue, toDropdownItem, toDropdownItems} from '../../shared/components/dropdown/dropdown.component';
+import {
+  DropdownValue, toDropdownItem,
+  toDropdownItems
+} from '../../shared/components/dropdown/dropdown.component';
 import {EventData} from '../../shared/data/event-data';
 import {PartyData} from '../../shared/data/party-data';
 import {C4CNotes} from '../../shared/data/c4c-notes';
@@ -14,6 +17,8 @@ import {C4CNotes} from '../../shared/data/c4c-notes';
   styleUrls: ['./event-add.component.css']
 })
 export class EventAddComponent implements OnInit {
+  data: EventData[];
+
   subject: string = "";
 
   availablePriorities: Array<DropdownValue> = [];
@@ -22,9 +27,21 @@ export class EventAddComponent implements OnInit {
   from: string = now.toISOString();
   to: string = now.toISOString();
 
-  fromTime: NgbTimeStruct = {hour: now.getHours(), minute: now.getMinutes(), second: now.getSeconds()};
-  fromDate: NgbDateStruct = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
-  toTime: NgbTimeStruct = {hour: now.getHours(), minute: now.getMinutes(), second: now.getSeconds()};
+  fromTime: NgbTimeStruct = {
+    hour: now.getHours(),
+    minute: now.getMinutes(),
+    second: now.getSeconds()
+  };
+  fromDate: NgbDateStruct = {
+    year: now.getFullYear(),
+    month: now.getMonth() + 1,
+    day: now.getDate()
+  };
+  toTime: NgbTimeStruct = {
+    hour: now.getHours(),
+    minute: now.getMinutes(),
+    second: now.getSeconds()
+  };
   toDate: NgbDateStruct = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
 
   availableParties: Array<DropdownValue> = [];
@@ -83,14 +100,18 @@ export class EventAddComponent implements OnInit {
     event.priority = this.priority.value;
     event.startTime = this.from;
     event.endTime = this.to;
-    event.appointmentInvolvedParties = new Array(new PartyData('', this.party.value));
+    event.appointmentInvolvedParties = new Array(new PartyData('', this.party.value, ''));
     let notesC4C: C4CNotes = new C4CNotes;
     notesC4C.id = '';
     notesC4C.text = this.notes;
     event.appointmentNotes = new Array(notesC4C);
     console.log(event);
     this.http.addEvent(event).subscribe(
-      data => this.activeModal.close('Close click'),
+      data => {
+        console.log('Added event.')
+        this.data.push(data);
+        this.activeModal.close('Close click');
+      },
       err => alert('Could not add event.' + err)
     );
   }

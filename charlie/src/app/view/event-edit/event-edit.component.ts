@@ -16,7 +16,8 @@ import {PartyData} from '../../shared/data/party-data';
 })
 
 export class EventEditComponent implements OnInit {
-  @Input() @Output() data: EventData;
+  @Input() @Output()
+  data: EventData;
 
   selected: EventData;
 
@@ -46,21 +47,31 @@ export class EventEditComponent implements OnInit {
       this.selected = new EventData();
       this.selected.subject = this.data.subject;
       this.selected.priority = this.data.priority;
+
       this.selected.startTime = this.data.startTime;
+      this.fromDate = this.dateParser.convertDateToNgbDateStruct(new Date(this.selected.startTime));
+      this.fromTime = this.dateParser.convertDateToNgbTimeStruct(new Date(this.selected.startTime));
+
       this.selected.endTime = this.data.endTime;
+      this.toDate = this.dateParser.convertDateToNgbDateStruct(new Date(this.selected.endTime));
+      this.toTime = this.dateParser.convertDateToNgbTimeStruct(new Date(this.selected.endTime));
+
       this.selected.appointmentInvolvedParties = [];
       for(const party of this.data.appointmentInvolvedParties) {
         this.selected.appointmentInvolvedParties.push(party);
       }
+      // this.selected.appointmentNotes = [];
+      // let allNotes = '';
+      // for(const note of this.data.appointmentNotes) {
+      //   allNotes += note.text;
+      // }
+      // let newC4CNote = new C4CNotes();
+      // newC4CNote.id = '';
+      // newC4CNote.text = allNotes;
       this.selected.appointmentNotes = [];
-      let allNotes = '';
       for(const note of this.data.appointmentNotes) {
-        allNotes += note.text;
+        this.selected.appointmentNotes.push(note);
       }
-      let newC4CNote = new C4CNotes();
-      newC4CNote.id = '';
-      newC4CNote.text = allNotes;
-      this.selected.appointmentNotes.push(newC4CNote);
 
       this.party = toDropdownItem(this.selected.appointmentInvolvedParties[0], party => party.partyName);
       this.priority = toDropdownItem(this.selected.priority, item => item.toLowerCase());
@@ -69,11 +80,8 @@ export class EventEditComponent implements OnInit {
 
   ngOnInit() {
     this.http.getInvolvedParties().subscribe(data => {
-      this.availableParties = toDropdownItems(data, party => party)
-    }, err => alert(err));
-
-    this.http.getInvolvedParties().subscribe(data => {
       console.log(data);
+      this.availableParties = toDropdownItems(data, party => party)
     }, err => alert(err));
 
 

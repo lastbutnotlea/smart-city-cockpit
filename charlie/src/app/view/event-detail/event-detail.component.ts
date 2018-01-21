@@ -1,4 +1,3 @@
-
 import {Component, OnInit} from '@angular/core';
 import {EventData} from '../../shared/data/event-data';
 import {HttpRoutingService} from '../../services/http-routing.service';
@@ -54,12 +53,15 @@ export class EventDetailComponent implements OnInit {
     const modal = this.modalService.open(ConfirmDeletionComponent);
     modal.componentInstance.objectToDelete = 'event ' + this.event.id;
     modal.componentInstance.deletionEvent.subscribe(($event) => {
-      this.deleteEvent($event);});
+      this.deleteEvent($event);
+    });
   }
 
-  deleteEvent(event) : void {
+  deleteEvent(event): void {
     this.http.deleteEvent(this.event.id).subscribe(
-      data => this.location.back(),
+      data => {
+        this.location.back();
+      },
       err => {
         console.log('Could not delete event!');
       }

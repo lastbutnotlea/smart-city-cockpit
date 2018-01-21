@@ -10,6 +10,7 @@ import de.team5.super_cute.crocodile.util.Helpers;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import org.apache.olingo.odata2.api.batch.BatchException;
 import org.apache.olingo.odata2.api.edm.EdmException;
 import org.apache.olingo.odata2.api.ep.EntityProviderException;
@@ -42,37 +43,51 @@ public class EventController {
   public List<Event> getAllEvents()
       throws IOException, EdmException, EntityProviderException {
     logger.info("Got Request for all Events");
-    return connector.getEvents();
+
+    return connector.getEvents().stream()
+        .peek(this::prepareEventForFrontend)
+        .collect(Collectors.toList());
   }
 
   @GetMapping("/{id}")
   public Event getEvent(@PathVariable String id)
       throws IOException, EdmException, EntityProviderException {
     logger.info("Got Request for Event with id " + id);
-    return (Event) connector.getC4CEntityById(new Event(), id);
+
+    Event event = (Event) connector.getC4CEntityById(new Event(), id);
+    prepareEventForFrontend(event);
+    return event;
   }
 
   @PostMapping
-  public String addEvent(@RequestBody Event eventInput)
-      throws IOException, BatchException {
+  public Event addEvent(@RequestBody Event eventInput)
+      throws IOException, BatchException, EdmException, EntityProviderException {
     logger.info("Got Request to add Event: " + eventInput);
+
     handleEventFromFrontend(eventInput);
     String objectId = connector.putC4CEntity(eventInput);
-    return Helpers.makeIdToJSON(eventInput.getId());
+    Event eventWithObjectId = (Event) connector.getC4CEntityByObjectId(new Event(), objectId);
+    prepareEventForFrontend(eventWithObjectId);
+    return eventWithObjectId;
   }
 
   @DeleteMapping("/{id}")
   public String deleteEvent(@PathVariable String id)
       throws IOException, EdmException, EntityProviderException {
     logger.info("Got Request to delete Event with id " + id);
-   return Helpers.makeIdToJSON(connector.deleteC4CEntity(connector.getC4CEntityById(new Event(), id)));
+
+    return Helpers.makeIdToJSON(
+        connector.deleteC4CEntity(connector.getC4CEntityById(new Event(), id)));
   }
 
   @PutMapping
   public Event editEvent(@RequestBody Event eventInput)
       throws IOException, BatchException, EdmException, EntityProviderException {
     logger.info("Got Request to edit Event: " + eventInput);
+
+    handleEventFromFrontend(eventInput);
     connector.patchC4CEntity(eventInput);
+    prepareEventForFrontend(eventInput);
     return eventInput;
   }
 
@@ -82,6 +97,14 @@ public class EventController {
   }
 
   private void handleEventFromFrontend(Event e) {
-    e.getAppointmentNotes().forEach(note -> note.setTypeCode(EC4CNotesTypeCode.APPOINTMENT_NOTES.toString()));
+    e.getAppointmentNotes()
+        .forEach(note -> note.setTypeCode(EC4CNotesTypeCode.APPOINTMENT_NOTES.toString()));
+  }
+
+  private void prepareEventForFrontend(Event e) {
+    e.setAppointmentInvolvedParties(e.getAppointmentInvolvedParties().stream()
+        // only keep the parties important to us
+        .filter(aip -> C4CConfig.PARTY_NAME_TO_ID.keySet().contains(aip.getPartyName()))
+        .collect(Collectors.toList()));
   }
 }
