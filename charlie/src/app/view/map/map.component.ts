@@ -1,6 +1,7 @@
 import {Component, Injectable} from '@angular/core';
 
 import * as d3 from 'd3-selection';
+import * as d3zoom from 'd3-zoom';
 import * as d3Tube from 'd3-tube-map';
 import { MapCreatorService } from '../../services/map-creator.service';
 import { Router } from '@angular/router';
@@ -12,6 +13,8 @@ import { Router } from '@angular/router';
 })
 @Injectable()
 export class MapComponent {
+
+  map: any;
 
   constructor(private router: Router,
               private mapCreator: MapCreatorService) { }
@@ -40,7 +43,7 @@ export class MapComponent {
       .style('height', height + 'px');
 
     // create new tube map
-    const map = d3Tube.tubeMap()
+    this.map = d3Tube.tubeMap()
       .width(width)
       .height(height)
       .margin({
@@ -50,7 +53,7 @@ export class MapComponent {
         left: 50,
       });
     // draw objects according to jsonData into map
-    canvas.datum(jsonData).call(map);
+    canvas.datum(jsonData).call(this.map);
   }
 
   private addLineEvents(): void {
@@ -70,5 +73,31 @@ export class MapComponent {
       const lineSvg =  d3.select('path#' + line.name);
       lineSvg.attr('stroke-width', lineSvg.attr('stroke-width') / 1.6);
     });
+
+    debugger;
+    const el = document.getElementById('tube-map');
+    const test1 = d3.select(el).select('svg');
+    const test2 = d3.select('rect');
+    const test3 = this.map.width;
+    const test4 = this.map.width('100%');
+
+    var svg = d3.select('#tube-map').select('svg');
+
+    var zoom = d3zoom
+      .zoom()
+      .scaleExtent([0.5, 6])
+      .on('zoom', zoomed);
+
+    var zoomContainer = svg.call(zoom);
+    var initialScale = 2.5;
+    var initialTranslate = [100, 200];
+
+    zoom.scaleTo(zoomContainer, initialScale);
+    zoom.translateTo(zoomContainer, initialTranslate[0], initialTranslate[1]);
+
+    function zoomed() {
+      svg.select('g').attr('transform', d3.event.transform.toString());
+    }
+    debugger;
   }
 }
