@@ -176,7 +176,7 @@ export class HttpRoutingService {
   }
 
   public deleteAnnouncement(data: AnnouncementData): Observable<any> {
-    return this.http.delete(this.urlBuilder.getAnnouncementUrl(data));
+    return this.http.delete(this.urlBuilder.getAnnouncementItemUrl(data));
   }
 
   public editAnnouncement(data: AnnouncementData): Observable<any> {

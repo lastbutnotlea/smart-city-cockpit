@@ -104,7 +104,7 @@ export class UrlBuilderService {
     return this.tickerBaseUrl + '/' + item.id;
   }
 
-  public getAnnouncementUrl(item: AnnouncementData): string {
+  public getAnnouncementItemUrl(item: AnnouncementData): string {
     return this.announcementBaseUrl + '/' + item.id;
   }
 

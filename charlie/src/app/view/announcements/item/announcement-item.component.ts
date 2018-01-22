@@ -27,10 +27,12 @@ export class AnnouncementItemComponent implements OnInit {
   }
 
   deleteItem(): void {
-    console.log("test");
     this.http.deleteAnnouncement(this.data).subscribe(
       data => this.deleted = true,
-      err => alert(JSON.stringify(err))
+      err => {
+        alert("An Error occurred.");
+        console.log(JSON.stringify(err));
+      }
     );
   }
 
