@@ -154,8 +154,8 @@ public class Stop extends IdentifiableObject implements Serializable, Stateable,
 
   @Override
   public String getItemDescription() {
-    String description = "Stop " + this.getId() + ":\n"
-        + "people waiting: " + this.getPeopleWaiting() + "\n"
+    String description = "Stop " + this.getId() + ":<br />"
+        + "people waiting: " + this.getPeopleWaiting() + "<br />"
         + "defects: ";
     Iterator<String> defects = this.getDefects().iterator();
     for (int i = 0; i < this.getDefects().size(); i++) {
