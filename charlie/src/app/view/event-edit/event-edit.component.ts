@@ -130,7 +130,7 @@ export class EventEditComponent implements OnInit {
     this.data.startTime = this.selected.startTime;
     this.data.endTime = this.selected.endTime;
     this.data.appointmentInvolvedParties = new Array(
-      new PartyData(this.data.appointmentInvolvedParties[0].id, this.party.value,
+      new PartyData(this.data.appointmentInvolvedParties[0].id, this.party.value.partyName,
         this.data.appointmentInvolvedParties[0].objectId));
     this.data.appointmentNotes = this.selected.appointmentNotes;
 
@@ -141,13 +141,5 @@ export class EventEditComponent implements OnInit {
       },
       err => console.log('Could not edit event.')
     );
-  }
-
-  subjectChange($event: Event) {
-    this.selected.subject = (<HTMLTextAreaElement> $event.target).value;
-  }
-
-  notesChange($event: Event) {
-    this.selected.appointmentNotes[0].text = (<HTMLTextAreaElement> $event.target).value;
   }
 }

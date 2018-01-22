@@ -115,12 +115,4 @@ export class EventAddComponent implements OnInit {
       err => alert('Could not add event.' + err)
     );
   }
-
-  subjectChange($event: Event) {
-    this.subject = (<HTMLTextAreaElement> $event.target).value;
-  }
-
-  notesChange($event: Event) {
-    this.notes = (<HTMLTextAreaElement> $event.target).value;
-  }
 }

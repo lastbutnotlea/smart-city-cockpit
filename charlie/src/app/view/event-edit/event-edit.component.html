@@ -10,7 +10,7 @@
   <div class="modal-body container d-flex flex-column">
     <div class="form-group m-2">
       <label for="subject">Subject:</label>
-      <textarea class="form-control" rows="5" id="subject" (change)="subjectChange($event)">
+      <textarea class="form-control" rows="5" id="subject" [(ngModel)]="this.selected.subject">
         {{selected.subject}}
       </textarea>
     </div>
@@ -41,7 +41,7 @@
 
     <div class="form-group m-2">
       <label for="notes">Notes:</label>
-      <textarea class="form-control" rows="5" id="notes" (change)="notesChange($event)">
+      <textarea class="form-control" rows="5" id="notes" [(ngModel)]="this.selected.appointmentNotes[0].text">
         {{selected.appointmentNotes[0].text}}
       </textarea>
     </div>

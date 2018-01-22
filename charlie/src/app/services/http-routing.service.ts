@@ -198,7 +198,7 @@ export class HttpRoutingService {
   }
 
   public getInvolvedParties(): Observable<PartyData[]> {
-    return this.http.get<PartyData[]>(this.urlBuilder.getInvolvedParteisUrl());
+    return this.http.get<PartyData[]>(this.urlBuilder.getInvolvedPartiesUrl());
   }
 
   public getVehiclesState(): Observable<string> {

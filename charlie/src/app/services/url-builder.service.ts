@@ -104,7 +104,7 @@ export class UrlBuilderService {
     return this.eventsBaseUrl + '/' + eventId;
   }
 
-  public getInvolvedParteisUrl(): string {
+  public getInvolvedPartiesUrl(): string {
     return this.eventsBaseUrl + '/people';
   }
 
