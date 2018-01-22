@@ -309,7 +309,7 @@ public class ServiceRequest extends C4CEntity {
         .append("target", target)
         .append("referencedFeedback", referencedFeedback)
         .append("feedbacks", feedbacks)
-        .append("objectId", objectId)
+        .append("objectId", getObjectId())
         .toString();
   }
 }
