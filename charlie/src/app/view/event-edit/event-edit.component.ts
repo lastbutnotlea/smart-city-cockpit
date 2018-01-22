@@ -75,14 +75,7 @@ export class EventEditComponent implements OnInit {
       for (const party of this.data.appointmentInvolvedParties) {
         this.selected.appointmentInvolvedParties.push(party);
       }
-      // this.selected.appointmentNotes = [];
-      // let allNotes = '';
-      // for(const note of this.data.appointmentNotes) {
-      //   allNotes += note.text;
-      // }
-      // let newC4CNote = new C4CNotes();
-      // newC4CNote.id = '';
-      // newC4CNote.text = allNotes;
+
       this.selected.appointmentNotes = [];
       for (const note of this.data.appointmentNotes) {
         this.selected.appointmentNotes.push(note);

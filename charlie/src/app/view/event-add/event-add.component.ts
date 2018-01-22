@@ -60,11 +60,6 @@ export class EventAddComponent implements OnInit {
       this.availableParties = toDropdownItems(data, party => party)
     }, err => alert(err));
 
-    this.http.getInvolvedParties().subscribe(data => {
-      console.log(data);
-    }, err => alert(err));
-
-
     this.availablePriorities = toDropdownItems(
       ['FINE', 'PROBLEMATIC', 'CRITICAL'],
       item => item.toLowerCase());
@@ -73,8 +68,6 @@ export class EventAddComponent implements OnInit {
     this.updateFromTime();
     this.updateToDate();
     this.updateToTime();
-    console.log(this.fromTime);
-    console.log(this.toTime);
   }
 
   updateFromTime(): void {

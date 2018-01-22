@@ -38,16 +38,4 @@ export class EventsComponent implements OnInit {
     const modal = this.modalService.open(EventAddComponent);
     modal.componentInstance.data = this.events;
   }
-
-  // update trips
-  // refreshData(): void {
-  //   this.setDataSubscription(
-  //     this.http.getTrips().subscribe( data => {
-  //         this.trips = data;
-  //         this.subscribeToData();
-  //       },
-  //       err =>
-  //         console.log('Could not fetch new line-data.')
-  //     ));
-  // }
 }
