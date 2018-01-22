@@ -25,6 +25,7 @@ export class MapComponent {
     console.log(connectionMapData);
     this.drawTubeMap(this.mapCreator.createMap(stationMapData, lineMapData, connectionMapData));
     this.addLineEvents();
+    this.setZoom();
   }
 
   private drawTubeMap(jsonData: any) {
@@ -73,15 +74,14 @@ export class MapComponent {
       const lineSvg =  d3.select('path#' + line.name);
       lineSvg.attr('stroke-width', lineSvg.attr('stroke-width') / 1.6);
     });
+  }
 
-    debugger;
-    const el = document.getElementById('tube-map');
-    const test1 = d3.select(el).select('svg');
-    const test2 = d3.select('rect');
-    const test3 = this.map.width;
-    const test4 = this.map.width('100%');
-
+  setZoom() {
     var svg = d3.select('#tube-map').select('svg');
+    var w = window;
+    svg.select('g').attr('transform', "translate(" + w.innerWidth/8 + "," + 0 + ")");
+    svg.style("height", w.innerHeight * 3/5);
+    svg.style("width", w.innerWidth/2);
 
     var zoom = d3zoom
       .zoom()
@@ -90,7 +90,7 @@ export class MapComponent {
 
     var zoomContainer = svg.call(zoom);
     var initialScale = 2.5;
-    var initialTranslate = [100, 200];
+    var initialTranslate = [0, w.innerHeight/7];
 
     zoom.scaleTo(zoomContainer, initialScale);
     zoom.translateTo(zoomContainer, initialTranslate[0], initialTranslate[1]);
@@ -98,6 +98,5 @@ export class MapComponent {
     function zoomed() {
       svg.select('g').attr('transform', d3.event.transform.toString());
     }
-    debugger;
   }
 }
