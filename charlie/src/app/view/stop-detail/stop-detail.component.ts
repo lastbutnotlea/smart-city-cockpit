@@ -7,6 +7,7 @@ import { LiveDataComponent } from '../../shared/components/live-data/live-data.c
 import {LineForStopData} from "../../shared/data/LineForStopData";
 import { FeedbackData } from '../../shared/data/feedback-data';
 import { AnnouncementData } from '../../shared/data/announcement-data';
+import {TripData} from '../../shared/data/trip-data';
 
 @Component({
   selector: 'app-stop-detail-view',
@@ -16,6 +17,7 @@ import { AnnouncementData } from '../../shared/data/announcement-data';
 
 export class StopDetailComponent extends LiveDataComponent implements OnInit {
   stop: StopData;
+  trips: TripData[] = [];
   title: string = "Details";
   lineForStopDataInbound: LineForStopData [];
   lineForStopDataOutbound: LineForStopData [];
@@ -30,11 +32,12 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getStop();
+    const stopId = this.route.snapshot.paramMap.get('stopId');
+    this.getStop(stopId);
+    this.getTripsForStop(stopId);
   }
 
-  getStop(): void {
-    const stopId = this.route.snapshot.paramMap.get('stopId');
+  getStop(stopId: string): void {
     // TODO: add live data once live data generator from backend works
     this.http.getStopDetails(stopId).subscribe(
       stop => {
@@ -45,6 +48,15 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
         super.ngOnInit();
       },
       err => console.log('Could not fetch stop data!')
+    );
+  }
+
+  getTripsForStop(stopId: string): void {
+    this.http.getTripsForStop(stopId).subscribe(
+      trips => {
+        this.trips = trips;
+      },
+      err => console.log('Could not fetch trip data, sorry!')
     );
   }
 

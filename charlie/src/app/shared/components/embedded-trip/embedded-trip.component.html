@@ -4,25 +4,25 @@
 </h4>
 
 <div *ngFor="let trip of trips">
-  <p class="text-primary"> {{trip.id}}</p>
-
-  <div *ngIf="areTripsForVehicle">
-    from {{trip.stops[0]}}
-    <label class="text-secondary">(departure: {{trip.stops[0].departureTime | date:'MM/dd/yyyyHH:mm'}})</label>
-    to {{trip.stops[trip.stops.length - 1]}}
-    <label class="text-secondary">(arrivel: {{trip.stops[trip.stops.length - 1] | date:'MM/dd/yyyy HH:mm'}})</label>
-  </div>
-
-  <div *ngIf="!areTripsForVehicle">
-    on line <a routerLink="line/{{trip.line.id}}"> {{trip.line.name}} </a>
-    departs at <label class="text-secondary">{{trip.stops[trip.stops.length - 1] | date:'MM/dd/yyyy HH:mm'}}</label>
-  </div>
-
   <div [ngClass]="{'color-fine': trip.vehicle.state === 'FINE',
      'color-problematic': trip.vehicle.state === 'PROBLEMATIC',
      'color-critical': trip.vehicle.state === 'CRITICAL' }">
     <i class="fa fa-lightbulb-o fa-2x float-right small-padding-right" aria-hidden="true"></i>
   </div>
+
+  <p *ngIf="areTripsForVehicle">
+      <label class="text-primary">{{trip.id}} </label>
+      from {{trip.stops[0]}}
+      <label class="text-secondary">(departure: {{trip.stops[0].departureTime | date:'MM/dd/yyyyHH:mm'}})</label>
+      to {{trip.stops[trip.stops.length - 1]}}
+      <label class="text-secondary">(arrivel: {{trip.stops[trip.stops.length - 1].departureTime | date:'MM/dd/yyyy HH:mm'}})</label>
+  </p>
+
+  <p *ngIf="!areTripsForVehicle">
+      <label class="text-primary">{{trip.id}} </label>
+      on line <label class="text-primary"> {{trip.line.name}} </label>
+      departs at <label class="text-secondary">{{trip.stops[trip.stops.length - 1].departureTime | date:'MM/dd/yyyy HH:mm'}}</label>
+  </p>
 </div>
 
 
