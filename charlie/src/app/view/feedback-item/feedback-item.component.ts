@@ -24,10 +24,12 @@ export class FeedbackItemComponent implements OnInit {
     this.time = new Date(this.item.timestamp).toString();
   }
 
+  // TODO es gäbe auch alles für "unprocess" wollen wir das auch anbieten?
   processFeedback() {
     this.item.processed = true;
-    this.http.processFeedback(this.item).subscribe(
+    this.http.processFeedback(this.item.id).subscribe(
       data => {
+        // TODO Do stuff?
       },
       err => console.log('Could not process feedback.')
     );

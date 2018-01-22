@@ -35,6 +35,9 @@ public class Feedback extends IdentifiableObject implements Serializable, Ticker
   @Column
   private EState rating;
 
+  @Column
+  private boolean processed;
+
   public Feedback() {
     super();
   }
@@ -87,6 +90,14 @@ public class Feedback extends IdentifiableObject implements Serializable, Ticker
 
   public void setRating(EState rating) {
     this.rating = rating;
+  }
+
+  public boolean getProcessed() {
+    return processed;
+  }
+
+  public void setProcessed(boolean processed) {
+    this.processed = processed;
   }
 
   @Override

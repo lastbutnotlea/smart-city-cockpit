@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -39,5 +40,21 @@ public class FeedbackController extends BaseController<Feedback> {
   public List<Feedback> getStopFeedbacks(@PathVariable String stopId) {
     return data.getData().stream().filter(f -> f.getFeedbackType() == EFeedbackType.STOP_FEEDBACK)
         .filter(f -> ((IdentifiableObject) f.getObjective()).getId().equals(stopId)).collect(Collectors.toList());
+  }
+
+  @PutMapping("/{feedbackId}/process")
+  public String processFeedback(@PathVariable String feedbackId) {
+    return processFeedback(feedbackId, true);
+  }
+
+  @PutMapping("/{feedbackId}/unprocess")
+  public String unprocessFeedback(@PathVariable String feedbackId) {
+    return processFeedback(feedbackId, false);
+  }
+
+  private String processFeedback(String feedbackId, boolean processed) {
+    Feedback feedback = getObjectForId(feedbackId);
+    feedback.setProcessed(processed);
+    return makeIdToJSON(feedbackId);
   }
 }

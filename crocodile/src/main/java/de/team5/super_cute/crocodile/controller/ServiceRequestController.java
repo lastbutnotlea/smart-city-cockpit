@@ -139,8 +139,13 @@ public class ServiceRequestController {
       fbg = new FeedbackGroup();
       feedbackGroupData.addObject(fbg);
     }
+    for (Feedback f : fbg.getFeedbacks()) {
+      f.setProcessed(false);
+    }
+    fbg.getFeedbacks().clear();
     for (Feedback f : sr.getFeedbacks()) {
       fbg.addFeedback(f);
+      f.setProcessed(true);
     }
     sr.setReferencedFeedback(fbg.getId());
 

@@ -95,6 +95,14 @@ export class UrlBuilderService {
     return this.feedbackBaseUrl + '/' + feedbackId;
   }
 
+  public getFeedbackProcessUrl(feedbackId: string): string {
+    return this.feedbackBaseUrl + '/' + feedbackId + '/process';
+  }
+
+  public getFeedbackUnprocessUrl(feedbackId: string): string {
+    return this.feedbackBaseUrl + '/' + feedbackId + '/unprocess';
+  }
+
   public getAnnouncements(): string {
     return this.announcementBaseUrl;
   }
