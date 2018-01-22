@@ -78,7 +78,7 @@ export class ServiceRequestEditComponent implements OnInit {
   editServiceRequest(): void {
     this.data.priority = this.selectedPriority.value;
     this.data.dueDate = this.selectedDate;
-    this.data.serviceRequestDescription = [{"id": "", "text": this.description}];
+    this.data.serviceRequestDescription = [{"id": "", "text": this.description, "objectId": this.data.serviceRequestDescription[0].objectId}];
     this.data.feedbacks = this.selectedFeedback;
     console.log(this.data);
 

@@ -44,6 +44,10 @@ import {FeedbackItemComponent} from './view/feedback-item/feedback-item.componen
 import {AnnouncementMainComponent} from './view/announcements/announcement-main/announcement-main.component';
 import {AnnouncementAddComponent} from './view/announcements/announcement-add/announcement-add.component';
 import {AnnouncementItemComponent} from './view/announcements/announcement-item/announcement-item.component';
+import {EventsComponent} from './view/events/events.component';
+import {EventDetailComponent} from './view/event-detail/event-detail.component';
+import {EventAddComponent} from './view/event-add/event-add.component';
+import {EventEditComponent} from './view/event-edit/event-edit.component';
 import { EmbeddedFeedbackComponent } from './shared/components/embedded-feedback/embedded-feedback.component';
 import { EmbeddedAnnouncementsComponent } from './shared/components/embedded-announcements/embedded-announcements.component';
 import { EmbeddedServiceRequestComponent } from './shared/components/embedded-service-request/embedded-service-request.component';
@@ -84,9 +88,13 @@ import { EmbeddedServiceRequestComponent } from './shared/components/embedded-se
     AnnouncementMainComponent,
     AnnouncementAddComponent,
     AnnouncementItemComponent,
+    EventsComponent,
+    EventDetailComponent,
+    EventAddComponent,
+    EventEditComponent,
     EmbeddedFeedbackComponent,
-    EmbeddedAnnouncementsComponent,
     EmbeddedServiceRequestComponent
+    EmbeddedAnnouncementsComponent,
   ],
   imports: [
     BrowserModule,
@@ -114,6 +122,8 @@ import { EmbeddedServiceRequestComponent } from './shared/components/embedded-se
     ServiceRequestAddComponent,
     ServiceRequestEditComponent,
     AnnouncementAddComponent,
+    EventAddComponent,
+    EventEditComponent,
   ]
 })
 export class AppModule {

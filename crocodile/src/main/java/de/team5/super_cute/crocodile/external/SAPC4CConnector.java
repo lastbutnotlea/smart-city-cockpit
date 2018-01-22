@@ -8,6 +8,7 @@ import de.team5.super_cute.crocodile.model.c4c.C4CEntity;
 import de.team5.super_cute.crocodile.util.Helpers;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Field;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -292,8 +293,26 @@ public class SAPC4CConnector {
    * @param entity is patched into the sap system
    * @return ObjectId of patched object or "Failure"
    */
-  public void patchC4CEntity(C4CEntity entity) throws IOException, BatchException {
-    putC4CEntity(entity, createUri("", entity.getCollectionName(), entity.getObjectId(), ""), Helpers.PATCH);
+  public void patchC4CEntity(C4CEntity entity)
+      throws IOException, BatchException {
+    putC4CEntity(entity, createUri("", entity.getCollectionName(), entity.getObjectId(), ""),
+        Helpers.PATCH);
+    // do separate patches for associatedEntities
+    List<Field> associatedEntitiesFields = serializer.getC4CProperties(entity).stream()
+        .filter(f -> ((C4CProperty) f.getAnnotation(C4CProperty.class)).hasAssociatedEntities())
+        .collect(
+            Collectors.toList());
+    for (Field field : associatedEntitiesFields) {
+      field.setAccessible(true);
+      try {
+        List<C4CEntity> entities = (List<C4CEntity>) field.get(entity);
+        for (C4CEntity associatedEntity : entities) {
+          patchC4CEntity(associatedEntity);
+        }
+      } catch (IllegalAccessException e) {
+        Helpers.logException(logger, e);
+      }
+    }
   }
 
   /**
