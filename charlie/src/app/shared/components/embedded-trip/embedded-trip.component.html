@@ -1,10 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<h4 class="text-lg-left">
+  <i class="fa fa-list fa-2x float-left padding-left-5 text-primary"></i>
+  <label class="padding-emb-box-headline">Trips</label>
+</h4>
 
-</body>
-</html>
+<div *ngFor="let trip of trips">
+  <p class="text-primary"> {{trip.id}}</p>
+
+  <div *ngIf="areTripsForVehicle">
+    from {{trip.stops[0]}}
+    <label class="text-secondary">(departure: {{trip.stops[0].departureTime | date:'MM/dd/yyyyHH:mm'}})</label>
+    to {{trip.stops[trip.stops.length - 1]}}
+    <label class="text-secondary">(arrivel: {{trip.stops[trip.stops.length - 1] | date:'MM/dd/yyyy HH:mm'}})</label>
+  </div>
+
+  <div *ngIf="!areTripsForVehicle">
+    on line <a routerLink="line/{{trip.line.id}}"> {{trip.line.name}} </a>
+    departs at <label class="text-secondary">{{trip.stops[trip.stops.length - 1] | date:'MM/dd/yyyy HH:mm'}}</label>
+  </div>
+
+  <div [ngClass]="{'color-fine': trip.vehicle.state === 'FINE',
+     'color-problematic': trip.vehicle.state === 'PROBLEMATIC',
+     'color-critical': trip.vehicle.state === 'CRITICAL' }">
+    <i class="fa fa-lightbulb-o fa-2x float-right small-padding-right" aria-hidden="true"></i>
+  </div>
+</div>
+
+

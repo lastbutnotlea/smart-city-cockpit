@@ -29,11 +29,13 @@
       </div>
     </div>
 
-    <div class="d-flex flex-1 float-right">
+    <div class="d-flex flex-1 float-right flex-column">
       <app-embedded-stop [stop]="stop" [lineForStopDataInbound]="lineForStopDataInbound"
                          [lineForStopDataOutbound]="lineForStopDataOutbound"
                          class="flex-1 bounding-box"></app-embedded-stop>
+      <app-embedded-trip [trips]="trip" class="flex-1 bounding-box"></app-embedded-trip>
     </div>
+
 
   </div>
 </div>
