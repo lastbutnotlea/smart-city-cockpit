@@ -34,8 +34,8 @@ export class MapComponent {
     // Get element where map should be placed
     const el = document.getElementById('tube-map');
 
-    const width = 800;
-    const height = 450;
+    const width = window.innerWidth/2;
+    const height = window.innerHeight * 3/5;
 
     // Add svg to element
     const canvas = d3.select(el)
@@ -78,22 +78,13 @@ export class MapComponent {
 
   setZoom() {
     var svg = d3.select('#tube-map').select('svg');
-    var w = window;
-    svg.select('g').attr('transform', "translate(" + w.innerWidth/8 + "," + 0 + ")");
-    svg.style("height", w.innerHeight * 3/5);
-    svg.style("width", w.innerWidth/2);
-
     var zoom = d3zoom
       .zoom()
       .scaleExtent([0.5, 6])
       .on('zoom', zoomed);
-
     var zoomContainer = svg.call(zoom);
-    var initialScale = 2.5;
-    var initialTranslate = [0, w.innerHeight/7];
-
+    var initialScale = 1.5;
     zoom.scaleTo(zoomContainer, initialScale);
-    zoom.translateTo(zoomContainer, initialTranslate[0], initialTranslate[1]);
 
     function zoomed() {
       svg.select('g').attr('transform', d3.event.transform.toString());
