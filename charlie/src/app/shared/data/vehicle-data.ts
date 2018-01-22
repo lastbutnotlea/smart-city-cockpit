@@ -10,7 +10,6 @@ export class VehicleData extends ServiceRequestTarget {
   type: string;
   state: string;
   identifiableType: String = "vehicle";
-  // TODO: undo comments when backend functionality is available
- // isShutDown: boolean;
- // currentLine: LineData;
+  isShutDown: boolean;
+  currentLine: LineData;
 }

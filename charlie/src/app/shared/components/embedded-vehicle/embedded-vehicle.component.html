@@ -13,6 +13,7 @@
   <p> <label class="text-secondary">Load: </label> {{vehicle.load}}</p>
   <p> <label class="text-secondary">Delay: </label> {{(vehicle.delay / 60.0).toFixed(0)}}</p>
   <p> <label class="text-secondary">Temperature: </label> {{vehicle.temperature}}</p>
+  <p> <label class="text-secondary">Shut Down: </label> {{vehicle.isShutDown}}</p>
   <div *ngFor="let defect of vehicle.defects; let i=index">
     <label class="text-secondary">Defects: </label>
     <label *ngIf="i>0">,</label>
