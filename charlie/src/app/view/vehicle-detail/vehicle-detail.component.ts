@@ -5,6 +5,7 @@ import {VehicleData} from '../../shared/data/vehicle-data';
 import {HttpRoutingService} from '../../services/http-routing.service';
 import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
 import { FeedbackData } from '../../shared/data/feedback-data';
+import {TripData} from '../../shared/data/trip-data';
 
 @Component({
   selector: 'app-vehicle-detail',
@@ -16,6 +17,7 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
   vehicle: VehicleData;
   loaded: boolean = false;
   feedback: FeedbackData[];
+  trips: TripData[] = [];
 
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
@@ -33,6 +35,11 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
         this.loaded = true;
       },
       err => console.log('Could not fetch vehicle data!')
+    );
+
+    this.http.getTripsForVehicle(id).subscribe(
+      trips => this.trips = trips,
+      err => console.log('Could not fetch trip data, sorry!')
     );
   }
 
