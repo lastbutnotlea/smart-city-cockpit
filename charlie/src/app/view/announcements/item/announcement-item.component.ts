@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {AnnouncementData} from "../../../shared/data/announcement-data";
 import {HttpRoutingService} from "../../../services/http-routing.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
@@ -9,16 +9,13 @@ import {AnnouncementEditComponent} from "../edit/announcement-edit.component";
   templateUrl: './announcement-item.component.html',
   styleUrls: ['./announcement-item.component.css'],
 })
-export class AnnouncementItemComponent implements OnInit {
+export class AnnouncementItemComponent {
   @Input()
   data: AnnouncementData;
 
   deleted: boolean = false;
 
   constructor(private http: HttpRoutingService, private modalService: NgbModal) {
-  }
-
-  ngOnInit() {
   }
 
   editItem(): void {

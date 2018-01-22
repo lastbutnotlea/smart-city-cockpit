@@ -27,7 +27,9 @@
           (click)="activeModal.close('Close click')">
     Close
   </button>
-  <button type="button" class="btn btn-outline-primary" (click)="back()">Back</button>
+  <ng-container *ngIf="state !== 0">
+    <button type="button" class="btn btn-outline-primary" (click)="back()">Back</button>
+  </ng-container>
   <button type="button" class="btn btn-outline-primary" (click)="next()">
     {{state === 2? "Confirm" : "Next"}}
   </button>

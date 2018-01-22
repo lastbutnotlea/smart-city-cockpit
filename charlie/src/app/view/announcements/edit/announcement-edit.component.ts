@@ -42,10 +42,16 @@ export class AnnouncementEditComponent implements OnInit {
     this.http.getStops().subscribe(data => {
       data.sort((a, b) => a.commonName.localeCompare(b.commonName));
       this.availableStops = data;
-    }, err => alert(err));
+    }, err => {
+      alert("An error occurred.");
+      console.log(err);
+    });
     this.http.getLines().subscribe(
       data => this.availableLines = data,
-      err => alert(err));
+      err => {
+        alert("An error occurred.");
+        console.log(err);
+      });
   }
 
   public setModel(data: AnnouncementData): void {

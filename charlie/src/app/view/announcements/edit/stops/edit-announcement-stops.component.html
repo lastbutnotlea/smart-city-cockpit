@@ -21,11 +21,7 @@
 </div>
 <div class="d-flex flex-column m-2 scrollable">
   <div class="d-flex justify-content-between m-1" *ngFor="let stop of getSelectedStops()">
-    <div class="d-flex align-items-center">
-      {{stop.commonName}}
-    </div>
-    <button class="btn btn-outline-secondary" (click)="removeStop(stop)">
-      <i class="fa fa-trash text-primary"></i>
-    </button>
+    <div class="d-flex align-items-center">{{stop.commonName}}</div>
+    <button class="btn btn-outline-secondary" (click)="removeStop(stop)">Delete</button>
   </div>
 </div>
