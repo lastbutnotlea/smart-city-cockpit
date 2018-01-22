@@ -5,12 +5,12 @@
     <app-announcement-item class="flex-1" [data]="announcement"></app-announcement-item>
   </ng-container>
 </div>
-<div *ngIf="!loaded">
+<ng-container *ngIf="!loaded">
   <h3>Loading...</h3>
-</div>
-<div *ngIf="loaded && data.length == 0">
+</ng-container>
+<ng-container *ngIf="loaded && data.length == 0">
   <h3>No announcements available</h3>
-</div>
+</ng-container>
 
 <div class="no-float m-3 no-m-left">
   <button class="btn btn-outline-primary no-float" (click)="add()">Add new Announcement</button>
