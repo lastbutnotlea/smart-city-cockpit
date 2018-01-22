@@ -54,6 +54,7 @@ import {EventsComponent} from './view/events/events.component';
 import {EventDetailComponent} from './view/event-detail/event-detail.component';
 import {EventAddComponent} from './view/event-add/event-add.component';
 import {EventEditComponent} from './view/event-edit/event-edit.component';
+import {EmbeddedTripComponent} from './shared/components/embedded-trip/embedded-trip.component';
 
 @NgModule({
   declarations: [
@@ -101,6 +102,7 @@ import {EventEditComponent} from './view/event-edit/event-edit.component';
     EditAnnouncementStopsComponent,
     DatetimePickerComponent,
     EmbeddedAnnouncementsComponent,
+    EmbeddedTripComponent,
   ],
   imports: [
     BrowserModule,

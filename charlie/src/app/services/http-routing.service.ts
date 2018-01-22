@@ -220,4 +220,12 @@ export class HttpRoutingService {
   public getStopAnnouncements(stopId: string): Observable<AnnouncementData[]> {
     return this.http.get<AnnouncementData[]>(this.urlBuilder.getStopAnnouncementsUrl(stopId));
   }
+
+  public getTripsForStop(stopId: string): Observable<TripData[]> {
+    return this.http.get<TripData[]>(this.urlBuilder.getTripsForStopUrl(stopId));
+  }
+
+  public getTripsForVehicle(vehicleId: string): Observable<TripData[]> {
+    return this.http.get<TripData[]>(this.urlBuilder.getTripsForVehicleUrl(vehicleId));
+  }
 }

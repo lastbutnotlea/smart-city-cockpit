@@ -132,4 +132,12 @@ export class UrlBuilderService {
   public getStopAnnouncementsUrl(stopId: string): string {
     return this.announcementBaseUrl + '/stop/' + stopId;
   }
+
+  public getTripsForStopUrl(stopId: string): string {
+    return this.tripBaseUrl + '/stop/' + stopId;
+  }
+
+  public getTripsForVehicleUrl(vehicleId: string): string {
+    return this.tripBaseUrl + '/vehicle/' + vehicleId;
+  }
 }
