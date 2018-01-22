@@ -15,6 +15,8 @@ import { Router } from '@angular/router';
 export class MapComponent {
 
   map: any;
+  width: any;
+  height: any;
 
   constructor(private router: Router,
               private mapCreator: MapCreatorService) { }
@@ -34,19 +36,19 @@ export class MapComponent {
     // Get element where map should be placed
     const el = document.getElementById('tube-map');
 
-    const width = window.innerWidth/2;
-    const height = window.innerHeight * 3/5;
+    this.width = window.innerWidth/2;
+    this.height = window.innerHeight * 3/5;
 
     // Add svg to element
     const canvas = d3.select(el)
       .append('svg')
-      .style('width', width + 'px')
-      .style('height', height + 'px');
+      .style('width', this.width + 'px')
+      .style('height', this.height + 'px');
 
     // create new tube map
     this.map = d3Tube.tubeMap()
-      .width(width)
-      .height(height)
+      .width(this.width)
+      .height(this.height)
       .margin({
         top: 50,
         right: 50,
@@ -78,6 +80,7 @@ export class MapComponent {
 
   setZoom() {
     var svg = d3.select('#tube-map').select('svg');
+
     var zoom = d3zoom
       .zoom()
       .scaleExtent([0.5, 6])
@@ -85,6 +88,7 @@ export class MapComponent {
     var zoomContainer = svg.call(zoom);
     var initialScale = 1.5;
     zoom.scaleTo(zoomContainer, initialScale);
+    // zoom.translateTo(zoomContainer, 0, 0);
 
     function zoomed() {
       svg.select('g').attr('transform', d3.event.transform.toString());
