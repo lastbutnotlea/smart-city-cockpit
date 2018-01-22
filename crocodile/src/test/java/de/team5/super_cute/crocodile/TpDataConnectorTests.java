@@ -7,7 +7,6 @@ import de.team5.super_cute.crocodile.external.TpDataConnector;
 import de.team5.super_cute.crocodile.model.Line;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Ignore;
 import org.junit.Test;
 
 public class TpDataConnectorTests {
@@ -26,7 +25,7 @@ public class TpDataConnectorTests {
         add("228");
         add("7");
         add("bakerloo");
-        //add("hammersmith-city");
+        add("hammersmith-city");
         add("jubilee");
         add("victoria");
         add("waterloo-city");
@@ -37,7 +36,6 @@ public class TpDataConnectorTests {
   }
 
   @Test
-  @Ignore //todo stop ignoring when hammersmith is running again
   public void testGetlines_test() {
 
     assertEquals("10 LINES expected", 10, LINES.size());
