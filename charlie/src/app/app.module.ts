@@ -50,6 +50,10 @@ import {EditAnnouncementDatetimeComponent} from './view/announcements/edit/datet
 import {EditAnnouncementStopsComponent} from './view/announcements/edit/stops/edit-announcement-stops.component';
 import {DatetimePickerComponent} from './shared/components/datetime-picker/datetime-picker.component';
 import {EmbeddedAnnouncementsComponent} from './shared/components/embedded-announcements/embedded-announcements.component';
+import {EventsComponent} from './view/events/events.component';
+import {EventDetailComponent} from './view/event-detail/event-detail.component';
+import {EventAddComponent} from './view/event-add/event-add.component';
+import {EventEditComponent} from './view/event-edit/event-edit.component';
 
 @NgModule({
   declarations: [
@@ -87,6 +91,10 @@ import {EmbeddedAnnouncementsComponent} from './shared/components/embedded-annou
     AnnouncementMainComponent,
     AnnouncementEditComponent,
     AnnouncementItemComponent,
+    EventsComponent,
+    EventDetailComponent,
+    EventAddComponent,
+    EventEditComponent,
     EmbeddedFeedbackComponent,
     EditAnnounementTextComponent,
     EditAnnouncementDatetimeComponent,
@@ -120,6 +128,8 @@ import {EmbeddedAnnouncementsComponent} from './shared/components/embedded-annou
     ServiceRequestAddComponent,
     ServiceRequestEditComponent,
     AnnouncementEditComponent,
+    EventAddComponent,
+    EventEditComponent,
   ]
 })
 export class AppModule {

@@ -15,6 +15,7 @@ export class UrlBuilderService {
   private feedbackBaseUrl = this.baseUrl + '/feedback';
   private announcementBaseUrl = this.baseUrl + '/announcement';
   private tickerBaseUrl = this.baseUrl + '/ticker';
+  private eventsBaseUrl = this.baseUrl + '/events';
 
   public getNetworkUrl(): string {
     return this.networkBaseUrl;
@@ -94,6 +95,18 @@ export class UrlBuilderService {
 
   public getAnnouncementsUrl(): string {
     return this.announcementBaseUrl;
+  }
+
+  public getEventsUrl(): string {
+    return this.eventsBaseUrl;
+  }
+
+  public getEventDetailsUrl(eventId: string): string {
+    return this.eventsBaseUrl + '/' + eventId;
+  }
+
+  public getInvolvedPartiesUrl(): string {
+    return this.eventsBaseUrl + '/people';
   }
 
   public getTickerUrl(): string {
