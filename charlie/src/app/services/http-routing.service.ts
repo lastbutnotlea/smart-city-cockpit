@@ -12,6 +12,8 @@ import { LinePositionData } from '../shared/data/line-position-data';
 import {FeedbackData} from '../shared/data/feedback-data';
 import {TickerData} from '../shared/data/ticker-data';
 import {AnnouncementData} from '../shared/data/announcement-data';
+import {EventData} from '../shared/data/event-data';
+import {PartyData} from '../shared/data/party-data';
 import {LineForStopData} from "../shared/data/LineForStopData";
 
 @Injectable()
@@ -168,11 +170,43 @@ export class HttpRoutingService {
   }
 
   public getAnnouncements(): Observable<any []> {
-    return this.http.get<any []>(this.urlBuilder.getAnnouncements());
+    return this.http.get<any []>(this.urlBuilder.getAnnouncementsUrl());
   }
 
   public addAnnouncement(announcement: AnnouncementData): Observable<any> {
-    return this.http.post<any>(this.urlBuilder.getAnnouncements(), announcement);
+    return this.http.post(this.urlBuilder.getAnnouncementsUrl(), announcement);
+  }
+
+  public deleteAnnouncement(data: AnnouncementData): Observable<any> {
+    return this.http.delete(this.urlBuilder.getAnnouncementItemUrl(data));
+  }
+
+  public editAnnouncement(data: AnnouncementData): Observable<any> {
+    return this.http.put(this.urlBuilder.getAnnouncementsUrl(), data);
+  }
+
+  public getEvents(): Observable<EventData[]> {
+    return this.http.get<EventData[]>(this.urlBuilder.getEventsUrl());
+  }
+
+  public getEventDetails(eventId: string): Observable<EventData> {
+    return this.http.get<EventData>(this.urlBuilder.getEventDetailsUrl(eventId));
+  }
+
+  public addEvent(event: EventData): Observable<any> {
+    return this.http.post<any>(this.urlBuilder.getEventsUrl(), event);
+  }
+
+  public editEvent(event: EventData): Observable<any> {
+    return this.http.put<any>(this.urlBuilder.getEventsUrl(), event);
+  }
+
+  public deleteEvent(eventId: string): Observable<any> {
+    return this.http.delete(this.urlBuilder.getEventDetailsUrl(eventId));
+  }
+
+  public getInvolvedParties(): Observable<PartyData[]> {
+    return this.http.get<PartyData[]>(this.urlBuilder.getInvolvedPartiesUrl());
   }
 
   public getVehiclesState(): Observable<string> {

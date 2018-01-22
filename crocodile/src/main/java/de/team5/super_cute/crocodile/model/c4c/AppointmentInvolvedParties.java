@@ -10,7 +10,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 public class AppointmentInvolvedParties extends C4CEntity {
 
-  @C4CProperty(name = "PartyId")
+  //@C4CProperty(name = "PartyId")
   @JsonIgnore
   private String partyId = "";
 
@@ -19,7 +19,7 @@ public class AppointmentInvolvedParties extends C4CEntity {
 
   @C4CProperty(name = "RoleCode", maxLength = 10)
   @JsonIgnore
-  private String roleCode = "35"; // Organisator
+  private String roleCode = "36"; // Teilnehmer
 
   @C4CProperty(name = "PartyTypeCode", maxLength = 15)
   @JsonIgnore
@@ -29,7 +29,7 @@ public class AppointmentInvolvedParties extends C4CEntity {
   }
 
   public AppointmentInvolvedParties(String partyName) {
-    this.partyName = partyName;
+    setPartyName(partyName);
   }
 
   public String getPartyId() {

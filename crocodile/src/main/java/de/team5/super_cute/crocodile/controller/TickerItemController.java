@@ -5,6 +5,7 @@ import static de.team5.super_cute.crocodile.config.TickerConfig.ITEM_COUNT;
 import de.team5.super_cute.crocodile.config.AppConfiguration;
 import de.team5.super_cute.crocodile.data.BaseData;
 import de.team5.super_cute.crocodile.model.TickerItem;
+import de.team5.super_cute.crocodile.util.Helpers;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
@@ -39,6 +40,6 @@ public class TickerItemController extends BaseController<TickerItem> {
   @DeleteMapping("/{id}")
   public String deleteTickerItem(@PathVariable String id) {
     logger.info("Got Request to delete the tickerItem with id " + id);
-    return makeIdToJSON(deleteObject(id));
+    return Helpers.makeIdToJSON(deleteObject(id));
   }
 }
