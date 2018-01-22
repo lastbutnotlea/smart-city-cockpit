@@ -24,7 +24,7 @@ public class InitialSetupConfig {
     add("228");
     add("7");
     add("bakerloo");
-    //add("hammersmith-city");
+    add("hammersmith-city");
     add("jubilee");
     add("victoria");
     add("waterloo-city");
