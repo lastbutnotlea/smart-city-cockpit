@@ -15,7 +15,7 @@
       from {{trip.stops[0].name}}
       <label class="text-secondary">(departure: {{trip.stops[0].departureTime | date:'MM/dd/yyyy HH:mm'}})</label>
       to {{trip.stops[trip.stops.length - 1].name}}
-      <label class="text-secondary">(arrivel: {{trip.stops[trip.stops.length - 1].departureTime | date:'MM/dd/yyyy HH:mm'}})</label>
+      <label class="text-secondary">(arrival: {{trip.stops[trip.stops.length - 1].departureTime | date:'MM/dd/yyyy HH:mm'}})</label>
   </p>
 
   <p *ngIf="!areTripsForVehicle">

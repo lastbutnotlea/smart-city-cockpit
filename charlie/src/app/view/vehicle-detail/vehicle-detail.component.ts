@@ -16,7 +16,7 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
 
   vehicle: VehicleData;
   loaded: boolean = false;
-  feedback: FeedbackData[];
+  feedback: FeedbackData[] = [];
   trips: TripData[] = [];
 
   constructor(private http: HttpRoutingService,
@@ -37,7 +37,11 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
       err => console.log('Could not fetch vehicle data!')
     );
 
-    this.http.getTripsForVehicle(id).subscribe(
+    this.getTripsForVehicle(id);
+  }
+
+  getTripsForVehicle(vehicleId: string): void {
+    this.http.getTripsForVehicle(vehicleId).subscribe(
       trips => this.trips = trips,
       err => console.log('Could not fetch trip data, sorry!')
     );
@@ -76,6 +80,8 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
           console.log('Could not fetch new line-data.')
       ));
     this.subscribeToData();
+
+    this.getTripsForVehicle(this.vehicle.id);
   }
 
 }

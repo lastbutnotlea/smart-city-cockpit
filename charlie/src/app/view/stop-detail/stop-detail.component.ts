@@ -53,9 +53,7 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
 
   getTripsForStop(stopId: string): void {
     this.http.getTripsForStop(stopId).subscribe(
-      trips => {
-        this.trips = trips;
-      },
+      trips => this.trips = trips,
       err => console.log('Could not fetch trip data, sorry!')
     );
   }
@@ -105,6 +103,8 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
           console.log('Could not fetch new stop-data.')
       ));
     this.subscribeToData();
+
+    this.getTripsForStop(this.stop.id);
   }
 
 }
