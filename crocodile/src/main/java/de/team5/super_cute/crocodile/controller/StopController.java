@@ -3,6 +3,7 @@ package de.team5.super_cute.crocodile.controller;
 import de.team5.super_cute.crocodile.config.AppConfiguration;
 import de.team5.super_cute.crocodile.data.BaseData;
 import de.team5.super_cute.crocodile.data.LineData;
+import de.team5.super_cute.crocodile.data.SkipStopData;
 import de.team5.super_cute.crocodile.data.TripData;
 import de.team5.super_cute.crocodile.jsonclasses.LineForStopData;
 import de.team5.super_cute.crocodile.model.Line;
@@ -24,12 +25,14 @@ public class StopController extends BaseController<Stop> {
 
   private LineData lineData;
   private TripData tripData;
+  private SkipStopData skipStopData;
 
   @Autowired
-  public StopController(BaseData<Stop> stopData, LineData lineData, TripData tripData) {
+  public StopController(BaseData<Stop> stopData, LineData lineData, TripData tripData, SkipStopData skipStopData) {
     data = stopData;
     this.lineData = lineData;
     this.tripData = tripData;
+    this.skipStopData = skipStopData;
   }
 
   @GetMapping
@@ -64,6 +67,8 @@ public class StopController extends BaseController<Stop> {
     Stop stop = getObjectForId(id);
     tripData.skipStopsInTimeFrameForAllTrips(id, skipStop.getFrom(), skipStop.getTo());
     stop.addSkipStop(skipStop);
+    skipStopData.addObject(skipStop);
+    editObject(stop);
     return skipStop;
   }
 }

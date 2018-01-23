@@ -22,8 +22,7 @@ abstract class BaseController<T extends IdentifiableObject> {
   }
 
   String editObject(T input) {
-    data.deleteObject(input.getId());
-    data.addObject(input);
+    data.editObject(input);
     return input.getId();
   }
 
