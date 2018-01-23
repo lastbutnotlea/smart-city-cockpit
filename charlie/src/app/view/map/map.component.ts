@@ -1,6 +1,7 @@
 import {Component, Injectable} from '@angular/core';
 
 import * as d3 from 'd3-selection';
+import * as d3zoom from 'd3-zoom';
 import * as d3Tube from 'd3-tube-map';
 import { MapCreatorService } from '../../services/map-creator.service';
 import { Router } from '@angular/router';
@@ -13,6 +14,10 @@ import { Router } from '@angular/router';
 @Injectable()
 export class MapComponent {
 
+  map: any;
+  width: any;
+  height: any;
+
   constructor(private router: Router,
               private mapCreator: MapCreatorService) { }
 
@@ -22,6 +27,7 @@ export class MapComponent {
     console.log(connectionMapData);
     this.drawTubeMap(this.mapCreator.createMap(stationMapData, lineMapData, connectionMapData));
     this.addLineEvents();
+    this.setZoom();
   }
 
   private drawTubeMap(jsonData: any) {
@@ -30,19 +36,19 @@ export class MapComponent {
     // Get element where map should be placed
     const el = document.getElementById('tube-map');
 
-    const width = 800;
-    const height = 450;
+    this.width = window.innerWidth/2;
+    this.height = window.innerHeight * 3/5;
 
     // Add svg to element
     const canvas = d3.select(el)
       .append('svg')
-      .style('width', width + 'px')
-      .style('height', height + 'px');
+      .style('width', this.width + 'px')
+      .style('height', this.height + 'px');
 
     // create new tube map
-    const map = d3Tube.tubeMap()
-      .width(width)
-      .height(height)
+    this.map = d3Tube.tubeMap()
+      .width(this.width)
+      .height(this.height)
       .margin({
         top: 50,
         right: 50,
@@ -50,7 +56,7 @@ export class MapComponent {
         left: 50,
       });
     // draw objects according to jsonData into map
-    canvas.datum(jsonData).call(map);
+    canvas.datum(jsonData).call(this.map);
   }
 
   private addLineEvents(): void {
@@ -70,5 +76,19 @@ export class MapComponent {
       const lineSvg =  d3.select('path#' + line.name);
       lineSvg.attr('stroke-width', lineSvg.attr('stroke-width') / 1.6);
     });
+  }
+
+  setZoom() {
+    var svg = d3.select('#tube-map').select('svg');
+    var zoom = d3zoom
+      .zoom()
+      .scaleExtent([0.5, 6])
+      .on('zoom', zoomed);
+    var zoomContainer = svg.call(zoom);
+    var initialScale = 1.5;
+    zoom.scaleTo(zoomContainer, initialScale);
+    function zoomed() {
+      svg.select('g').attr('transform', d3.event.transform.toString());
+    }
   }
 }
