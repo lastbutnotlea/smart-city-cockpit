@@ -16,8 +16,6 @@ import {LineForStopData} from "../shared/data/line-for-stop-data";
 import {SkipData} from "../shared/data/skip-data";
 import {EventData} from '../shared/data/event-data';
 import {PartyData} from '../shared/data/party-data';
-import {LineForStopData} from "../shared/data/LineForStopData";
-
 @Injectable()
 export class HttpRoutingService {
 
