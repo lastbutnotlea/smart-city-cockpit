@@ -84,7 +84,6 @@ export class ServiceRequestEditComponent implements OnInit {
 
     this.http.editServiceRequest(this.data).subscribe(
       data => {
-        debugger;
         console.log('Added service request.');
         this.activeModal.close('Close click');
       },

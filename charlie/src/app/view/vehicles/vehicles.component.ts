@@ -27,11 +27,7 @@ export class VehiclesComponent extends LiveDataComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.http.getVehicles().subscribe(data => {
-      this.vehicles = data;
-      this.loaded = true;
-      super.ngOnInit();
-    });
+    this.getVehicles();
     this.http.getVehicleTypes().subscribe(types => {
       let typeFilter: FilterComponent = new FilterComponent();
       types.forEach(type =>
@@ -45,13 +41,16 @@ export class VehiclesComponent extends LiveDataComponent implements OnInit {
       stateFilter.addFilter('Critical', vehicle => vehicle.state === 'CRITICAL');
       this.filterGroup.addFilterComponent(stateFilter);
     });
+    super.subscribeToData();
   }
 
-  add(): void {
-    const modal = this.modalService.open(VehicleAddComponent);
-  }
-
-  getVehiclesState(): void {
+  getVehicles(): void {
+    this.http.getVehicles().subscribe(data => {
+      this.vehicles = data;
+      this.loaded = true;
+    }, err => {
+      console.log(err);
+    });
     this.http.getVehiclesState().subscribe(data => {
       this.state = data;
     }, err => {
@@ -59,16 +58,12 @@ export class VehiclesComponent extends LiveDataComponent implements OnInit {
     })
   }
 
+  add(): void {
+    const modal = this.modalService.open(VehicleAddComponent);
+  }
+
   // update vehicles
   refreshData(): void {
-    this.setDataSubscription(
-      this.http.getVehicles().subscribe( data => {
-          this.vehicles = data;
-          this.getVehiclesState();
-        },
-        err =>
-          console.log('Could not fetch new line-data.')
-      ));
-    this.subscribeToData();
+    this.getVehicles();
   }
 }
