@@ -104,8 +104,7 @@ export class UrlBuilderService {
   public getFeedbackUnprocessUrl(feedbackId: string): string {
     return this.feedbackBaseUrl + '/' + feedbackId + '/unprocess';
   }
-
-  public getAnnouncements(): string {
+  
   public getAnnouncementsUrl(): string {
     return this.announcementBaseUrl;
   }

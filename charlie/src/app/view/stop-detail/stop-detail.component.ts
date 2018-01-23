@@ -33,6 +33,15 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getData();
+  }
+
+  skipStop(): void {
+    const modal = this.modalService.open(SkipStopComponent);
+    modal.componentInstance.data = this.stop;
+  }
+
+  getData(): void {
     const stopId = this.route.snapshot.paramMap.get('stopId');
     this.getStop(stopId);
     this.getTripsForStop(stopId);
