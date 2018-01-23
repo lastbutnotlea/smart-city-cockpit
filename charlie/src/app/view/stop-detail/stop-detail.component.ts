@@ -1,17 +1,18 @@
 import {Component, OnInit} from '@angular/core';
-import {StopData} from '../../shared/data/stop-data';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {HttpRoutingService} from '../../services/http-routing.service';
 import {LiveDataComponent} from '../../shared/components/live-data/live-data.component';
-import {FeedbackData} from '../../shared/data/feedback-data';
-import {AnnouncementData} from '../../shared/data/announcement-data';
-import { ServiceRequestData } from '../../shared/data/service-request-data';
+import {LineForStopData} from "../../shared/data/line-for-stop-data";
+import {ServiceRequestData} from '../../shared/data/service-request-data';
 import {TripData} from '../../shared/data/trip-data';
 import {TripStopData} from '../../shared/data/trip-stop-data';
-import {LineForStopData} from "../../shared/data/line-for-stop-data";
+import {StopData} from '../../shared/data/stop-data';
+import {FeedbackData} from '../../shared/data/feedback-data';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {SkipStopComponent} from "../stop-skip/stop-skip";
+import {AnnouncementData} from '../../shared/data/announcement-data';
+import {SkipData} from "../../shared/data/skip-data";
 
 @Component({
   selector: 'app-stop-detail-view',
@@ -54,13 +55,13 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
         this.stop = stop;
         this.getLines();
         this.getAdditionalData();
-        this.getTripsForStop(stopId);
       },
       err => console.log('Could not fetch stop data!')
     );
   }
 
-  getTripsForStop(stopId: string): void {
+  getTripsForStop(): void {
+    const stopId = this.route.snapshot.paramMap.get('stopId');
     this.http.getTripsForStop(stopId).subscribe(
       trips => {
         this.trips = trips;
@@ -71,7 +72,7 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
             let rightStopInTrip: TripStopData;
             trip.stops.forEach(
               stop => {
-                if(stop.id === stopId) {
+                if (stop.id === stopId) {
                   rightStopInTrip = stop;
                 }
               }
@@ -129,6 +130,7 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
   // update stop data
   refreshData(): void {
     this.getStop();
+    this.getTripsForStop();
   }
 
 }
