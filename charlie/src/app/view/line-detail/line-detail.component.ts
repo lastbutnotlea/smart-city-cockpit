@@ -46,7 +46,6 @@ export class LineDetailComponent extends LiveDataComponent implements OnInit {
         /*this.lineMapInbound.getLineMap(line, line.stopsInbound);
         this.lineMapOutbound.getLineMap(line, line.stopsOutbound);*/
         this.getPositionData();
-        this.loaded = true;
         // This starts periodical calls for live-data after first data was received
       },
           err => {
