@@ -12,6 +12,8 @@ import { LinePositionData } from '../shared/data/line-position-data';
 import {FeedbackData} from '../shared/data/feedback-data';
 import {TickerData} from '../shared/data/ticker-data';
 import {AnnouncementData} from '../shared/data/announcement-data';
+import {LineForStopData} from "../shared/data/line-for-stop-data";
+import {SkipData} from "../shared/data/skip-data";
 import {EventData} from '../shared/data/event-data';
 import {PartyData} from '../shared/data/party-data';
 import {LineForStopData} from "../shared/data/LineForStopData";
@@ -147,6 +149,10 @@ export class HttpRoutingService {
 
   public editServiceRequest(serviceRequest: ServiceRequestData): Observable<any> {
     return this.http.put(this.urlBuilder.getServiceRequestsUrl(), serviceRequest);
+  }
+
+  public skipStop(stopId: string, skipData: SkipData): Observable<any> {
+    return this.http.post(this.urlBuilder.getStopSkipUrl(stopId), skipData);
   }
 
   public deleteServiceRequest(id: string): Observable<any> {
