@@ -1,0 +1,51 @@
+<h4 class="text-lg-left">
+  <i class="fa fa-cogs fa-2x float-left padding-left-5 text-primary"></i>
+  <label class="padding-emb-box-headline">Service requests</label>
+</h4>
+
+<div *ngIf="serviceRequests.length === 0">
+  <p>No Service Requests available</p>
+</div>
+
+<div *ngIf="hasOpenRequests()">
+  <!-- open service requests-->
+  <div *ngFor="let serviceRequest of serviceRequests">
+    <div *ngIf="isOpenRequest(serviceRequest)">
+      <p>
+        <a href="serviceRequests/detail/{{serviceRequest.id}}">
+          {{serviceRequest.name}}
+        </a>
+        <span [ngClass]="{'color-fine': serviceRequest.priority === 'FINE',
+             'color-problematic': serviceRequest.priority === 'PROBLEMATIC',
+             'color-critical': serviceRequest.priority === 'CRITICAL' }">
+              <i class="fa fa-lightbulb-o  fa-2x float-right padding-right-20"
+                 aria-hidden="true"></i>
+            </span>
+      </p>
+      <p>
+        <label class="text-secondary">Due on {{serviceRequest.dueDate | date:'MM/dd/yyyy HH:mm'}}</label>
+      </p>
+    </div>
+  </div>
+</div>
+<div *ngIf="hasClosedRequests()">
+  <!-- completed service requests -->
+  <div *ngFor="let serviceRequest of serviceRequests">
+    <div *ngIf="!isOpenRequest(serviceRequest)">
+      <p>
+        <a href="serviceRequests/detail/{{serviceRequest.id}}">
+          {{serviceRequest.name}}
+        </a>
+        <span [ngClass]="{'color-fine': serviceRequest.priority === 'FINE',
+             'color-problematic': serviceRequest.priority === 'PROBLEMATIC',
+             'color-critical': serviceRequest.priority === 'CRITICAL' }">
+              <i class="fa fa-lightbulb-o  fa-2x float-right padding-right-20"
+                 aria-hidden="true"></i>
+            </span>
+      </p>
+      <p>
+        <label class="text-secondary">Completed on {{serviceRequest.completionDate | date:'MM/dd/yyyy HH:mm'}}</label>
+      </p>
+    </div>
+  </div>
+</div>

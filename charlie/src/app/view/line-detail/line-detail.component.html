@@ -1,7 +1,7 @@
 
 <div *ngIf="!loaded">Loading...</div>
 
-<div *ngIf="loaded">
+<div *ngIf="loaded" class="fit-screen d-flex flex-column">
   <h3>
     <div [ngClass]="{'color-fine': line.state === 'FINE',
        'color-problematic': line.state === 'PROBLEMATIC',

@@ -4,11 +4,14 @@ import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {HttpRoutingService} from '../../services/http-routing.service';
 import {LiveDataComponent} from '../../shared/components/live-data/live-data.component';
-import {LineForStopData} from "../../shared/data/LineForStopData";
+import {LineForStopData} from "../../shared/data/line-for-stop-data";
 import {FeedbackData} from '../../shared/data/feedback-data';
 import {AnnouncementData} from '../../shared/data/announcement-data';
+import { ServiceRequestData } from '../../shared/data/service-request-data';
 import {TripData} from '../../shared/data/trip-data';
 import {TripStopData} from '../../shared/data/trip-stop-data';
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {SkipStopComponent} from "../stop-skip/stop-skip";
 
 @Component({
   selector: 'app-stop-detail-view',
@@ -25,10 +28,12 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
   loaded: boolean = false;
   feedback: FeedbackData[] = [];
   announcements: AnnouncementData[] = [];
+  serviceRequests: ServiceRequestData[] = [];
 
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
-              private location: Location) {
+              private location: Location,
+              private modalService: NgbModal) {
     super();
   }
 
@@ -36,6 +41,11 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
     const stopId = this.route.snapshot.paramMap.get('stopId');
     this.getStop(stopId);
     this.getTripsForStop(stopId);
+  }
+
+  skipStop(): void {
+    const modal = this.modalService.open(SkipStopComponent);
+    modal.componentInstance.data = this.stop;
   }
 
   getStop(stopId: string): void {
@@ -103,6 +113,13 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
         this.announcements = data;
       }, err => {
         console.log(JSON.stringify(err));
+      }
+    );
+    this.http.getStopServiceRequests(this.stop.id).subscribe(
+      data => {
+        this.serviceRequests = data;
+      }, err => {
+        console.log('Could not get Service Requests for Stop')
       }
     );
   }
