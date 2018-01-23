@@ -10,6 +10,17 @@ import {AnnouncementData} from '../../shared/data/announcement-data';
 import { ServiceRequestData } from '../../shared/data/service-request-data';
 import {TripData} from '../../shared/data/trip-data';
 import {TripStopData} from '../../shared/data/trip-stop-data';
+import { StopData } from '../../shared/data/stop-data';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
+import { HttpRoutingService } from '../../services/http-routing.service';
+import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
+import {LineForStopData} from "../../shared/data/line-for-stop-data";
+import { FeedbackData } from '../../shared/data/feedback-data';
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {SkipStopComponent} from "../stop-skip/stop-skip";
+import { AnnouncementData } from '../../shared/data/announcement-data';
+import {SkipData} from "../../shared/data/skip-data";
 
 @Component({
   selector: 'app-stop-detail-view',
@@ -30,11 +41,21 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
 
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
-              private location: Location) {
+              private location: Location,
+              private modalService: NgbModal) {
     super();
   }
 
   ngOnInit(): void {
+    this.getStop();
+  }
+
+  skipStop(): void {
+    const modal = this.modalService.open(SkipStopComponent);
+    modal.componentInstance.data = this.stop;
+  }
+
+  getStop(): void {
     const stopId = this.route.snapshot.paramMap.get('stopId');
     this.getStop(stopId);
     this.getTripsForStop(stopId);

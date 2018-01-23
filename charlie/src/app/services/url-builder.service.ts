@@ -29,6 +29,10 @@ export class UrlBuilderService {
     return this.stopBaseUrl;
   }
 
+  public getStopSkipUrl(stopId: string): string {
+    return this.stopBaseUrl + '/' + stopId + '/skip';
+  }
+
   public getStopDetailsUrl(stopId: string): string {
     return this.stopBaseUrl + '/' + stopId;
   }
