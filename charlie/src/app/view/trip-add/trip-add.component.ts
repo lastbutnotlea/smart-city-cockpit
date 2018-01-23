@@ -71,7 +71,7 @@ export class TripAddComponent implements OnInit {
       err => console.log('Err'));
 
     // fetch available vehicles
-    this.http.getVehicles().subscribe(
+    this.http.getVehiclesWithCurrentTrip().subscribe(
       data => {
         this.availVehicles = data;
         this.selectedVehicle = this.toDropdownItemV(this.availVehicles[0]);

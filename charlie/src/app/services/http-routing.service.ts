@@ -88,6 +88,10 @@ export class HttpRoutingService {
     return this.http.get<VehicleData[]>(this.urlBuilder.getVehiclesUrl());
   }
 
+  public getVehiclesWithCurrentTrip(): Observable<VehicleData[]> {
+    return this.http.get<VehicleData[]>(this.urlBuilder.getVehiclesWithCurrentTripUrl());
+  }
+
   public getVehicle(vehicleId: string): Observable<VehicleData> {
     return this.http.get<VehicleData>(this.urlBuilder.getVehicleDetailsUrl(vehicleId));
   }

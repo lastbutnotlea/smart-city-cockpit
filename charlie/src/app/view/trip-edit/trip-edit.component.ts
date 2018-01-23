@@ -34,7 +34,7 @@ export class TripEditComponent implements OnInit {
       data => this.availLines = data,
         err => console.log('Err'));
 
-    this.http.getVehicles().subscribe(
+    this.http.getVehiclesWithCurrentTrip().subscribe(
       data => this.availVehicles = data,
       err => console.log('Err'));
   }

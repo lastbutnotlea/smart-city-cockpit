@@ -28,7 +28,7 @@ export abstract class LiveDataComponent implements OnInit {
 
   // Waits for a set period of time, then triggers refreshData to get new Data from backend
   protected subscribeToData(): void {
-    this.timerSubscription = Observable.timer(3000).first().subscribe(() => this.refreshData());
+    this.timerSubscription = Observable.timer(15000).first().subscribe(() => this.refreshData());
   }
 
   protected setDataSubscription(val: AnonymousSubscription): void {
