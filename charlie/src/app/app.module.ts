@@ -106,6 +106,7 @@ import {SkipStopComponent} from "./view/stop-skip/stop-skip";
     DatetimePickerComponent,
     EmbeddedAnnouncementsComponent,
     EmbeddedTripComponent,
+    EmbeddedServiceRequestComponent,
   ],
   imports: [
     BrowserModule,
