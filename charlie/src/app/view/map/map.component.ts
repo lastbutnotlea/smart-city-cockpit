@@ -80,7 +80,6 @@ export class MapComponent {
 
   setZoom() {
     var svg = d3.select('#tube-map').select('svg');
-
     var zoom = d3zoom
       .zoom()
       .scaleExtent([0.5, 6])
@@ -88,8 +87,6 @@ export class MapComponent {
     var zoomContainer = svg.call(zoom);
     var initialScale = 1.5;
     zoom.scaleTo(zoomContainer, initialScale);
-    // zoom.translateTo(zoomContainer, 0, 0);
-
     function zoomed() {
       svg.select('g').attr('transform', d3.event.transform.toString());
     }
