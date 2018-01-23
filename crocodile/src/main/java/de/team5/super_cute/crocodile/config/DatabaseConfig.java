@@ -33,7 +33,8 @@ public class DatabaseConfig {
   public SessionFactory getSessionFactory() {
     return new LocalSessionFactoryBuilder(getDataSource())
         .addAnnotatedClasses(IdentifiableObject.class, Line.class, Stop.class, Trip.class,
-            Vehicle.class, Feedback.class, Announcement.class, TickerItem.class, FeedbackGroup.class)
+            Vehicle.class, Feedback.class, Announcement.class, TickerItem.class, FeedbackGroup.class,
+            SkipStop.class)
         .setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQLDialect")
         .setProperty("hibernate.hbm2ddl.auto", "create")
         .setProperty("packagesToScan", "de.team5.super_cute.crocodile.model")
