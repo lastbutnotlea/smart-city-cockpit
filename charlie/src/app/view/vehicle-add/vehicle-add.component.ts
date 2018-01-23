@@ -32,7 +32,9 @@ export class VehicleAddComponent implements OnInit {
       defects: [],
       type: this.selected.value,
       state: 'FINE',
-      identifiableType: "vehicle"
+      identifiableType: "vehicle",
+      isShutDown: false,
+      currentLine: null
     }).subscribe(
       () => this.activeModal.close('Close click'),
       err => {

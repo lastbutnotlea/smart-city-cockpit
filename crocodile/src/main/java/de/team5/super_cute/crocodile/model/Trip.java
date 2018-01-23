@@ -59,6 +59,16 @@ public class Trip extends IdentifiableObject implements Serializable {
     this.line = line;
     this.stops = stops;
     this.isInbound = isInbound;
+    initializeTrip();
+  }
+
+  public void initializeTrip() {
+    if (isActive(LocalDateTime.now())) {
+      vehicle.setCurrentTrip(this);
+    }
+    if (getLastStopTime().isAfter(vehicle.getFreeFrom())) {
+      vehicle.setFreeFrom(getLastStopTime());
+    }
   }
 
   public Vehicle getVehicle() {
@@ -83,6 +93,26 @@ public class Trip extends IdentifiableObject implements Serializable {
 
   public void setIsInbound(boolean inbound) {
     isInbound = inbound;
+  }
+
+  @JsonIgnore
+  public LocalDateTime getLastStopTime() {
+    if (stops == null) {
+      return LocalDateTime.MIN;
+    }
+    return stops.values().stream().max(LocalDateTime::compareTo).orElse(LocalDateTime.MIN);
+  }
+
+  @JsonIgnore
+  public LocalDateTime getFirstStopTime() {
+    if (stops == null) {
+      return LocalDateTime.MAX;
+    }
+    return stops.values().stream().min(LocalDateTime::compareTo).orElse(LocalDateTime.MAX);
+  }
+
+  public boolean isActive(LocalDateTime time) {
+    return time.isBefore(getLastStopTime()) && time.isAfter(getFirstStopTime());
   }
 
   @JsonIgnore
