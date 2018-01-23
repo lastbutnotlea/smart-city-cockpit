@@ -15,7 +15,8 @@ task build(type: NpmTask, dependsOn: yarn) {
   args = ['run', 'build-prod']
 }
 
-task check(type: NpmTask, dependsOn: yarn) {
+task check(){
+	//type: NpmTask, dependsOn: yarn) {
   // no tests no more because of travis execution time
   // args = ['run', 'test-headless-prod']
 }
