@@ -10,7 +10,7 @@
     "build-prod": "ng build --prod --env=prod",
     "test": "ng test --single-run --config karma.conf.js",
     "test-headless-dev": "ng test --single-run --browsers Chrome_NoSandbox --config karma.conf.js",
-    "test-headless-prod": "ng test --env=prod --single-run --browsers Chrome_NoSandbox --config karma.conf.js",
+    "test-headless-prod": "ng test --env=prod --single-run --browsers Chrome_NoSandbox --config karma.prod.conf.js",
     "lint": "ng lint",
     "e2e": "ng e2e"
   },
