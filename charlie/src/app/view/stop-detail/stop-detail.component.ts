@@ -1,12 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {StopData} from '../../shared/data/stop-data';
-import {ActivatedRoute} from '@angular/router';
-import {Location} from '@angular/common';
-import {HttpRoutingService} from '../../services/http-routing.service';
-import {LiveDataComponent} from '../../shared/components/live-data/live-data.component';
-import {LineForStopData} from "../../shared/data/LineForStopData";
-import {FeedbackData} from '../../shared/data/feedback-data';
-import {AnnouncementData} from '../../shared/data/announcement-data';
+
 import {TripData} from '../../shared/data/trip-data';
 import {TripStopData} from '../../shared/data/trip-stop-data';
 import { StopData } from '../../shared/data/stop-data';
@@ -19,7 +12,6 @@ import { FeedbackData } from '../../shared/data/feedback-data';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {SkipStopComponent} from "../stop-skip/stop-skip";
 import { AnnouncementData } from '../../shared/data/announcement-data';
-import {SkipData} from "../../shared/data/skip-data";
 
 @Component({
   selector: 'app-stop-detail-view',
@@ -55,11 +47,11 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
 
   getStop(): void {
     const stopId = this.route.snapshot.paramMap.get('stopId');
-    this.getStop(stopId);
+    this.getData(stopId);
     this.getTripsForStop(stopId);
   }
 
-  getStop(stopId: string): void {
+  getData(stopId: string): void {
     // TODO: add live data once live data generator from backend works
     this.http.getStopDetails(stopId).subscribe(
       stop => {

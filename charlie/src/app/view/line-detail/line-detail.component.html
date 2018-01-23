@@ -1,12 +1,12 @@
 
 <div *ngIf="!loaded">Loading...</div>
 
-<div *ngIf="loaded">
-  <h3>
+<div class="fit-screen d-flex flex-column" *ngIf="loaded">
+  <h3 class="text-center">
     <div [ngClass]="{'color-fine': line.state === 'FINE',
        'color-problematic': line.state === 'PROBLEMATIC',
        'color-critical': line.state === 'CRITICAL' }">
-      <i class="fa fa-exchange fa-3x float-right padding-right-20"
+      <i class="fa fa-lightbulb-o fa-3x float-right padding-right-20"
          aria-hidden="true"></i>
     </div>
     Details <label class="text-primary"> {{line.name}} </label>

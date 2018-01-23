@@ -1,5 +1,5 @@
 <div class="d-flex flex-column fit-screen">
-  <h3>
+  <h3 class="text-center">
     <div [ngClass]="{'color-fine': state === 'FINE',
        'color-problematic': state === 'PROBLEMATIC',
        'color-critical': state === 'CRITICAL' }">
@@ -15,7 +15,7 @@
 
     <div *ngIf="loaded && filterGroup.getFiltered(vehicles).length > 0" class="d-flex flex-grow-1 fit-screen">
       <table class="table fit-screen d-flex flex-column">
-        <thead class="flex-grow-1">
+        <thead>
         <tr class="d-flex">
           <th>Vehicle-ID</th>
           <th>Capacity</th>
