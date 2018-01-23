@@ -4,7 +4,7 @@ import { AnonymousSubscription } from 'rxjs/Subscription';
 export abstract class LiveDataComponent {
 
   protected timerSubscription: AnonymousSubscription;
-  protected interval: number = 10000;
+  protected interval: number = 20000;
 
   /**
    * Stops calls for updated data form backend when component is not shown anymore

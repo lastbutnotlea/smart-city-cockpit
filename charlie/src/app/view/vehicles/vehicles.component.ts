@@ -47,21 +47,19 @@ export class VehiclesComponent extends LiveDataComponent implements OnInit {
   getVehicles(): void {
     this.http.getVehicles().subscribe(data => {
       this.vehicles = data;
-      this.getVehiclesState();
       this.loaded = true;
+    }, err => {
+      console.log(err);
     });
-  }
-
-  add(): void {
-    const modal = this.modalService.open(VehicleAddComponent);
-  }
-
-  getVehiclesState(): void {
     this.http.getVehiclesState().subscribe(data => {
       this.state = data;
     }, err => {
       console.log(err);
     })
+  }
+
+  add(): void {
+    const modal = this.modalService.open(VehicleAddComponent);
   }
 
   // update vehicles

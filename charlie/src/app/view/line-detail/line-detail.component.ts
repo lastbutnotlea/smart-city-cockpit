@@ -45,19 +45,19 @@ export class LineDetailComponent extends LiveDataComponent implements OnInit {
         this.line = line;
         /*this.lineMapInbound.getLineMap(line, line.stopsInbound);
         this.lineMapOutbound.getLineMap(line, line.stopsOutbound);*/
-        this.getPositionData();
         this.loaded = true;
       },
           err => {
         console.log('Could not fetch line data!')
       });
+    this.getPositionData(lineId);
   }
 
   goBack(): void {
     this.location.back();
   }
 
-  getPositionData(): void {
+  getPositionData(id: string): void {
     this.http.getVehiclePositionInboundData(this.line.id).subscribe(
       data => {
         this.inboundPositionData = data;
