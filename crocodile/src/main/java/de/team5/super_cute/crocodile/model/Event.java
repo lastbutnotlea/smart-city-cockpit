@@ -60,7 +60,7 @@ public class Event extends C4CEntity implements TickerItemable {
   private LocalDateTime endTime;
 
   @C4CProperty(name = "LocationName", maxLength = 100)
-  private String LocationName;
+  private String locationName;
 
   @C4CProperty(name = "AppointmentInvolvedParties", hasAssociatedEntities = true)
   private List<AppointmentInvolvedParties> appointmentInvolvedParties;
@@ -79,7 +79,7 @@ public class Event extends C4CEntity implements TickerItemable {
     this.priority = priority;
     this.startTime = startTime;
     this.endTime = endTime;
-    this.LocationName = locationName;
+    this.locationName = locationName;
     this.appointmentInvolvedParties = appointmentInvolvedParties;
     this.appointmentNotes = appointmentNotes;
   }
@@ -161,11 +161,11 @@ public class Event extends C4CEntity implements TickerItemable {
   }
 
   public String getLocationName() {
-    return LocationName;
+    return locationName;
   }
 
   public void setLocationName(String locationName) {
-    LocationName = locationName;
+    locationName = locationName;
   }
 
   public List<AppointmentInvolvedParties> getAppointmentInvolvedParties() {
@@ -241,7 +241,7 @@ public class Event extends C4CEntity implements TickerItemable {
         .append("status", status)
         .append("startTime", startTime)
         .append("endTime", endTime)
-        .append("LocationName", LocationName)
+        .append("locationName", locationName)
         .append("appointmentInvolvedParties", appointmentInvolvedParties)
         .append("appointmentNotes", appointmentNotes)
         .toString();

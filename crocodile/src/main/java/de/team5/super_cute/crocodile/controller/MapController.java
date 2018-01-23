@@ -11,6 +11,7 @@ import de.team5.super_cute.crocodile.model.EState;
 import de.team5.super_cute.crocodile.model.EVehicleType;
 import de.team5.super_cute.crocodile.model.Line;
 import de.team5.super_cute.crocodile.model.Stop;
+import de.team5.super_cute.crocodile.model.Vehicle;
 import de.team5.super_cute.crocodile.util.StateCalculator;
 import java.util.Collection;
 import java.util.List;
@@ -98,8 +99,8 @@ public class MapController {
 
   @GetMapping("/state")
   public EState getMapState() {
-    Double vehicleSeverity = vehicleData.getData().stream().mapToInt(v -> v.getSeverity()).average().getAsDouble();
-    Double stopSeverity = stopData.getData().stream().mapToInt(v -> v.getSeverity()).average().getAsDouble();
+    Double vehicleSeverity = vehicleData.getData().stream().mapToInt(Vehicle::getSeverity).average().getAsDouble();
+    Double stopSeverity = stopData.getData().stream().mapToInt(Stop::getSeverity).average().getAsDouble();
     return StateCalculator.getState((int) ((vehicleSeverity + stopSeverity) / 2));
   }
 }

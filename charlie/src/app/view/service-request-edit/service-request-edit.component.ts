@@ -10,7 +10,7 @@ import { FeedbackData } from '../../shared/data/feedback-data';
 @Component({
   selector: 'app-service-request-edit',
   templateUrl: './service-request-edit.component.html',
-  styleUrls: ['./service-request-edit.component.css',  '../../shared/styling/global-styling.css']
+  styleUrls: ['./service-request-edit.component.css']
 })
 
 export class ServiceRequestEditComponent implements OnInit {
@@ -77,7 +77,7 @@ export class ServiceRequestEditComponent implements OnInit {
   editServiceRequest(): void {
     this.data.priority = this.selectedPriority.value;
     this.data.dueDate = this.selectedDate;
-    this.data.serviceRequestDescription = [{"id": "", "text": this.description}];
+    this.data.serviceRequestDescription = [{"id": "", "text": this.description, "objectId": this.data.serviceRequestDescription[0].objectId}];
     this.data.feedbacks = this.selectedFeedback;
     console.log(this.data);
 

@@ -1,3 +1,109 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~bootstrap/dist/css/bootstrap.min.css';
 @import '../node_modules/font-awesome/css/font-awesome.css';
+
+.fit-screen {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.no-float {
+  clear: both;
+}
+
+.width-100 {
+  width: 100%;
+}
+
+table {
+  margin-right: 10px;
+}
+
+
+/* MARGIN AND PADDING */
+
+.margin-bottom-30 {
+  margin-bottom: 30px;
+}
+
+.padding-top-30 {
+  padding-top: 30px;
+}
+
+.padding-top-50 {
+  padding-top: 50px;
+}
+
+.padding-left-5 {
+  padding-left: 5px;
+}
+
+.padding-right-5 {
+  padding-right: 5px;
+}
+
+.padding-right-20 {
+  padding-right: 20px;
+}
+
+.padding-emb-box-headline {
+  padding-left: 10px;
+  padding-top: 10px;
+  padding-bottom: 20px;
+}
+
+.datepicker {
+  margin: 0 20px 20px 0;
+}
+
+/* COLORS */
+
+.color-fine {
+  color: limegreen;
+}
+
+.color-problematic {
+  color: #ffb300;
+}
+
+.color-critical {
+  color: #dd3645;
+}
+
+.background-fine {
+  background-color: limegreen;
+}
+
+.background-problematic {
+  background-color: #ffb300;
+}
+
+.background-critical {
+  background-color: #dd3645;
+}
+
+/* STYLING EMBEDDED COMPONENTS */
+
+.bounding-box {
+  float: left;
+  margin: 20px 20px 0 0;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #007bff;
+  overflow-y: auto;
+}
+
+.flex-3 {
+  flex-grow: 2;
+  max-width: 100%;
+}
+
+.flex-1 {
+  flex-grow: 1;
+  max-width: 100%;
+}
+
+h4 {
+  margin-bottom: 20px;
+  text-align: center;
+}

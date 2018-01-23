@@ -2,15 +2,12 @@ import {Component, OnInit} from '@angular/core';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {AnnouncementData} from '../../../shared/data/announcement-data';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {AnnouncementAddComponent} from '../announcement-add/announcement-add.component';
+import {AnnouncementEditComponent} from '../edit/announcement-edit.component';
 
 @Component({
   selector: 'app-announcement',
   templateUrl: './announcement-main.component.html',
-  styleUrls: [
-    './announcement-main.component.css',
-    '../../../shared/styling/embedded-components.css',
-  ]
+  styleUrls: ['./announcement-main.component.css']
 })
 export class AnnouncementMainComponent implements OnInit {
 
@@ -31,7 +28,7 @@ export class AnnouncementMainComponent implements OnInit {
   }
 
   add(): void {
-    const modal = this.modalService.open(AnnouncementAddComponent);
+    const modal = this.modalService.open(AnnouncementEditComponent);
     modal.componentInstance.onAdd(item => this.data.push(item));
   }
 }

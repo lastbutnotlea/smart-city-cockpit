@@ -10,7 +10,9 @@ import {VehicleDetailComponent} from './view/vehicle-detail/vehicle-detail.compo
 import { ServiceRequestsComponent } from './view/service-requests/service-requests.component';
 import { ServiceRequestDetailComponent } from './view/service-request-detail/service-request-detail.component';
 import {FeedbackComponent} from './view/feedback/feedback.component';
-import {AnnouncementMainComponent} from './view/announcements/announcement-main/announcement-main.component';
+import {AnnouncementMainComponent} from './view/announcements/main/announcement-main.component';
+import {EventsComponent} from './view/events/events.component';
+import {EventDetailComponent} from './view/event-detail/event-detail.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/network', pathMatch: 'full'},
@@ -22,6 +24,8 @@ const routes: Routes = [
   {path: 'vehicles', component: VehiclesComponent},
   {path: 'vehicles/:id', component: VehicleDetailComponent},
   {path: 'feedback', component: FeedbackComponent},
+  {path: 'events', component: EventsComponent},
+  {path: 'events/detail/:id', component: EventDetailComponent},
   {path: 'serviceRequests', component: ServiceRequestsComponent},
   {path: 'serviceRequests/:id', component: ServiceRequestDetailComponent},
   {path: 'announcements', component: AnnouncementMainComponent},
@@ -46,7 +50,7 @@ export class AppRoutingModule {
     } else if (id.startsWith('Feedback_')) {
       return '/feedback';
     } else {
-      console.log('No target for \'' + id + '\' found, assuming it is a stop');
+      console.debug('No target for \'' + id + '\' found, assuming it is a stop');
       return '/network/stop/' + id;
     }
   }

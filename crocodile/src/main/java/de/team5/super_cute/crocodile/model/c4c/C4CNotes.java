@@ -30,7 +30,13 @@ public class C4CNotes extends C4CEntity {
   @Override
   @JsonIgnore
   public String getCollectionName() {
-    return "AppointmentNotesCollection";
+    if (typeCode.equals(EC4CNotesTypeCode.SERVICE_REQUEST_DESCRIPTION.toString())) {
+      return "ServiceRequestDescriptionCollection";
+    } else if (typeCode.equals(EC4CNotesTypeCode.APPOINTMENT_NOTES.toString())) {
+      return "AppointmentNotesCollection";
+    } else {
+      return "No C4C Collection for this Type Code known.";
+    }
   }
 
   @Override

@@ -11,7 +11,7 @@ import { FeedbackData } from '../../shared/data/feedback-data';
 @Component({
   selector: 'app-service-request-add',
   templateUrl: './service-request-add.component.html',
-  styleUrls: ['./service-request-add.component.css',  '../../shared/styling/global-styling.css']
+  styleUrls: ['./service-request-add.component.css']
 })
 
 export class ServiceRequestAddComponent implements OnInit {
@@ -133,7 +133,7 @@ export class ServiceRequestAddComponent implements OnInit {
     this.selected.serviceType = this.selectedType.value;
     this.selected.priority = this.selectedPriority.value;
     this.selected.dueDate = this.selectedDate;
-    this.selected.serviceRequestDescription = [{"id": "", "text": this.description}];
+    this.selected.serviceRequestDescription = [{"id": "", "text": this.description, "objectId": ""}];
     console.log(this.selected);
 
     this.http.addServiceRequest(this.selected).subscribe(

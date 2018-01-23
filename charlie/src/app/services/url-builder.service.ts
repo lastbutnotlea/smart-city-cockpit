@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
 import {TickerData} from '../shared/data/ticker-data';
+import {AnnouncementData} from "../shared/data/announcement-data";
 
 @Injectable()
 export class UrlBuilderService {
@@ -14,6 +15,7 @@ export class UrlBuilderService {
   private feedbackBaseUrl = this.baseUrl + '/feedback';
   private announcementBaseUrl = this.baseUrl + '/announcement';
   private tickerBaseUrl = this.baseUrl + '/ticker';
+  private eventsBaseUrl = this.baseUrl + '/events';
 
   public getNetworkUrl(): string {
     return this.networkBaseUrl;
@@ -104,7 +106,20 @@ export class UrlBuilderService {
   }
 
   public getAnnouncements(): string {
+  public getAnnouncementsUrl(): string {
     return this.announcementBaseUrl;
+  }
+
+  public getEventsUrl(): string {
+    return this.eventsBaseUrl;
+  }
+
+  public getEventDetailsUrl(eventId: string): string {
+    return this.eventsBaseUrl + '/' + eventId;
+  }
+
+  public getInvolvedPartiesUrl(): string {
+    return this.eventsBaseUrl + '/people';
   }
 
   public getTickerUrl(): string {
@@ -113,6 +128,10 @@ export class UrlBuilderService {
 
   public getTickerDeleteUrl(item: TickerData): string {
     return this.tickerBaseUrl + '/' + item.id;
+  }
+
+  public getAnnouncementItemUrl(item: AnnouncementData): string {
+    return this.announcementBaseUrl + '/' + item.id;
   }
 
   public getVehiclesStateUrl(): string {
@@ -124,6 +143,14 @@ export class UrlBuilderService {
   }
 
   public getStopAnnouncementsUrl(stopId: string): string {
-    return this.getStopDetailsUrl(stopId) + '/announcements';
+    return this.announcementBaseUrl + '/stop/' + stopId;
+  }
+
+  public getTripsForStopUrl(stopId: string): string {
+    return this.tripBaseUrl + '/stop/' + stopId;
+  }
+
+  public getTripsForVehicleUrl(vehicleId: string): string {
+    return this.tripBaseUrl + '/vehicle/' + vehicleId;
   }
 }

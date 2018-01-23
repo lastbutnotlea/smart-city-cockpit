@@ -66,4 +66,8 @@ public class Helpers {
         EServiceType.MAINTENANCE, notes, target.getId(), "Feedback_0");
     return srr;
   }
+
+  public static String makeIdToJSON(String id) {
+    return "{\"id\":\"" + id + "\"}";
+  }
 }

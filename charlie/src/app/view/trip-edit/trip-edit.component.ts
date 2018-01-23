@@ -13,7 +13,7 @@ import {dummyDate} from '../../shared/data/dates';
 @Component({
   selector: 'app-trip-edit',
   templateUrl: './trip-edit.component.html',
-  styleUrls: ['./trip-edit.component.css',  '../../shared/styling/global-styling.css']
+  styleUrls: ['./trip-edit.component.css']
 })
 
 export class TripEditComponent implements OnInit {
@@ -56,7 +56,6 @@ export class TripEditComponent implements OnInit {
   confirm(): void {
     this.data.vehicle = this.selectedVehicle.value;
     this.data.stops = this.selected.stops;
-    this.activeModal.close('Close click');
     this.http.editTrip(this.data).subscribe(
       data => {
         // get trips to refresh the trip detail data in trip detail view
@@ -70,6 +69,7 @@ export class TripEditComponent implements OnInit {
               this.data.stops.push(stop);
             }
             this.data.stops = this.stopSortService.sortStops(this.data.stops);
+            this.activeModal.close('Close click');
           },
           err => console.log('Could not fetch trip data!')
         );

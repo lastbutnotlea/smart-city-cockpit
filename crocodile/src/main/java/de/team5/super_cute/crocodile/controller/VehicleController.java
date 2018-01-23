@@ -5,8 +5,12 @@ import static de.team5.super_cute.crocodile.config.LiveDataConfig.TEMPERATURE_IN
 import de.team5.super_cute.crocodile.config.AppConfiguration;
 import de.team5.super_cute.crocodile.data.BaseData;
 import de.team5.super_cute.crocodile.data.TripData;
+import de.team5.super_cute.crocodile.model.EState;
 import de.team5.super_cute.crocodile.model.Trip;
 import de.team5.super_cute.crocodile.model.Vehicle;
+import de.team5.super_cute.crocodile.util.Helpers;
+import de.team5.super_cute.crocodile.util.StateCalculator;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
@@ -38,15 +42,21 @@ public class VehicleController extends BaseController<Vehicle> {
   @GetMapping
   public List<Vehicle> getAllVehicles() {
     logger.info("Got Request to return all vehicles");
-    List<Vehicle> vehicles = data.getData();
-    vehicles.sort((v1, v2) -> v1.getId().compareTo(v2.getId()));
-    return vehicles;
+    return data.getData().stream()
+        .filter(v -> !v.getIsShutDown())
+        //.peek(tripData::setFreeFrom)
+        .peek(this::setCurrentTrip)
+        .sorted((v1, v2) -> v1.getId().compareTo(v2.getId()))
+        .collect(Collectors.toList());
   }
 
   @GetMapping("/{id}")
   public Vehicle getVehicle(@PathVariable String id) {
     logger.info("Got Request to return the vehicle with id " + id);
-    return getObjectForId(id);
+    Vehicle v = getObjectForId(id);
+    //tripData.setFreeFrom(v);
+    setCurrentTrip(v);
+    return v;
   }
 
   @PostMapping
@@ -55,40 +65,48 @@ public class VehicleController extends BaseController<Vehicle> {
     input.setId();
     input.setLoad(0);
     input.setTemperature(TEMPERATURE_INITIAL);
-    return makeIdToJSON(addObject(input));
+    input.setIsShutDown(false);
+    return Helpers.makeIdToJSON(addObject(input));
   }
 
   @DeleteMapping("/{id}")
   public String deleteVehicle(@PathVariable String id) {
     logger.info("Got Request to delete the vehicle with id " + id);
-    if (tripData.getPresentAndFutureTripsForVehicle(id)) {
+    if (tripData.hasPresentOrFutureTrips(id)) {
       //there are planned or active trips for that vehicle
       return "Vehicle is in use!";
     }
     //delete past trips for this vehicle
-    List<Trip> trips = tripData.getData().stream().filter(t -> t.getVehicle().getId().equals(id))
-        .collect(Collectors.toList());
-    for (Trip trip:trips) {
-      tripData.deleteObject(trip.getId());
-    }
-    return makeIdToJSON(deleteObject(id));
+    return forceDeleteVehicle(id);
   }
 
   @DeleteMapping("/{id}/force")
   public String forceDeleteVehicle(@PathVariable String id) {
     logger.info("Got Request to delete the vehicle with id " + id);
     //delete trips for this vehicle
-    List<Trip> trips = tripData.getData().stream().filter(t -> t.getVehicle().getId().equals(id))
-        .collect(Collectors.toList());
-    for (Trip trip:trips) {
+    List<Trip> trips = tripData.getAllTripsOfVehicle(id);
+    for (Trip trip: trips) {
       tripData.deleteObject(trip.getId());
     }
-    return makeIdToJSON(deleteObject(id));
+    Vehicle v = getObjectForId(id);
+    v.setIsShutDown(true);
+      return Helpers.makeIdToJSON(deleteObject(id));
   }
 
   @PutMapping
   public String editVehicle(@RequestBody Vehicle input) {
     logger.info("Got Request to edit a vehicle to " + input);
-    return makeIdToJSON(editObject(input));
+    return Helpers.makeIdToJSON(editObject(input));
+  }
+
+  @GetMapping("/state")
+  public EState getOverallVehiclesState() {
+    return StateCalculator.getState((int) data.getData().stream().mapToInt(Vehicle::getSeverity).average().getAsDouble());
+  }
+
+  private void setCurrentTrip(Vehicle vehicle) {
+    if (vehicle.getOutdateCurrentTrip().isBefore(LocalDateTime.now())) {
+      vehicle.setCurrentTrip(tripData.getCurrentTripOfVehicle(vehicle, LocalDateTime.now()));
+    }
   }
 }

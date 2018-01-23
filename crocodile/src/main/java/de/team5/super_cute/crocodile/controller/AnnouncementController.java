@@ -3,6 +3,7 @@ package de.team5.super_cute.crocodile.controller;
 import de.team5.super_cute.crocodile.config.AppConfiguration;
 import de.team5.super_cute.crocodile.data.BaseData;
 import de.team5.super_cute.crocodile.model.Announcement;
+import de.team5.super_cute.crocodile.util.Helpers;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class AnnouncementController extends BaseController<Announcement> {
     return data.getData();
   }
 
-  @GetMapping("/stop/{id}")
+  @GetMapping("/stop/{stopId}")
   public List<Announcement> getAnnouncements(@PathVariable String stopId) {
     return data.getData().stream()
         .filter(a -> a.getStops().stream().anyMatch(s -> s.getId().equals(stopId)))
@@ -38,16 +39,16 @@ public class AnnouncementController extends BaseController<Announcement> {
 
   @PostMapping
   public String addAnnouncement(@RequestBody Announcement announcement) {
-    return makeIdToJSON(addObject(announcement));
+    return Helpers.makeIdToJSON(addObject(announcement));
   }
 
   @DeleteMapping("/{id}")
   public String deleteAnnouncement(@PathVariable String id) {
-    return makeIdToJSON(deleteObject(id));
+    return Helpers.makeIdToJSON(deleteObject(id));
   }
 
   @PutMapping
   public String editAnnouncement(@RequestBody Announcement announcement) {
-    return makeIdToJSON(editObject(announcement));
+    return Helpers.makeIdToJSON(editObject(announcement));
   }
 }
