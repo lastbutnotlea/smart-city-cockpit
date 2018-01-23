@@ -54,6 +54,8 @@ import {EmbeddedTripComponent} from './shared/components/embedded-trip/embedded-
 import {EmbeddedFeedbackComponent} from './shared/components/embedded-feedback/embedded-feedback.component';
 import {SkipStopComponent} from "./view/stop-skip/stop-skip";
 import {EmbeddedAnnouncementsComponent} from './shared/components/embedded-announcements/embedded-announcements.component';
+import { AnnouncementItemComponent } from './view/announcements/item/announcement-item.component';
+import { AnnouncementMainComponent } from './view/announcements/main/announcement-main.component';
 
 @NgModule({
   declarations: [
@@ -129,7 +131,6 @@ import {EmbeddedAnnouncementsComponent} from './shared/components/embedded-annou
     TripAddComponent,
     ServiceRequestAddComponent,
     ServiceRequestEditComponent,
-    AnnouncementAddComponent,
     SkipStopComponent,
     AnnouncementEditComponent,
     EventAddComponent,
