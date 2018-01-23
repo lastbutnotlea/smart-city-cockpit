@@ -55,13 +55,13 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
         this.stop = stop;
         this.getLines();
         this.getAdditionalData();
+        this.getTripsForStop(stopId);
       },
       err => console.log('Could not fetch stop data!')
     );
   }
 
-  getTripsForStop(): void {
-    const stopId = this.route.snapshot.paramMap.get('stopId');
+  getTripsForStop(stopId: string): void {
     this.http.getTripsForStop(stopId).subscribe(
       trips => {
         this.trips = trips;
@@ -130,7 +130,6 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
   // update stop data
   refreshData(): void {
     this.getStop();
-    this.getTripsForStop();
   }
 
 }
