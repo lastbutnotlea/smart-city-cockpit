@@ -26,15 +26,26 @@ export class NetworkComponent extends LiveDataComponent implements OnInit {
   ngOnInit(): void {
     this.title = 'Network';
     // get line data
+    this.getNetworkData();
+    this.getMapData();
+    super.subscribeToData();
+  }
+
+  getNetworkData(): void {
     this.http.getLines().subscribe( data => {
         this.lines = data;
-        this.getNetworkState();
-        super.ngOnInit();
         this.loaded = true;
-        this.getMapData();
       },
       err => {
         console.log('Could not fetch lines.');
+      }
+    );
+    this.http.getNetworkState().subscribe(
+      data => {
+        this.state = data;
+      },
+      err => {
+        console.log(err);
       }
     );
   }
@@ -57,29 +68,9 @@ export class NetworkComponent extends LiveDataComponent implements OnInit {
     });
   }
 
-  private getNetworkState(): void {
-    this.http.getNetworkState().subscribe(
-      data => {
-        this.state = data;
-      },
-      err => {
-        console.log(err);
-        alert('Could not get state of network from backend.');
-      }
-    );
-  }
-
   // update network data
   refreshData(): void {
-    this.setDataSubscription(
-      this.http.getLines().subscribe( data => {
-        this.lines = data;
-        this.getNetworkState();
-      },
-      err =>
-        console.log('Could not fetch new line-data.'),
-      ));
-    this.subscribeToData();
+    this.getNetworkData();
   }
 
 }

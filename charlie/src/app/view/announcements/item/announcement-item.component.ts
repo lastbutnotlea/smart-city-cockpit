@@ -27,7 +27,7 @@ export class AnnouncementItemComponent {
     this.http.deleteAnnouncement(this.data).subscribe(
       data => this.deleted = true,
       err => {
-        alert("An Error occurred.");
+        alert("An Error occurred. Could not delete Announcement Item.");
         console.log(JSON.stringify(err));
       }
     );

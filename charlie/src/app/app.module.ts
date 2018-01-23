@@ -41,27 +41,22 @@ import {FilterGroupComponent} from './shared/components/filter-group/filter-grou
 import {EmbeddedStopOverviewComponent} from './shared/components/embedded-stop-overview/embedded-stop-overview.component';
 import {FeedbackComponent} from './view/feedback/feedback.component';
 import {FeedbackItemComponent} from './view/feedback-item/feedback-item.component';
-import {AnnouncementMainComponent} from './view/announcements/main/announcement-main.component';
 import {AnnouncementEditComponent} from './view/announcements/edit/announcement-edit.component';
-import {AnnouncementItemComponent} from './view/announcements/item/announcement-item.component';
-import {EmbeddedFeedbackComponent} from './shared/components/embedded-feedback/embedded-feedback.component';
 import {EditAnnounementTextComponent} from './view/announcements/edit/text/edit-announcement-text.component';
 import {EditAnnouncementDatetimeComponent} from './view/announcements/edit/datetime/edit-announcement-datetime.component';
 import {EditAnnouncementStopsComponent} from './view/announcements/edit/stops/edit-announcement-stops.component';
 import {DatetimePickerComponent} from './shared/components/datetime-picker/datetime-picker.component';
-import {EmbeddedAnnouncementsComponent} from './shared/components/embedded-announcements/embedded-announcements.component';
 import {EventsComponent} from './view/events/events.component';
 import {EventDetailComponent} from './view/event-detail/event-detail.component';
 import {EventAddComponent} from './view/event-add/event-add.component';
 import {EventEditComponent} from './view/event-edit/event-edit.component';
 import {EmbeddedTripComponent} from './shared/components/embedded-trip/embedded-trip.component';
 import {EmbeddedServiceRequestComponent} from './shared/components/embedded-service-request/embedded-service-request.component';
-import {AnnouncementMainComponent} from './view/announcements/announcement-main/announcement-main.component';
-import {AnnouncementAddComponent} from './view/announcements/announcement-add/announcement-add.component';
-import {AnnouncementItemComponent} from './view/announcements/announcement-item/announcement-item.component';
-import { EmbeddedFeedbackComponent } from './shared/components/embedded-feedback/embedded-feedback.component';
+import {EmbeddedFeedbackComponent} from './shared/components/embedded-feedback/embedded-feedback.component';
 import {SkipStopComponent} from "./view/stop-skip/stop-skip";
-import { EmbeddedAnnouncementsComponent } from './shared/components/embedded-announcements/embedded-announcements.component';
+import {EmbeddedAnnouncementsComponent} from './shared/components/embedded-announcements/embedded-announcements.component';
+import {AnnouncementItemComponent} from './view/announcements/item/announcement-item.component';
+import {AnnouncementMainComponent} from './view/announcements/main/announcement-main.component';
 
 @NgModule({
   declarations: [
@@ -112,6 +107,7 @@ import { EmbeddedAnnouncementsComponent } from './shared/components/embedded-ann
     DatetimePickerComponent,
     EmbeddedAnnouncementsComponent,
     EmbeddedTripComponent,
+    EmbeddedServiceRequestComponent,
   ],
   imports: [
     BrowserModule,
@@ -138,7 +134,6 @@ import { EmbeddedAnnouncementsComponent } from './shared/components/embedded-ann
     TripAddComponent,
     ServiceRequestAddComponent,
     ServiceRequestEditComponent,
-    AnnouncementAddComponent,
     SkipStopComponent,
     AnnouncementEditComponent,
     EventAddComponent,
