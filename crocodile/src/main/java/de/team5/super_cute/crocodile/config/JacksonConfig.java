@@ -16,6 +16,7 @@ public class JacksonConfig {
     ObjectMapper objectMapper = builder.build();
     objectMapper.registerModule(new ParameterNamesModule())
             .registerModule(new Jdk8Module())
+            .findAndRegisterModules()
             .registerModule(new JavaTimeModule());
     objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
     objectMapper.configure(SerializationFeature.WRITE_DATE_TIMESTAMPS_AS_NANOSECONDS, false);

@@ -27,14 +27,16 @@
       </div>
     </div>
 
-    <div class="d-flex flex-1 flex-column">
+    <div class="d-flex flex-1 float-right flex-column">
       <div class=" d-flex bounding-box">
         <app-embedded-stop [stop]="stop" [lineForStopDataInbound]="lineForStopDataInbound"
                            [lineForStopDataOutbound]="lineForStopDataOutbound"></app-embedded-stop>
       </div>
+      <app-embedded-trip [trips]="trips" [areTripsForVehicle]="false" class="flex-1 bounding-box"></app-embedded-trip>
       <div class="d-flex bounding-box">
         <app-embedded-service-requests [serviceRequests]="serviceRequests"></app-embedded-service-requests>
       </div>
     </div>
+
   </div>
 </div>

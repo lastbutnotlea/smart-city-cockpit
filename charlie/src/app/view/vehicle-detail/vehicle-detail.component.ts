@@ -6,6 +6,7 @@ import {HttpRoutingService} from '../../services/http-routing.service';
 import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
 import { FeedbackData } from '../../shared/data/feedback-data';
 import { ServiceRequestData } from '../../shared/data/service-request-data';
+import {TripData} from '../../shared/data/trip-data';
 
 @Component({
   selector: 'app-vehicle-detail',
@@ -18,6 +19,7 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
   loaded: boolean = false;
   feedback: FeedbackData[] = [];
   serviceRequests: ServiceRequestData[] = [];
+  trips: TripData[] = [];
 
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
@@ -30,12 +32,20 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
     this.http.getVehicle(id).subscribe(
       vehicle => {
         this.vehicle = vehicle;
-        debugger;
         this.getAdditionalData();
         super.ngOnInit();
         this.loaded = true;
       },
       err => console.log('Could not fetch vehicle data!')
+    );
+
+    this.getTripsForVehicle(id);
+  }
+
+  getTripsForVehicle(vehicleId: string): void {
+    this.http.getTripsForVehicle(vehicleId).subscribe(
+      trips => this.trips = trips,
+      err => console.log('Could not fetch trip data, sorry!')
     );
   }
 
@@ -79,6 +89,8 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
           console.log('Could not fetch new line-data.')
       ));
     this.subscribeToData();
+
+    this.getTripsForVehicle(this.vehicle.id);
   }
 
 }

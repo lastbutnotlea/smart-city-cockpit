@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
 import {TickerData} from '../shared/data/ticker-data';
+import {AnnouncementData} from "../shared/data/announcement-data";
 
 @Injectable()
 export class UrlBuilderService {
@@ -92,7 +93,7 @@ export class UrlBuilderService {
     return this.feedbackBaseUrl + '/stop/' + stopId;
   }
 
-  public getAnnouncements(): string {
+  public getAnnouncementsUrl(): string {
     return this.announcementBaseUrl;
   }
 
@@ -116,6 +117,10 @@ export class UrlBuilderService {
     return this.tickerBaseUrl + '/' + item.id;
   }
 
+  public getAnnouncementItemUrl(item: AnnouncementData): string {
+    return this.announcementBaseUrl + '/' + item.id;
+  }
+
   public getVehiclesStateUrl(): string {
     return this.vehicleBaseUrl + '/state';
   }
@@ -131,8 +136,16 @@ export class UrlBuilderService {
   public getVehicleServiceRequestsUrl(vehicleId: string): string {
     return this.serviceRequestsBaseUrl + '/vehicle/' + vehicleId;
   }
+  
+  public getTripsForStopUrl(stopId: string): string {
+    return this.tripBaseUrl + '/stop/' + stopId;
+  }
 
   public getStopServiceRequestsUrl(stopId: string): string {
     return this.serviceRequestsBaseUrl + '/stop/' + stopId;
+  }
+  
+  public getTripsForVehicleUrl(vehicleId: string): string {
+    return this.tripBaseUrl + '/vehicle/' + vehicleId;
   }
 }

@@ -10,7 +10,7 @@ import {VehicleDetailComponent} from './view/vehicle-detail/vehicle-detail.compo
 import {ServiceRequestsComponent} from './view/service-requests/service-requests.component';
 import {ServiceRequestDetailComponent} from './view/service-request-detail/service-request-detail.component';
 import {FeedbackComponent} from './view/feedback/feedback.component';
-import {AnnouncementMainComponent} from './view/announcements/announcement-main/announcement-main.component';
+import {AnnouncementMainComponent} from './view/announcements/main/announcement-main.component';
 import {EventsComponent} from './view/events/events.component';
 import {EventDetailComponent} from './view/event-detail/event-detail.component';
 

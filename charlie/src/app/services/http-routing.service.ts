@@ -170,11 +170,19 @@ export class HttpRoutingService {
   }
 
   public getAnnouncements(): Observable<any []> {
-    return this.http.get<any []>(this.urlBuilder.getAnnouncements());
+    return this.http.get<any []>(this.urlBuilder.getAnnouncementsUrl());
   }
 
   public addAnnouncement(announcement: AnnouncementData): Observable<any> {
-    return this.http.post<any>(this.urlBuilder.getAnnouncements(), announcement);
+    return this.http.post(this.urlBuilder.getAnnouncementsUrl(), announcement);
+  }
+
+  public deleteAnnouncement(data: AnnouncementData): Observable<any> {
+    return this.http.delete(this.urlBuilder.getAnnouncementItemUrl(data));
+  }
+
+  public editAnnouncement(data: AnnouncementData): Observable<any> {
+    return this.http.put(this.urlBuilder.getAnnouncementsUrl(), data);
   }
 
   public getEvents(): Observable<EventData[]> {
@@ -211,6 +219,14 @@ export class HttpRoutingService {
 
   public getStopAnnouncements(stopId: string): Observable<AnnouncementData[]> {
     return this.http.get<AnnouncementData[]>(this.urlBuilder.getStopAnnouncementsUrl(stopId));
+  }
+
+  public getTripsForStop(stopId: string): Observable<TripData[]> {
+    return this.http.get<TripData[]>(this.urlBuilder.getTripsForStopUrl(stopId));
+  }
+
+  public getTripsForVehicle(vehicleId: string): Observable<TripData[]> {
+    return this.http.get<TripData[]>(this.urlBuilder.getTripsForVehicleUrl(vehicleId));
   }
 
   public getVehicleServiceRequests(vehicleId: string): Observable<ServiceRequestData[]> {

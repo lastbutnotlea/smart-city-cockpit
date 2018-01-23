@@ -29,24 +29,26 @@
         </thead>
         <tbody class="d-flex flex-column flex-grow-1 fit-screen">
         <tr *ngFor="let vehicle of filterGroup.getFiltered(vehicles)">
-          <td>
-            <a routerLink="{{vehicle.id}}">
-              {{ vehicle.id }}
-            </a>
-          </td>
-          <td>{{ vehicle.capacity }}</td>
-          <td>{{ vehicle.load }}</td>
-          <td>{{ (vehicle.delay / 60.0).toFixed(0) }}</td>
-          <td>{{ vehicle.temperature }}</td>
-          <td>{{ vehicle.defects }}</td>
-          <td>{{ vehicle.type }}</td>
-          <td>
+          <div *ngIf="!vehicle.isShutDown">
+            <td>
+              <a routerLink="{{vehicle.id}}">
+                {{ vehicle.id }}
+              </a>
+            </td>
+            <td>{{ vehicle.capacity }}</td>
+            <td>{{ vehicle.load }}</td>
+            <td>{{ (vehicle.delay / 60.0).toFixed(0) }}</td>
+            <td>{{ vehicle.temperature }}</td>
+            <td>{{ vehicle.defects }}</td>
+            <td>{{ vehicle.type }}</td>
+            <td>
           <span [ngClass]="{'color-fine': vehicle.state === 'FINE',
            'color-problematic': vehicle.state === 'PROBLEMATIC',
           'color-critical': vehicle.state === 'CRITICAL' }">
             <i class="fa fa-lightbulb-o" aria-hidden="true"></i>
           </span>
-          </td>
+            </td>
+          </div>
         </tr>
         </tbody>
       </table>

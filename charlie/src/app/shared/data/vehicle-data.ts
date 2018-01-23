@@ -1,4 +1,5 @@
 import { ServiceRequestTarget } from './service-request-target';
+import {LineData} from './line-data';
 
 export class VehicleData extends ServiceRequestTarget {
   capacity: number;
@@ -9,4 +10,6 @@ export class VehicleData extends ServiceRequestTarget {
   type: string;
   state: string;
   identifiableType: String = "vehicle";
+  isShutDown: boolean;
+  currentLine: LineData;
 }

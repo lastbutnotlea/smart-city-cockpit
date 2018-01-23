@@ -20,15 +20,22 @@ import static de.team5.super_cute.crocodile.config.TickerConfig.VEHICLE_BASE_PRI
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.team5.super_cute.crocodile.config.LiveDataConfig;
+import de.team5.super_cute.crocodile.util.DateDeserializer;
+import de.team5.super_cute.crocodile.util.DateSerializer;
+import de.team5.super_cute.crocodile.util.LocalDateTimeAttributeConverter;
 import de.team5.super_cute.crocodile.util.StateCalculator;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -62,6 +69,26 @@ public class Vehicle extends IdentifiableObject implements Serializable, Stateab
 
   @Column
   private EVehicleType type;
+
+  @Column
+  private boolean isShutDown;
+
+  @Column
+  @JsonIgnore
+  private Trip currentTrip;
+
+  @Column
+  @JsonIgnore
+  @Convert(converter = LocalDateTimeAttributeConverter.class)
+  private LocalDateTime outdateCurrentTrip = LocalDateTime.now();
+
+  private Line currentLine;
+
+  @Column
+  @Convert(converter = LocalDateTimeAttributeConverter.class)
+  @JsonSerialize(using = DateSerializer.class)
+  @JsonDeserialize(using = DateDeserializer.class)
+  private LocalDateTime freeFrom = LocalDateTime.now();
 
   public Vehicle() {
     super();
@@ -165,6 +192,54 @@ public class Vehicle extends IdentifiableObject implements Serializable, Stateab
 
   public void setType(EVehicleType type) {
     this.type = type;
+  }
+
+  public Line getCurrentLine() {
+    if (currentTrip == null) {
+      return null;
+    }
+    return currentTrip.getLine();
+  }
+
+  public void setCurrentLine() {
+    // do nothing, fool the json mapper!
+  }
+
+  public LocalDateTime getFreeFrom() {
+    return freeFrom;
+  }
+
+  public void setFreeFrom(LocalDateTime freeFrom) {
+    this.freeFrom = freeFrom;
+  }
+
+  public boolean getIsShutDown() {
+    return isShutDown;
+  }
+
+  public void setIsShutDown(boolean shutDown) {
+    isShutDown = shutDown;
+  }
+
+  public Trip getCurrentTrip() {
+    return currentTrip;
+  }
+
+  public void setCurrentTrip(Trip currentTrip) {
+    if (currentTrip == null) {
+      outdateCurrentTrip = LocalDateTime.MIN;
+    } else {
+      outdateCurrentTrip = currentTrip.getLastStopTime();
+    }
+    this.currentTrip = currentTrip;
+  }
+
+  public LocalDateTime getOutdateCurrentTrip() {
+    return outdateCurrentTrip;
+  }
+
+  public void setOutdateCurrentTrip(LocalDateTime outdateCurrentTrip) {
+    this.outdateCurrentTrip = outdateCurrentTrip;
   }
 
   @JsonIgnore
