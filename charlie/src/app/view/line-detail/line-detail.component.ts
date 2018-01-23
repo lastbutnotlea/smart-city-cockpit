@@ -35,7 +35,7 @@ export class LineDetailComponent extends LiveDataComponent implements OnInit {
 
   ngOnInit(): void {
     this.getLine();
-    this.loaded = true;
+    super.subscribeToData()
   }
 
   getLine(): void {
@@ -45,20 +45,19 @@ export class LineDetailComponent extends LiveDataComponent implements OnInit {
         this.line = line;
         /*this.lineMapInbound.getLineMap(line, line.stopsInbound);
         this.lineMapOutbound.getLineMap(line, line.stopsOutbound);*/
-        this.getPositionData();
-        // This starts periodical calls for live-data after first data was received
-        super.ngOnInit();
+        this.loaded = true;
       },
           err => {
         console.log('Could not fetch line data!')
       });
+    this.getPositionData(lineId);
   }
 
   goBack(): void {
     this.location.back();
   }
 
-  getPositionData(): void {
+  getPositionData(id: string): void {
     this.http.getVehiclePositionInboundData(this.line.id).subscribe(
       data => {
         this.inboundPositionData = data;
@@ -77,14 +76,6 @@ export class LineDetailComponent extends LiveDataComponent implements OnInit {
 
   // Update line-data
   refreshData(): void {
-    this.setDataSubscription(
-      this.http.getLineDetails(this.line.id).subscribe( data => {
-          this.line = data;
-          this.getPositionData();
-        },
-        err =>
-          console.log('Could not fetch new line-data.')
-      ));
-    this.subscribeToData();
+    this.getLine();
   }
 }
