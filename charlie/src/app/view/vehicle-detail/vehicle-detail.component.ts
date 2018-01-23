@@ -5,6 +5,7 @@ import {VehicleData} from '../../shared/data/vehicle-data';
 import {HttpRoutingService} from '../../services/http-routing.service';
 import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
 import { FeedbackData } from '../../shared/data/feedback-data';
+import { ServiceRequestData } from '../../shared/data/service-request-data';
 import {TripData} from '../../shared/data/trip-data';
 
 @Component({
@@ -17,6 +18,7 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
   vehicle: VehicleData;
   loaded: boolean = false;
   feedback: FeedbackData[] = [];
+  serviceRequests: ServiceRequestData[] = [];
   trips: TripData[] = [];
 
   constructor(private http: HttpRoutingService,
@@ -30,7 +32,7 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
     this.http.getVehicle(id).subscribe(
       vehicle => {
         this.vehicle = vehicle;
-        this.getFeedback();
+        this.getAdditionalData();
         super.ngOnInit();
         this.loaded = true;
       },
@@ -47,7 +49,7 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
     );
   }
 
-  getFeedback(): void {
+  getAdditionalData(): void {
     this.http.getVehicleFeedback(this.vehicle.id).subscribe(
       data => {
         this.feedback = data;
@@ -55,6 +57,13 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
         alert("Could not fetch feedback for vehicle! " +
           "Please check your internet connection or inform your system administrator.");
         console.log(JSON.stringify(err));
+      }
+    );
+    this.http.getVehicleServiceRequests(this.vehicle.id).subscribe(
+      data => {
+        this.serviceRequests = data;
+      }, err => {
+        console.log('Could not get Service Requests for Stop')
       }
     );
   }
@@ -74,7 +83,7 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
     this.setDataSubscription(
       this.http.getVehicle(this.vehicle.id).subscribe( data => {
           this.vehicle = data;
-          this.getFeedback();
+          this.getAdditionalData();
         },
         err =>
           console.log('Could not fetch new line-data.')
