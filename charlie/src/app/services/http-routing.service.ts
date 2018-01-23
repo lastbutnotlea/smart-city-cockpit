@@ -12,11 +12,10 @@ import { LinePositionData } from '../shared/data/line-position-data';
 import {FeedbackData} from '../shared/data/feedback-data';
 import {TickerData} from '../shared/data/ticker-data';
 import {AnnouncementData} from '../shared/data/announcement-data';
-import {LineForStopData} from "../shared/data/line-for-stop-data";
 import {SkipData} from "../shared/data/skip-data";
 import {EventData} from '../shared/data/event-data';
 import {PartyData} from '../shared/data/party-data';
-import {LineForStopData} from "../shared/data/LineForStopData";
+import {LineForStopData} from "../shared/data/line-for-stop-data";
 
 @Injectable()
 export class HttpRoutingService {

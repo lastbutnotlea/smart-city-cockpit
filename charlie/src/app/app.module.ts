@@ -56,12 +56,7 @@ import {EventAddComponent} from './view/event-add/event-add.component';
 import {EventEditComponent} from './view/event-edit/event-edit.component';
 import {EmbeddedTripComponent} from './shared/components/embedded-trip/embedded-trip.component';
 import {EmbeddedServiceRequestComponent} from './shared/components/embedded-service-request/embedded-service-request.component';
-import {AnnouncementMainComponent} from './view/announcements/announcement-main/announcement-main.component';
-import {AnnouncementAddComponent} from './view/announcements/announcement-add/announcement-add.component';
-import {AnnouncementItemComponent} from './view/announcements/announcement-item/announcement-item.component';
-import { EmbeddedFeedbackComponent } from './shared/components/embedded-feedback/embedded-feedback.component';
 import {SkipStopComponent} from "./view/stop-skip/stop-skip";
-import { EmbeddedAnnouncementsComponent } from './shared/components/embedded-announcements/embedded-announcements.component';
 
 @NgModule({
   declarations: [
@@ -105,7 +100,6 @@ import { EmbeddedAnnouncementsComponent } from './shared/components/embedded-ann
     EventAddComponent,
     EventEditComponent,
     EmbeddedFeedbackComponent,
-    EmbeddedServiceRequestComponent,
     EditAnnounementTextComponent,
     EditAnnouncementDatetimeComponent,
     EditAnnouncementStopsComponent,
@@ -138,7 +132,6 @@ import { EmbeddedAnnouncementsComponent } from './shared/components/embedded-ann
     TripAddComponent,
     ServiceRequestAddComponent,
     ServiceRequestEditComponent,
-    AnnouncementAddComponent,
     SkipStopComponent,
     AnnouncementEditComponent,
     EventAddComponent,
