@@ -7,6 +7,7 @@ import de.team5.super_cute.crocodile.data.BaseData;
 import de.team5.super_cute.crocodile.model.EFeedbackType;
 import de.team5.super_cute.crocodile.model.Feedback;
 import de.team5.super_cute.crocodile.model.IdentifiableObject;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
@@ -24,15 +25,18 @@ public class FeedbackController extends BaseController<Feedback> {
 
   private static final Logger logger = LoggerFactory.getLogger(FeedbackController.class);
 
+  private ArrayList<String> processedFeedback;
+
   @Autowired
   public FeedbackController(BaseData<Feedback> feedbackBaseData) {
     data = feedbackBaseData;
+    processedFeedback = new ArrayList<>();
   }
 
   @GetMapping
   public List<Feedback> getAllFeedbacks() {
     logger.info("Got Request to return all feedbacks");
-    return data.getData();
+    return data.getData().stream().peek(this::setProcessed).collect(Collectors.toList());
   }
 
   @GetMapping("/vehicle/{vehicleId}")
@@ -41,6 +45,7 @@ public class FeedbackController extends BaseController<Feedback> {
     return data.getData().stream()
         .filter(f -> f.getFeedbackType() == EFeedbackType.VEHICLE_FEEDBACK)
         .filter(f -> ((IdentifiableObject) f.getObjective()).getId().equals(vehicleId))
+        .peek(this::setProcessed)
         .collect(Collectors.toList());
   }
 
@@ -50,6 +55,7 @@ public class FeedbackController extends BaseController<Feedback> {
     return data.getData().stream()
         .filter(f -> f.getFeedbackType() == EFeedbackType.STOP_FEEDBACK)
         .filter(f -> ((IdentifiableObject) f.getObjective()).getId().equals(stopId))
+        .peek(this::setProcessed)
         .collect(Collectors.toList());
   }
 
@@ -66,8 +72,23 @@ public class FeedbackController extends BaseController<Feedback> {
   }
 
   private String processFeedback(String feedbackId, boolean processed) {
-    Feedback feedback = getObjectForId(feedbackId);
+    Feedback feedback = new Feedback(getObjectForId(feedbackId));
     feedback.setProcessed(processed);
+    if (processed) {
+      processedFeedback.add(feedbackId);
+    } else {
+      if (processedFeedback.contains(feedbackId)) {
+        processedFeedback.remove(feedbackId);
+      }
+    }
     return makeIdToJSON(feedbackId);
+  }
+
+  private void setProcessed(Feedback feedback) {
+    if (processedFeedback.contains(feedback.getId())) {
+      feedback.setProcessed(true);
+    } else {
+      feedback.setProcessed(false);
+    }
   }
 }

@@ -55,7 +55,6 @@ public class Stop extends IdentifiableObject implements Serializable, Stateable,
     this.latitude = latitude;
     this.peopleWaiting = peopleWaiting;
     this.defects = new HashSet<>(Arrays.asList(defects));
-    ;
   }
 
   public Stop(String id, String commonName, Double longitude, Double latitude,
