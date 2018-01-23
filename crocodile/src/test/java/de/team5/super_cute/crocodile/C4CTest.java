@@ -1,5 +1,6 @@
 package de.team5.super_cute.crocodile;
 
+import de.team5.super_cute.crocodile.config.C4CConfig;
 import de.team5.super_cute.crocodile.external.SAPC4CConnector;
 import de.team5.super_cute.crocodile.model.EServiceType;
 import de.team5.super_cute.crocodile.model.EState;
@@ -35,7 +36,7 @@ public class C4CTest {
   @Test
   public void testEvents() {
     List<AppointmentInvolvedParties> aip = new ArrayList<AppointmentInvolvedParties>() {{
-      add(new AppointmentInvolvedParties("Fussballclub"));
+      add(new AppointmentInvolvedParties((String) C4CConfig.PARTY_NAME_TO_ID.keySet().toArray()[0]));
     }};
     List<C4CNotes> notes = new ArrayList<C4CNotes>() {{
       add(new C4CNotes("There are gonna be many many people", EC4CNotesTypeCode.APPOINTMENT_NOTES));

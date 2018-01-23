@@ -8,7 +8,7 @@ abstract class BaseController<T extends IdentifiableObject> {
   BaseData<T> data;
 
   T getObjectForId(String id) {
-    return data.getData().stream().filter(l -> l.getId().equals(id)).findAny().orElse(null);
+    return data.getObjectForId(id);
   }
 
   String addObject(T input) {
@@ -26,7 +26,4 @@ abstract class BaseController<T extends IdentifiableObject> {
     return input.getId();
   }
 
-  String makeIdToJSON(String id) {
-    return "{\"id\":\"" + id + "\"}";
-  }
 }
