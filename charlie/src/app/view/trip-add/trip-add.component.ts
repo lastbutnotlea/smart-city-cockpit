@@ -122,7 +122,6 @@ export class TripAddComponent implements OnInit {
     this.activeModal.close('Close click');
     this.http.addTrip(this.selected).subscribe(
       data => {
-        //debugger;
       },
       // Currently, we get a http-response here that is interpreted as an error
       // (maybe parsing the response does not work for some reason)

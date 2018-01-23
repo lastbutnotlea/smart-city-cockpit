@@ -26,18 +26,21 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
   }
 
   ngOnInit(): void {
+    this.getVehicleData();
+    super.subscribeToData();
+  }
+
+  getVehicleData(): void {
     const id = this.route.snapshot.paramMap.get('id');
     this.http.getVehicle(id).subscribe(
       vehicle => {
         this.vehicle = vehicle;
         this.getFeedback();
-        super.ngOnInit();
+        this.getTripsForVehicle(id);
         this.loaded = true;
       },
       err => console.log('Could not fetch vehicle data!')
     );
-
-    this.getTripsForVehicle(id);
   }
 
   getTripsForVehicle(vehicleId: string): void {
@@ -71,17 +74,7 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
 
   // update trip data
   refreshData(): void {
-    this.setDataSubscription(
-      this.http.getVehicle(this.vehicle.id).subscribe( data => {
-          this.vehicle = data;
-          this.getFeedback();
-        },
-        err =>
-          console.log('Could not fetch new line-data.')
-      ));
-    this.subscribeToData();
-
-    this.getTripsForVehicle(this.vehicle.id);
+    this.getVehicleData();
   }
 
 }

@@ -33,20 +33,18 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const stopId = this.route.snapshot.paramMap.get('stopId');
-    this.getStop(stopId);
-    this.getTripsForStop(stopId);
+    this.getStop();
+    super.subscribeToData();
   }
 
-  getStop(stopId: string): void {
-    // TODO: add live data once live data generator from backend works
+  getStop(): void {
+    const stopId = this.route.snapshot.paramMap.get('stopId');
     this.http.getStopDetails(stopId).subscribe(
       stop => {
         this.stop = stop;
         this.getLines();
         this.getAdditionalData();
-        // This starts periodical calls for live-data after first data was received
-        super.ngOnInit();
+        this.getTripsForStop(stopId);
       },
       err => console.log('Could not fetch stop data!')
     );
@@ -113,18 +111,7 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
 
   // update stop data
   refreshData(): void {
-    this.setDataSubscription(
-      this.http.getStopDetails(this.stop.id).subscribe(data => {
-          this.stop = data;
-          this.getLines();
-          this.getAdditionalData();
-        },
-        err =>
-          console.log('Could not fetch new stop-data.')
-      ));
-    this.subscribeToData();
-
-    this.getTripsForStop(this.stop.id);
+    this.getStop();
   }
 
 }
