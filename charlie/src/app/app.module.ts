@@ -107,6 +107,7 @@ import {AnnouncementMainComponent} from './view/announcements/main/announcement-
     DatetimePickerComponent,
     EmbeddedAnnouncementsComponent,
     EmbeddedTripComponent,
+    EmbeddedServiceRequestComponent,
   ],
   imports: [
     BrowserModule,
