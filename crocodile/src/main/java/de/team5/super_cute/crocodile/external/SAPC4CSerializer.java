@@ -41,14 +41,17 @@ public class SAPC4CSerializer {
     return json;
   }
 
+  public List<Field> getC4CProperties(C4CEntity entity) {
+    return Arrays.stream(entity.getClass().getDeclaredFields())
+        .filter(f -> f.getAnnotation(C4CProperty.class) != null)
+        .collect(Collectors.toList());
+  }
+
   private Map<String, Object> serializeC4CEntity(C4CEntity entity)
       throws JsonProcessingException {
     Map<String, Object> propMap = new HashMap<>();
 
-    for (Field field :
-        Arrays.stream(entity.getClass().getDeclaredFields())
-            .filter(f -> f.getAnnotation(C4CProperty.class) != null)
-            .collect(Collectors.toList())) {
+    for (Field field : getC4CProperties(entity)) {
       field.setAccessible(true);
       C4CProperty c4CAnnotation = field.getAnnotation(C4CProperty.class);
       try {

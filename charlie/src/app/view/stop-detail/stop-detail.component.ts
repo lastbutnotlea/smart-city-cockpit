@@ -1,12 +1,14 @@
 import {Component, OnInit} from '@angular/core';
-import { StopData } from '../../shared/data/stop-data';
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
-import { HttpRoutingService } from '../../services/http-routing.service';
-import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
+import {StopData} from '../../shared/data/stop-data';
+import {ActivatedRoute} from '@angular/router';
+import {Location} from '@angular/common';
+import {HttpRoutingService} from '../../services/http-routing.service';
+import {LiveDataComponent} from '../../shared/components/live-data/live-data.component';
 import {LineForStopData} from "../../shared/data/LineForStopData";
-import { FeedbackData } from '../../shared/data/feedback-data';
-import { AnnouncementData } from '../../shared/data/announcement-data';
+import {FeedbackData} from '../../shared/data/feedback-data';
+import {AnnouncementData} from '../../shared/data/announcement-data';
+import {TripData} from '../../shared/data/trip-data';
+import {TripStopData} from '../../shared/data/trip-stop-data';
 
 @Component({
   selector: 'app-stop-detail-view',
@@ -16,6 +18,7 @@ import { AnnouncementData } from '../../shared/data/announcement-data';
 
 export class StopDetailComponent extends LiveDataComponent implements OnInit {
   stop: StopData;
+  trips: TripData[] = [];
   title: string = "Details";
   lineForStopDataInbound: LineForStopData [];
   lineForStopDataOutbound: LineForStopData [];
@@ -30,11 +33,12 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getStop();
+    const stopId = this.route.snapshot.paramMap.get('stopId');
+    this.getStop(stopId);
+    this.getTripsForStop(stopId);
   }
 
-  getStop(): void {
-    const stopId = this.route.snapshot.paramMap.get('stopId');
+  getStop(stopId: string): void {
     // TODO: add live data once live data generator from backend works
     this.http.getStopDetails(stopId).subscribe(
       stop => {
@@ -48,7 +52,33 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
     );
   }
 
-  getLines() : void{
+  getTripsForStop(stopId: string): void {
+    this.http.getTripsForStop(stopId).subscribe(
+      trips => {
+        this.trips = trips;
+
+        // search for every trip the 'right' stop, i.e. the stop that matches the stopId
+        this.trips.forEach(
+          trip => {
+            let rightStopInTrip: TripStopData;
+            trip.stops.forEach(
+              stop => {
+                if(stop.id === stopId) {
+                  rightStopInTrip = stop;
+                }
+              }
+            );
+            // add this stop to stops so that the 'right' stop is at the end of the stops array and can be
+            // read by the html code
+            trip.stops.push(rightStopInTrip);
+          }
+        );
+      },
+      err => console.log('Could not fetch trip data, sorry!')
+    );
+  }
+
+  getLines(): void {
     this.http.getLineForStop(this.stop.id).subscribe(
       data => {
         this.lineForStopDataInbound = data.filter(line => line.isInbound);
@@ -84,7 +114,7 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
   // update stop data
   refreshData(): void {
     this.setDataSubscription(
-      this.http.getStopDetails(this.stop.id).subscribe( data => {
+      this.http.getStopDetails(this.stop.id).subscribe(data => {
           this.stop = data;
           this.getLines();
           this.getAdditionalData();
@@ -93,6 +123,8 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
           console.log('Could not fetch new stop-data.')
       ));
     this.subscribeToData();
+
+    this.getTripsForStop(this.stop.id);
   }
 
 }

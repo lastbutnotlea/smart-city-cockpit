@@ -25,6 +25,9 @@
       <app-embedded-feedback [feedback]="feedback" class="flex-1 bounding-box"></app-embedded-feedback>
       <app-embedded-line *ngIf="vehicle.currentLine !== null" [line]="vehicle.currentLine" class="flex-1 bounding-box"></app-embedded-line>
     </div>
+
+    <!--TODO merge conflict with frontend/improvevehicles incoming-->
+    <app-embedded-trip [trips]="trips" [areTripsForVehicle]="true" class="flex-1 bounding-box"></app-embedded-trip>
   </div>
 
 </div>

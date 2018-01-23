@@ -12,6 +12,7 @@ import de.team5.super_cute.crocodile.model.ServiceRequest;
 import de.team5.super_cute.crocodile.model.ServiceOrFeedbackTargetObject;
 import de.team5.super_cute.crocodile.model.Stop;
 import de.team5.super_cute.crocodile.model.Vehicle;
+import de.team5.super_cute.crocodile.model.c4c.EC4CNotesTypeCode;
 import de.team5.super_cute.crocodile.model.c4c.FeedbackGroup;
 import de.team5.super_cute.crocodile.util.Helpers;
 import java.io.IOException;
@@ -153,6 +154,9 @@ public class ServiceRequestController {
     if (sr.getCompletionDate() == null) {
       sr.setCompletionDate(Helpers.DUMMY_TIME);
     }
+
+    sr.getServiceRequestDescription()
+        .forEach(description -> description.setTypeCode(EC4CNotesTypeCode.SERVICE_REQUEST_DESCRIPTION.toString()));
   }
 
   private String generateServiceRequestName(ServiceRequest sr) {

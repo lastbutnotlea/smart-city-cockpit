@@ -1,0 +1,5 @@
+<label class="m-2">{{text}}{{_model | date:'MM/dd/yyyy HH:mm'}}</label>
+<ngb-datepicker [(ngModel)]="date" (select)="updateDate()" class="float-left datepicker m-2">
+</ngb-datepicker>
+<ngb-timepicker [(ngModel)]="time" (click)="updateTime()" (change)="updateTime()">
+</ngb-timepicker>
