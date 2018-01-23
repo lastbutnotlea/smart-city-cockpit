@@ -6,6 +6,7 @@ import {HttpRoutingService} from '../../services/http-routing.service';
 import {LiveDataComponent} from '../../shared/components/live-data/live-data.component';
 import {FeedbackData} from '../../shared/data/feedback-data';
 import {AnnouncementData} from '../../shared/data/announcement-data';
+import { ServiceRequestData } from '../../shared/data/service-request-data';
 import {TripData} from '../../shared/data/trip-data';
 import {TripStopData} from '../../shared/data/trip-stop-data';
 import {LineForStopData} from "../../shared/data/line-for-stop-data";
@@ -27,6 +28,7 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
   loaded: boolean = false;
   feedback: FeedbackData[] = [];
   announcements: AnnouncementData[] = [];
+  serviceRequests: ServiceRequestData[] = [];
 
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
@@ -109,6 +111,13 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
         this.announcements = data;
       }, err => {
         console.log(JSON.stringify(err));
+      }
+    );
+    this.http.getStopServiceRequests(this.stop.id).subscribe(
+      data => {
+        this.serviceRequests = data;
+      }, err => {
+        console.log('Could not get Service Requests for Stop')
       }
     );
   }

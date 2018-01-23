@@ -232,4 +232,13 @@ export class HttpRoutingService {
   public getTripsForVehicle(vehicleId: string): Observable<TripData[]> {
     return this.http.get<TripData[]>(this.urlBuilder.getTripsForVehicleUrl(vehicleId));
   }
+
+  public getVehicleServiceRequests(vehicleId: string): Observable<ServiceRequestData[]> {
+    return this.http.get<ServiceRequestData[]>(this.urlBuilder.getVehicleServiceRequestsUrl(vehicleId));
+  }
+
+  public getStopServiceRequests(stopId: string): Observable<ServiceRequestData[]> {
+    return this.http.get<ServiceRequestData[]>(this.urlBuilder.getStopServiceRequestsUrl(stopId));
+  }
+
 }

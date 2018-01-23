@@ -34,20 +34,30 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
 
   getVehicleData(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    // vehicle data
     this.http.getVehicle(id).subscribe(
       vehicle => {
-        this.vehicle = vehicle;;
+        this.vehicle = vehicle;
+<<<<<<< HEAD
+        this.getFeedback();
+        this.getTripsForVehicle(id);
+=======
+        this.getAdditionalData();
+        super.ngOnInit();
+>>>>>>> master
         this.loaded = true;
       },
       err => console.log('Could not fetch vehicle data!')
     );
-    // trips for vehicle
-    this.http.getTripsForVehicle(id).subscribe(
+  }
+
+  getTripsForVehicle(vehicleId: string): void {
+    this.http.getTripsForVehicle(vehicleId).subscribe(
       trips => this.trips = trips,
       err => console.log('Could not fetch trip data, sorry!')
     );
-    // feedback for vehicle
+  }
+
+  getAdditionalData(): void {
     this.http.getVehicleFeedback(this.vehicle.id).subscribe(
       data => {
         this.feedback = data;
@@ -55,7 +65,6 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
         console.log(JSON.stringify(err));
       }
     );
-    // service requests for vehicle
     this.http.getVehicleServiceRequests(this.vehicle.id).subscribe(
       data => {
         this.serviceRequests = data;
@@ -77,7 +86,21 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
 
   // update trip data
   refreshData(): void {
+<<<<<<< HEAD
     this.getVehicleData();
+=======
+    this.setDataSubscription(
+      this.http.getVehicle(this.vehicle.id).subscribe( data => {
+          this.vehicle = data;
+          this.getAdditionalData();
+        },
+        err =>
+          console.log('Could not fetch new line-data.')
+      ));
+    this.subscribeToData();
+
+    this.getTripsForVehicle(this.vehicle.id);
+>>>>>>> master
   }
 
 }

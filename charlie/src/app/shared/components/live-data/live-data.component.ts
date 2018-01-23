@@ -19,15 +19,5 @@ export abstract class LiveDataComponent {
     this.timerSubscription = Observable.timer(0, this.interval).subscribe(() => this.refreshData());
   }
 
-  // Call for updated data from backend, needs to be specified idividually for every component
-  // Example:
-  /*
-  this.dataSubscription = this.http.getLines().subscribe( data => {
-      this.counter++;
-      console.log(this.counter)
-    },
-    err =>
-      console.log('Could not fetch new line-data.'));
-      */
   abstract refreshData(): void;
 }

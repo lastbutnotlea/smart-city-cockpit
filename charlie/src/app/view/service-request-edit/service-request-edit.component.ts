@@ -1,11 +1,11 @@
-import { Component, Input, OnInit, Output } from '@angular/core';
-import { NgbActiveModal, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import {Component, Input, OnInit, Output} from '@angular/core';
+import {NgbActiveModal, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {HttpRoutingService} from '../../services/http-routing.service';
 import {DropdownValue} from '../../shared/components/dropdown/dropdown.component';
-import { ServiceRequestData } from '../../shared/data/service-request-data';
-import { now } from '../../shared/data/dates';
-import { DateParserService } from '../../services/date-parser.service';
-import { FeedbackData } from '../../shared/data/feedback-data';
+import {ServiceRequestData} from '../../shared/data/service-request-data';
+import {now} from '../../shared/data/dates';
+import {DateParserService} from '../../services/date-parser.service';
+import {FeedbackData} from '../../shared/data/feedback-data';
 
 @Component({
   selector: 'app-service-request-edit',
@@ -28,7 +28,8 @@ export class ServiceRequestEditComponent implements OnInit {
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
-              private dateParser: DateParserService) { }
+              private dateParser: DateParserService) {
+  }
 
   ngOnInit(): void {
   }
@@ -36,20 +37,20 @@ export class ServiceRequestEditComponent implements OnInit {
   initData(): void {
     if (this.data != null) {
       this.selectedPriority = new DropdownValue(this.data.priority, this.data.priority);
-      if(this.data.serviceRequestDescription.length != 0){
+      if (this.data.serviceRequestDescription.length != 0) {
         this.description = this.data.serviceRequestDescription[0].text;
       }
       this.selectedDate = this.data.dueDate;
       this.date = this.dateParser.convertDateToNgbDateStruct(new Date(this.selectedDate));
       this.selectedFeedback = [];
-      for(let feedback of this.data.feedbacks){
+      for (let feedback of this.data.feedbacks) {
         this.selectedFeedback.push(feedback);
       }
     }
   }
 
   confirm(): void {
-    if(!this.dataEdited){
+    if (!this.dataEdited) {
       this.getFeedbackForTarget();
     } else {
       this.editServiceRequest();
@@ -57,13 +58,13 @@ export class ServiceRequestEditComponent implements OnInit {
   }
 
   getFeedbackForTarget(): void {
-    if(this.data.target.identifiableType === "vehicle") {
-      this.http.getVehicleFeedback(this.data.target.id).subscribe( data => {
+    if (this.data.target.identifiableType === "vehicle") {
+      this.http.getVehicleFeedback(this.data.target.id).subscribe(data => {
         this.availFeedback = data;
         this.dataEdited = true;
       }, err => console.log('Could not load feedback for vehicle.'));
-    } else if (this.data.target.identifiableType === "stop"){
-      this.http.getStopFeedback(this.data.target.id).subscribe( data => {
+    } else if (this.data.target.identifiableType === "stop") {
+      this.http.getStopFeedback(this.data.target.id).subscribe(data => {
         this.availFeedback = data;
         this.dataEdited = true;
       }, err => console.log('Could not load feedback for vehicle.'));
@@ -86,15 +87,9 @@ export class ServiceRequestEditComponent implements OnInit {
         console.log('Added service request.');
         this.activeModal.close('Close click');
       },
-      // TODO: these messages should not be interpreted as errors!
       err => {
-        if(err.status === 200){
-          console.log('Added service request.');
-          this.activeModal.close('Close click');
-        } else {
-          console.log('Could not add service request.');
-          this.activeModal.close('Close click');
-        }
+        console.log('Could not add service request.');
+        this.activeModal.close('Close click');
       });
   }
 
@@ -116,8 +111,8 @@ export class ServiceRequestEditComponent implements OnInit {
    * Only use selected date if it is not passed already
    */
   updateDate(): void {
-    if(this.dateParser.isBeforeDate(new Date(), this.date)) {
-      this.selectedDate = this.dateParser.parseDate(this.selectedDate,this.date);
+    if (this.dateParser.isBeforeDate(new Date(), this.date)) {
+      this.selectedDate = this.dateParser.parseDate(this.selectedDate, this.date);
     } else {
       this.date = this.dateParser.convertDateToNgbDateStruct(new Date(this.selectedDate));
     }
@@ -133,7 +128,7 @@ export class ServiceRequestEditComponent implements OnInit {
   }
 
   stepBack() {
-    if(this.dataEdited){
+    if (this.dataEdited) {
       this.dataEdited = false;
     }
   }

@@ -38,9 +38,7 @@
       <p><label class="text-secondary">Type: </label> {{serviceRequest.serviceType}}</p>
       <p><label class="text-secondary">Status Code: </label> {{serviceRequest.statusCode}}</p>
       <p><label class="text-secondary">Due Date: </label> {{(serviceRequest.dueDate)}}</p>
-      <p><label class="text-secondary">Completion Date: </label> {{serviceRequest.completionDate}}
-      </p>
-      <p><label class="text-secondary">Priority: </label> {{serviceRequest.priority}}</p>
+      <p><label class="text-secondary">Completion Date: </label> {{serviceRequest.completionDate}}</p>
       <p><label *ngIf="serviceRequest.serviceRequestDescription.length > 0" class="text-secondary">Description: </label>
         <span *ngFor="let description of serviceRequest.serviceRequestDescription">
         {{description.text}}

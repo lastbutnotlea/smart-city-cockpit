@@ -51,11 +51,12 @@ import {EventDetailComponent} from './view/event-detail/event-detail.component';
 import {EventAddComponent} from './view/event-add/event-add.component';
 import {EventEditComponent} from './view/event-edit/event-edit.component';
 import {EmbeddedTripComponent} from './shared/components/embedded-trip/embedded-trip.component';
+import {EmbeddedServiceRequestComponent} from './shared/components/embedded-service-request/embedded-service-request.component';
 import {EmbeddedFeedbackComponent} from './shared/components/embedded-feedback/embedded-feedback.component';
 import {SkipStopComponent} from "./view/stop-skip/stop-skip";
 import {EmbeddedAnnouncementsComponent} from './shared/components/embedded-announcements/embedded-announcements.component';
-import { AnnouncementItemComponent } from './view/announcements/item/announcement-item.component';
-import { AnnouncementMainComponent } from './view/announcements/main/announcement-main.component';
+import {AnnouncementItemComponent} from './view/announcements/item/announcement-item.component';
+import {AnnouncementMainComponent} from './view/announcements/main/announcement-main.component';
 
 @NgModule({
   declarations: [
@@ -99,6 +100,7 @@ import { AnnouncementMainComponent } from './view/announcements/main/announcemen
     EventAddComponent,
     EventEditComponent,
     EmbeddedFeedbackComponent,
+    EmbeddedServiceRequestComponent,
     EditAnnounementTextComponent,
     EditAnnouncementDatetimeComponent,
     EditAnnouncementStopsComponent,

@@ -5,7 +5,6 @@ import {VehicleData} from '../../shared/data/vehicle-data';
 import {HttpRoutingService} from '../../services/http-routing.service';
 import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
 import { FeedbackData } from '../../shared/data/feedback-data';
-import { ServiceRequestData } from '../../shared/data/service-request-data';
 import {TripData} from '../../shared/data/trip-data';
 
 @Component({
@@ -18,7 +17,6 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
   vehicle: VehicleData;
   loaded: boolean = false;
   feedback: FeedbackData[] = [];
-  serviceRequests: ServiceRequestData[] = [];
   trips: TripData[] = [];
 
   constructor(private http: HttpRoutingService,
@@ -34,33 +32,30 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
 
   getVehicleData(): void {
     const id = this.route.snapshot.paramMap.get('id');
-    // vehicle data
     this.http.getVehicle(id).subscribe(
       vehicle => {
-        this.vehicle = vehicle;;
+        this.vehicle = vehicle;
+        this.getFeedback();
+        this.getTripsForVehicle(id);
         this.loaded = true;
       },
       err => console.log('Could not fetch vehicle data!')
     );
-    // trips for vehicle
-    this.http.getTripsForVehicle(id).subscribe(
+  }
+
+  getTripsForVehicle(vehicleId: string): void {
+    this.http.getTripsForVehicle(vehicleId).subscribe(
       trips => this.trips = trips,
       err => console.log('Could not fetch trip data, sorry!')
     );
-    // feedback for vehicle
+  }
+
+  getFeedback(): void {
     this.http.getVehicleFeedback(this.vehicle.id).subscribe(
       data => {
         this.feedback = data;
       }, err => {
         console.log(JSON.stringify(err));
-      }
-    );
-    // service requests for vehicle
-    this.http.getVehicleServiceRequests(this.vehicle.id).subscribe(
-      data => {
-        this.serviceRequests = data;
-      }, err => {
-        console.log('Could not get Service Requests for Stop')
       }
     );
   }
