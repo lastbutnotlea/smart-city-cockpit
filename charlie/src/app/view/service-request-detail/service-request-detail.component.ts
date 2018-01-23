@@ -41,7 +41,6 @@ export class ServiceRequestDetailComponent implements OnInit {
       },
       err => {
         console.log(JSON.stringify(err));
-        alert('Could not get details of service request.');
       }
     );
   }

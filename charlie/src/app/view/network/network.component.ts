@@ -46,7 +46,6 @@ export class NetworkComponent extends LiveDataComponent implements OnInit {
       },
       err => {
         console.log(err);
-        alert('Could not get state of network from backend.');
       }
     );
   }

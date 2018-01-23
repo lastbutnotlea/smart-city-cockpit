@@ -55,8 +55,6 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
       data => {
         this.feedback = data;
       }, err => {
-        alert("Could not fetch feedback for vehicle! " +
-          "Please check your internet connection or inform your system administrator.");
         console.log(JSON.stringify(err));
       }
     );

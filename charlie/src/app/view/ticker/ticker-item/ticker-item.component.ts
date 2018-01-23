@@ -26,6 +26,6 @@ export class TickerItemComponent implements OnInit {
   deleteItem(): void {
     this.http.deleteTickerItem(this.data).subscribe(
       data => this.onDelete.emit(this.data),
-      err => alert(JSON.stringify(err)));
+      err => console.log(JSON.stringify(err)));
   }
 }

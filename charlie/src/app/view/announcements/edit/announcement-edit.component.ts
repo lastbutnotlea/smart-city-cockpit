@@ -43,13 +43,11 @@ export class AnnouncementEditComponent implements OnInit {
       data.sort((a, b) => a.commonName.localeCompare(b.commonName));
       this.availableStops = data;
     }, err => {
-      alert("An error occurred.");
       console.log(err);
     });
     this.http.getLines().subscribe(
       data => this.availableLines = data,
       err => {
-        alert("An error occurred.");
         console.log(err);
       });
   }
