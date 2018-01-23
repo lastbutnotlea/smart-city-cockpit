@@ -1,3 +1,7 @@
+<h4 class="text-lg-left no-margin-bottom">
+  <i class="fa fa-filter fa-2x float-left padding-left-5 text-primary"></i>
+  <label class="padding-emb-box-headline">Filter</label>
+</h4>
 <ng-container *ngFor="let filter of filters">
   <app-filter-view class="d-flex flex-column my-3" [filters]="filter.filters"></app-filter-view>
 </ng-container>
