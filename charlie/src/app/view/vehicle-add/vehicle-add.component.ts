@@ -33,7 +33,9 @@ export class VehicleAddComponent implements OnInit {
       type: this.selected.value,
       state: 'FINE',
       identifiableType: "vehicle",
-      freeFrom: ''
+      freeFrom: '',
+      isShutDown: false,
+      currentLine: null
     }).subscribe(
       () => this.activeModal.close('Close click'),
       err => {

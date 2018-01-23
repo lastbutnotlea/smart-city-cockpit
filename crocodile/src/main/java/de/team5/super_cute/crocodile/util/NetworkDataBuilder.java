@@ -88,6 +88,7 @@ public class NetworkDataBuilder {
           startTime);
     }
     trip.setStops(stops);
+    trip.initializeTrip();
     return trip;
   }
 

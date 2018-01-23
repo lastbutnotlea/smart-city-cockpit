@@ -10,7 +10,10 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,6 +29,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(AppConfiguration.API_PREFIX + "/trips")
 public class TripController extends BaseController<Trip> {
 
+  private static final Logger logger = LoggerFactory.getLogger(TripController.class);
+
   private LineData lineData;
   private VehicleValidation vehicleValidation;
 
@@ -39,58 +44,71 @@ public class TripController extends BaseController<Trip> {
 
   @GetMapping
   public List<Trip> getAllTrips() {
-    return data.getData().stream()
-        .peek(t -> t.getLine().setState(lineData.calculateLineState(t.getLine())))
-        .collect(Collectors.toList());
+    logger.info("Got Request to return all trips");
+    return getTripsWithPredicate(t -> true);
   }
 
   @GetMapping("/vehicle/{vehicleId}")
   public List<Trip> getAllTripsForVehicle(@PathVariable String vehicleId) {
-    return data.getData().stream()
-        .filter(t -> StringUtils.isEmpty(vehicleId) || t.getVehicle().getId().equals(vehicleId))
-        .peek(t -> t.getLine().setState(lineData.calculateLineState(t.getLine()))).collect(
-            Collectors.toList());
+    logger.info("Got Request to return all trips for vehicle with id " + vehicleId);
+    return getTripsWithPredicate(t -> StringUtils.isEmpty(vehicleId) || t.getVehicle().getId().equals(vehicleId));
   }
 
   @GetMapping("/stop/{stopId}")
   public List<Trip> getAllTripsForStop(@PathVariable String stopId) {
+    logger.info("Got Request to return all trips for stop with id " + stopId);
+    return getTripsWithPredicate(t -> StringUtils.isEmpty(stopId) || t.getStops().get(stopId) != null);
+  }
+
+  private List<Trip> getTripsWithPredicate(Predicate<Trip> predicate) {
     return data.getData().stream()
-        .filter(t -> StringUtils.isEmpty(stopId) || t.getStops().get(stopId) != null)
-        .peek(t -> t.getLine().setState(lineData.calculateLineState(t.getLine()))).collect(
-            Collectors.toList());
+        .filter(predicate)
+        .peek(this::prepareTripForFrontend)
+        .collect(Collectors.toList());
   }
 
   @GetMapping("/{id}")
   public Trip getTrip(@PathVariable String id) {
+    logger.info("Got Request to return trip with id " + id);
     Trip trip = getObjectForId(id);
-    trip.getLine().setState(lineData.calculateLineState(trip.getLine()));
+    prepareTripForFrontend(trip);
     return trip;
+  }
+
+  private void prepareTripForFrontend(Trip trip) {
+    trip.getLine().setState(lineData.calculateLineState(trip.getLine()));
+    trip.initializeTrip();
   }
 
   @PostMapping
   public String addTrip(@RequestBody Trip tripInput) {
+    logger.info("Got Request to add trip " + tripInput);
     insertCorrectTimesForTrip(tripInput);
     if (tripInput.getVehicle() != null) {
       if (!vehicleValidation.checkVehicleAvailability(tripInput)) {
         return "Vehicle not available!";
       }
     }
+    tripInput.initializeTrip();
     return addObject(tripInput);
   }
 
   @DeleteMapping("/{id}")
   public String deleteTrip(@PathVariable String id) {
+    logger.info("Got Request to delete trip with id " + id);
     return deleteObject(id);
   }
 
   @PutMapping
   public String editTrip(@RequestBody Trip tripInput) {
+    logger.info("Got Request to edit trip " + tripInput);
     insertCorrectTimesForTrip(tripInput);
     if (tripInput.getVehicle() != null) {
       if (!vehicleValidation.checkVehicleAvailability(tripInput)) {
         return "Vehicle not available!";
       }
     }
+    tripInput.initializeTrip();
     return editObject(tripInput);
   }
 

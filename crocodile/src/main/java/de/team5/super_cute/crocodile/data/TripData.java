@@ -4,6 +4,7 @@ import de.team5.super_cute.crocodile.model.Trip;
 import de.team5.super_cute.crocodile.model.Vehicle;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
@@ -61,8 +62,28 @@ public class TripData extends BaseData<Trip> {
         .filter(t -> t.getVehicle().equals(vehicle)).findAny().orElse(null);
   }
 
-  public boolean getPresentAndFutureTripsForVehicle(String vehicleId){
-    return getData().stream().anyMatch(t -> t.getVehicle().getId().equals(vehicleId) && t.getStops().values().stream().max(LocalDateTime::compareTo).orElse(null).isAfter(LocalDateTime.now()));
+  public boolean hasPresentOrFutureTrips(String vehicleId) {
+    return getData().stream().anyMatch(
+        t -> t.getVehicle().getId().equals(vehicleId) && t.getStops().values().stream()
+            .max(LocalDateTime::compareTo).orElse(null).isAfter(LocalDateTime.now()));
   }
 
+  public List<Trip> getAllTripsOfVehicle(String vehicleId) {
+    return getData().stream().filter(t -> t.getVehicle().getId().equals(vehicleId))
+        .collect(Collectors.toList());
+  }
+
+  private Optional<LocalDateTime> getLastStopTimeOfVehicle(Vehicle vehicle) {
+    return getAllTripsOfVehicle(vehicle.getId()).stream()
+        .flatMap(t -> t.getStops().values().stream()).max(LocalDateTime::compareTo);
+  }
+
+  public void setFreeFrom(Vehicle vehicle) {
+    Optional<LocalDateTime> lastStopTime = getLastStopTimeOfVehicle(vehicle);
+    if (lastStopTime.isPresent()) {
+      vehicle.setFreeFrom(lastStopTime.get());
+    } else {
+      vehicle.setFreeFrom(null);
+    }
+  }
 }
