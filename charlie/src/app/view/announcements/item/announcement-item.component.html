@@ -7,9 +7,9 @@
   <p class="text-primary"><label class="text-secondary">ID: </label> {{data.id}}</p>
   <p>
     <label class="text-secondary">Valid from </label>
-    {{data.validFrom}}
+    {{data.validFrom | date:'MM/dd/yyyy HH:mm'}}
     <label class="text-secondary"> to </label>
-    {{data.validTo}}
+    {{data.validTo | date:'MM/dd/yyyy HH:mm'}}
   </p>
 
   <button class="btn btn-outline-dark" (click)="editItem()">Edit</button>

@@ -22,7 +22,7 @@
       Stop skipped:
     </h4>
     <h5 *ngFor="let skipData of stop.skipData">
-      from {{skipData.from}} to {{skipData.to}} because of {{skipData.reason}}
+      from {{skipData.from  | date:'MM/dd/yyyy HH:mm'}} to {{skipData.to | date:'MM/dd/yyyy HH:mm'}} because of {{skipData.reason}}
     </h5>
   </div>
 
