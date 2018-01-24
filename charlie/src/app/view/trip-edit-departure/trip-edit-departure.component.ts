@@ -91,7 +91,8 @@ export class TripEditDepartureComponent implements OnInit {
   }
 
   updateDate(): void {
-    if(this.dateParser.isBeforeDate(new Date(), this.date)) {
+    let freeFrom: Date = new Date(this.data.vehicle.freeFrom);
+    if(this.dateParser.isBeforeDate(freeFrom, this.date)) {
       this.selectedStop.value.departureTime = this.dateParser.parseDate(
         this.selectedStop.value.departureTime, this.date);
       // Date might have been set to current date. Time could now be invalid (passed) time. Check time again
@@ -103,7 +104,8 @@ export class TripEditDepartureComponent implements OnInit {
   }
 
   updateTime(): void {
-    if(!this.dateParser.isBeforeTime(new Date(), this.date, this.time)){
+    let freeFrom: Date = new Date(this.data.vehicle.freeFrom);
+    if(!this.dateParser.isBeforeTime(freeFrom, this.date, this.time)){
       this.time = this.dateParser.convertDateToNgbTimeStruct(new Date());
     }
     this.selectedStop.value.departureTime = this.dateParser.parseTime(
