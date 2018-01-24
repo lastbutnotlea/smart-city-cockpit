@@ -8,16 +8,19 @@ import de.team5.super_cute.crocodile.data.VehicleData;
 import de.team5.super_cute.crocodile.external.SAPC4CConnector;
 import de.team5.super_cute.crocodile.model.Feedback;
 import de.team5.super_cute.crocodile.model.IdentifiableObject;
-import de.team5.super_cute.crocodile.model.ServiceRequest;
 import de.team5.super_cute.crocodile.model.ServiceOrFeedbackTargetObject;
+import de.team5.super_cute.crocodile.model.ServiceRequest;
 import de.team5.super_cute.crocodile.model.Stop;
 import de.team5.super_cute.crocodile.model.Vehicle;
 import de.team5.super_cute.crocodile.model.c4c.EC4CNotesTypeCode;
 import de.team5.super_cute.crocodile.model.c4c.FeedbackGroup;
 import de.team5.super_cute.crocodile.util.Helpers;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 import javax.transaction.Transactional;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.olingo.odata2.api.batch.BatchException;
@@ -48,6 +51,9 @@ public class ServiceRequestController {
   private VehicleData vehicleData;
   private StopData stopData;
 
+  private List<ServiceRequest> cache;
+  private boolean isCached = false;
+
   @Autowired
   public ServiceRequestController(SAPC4CConnector connector,
       FeedbackGroupData feedbackGroupData, VehicleData vehicleData,
@@ -57,6 +63,7 @@ public class ServiceRequestController {
     this.vehicleData = vehicleData;
     this.stopData = stopData;
     this.feedbackData = feedbackData;
+    this.cache = new ArrayList<>();
   }
 
   @GetMapping
@@ -65,6 +72,11 @@ public class ServiceRequestController {
     logger.info("Got Request for all Service Requests");
     List<ServiceRequest> serviceRequests = connector.getServiceRequests();
     serviceRequests.forEach(this::prepareServiceRequestForFrontend);
+
+    cache.clear();
+    cache.addAll(serviceRequests);
+    isCached = true;
+
     return serviceRequests;
   }
 
@@ -72,7 +84,8 @@ public class ServiceRequestController {
   public ServiceRequest getServiceRequest(@PathVariable String id)
       throws IOException, EdmException, EntityProviderException {
     logger.info("Got Request for Service Request with id " + id);
-    ServiceRequest serviceRequest = (ServiceRequest) connector.getC4CEntityById(new ServiceRequest(), id);
+    ServiceRequest serviceRequest = (ServiceRequest) connector
+        .getC4CEntityById(new ServiceRequest(), id);
     prepareServiceRequestForFrontend(serviceRequest);
     return serviceRequest;
   }
@@ -82,9 +95,16 @@ public class ServiceRequestController {
       throws IOException, BatchException, EdmException, EntityProviderException {
     logger.info("Got Request to add Service Request: " + serviceRequestInput);
     handleServiceRequestFromFrontend(serviceRequestInput);
+
+    cache.remove(serviceRequestInput);
+
     String objectId = connector.putC4CEntity(serviceRequestInput);
-    ServiceRequest serviceRequest = (ServiceRequest) connector.getC4CEntityByObjectId(new ServiceRequest(), objectId);
+    ServiceRequest serviceRequest = (ServiceRequest) connector
+        .getC4CEntityByObjectId(new ServiceRequest(), objectId);
     prepareServiceRequestForFrontend(serviceRequest);
+
+    cache.add(serviceRequest);
+
     return serviceRequest;
   }
 
@@ -92,6 +112,9 @@ public class ServiceRequestController {
   public String deleteServiceRequest(@PathVariable String id)
       throws IOException, EdmException, EntityProviderException {
     logger.info("Got Request to delete Service Request with id " + id);
+
+    cache.removeIf(sr -> sr.getId().equals(id));
+
     return connector.deleteC4CEntity(connector.getC4CEntityById(new ServiceRequest(), id));
   }
 
@@ -100,8 +123,35 @@ public class ServiceRequestController {
       throws IOException, BatchException, EdmException, EntityProviderException {
     logger.info("Got Request to edit Service Request: " + serviceRequestInput);
     handleServiceRequestFromFrontend(serviceRequestInput);
+
+    cache.removeIf(sr -> sr.getId().equals(serviceRequestInput.getId()));
+    cache.add(serviceRequestInput);
+
     connector.patchC4CEntity(serviceRequestInput);
-    return serviceRequestInput.getId();
+    return Helpers.makeIdToJSON(serviceRequestInput.getId());
+  }
+
+  private List<ServiceRequest> getCache(Predicate<ServiceRequest> predicate)
+      throws EntityProviderException, EdmException, IOException {
+    if (isCached) {
+      return cache.stream().filter(predicate).collect(Collectors.toList());
+    } else {
+      return getAllServiceRequests().stream().filter(predicate).collect(Collectors.toList());
+    }
+  }
+
+  @GetMapping("/stop/{stopId}")
+  public List<ServiceRequest> getAllServiceRequestsForStop(@PathVariable String stopId)
+      throws IOException, EdmException, EntityProviderException {
+    return getCache(sr -> sr.getTarget() instanceof Stop
+        && ((Stop) sr.getTarget()).getId().equals(stopId));
+  }
+
+  @GetMapping("/vehicle/{vehicleId}")
+  public List<ServiceRequest> getAllServiceRequestsForVehicle(@PathVariable String vehicleId)
+      throws IOException, EdmException, EntityProviderException {
+    return getCache(sr -> sr.getTarget() instanceof Vehicle
+        && ((Vehicle) sr.getTarget()).getId().equals(vehicleId));
   }
 
   private void prepareServiceRequestForFrontend(ServiceRequest sr) {

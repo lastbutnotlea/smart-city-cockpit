@@ -90,7 +90,7 @@ export class EventEditComponent implements OnInit {
     this.http.getInvolvedParties().subscribe(data => {
       console.log(data);
       this.availableParties = toDropdownItems(data, party => party)
-    }, err => alert(err));
+    }, err => console.log(err));
 
 
     this.availablePriorities = toDropdownItems(

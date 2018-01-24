@@ -383,9 +383,9 @@ public class SAPC4CConnector {
     if (response.getStatusLine().getStatusCode() == 204) {
       logger.info(
           "Deleted C4C Entity from " + entity.getCollectionName() + " with id " + entity.getId());
-      return "Success";
+      return "{\"id\":\"" + entity.getId() + "\"}";
     }
-    return "Probably Failure";
+    return "Deletion of Entity " + entity + " failed";
   }
 
   private HttpResponse executeBatchCall(String body)

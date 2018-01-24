@@ -7,8 +7,8 @@ import {LineDetailComponent} from './view/line-detail/line-detail.component';
 import {StopDetailComponent} from './view/stop-detail/stop-detail.component';
 import {VehiclesComponent} from './view/vehicles/vehicles.component';
 import {VehicleDetailComponent} from './view/vehicle-detail/vehicle-detail.component';
-import { ServiceRequestsComponent } from './view/service-requests/service-requests.component';
-import { ServiceRequestDetailComponent } from './view/service-request-detail/service-request-detail.component';
+import {ServiceRequestsComponent} from './view/service-requests/service-requests.component';
+import {ServiceRequestDetailComponent} from './view/service-request-detail/service-request-detail.component';
 import {FeedbackComponent} from './view/feedback/feedback.component';
 import {AnnouncementMainComponent} from './view/announcements/main/announcement-main.component';
 import {EventsComponent} from './view/events/events.component';
@@ -27,7 +27,7 @@ const routes: Routes = [
   {path: 'events', component: EventsComponent},
   {path: 'events/detail/:id', component: EventDetailComponent},
   {path: 'serviceRequests', component: ServiceRequestsComponent},
-  {path: 'serviceRequests/:id', component: ServiceRequestDetailComponent},
+  {path: 'serviceRequests/detail/:id', component: ServiceRequestDetailComponent},
   {path: 'announcements', component: AnnouncementMainComponent},
 ];
 

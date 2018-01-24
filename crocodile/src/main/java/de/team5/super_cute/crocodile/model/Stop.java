@@ -19,6 +19,7 @@ import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -41,6 +42,9 @@ public class Stop extends IdentifiableObject implements Serializable, Stateable,
 
   @ElementCollection(fetch = FetchType.EAGER)
   private Set<String> defects;
+
+  @OneToMany(fetch = FetchType.EAGER)
+  private Set<SkipStop> skipData;
 
   public Stop() {
     super();
@@ -122,6 +126,18 @@ public class Stop extends IdentifiableObject implements Serializable, Stateable,
     this.peopleWaiting = peopleWaiting;
   }
 
+  public Set<SkipStop> getSkipData() {
+    return skipData;
+  }
+
+  public void setSkipData(Set<SkipStop> skipData) {
+    this.skipData = skipData;
+  }
+
+  public void addSkipStop(SkipStop skipStop) {
+    skipData.add(skipStop);
+  }
+
   @JsonIgnore
   public int getPeopleWaitingSeverity() {
     if (getPeopleWaiting() < PEOPLE_WAITING_LIMIT_PROBLEMATIC) {
@@ -153,17 +169,17 @@ public class Stop extends IdentifiableObject implements Serializable, Stateable,
 
   @Override
   public String getItemDescription() {
-    String description = "Stop " + this.getId() + ":\n"
+    StringBuilder description = new StringBuilder("Stop " + this.getId() + ":\n"
         + "people waiting: " + this.getPeopleWaiting() + "\n"
-        + "defects: ";
+        + "defects: ");
     Iterator<String> defects = this.getDefects().iterator();
     for (int i = 0; i < this.getDefects().size(); i++) {
       if (i != 0) {
-        description += ", ";
+        description.append(", ");
       }
-      description += defects.next();
+      description.append(defects.next());
     }
-    return description;
+    return description.toString();
   }
 
   public void setItemDescription(String s) {

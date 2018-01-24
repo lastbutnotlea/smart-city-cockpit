@@ -33,6 +33,7 @@ export class TripDetailComponent extends LiveDataComponent implements OnInit {
 
   ngOnInit(): void {
     this.getTrip();
+    super.subscribeToData();
   }
 
   getTrip(): void {
@@ -42,8 +43,6 @@ export class TripDetailComponent extends LiveDataComponent implements OnInit {
         this.trip = trip;
         this.trip.stops = this.stopSortService.sortStops(this.trip.stops);
         this.loaded = true;
-        // This starts periodical calls for live-data after first data was received
-        super.ngOnInit();
       },
       err => console.log('Could not fetch trip data!')
     );
@@ -93,15 +92,7 @@ export class TripDetailComponent extends LiveDataComponent implements OnInit {
 
   // update trip data
   refreshData(): void {
-    this.setDataSubscription(
-      this.http.getTripDetails(this.trip.id).subscribe( data => {
-          this.trip = data;
-          this.trip.stops = this.stopSortService.sortStops(this.trip.stops);
-        },
-        err =>
-          console.log('Could not fetch new line-data.')
-      ));
-    this.subscribeToData();
+    this.getTrip();
   }
 
 }
