@@ -10,6 +10,7 @@ export class VehicleData extends ServiceRequestTarget {
   type: string;
   state: string;
   identifiableType: String = "vehicle";
+  freeFrom: string;
   isShutDown: boolean;
   currentLine: LineData;
 }
