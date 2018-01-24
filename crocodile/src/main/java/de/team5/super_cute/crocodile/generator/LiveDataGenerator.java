@@ -159,7 +159,7 @@ public class LiveDataGenerator {
             LocalDateTime.now(), feedbackable,
             forStop ? STOP_FEEDBACK : VEHICLE_FEEDBACK,
             forStop ? getState(STOP_DEFECTS_SEVERITY.get(defect))
-                : getState(VEHICLE_DEFECTS_SEVERITY.get(defect))));
+                : getState(VEHICLE_DEFECTS_SEVERITY.get(defect)), false));
         currentFeedbackCount++;
       }
     }
@@ -214,7 +214,7 @@ public class LiveDataGenerator {
       Random random) {
     String message = VALUE_FEEDBACK.get(fieldname).get(rating.ordinal())
         .get(random.nextInt(VALUE_FEEDBACK.get(fieldname).get(rating.ordinal()).size()));
-    return new Feedback(message, LocalDateTime.now(), objective, fieldname.equals(PEOPLE_WAITING) ? STOP_FEEDBACK : VEHICLE_FEEDBACK, rating);
+    return new Feedback(message, LocalDateTime.now(), objective, fieldname.equals(PEOPLE_WAITING) ? STOP_FEEDBACK : VEHICLE_FEEDBACK, rating, false);
   }
 }
 
