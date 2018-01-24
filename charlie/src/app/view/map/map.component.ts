@@ -5,6 +5,7 @@ import * as d3zoom from 'd3-zoom';
 import * as d3Tube from 'd3-tube-map';
 import { MapCreatorService } from '../../services/map-creator.service';
 import { Router } from '@angular/router';
+import {environment} from '../../../environments/environment';
 
 @Component({
   selector: 'app-network-map',
@@ -69,7 +70,6 @@ export class MapComponent {
       // line does not contain some attributes of the svg (like stroke-width)
       // lineSvg is the corresponding svg-element that contains these attributes as well
       // TODO: look for a solution where we don't need to select this lineSvg
-
       const lineSvg =  d3.select('path#' + line.name);
       lineSvg.attr('stroke-width', lineSvg.attr('stroke-width') * 1.6);
     }).on('mouseout', line => {
@@ -85,8 +85,11 @@ export class MapComponent {
       .scaleExtent([0.5, 6])
       .on('zoom', zoomed);
     var zoomContainer = svg.call(zoom);
-    var initialScale = 1.5;
-    zoom.scaleTo(zoomContainer, initialScale);
+    //using environment variables here because we need different zoom on heroku
+    zoom.scaleTo(zoomContainer, environment.initialZoom);
+    zoom.translateTo(zoomContainer,
+      environment.initalTraslate[0] / environment.initialZoom,
+      environment.initalTraslate[1] / environment.initialZoom);
     function zoomed() {
       svg.select('g').attr('transform', d3.event.transform.toString());
     }
