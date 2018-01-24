@@ -6,4 +6,6 @@
 export const environment = {
   production: false,
   backendUrl: "http://localhost:8080/api",
+  initalTraslate: [0, 300],
+  initialZoom: 2.5
 };
