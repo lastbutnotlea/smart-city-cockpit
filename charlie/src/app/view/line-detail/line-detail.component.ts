@@ -58,14 +58,14 @@ export class LineDetailComponent extends LiveDataComponent implements OnInit {
   }
 
   getPositionData(id: string): void {
-    this.http.getVehiclePositionInboundData(this.line.id).subscribe(
+    this.http.getVehiclePositionInboundData(id).subscribe(
       data => {
         this.inboundPositionData = data;
       }, err => {
         console.log('Could not get inbound vehicle position data.');
       }
     );
-    this.http.getVehiclePositionOutboundData(this.line.id).subscribe(
+    this.http.getVehiclePositionOutboundData(id).subscribe(
       data => {
         this.outboundPositionData = data;
       }, err => {
