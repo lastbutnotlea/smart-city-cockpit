@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import de.team5.super_cute.crocodile.config.LiveDataConfig;
 import de.team5.super_cute.crocodile.util.DateDeserializer;
 import de.team5.super_cute.crocodile.util.DateSerializer;
+import de.team5.super_cute.crocodile.util.Helpers;
 import de.team5.super_cute.crocodile.util.LocalDateTimeAttributeConverter;
 import de.team5.super_cute.crocodile.util.StateCalculator;
 import java.io.Serializable;
@@ -88,7 +89,7 @@ public class Vehicle extends IdentifiableObject implements Serializable, Stateab
   @Convert(converter = LocalDateTimeAttributeConverter.class)
   @JsonSerialize(using = DateSerializer.class)
   @JsonDeserialize(using = DateDeserializer.class)
-  private LocalDateTime freeFrom = LocalDateTime.now();
+  private LocalDateTime freeFrom = Helpers.DUMMY_TIME;
 
   public Vehicle() {
     super();
@@ -299,10 +300,10 @@ public class Vehicle extends IdentifiableObject implements Serializable, Stateab
 
   @Override
   public String getItemDescription() {
-    String description = this.getId() + ":\n"
-        + "load: " + this.getLoad() + "/" + this.getCapacity() + "\n"
-        + "temperature: " + this.getTemperature() + "\n"
-        + "delay: " + this.getDelay() + "\n"
+    String description = this.getId() + ":<br />"
+        + "load: " + this.getLoad() + "/" + this.getCapacity() + "<br />"
+        + "temperature: " + this.getTemperature() + "<br />"
+        + "delay: " + Math.round(this.getDelay() / 60) + "<br />"
         + "defects: ";
     Iterator<String> defects = this.getDefects().iterator();
     for (int i = 0; i < this.getDefects().size(); i++) {

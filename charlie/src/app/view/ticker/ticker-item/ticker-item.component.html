@@ -1,9 +1,18 @@
 <div>
-<h6>{{data.item.itemHeader}}</h6>
-<p>{{data.item.itemState}} (Prio {{data.item.itemPriority}})</p>
-<p>{{data.item.itemDescription}}</p>
-<p>
-  <a class="btn btn-outline-primary no-float margin-bottom" href="{{link}}">Go to item</a>
-  <button class="btn btn-outline-primary no-float margin-bottom" (click)="deleteItem()">Delete Item</button>
-</p>
+  <h5 class="text-lg-left">
+    <button class="btn btn-outline-primary float-right padding-3" (click)="deleteItem()">
+      <span class="fa fa-times float-right" aria-hidden="true"></span>
+    </button>
+    <a href="{{link}}" class="fill-div">
+    <div [ngClass]="{'color-fine': data.item.itemPriority <= 5,
+     'color-problematic': data.item.itemPriority > 5 && data.item.itemPriority <= 10,
+     'color-critical': data.item.itemPriority > 10}">
+      <i class="fa fa-exclamation-circle float-left padding-right-5" aria-hidden="true"></i>
+    </div>
+    <label>{{data.item.itemHeader}}</label>
+    </a>
+  </h5>
+  <a href="{{link}}" class="fill-div">
+  <p class="no-margin-bottom" [innerHTML]=data.item.itemDescription></p>
+  </a>
 </div>

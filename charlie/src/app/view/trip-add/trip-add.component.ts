@@ -71,7 +71,7 @@ export class TripAddComponent implements OnInit {
       err => console.log('Err'));
 
     // fetch available vehicles
-    this.http.getVehicles().subscribe(
+    this.http.getVehiclesWithCurrentTrip().subscribe(
       data => {
         this.availVehicles = data;
         this.selectedVehicle = this.toDropdownItemV(this.availVehicles[0]);
@@ -185,7 +185,8 @@ export class TripAddComponent implements OnInit {
   }
 
   updateDate(): void {
-    if(this.dateParser.isBeforeDate(new Date(), this.date)) {
+    let freeFrom: Date = new Date(this.selected.vehicle.freeFrom);
+    if(this.dateParser.isBeforeDate(freeFrom, this.date)) {
       this.selectedTime = this.dateParser.parseDate(this.selectedTime, this.date);
       // Date might have been set to current date. Time could now be invalid (passed) time. Check time again
       this.updateTime();
@@ -195,7 +196,8 @@ export class TripAddComponent implements OnInit {
   }
 
   updateTime(): void {
-    if(!this.dateParser.isBeforeTime(new Date(), this.date, this.time)) {
+    let freeFrom: Date = new Date(this.selected.vehicle.freeFrom);
+    if(!this.dateParser.isBeforeTime(freeFrom, this.date, this.time)) {
       this.time = this.dateParser.convertDateToNgbTimeStruct(new Date());
     }
     this.selectedTime = this.dateParser.parseTime(this.selectedTime, this.time);

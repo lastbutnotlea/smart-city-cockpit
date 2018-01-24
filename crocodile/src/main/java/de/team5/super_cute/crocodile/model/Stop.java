@@ -59,7 +59,6 @@ public class Stop extends IdentifiableObject implements Serializable, Stateable,
     this.latitude = latitude;
     this.peopleWaiting = peopleWaiting;
     this.defects = new HashSet<>(Arrays.asList(defects));
-    ;
   }
 
   public Stop(String id, String commonName, Double longitude, Double latitude,
@@ -170,8 +169,8 @@ public class Stop extends IdentifiableObject implements Serializable, Stateable,
 
   @Override
   public String getItemDescription() {
-    StringBuilder description = new StringBuilder("Stop " + this.getId() + ":\n"
-        + "people waiting: " + this.getPeopleWaiting() + "\n"
+    StringBuilder description = new StringBuilder("Stop " + this.getId() + ":<br />"
+        + "people waiting: " + this.getPeopleWaiting() + "<br />"
         + "defects: ");
     Iterator<String> defects = this.getDefects().iterator();
     for (int i = 0; i < this.getDefects().size(); i++) {

@@ -4,6 +4,7 @@ import static de.team5.super_cute.crocodile.config.LiveDataConfig.TEMPERATURE_IN
 
 import de.team5.super_cute.crocodile.config.AppConfiguration;
 import de.team5.super_cute.crocodile.data.BaseData;
+import de.team5.super_cute.crocodile.data.LineData;
 import de.team5.super_cute.crocodile.data.TripData;
 import de.team5.super_cute.crocodile.model.EState;
 import de.team5.super_cute.crocodile.model.Trip;
@@ -32,11 +33,13 @@ public class VehicleController extends BaseController<Vehicle> {
   private Logger logger = LoggerFactory.getLogger(this.getClass());
 
   private TripData tripData;
+  private LineData lineData;
 
   @Autowired
-  public VehicleController(BaseData<Vehicle> vehicleData, TripData tripData) {
+  public VehicleController(BaseData<Vehicle> vehicleData, TripData tripData, LineData lineData) {
     data = vehicleData;
     this.tripData = tripData;
+    this.lineData = lineData;
   }
 
   @GetMapping
@@ -44,7 +47,15 @@ public class VehicleController extends BaseController<Vehicle> {
     logger.info("Got Request to return all vehicles");
     return data.getData().stream()
         .filter(v -> !v.getIsShutDown())
-        //.peek(tripData::setFreeFrom)
+        .sorted((v1, v2) -> v1.getId().compareTo(v2.getId()))
+        .collect(Collectors.toList());
+  }
+
+  @GetMapping("/withcurrenttrip")
+  public List<Vehicle> getAllVehiclesWithCurrentTrip() {
+    logger.info("Got Request to return all vehicles with current Trips");
+    return data.getData().stream()
+        .filter(v -> !v.getIsShutDown())
         .peek(this::setCurrentTrip)
         .sorted((v1, v2) -> v1.getId().compareTo(v2.getId()))
         .collect(Collectors.toList());
@@ -54,7 +65,6 @@ public class VehicleController extends BaseController<Vehicle> {
   public Vehicle getVehicle(@PathVariable String id) {
     logger.info("Got Request to return the vehicle with id " + id);
     Vehicle v = getObjectForId(id);
-    //tripData.setFreeFrom(v);
     setCurrentTrip(v);
     return v;
   }
@@ -106,7 +116,14 @@ public class VehicleController extends BaseController<Vehicle> {
 
   private void setCurrentTrip(Vehicle vehicle) {
     if (vehicle.getOutdateCurrentTrip().isBefore(LocalDateTime.now())) {
-      vehicle.setCurrentTrip(tripData.getCurrentTripOfVehicle(vehicle, LocalDateTime.now()));
+      Trip current = tripData.getCurrentTripOfVehicle(vehicle, LocalDateTime.now());
+      if (current != null) {
+        current.getLine().setState(lineData.calculateLineState(current.getLine()));
+      }
+      vehicle.setCurrentTrip(current);
+    }
+    if (vehicle.getFreeFrom().equals(Helpers.DUMMY_TIME)) {
+      vehicle.setFreeFrom(LocalDateTime.now());
     }
   }
 }
