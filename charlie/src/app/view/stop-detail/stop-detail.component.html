@@ -28,22 +28,26 @@
 
   <div class="d-flex flex-row">
     <div class="d-flex flex-1 flex-column">
-      <div class="d-flex flex-1 bounding-box">
-        <app-embedded-feedback [feedback]="feedback"></app-embedded-feedback>
+      <div class="d-flex bounding-box">
+        <app-embedded-stop [stop]="stop"
+                           [lineForStopDataInbound]="lineForStopDataInbound"
+                           [lineForStopDataOutbound]="lineForStopDataOutbound"></app-embedded-stop>
       </div>
-      <div class="d-flex flex-1 bounding-box">
-        <app-embedded-announcements [announcements]="announcements"></app-embedded-announcements>
+      <div class="d-flex bounding-box">
+        <app-embedded-trip [trips]="trips" [areTripsForVehicle]="false"></app-embedded-trip>
       </div>
     </div>
 
     <div class="d-flex flex-1 float-right flex-column">
-      <div class=" d-flex bounding-box">
-        <app-embedded-stop [stop]="stop" [lineForStopDataInbound]="lineForStopDataInbound"
-                           [lineForStopDataOutbound]="lineForStopDataOutbound"></app-embedded-stop>
-      </div>
-      <app-embedded-trip [trips]="trips" [areTripsForVehicle]="false" class="flex-1 bounding-box"></app-embedded-trip>
       <div class="d-flex bounding-box">
-        <app-embedded-service-requests [serviceRequests]="serviceRequests"></app-embedded-service-requests>
+        <app-embedded-feedback [feedback]="feedback"></app-embedded-feedback>
+      </div>
+      <div class="d-flex bounding-box">
+        <app-embedded-announcements [announcements]="announcements"></app-embedded-announcements>
+      </div>
+      <div class="d-flex bounding-box">
+        <app-embedded-service-requests
+          [serviceRequests]="serviceRequests"></app-embedded-service-requests>
       </div>
     </div>
 
