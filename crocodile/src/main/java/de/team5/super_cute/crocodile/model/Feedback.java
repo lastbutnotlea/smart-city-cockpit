@@ -16,6 +16,9 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "feedback")
+@org.hibernate.annotations.Entity(
+    dynamicUpdate = true
+)
 public class Feedback extends IdentifiableObject implements Serializable, TickerItemable {
 
   @Column
@@ -35,18 +38,27 @@ public class Feedback extends IdentifiableObject implements Serializable, Ticker
   @Column
   private EState rating;
 
+  @Column
+  private boolean processed;
+
   public Feedback() {
     super();
   }
 
   public Feedback(String message, LocalDateTime timestamp, ServiceOrFeedbackTargetObject objective,
-      EFeedbackType feedbackType, EState rating) {
+      EFeedbackType feedbackType, EState rating, boolean processed) {
     super();
     this.message = message;
     this.timestamp = timestamp;
     this.objective = objective;
     this.feedbackType = feedbackType;
     this.rating = rating;
+    this.processed = processed;
+  }
+
+  public Feedback(Feedback feedback) {
+    this(feedback.message, feedback.timestamp, feedback.objective, feedback.feedbackType, feedback.rating, feedback.processed);
+    setId(feedback.getId());
   }
 
   public String getMessage() {
@@ -87,6 +99,14 @@ public class Feedback extends IdentifiableObject implements Serializable, Ticker
 
   public void setRating(EState rating) {
     this.rating = rating;
+  }
+
+  public boolean getProcessed() {
+    return processed;
+  }
+
+  public void setProcessed(boolean processed) {
+    this.processed = processed;
   }
 
   @Override

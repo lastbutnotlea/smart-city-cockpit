@@ -14,4 +14,5 @@ export class ServiceRequestData {
   feedbacks: FeedbackData[];
   priority: string; // FINE, PROBLEMATIC or CRITICAL, like state
   objectId: string; // Caro: Braucht das Backend um patch requests zu realisieren ohne vor das Objekt neu anfragen zu müssen :)
+  referencedFeedback: string; // Caro: um im Backend Feedback-Gruppen wiederverwenden zu können :)
 }

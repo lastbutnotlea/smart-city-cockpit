@@ -5,4 +5,5 @@ export class FeedbackData {
   rating: string;
   timestamp: string;
   objective: any;
+  processed: boolean;
 }
