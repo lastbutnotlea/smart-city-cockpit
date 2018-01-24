@@ -12,6 +12,7 @@ import {EventAddComponent} from '../event-add/event-add.component';
 
 export class EventsComponent implements OnInit {
   title: String;
+  loaded: boolean = false;
 
   events: EventData[] = [];
 
@@ -22,10 +23,7 @@ export class EventsComponent implements OnInit {
   public ngOnInit(): void {
     this.title = 'Events';
     this.getEvents();
-  }
-
-  public isLoaded(): boolean {
-    return (this.events.length > 0);
+    this.loaded = true;
   }
 
   private getEvents(): void {

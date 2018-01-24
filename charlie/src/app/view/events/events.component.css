@@ -1,0 +1,41 @@
+.scrollable {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.no-m-left {
+  margin-left: 0 !important;
+}
+
+.flex-grow-1 {
+  flex-grow: 1;
+}
+
+table {
+  flex-grow: 1;
+  margin-bottom: 0;
+}
+
+thead, tbody, tr, td, th { display: block; }
+
+thead th {
+  text-align: left;
+  width: 14% !important;
+}
+
+tbody {
+  height: 100px;
+}
+
+thead {
+  /* fallback */
+  width: 100%;
+  min-height: 50px;
+}
+
+
+tbody td, thead th {
+  /* 100/8 */
+  width: 14.2857142857%;
+  float: left;
+}

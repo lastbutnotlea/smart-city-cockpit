@@ -55,8 +55,8 @@ import {EmbeddedServiceRequestComponent} from './shared/components/embedded-serv
 import {EmbeddedFeedbackComponent} from './shared/components/embedded-feedback/embedded-feedback.component';
 import {SkipStopComponent} from "./view/stop-skip/stop-skip";
 import {EmbeddedAnnouncementsComponent} from './shared/components/embedded-announcements/embedded-announcements.component';
-import {AnnouncementItemComponent} from './view/announcements/item/announcement-item.component';
-import {AnnouncementMainComponent} from './view/announcements/main/announcement-main.component';
+import {AnnouncementMainComponent} from "./view/announcements/main/announcement-main.component";
+import {AnnouncementItemComponent} from "./view/announcements/item/announcement-item.component";
 
 @NgModule({
   declarations: [

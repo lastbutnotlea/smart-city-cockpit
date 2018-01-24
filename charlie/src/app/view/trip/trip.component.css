@@ -45,5 +45,5 @@ tbody td, thead th {
 }
 
 .filter-fully-visible {
-  width: 250px;
+  width: 400px !important;
 }

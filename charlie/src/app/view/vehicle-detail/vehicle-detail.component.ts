@@ -48,7 +48,7 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
       err => console.log('Could not fetch trip data, sorry!')
     );
     // feedback for vehicle
-    this.http.getVehicleFeedback(this.vehicle.id).subscribe(
+    this.http.getVehicleFeedback(id).subscribe(
       data => {
         this.feedback = data;
       }, err => {
@@ -56,7 +56,7 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
       }
     );
     // service requests for vehicle
-    this.http.getVehicleServiceRequests(this.vehicle.id).subscribe(
+    this.http.getVehicleServiceRequests(id).subscribe(
       data => {
         this.serviceRequests = data;
       }, err => {

@@ -22,28 +22,31 @@
       Stop skipped:
     </h4>
     <h5 *ngFor="let skipData of stop.skipData">
-      from {{skipData.from}} to {{skipData.to}} because of {{skipData.reason}}
+      from {{skipData.from  | date:'MM/dd/yyyy HH:mm'}} to {{skipData.to | date:'MM/dd/yyyy HH:mm'}} because of {{skipData.reason}}
     </h5>
   </div>
 
   <div class="d-flex flex-row">
     <div class="d-flex flex-1 flex-column">
-      <div class="d-flex flex-1 bounding-box">
-        <app-embedded-feedback [feedback]="feedback"></app-embedded-feedback>
-      </div>
-      <div class="d-flex flex-1 bounding-box">
-        <app-embedded-announcements [announcements]="announcements"></app-embedded-announcements>
-      </div>
-    </div>
-
-    <div class="d-flex flex-1 float-right flex-column">
-      <div class=" d-flex bounding-box">
-        <app-embedded-stop [stop]="stop" [lineForStopDataInbound]="lineForStopDataInbound"
+      <div class="bounding-box">
+        <app-embedded-stop [stop]="stop"
+                           [lineForStopDataInbound]="lineForStopDataInbound"
                            [lineForStopDataOutbound]="lineForStopDataOutbound"></app-embedded-stop>
       </div>
-      <app-embedded-trip [trips]="trips" [areTripsForVehicle]="false" class="flex-1 bounding-box"></app-embedded-trip>
-      <div class="d-flex bounding-box">
-        <app-embedded-service-requests [serviceRequests]="serviceRequests"></app-embedded-service-requests>
+      <div class="bounding-box">
+        <app-embedded-trip [trips]="trips" [areTripsForVehicle]="false"></app-embedded-trip>
+      </div>
+    </div>
+    <div class="d-flex flex-1 float-right flex-column">
+      <div class="bounding-box">
+        <app-embedded-feedback [feedback]="feedback"></app-embedded-feedback>
+      </div>
+      <div class="bounding-box">
+        <app-embedded-announcements [announcements]="announcements"></app-embedded-announcements>
+      </div>
+      <div class="bounding-box">
+        <app-embedded-service-requests
+          [serviceRequests]="serviceRequests"></app-embedded-service-requests>
       </div>
     </div>
 
