@@ -39,8 +39,7 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getStop();
-    super.subscribeToData();
+    this.getData();
   }
 
   skipStop(): void {
@@ -48,7 +47,7 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
     modal.componentInstance.data = this.stop;
   }
 
-  getStop(): void {
+  getData(): void {
     const stopId = this.route.snapshot.paramMap.get('stopId');
     this.getData(stopId);
     this.getTripsForStop(stopId);
@@ -135,7 +134,7 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
 
   // update stop data
   refreshData(): void {
-    this.getStop();
+    this.getData();
   }
 
 }

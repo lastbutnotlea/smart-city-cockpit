@@ -13,11 +13,11 @@
   </h3>
 
   <div class="no-float margin-bottom-30">
-    <button class="btn btn-outline-secondary" (click)="goBack()">Back</button>
+    <button class="btn btn-outline-dark" (click)="goBack()">Back</button>
   </div>
 
-<!--  <app-line-map #inbound></app-line-map>
- <app-line-map #outbound></app-line-map>-->
+    <!--  <app-line-map #inbound></app-line-map>
+     <app-line-map #outbound></app-line-map>-->
 
   <div *ngIf="loaded" class="d-flex">
     <app-embedded-stop-overview [linePositionData]="inboundPositionData"

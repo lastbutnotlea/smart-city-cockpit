@@ -23,9 +23,9 @@
                                (selectedStopsChanged)="setStops($event)"></app-edit-announcement-stops>
 </div>
 <div class="modal-footer">
-  <button type="button" class="btn btn-outline-secondary"
+  <button type="button" class="btn btn-outline-dark"
           (click)="activeModal.close('Close click')">
-    Close
+    Cancel
   </button>
   <ng-container *ngIf="state !== 0">
     <button type="button" class="btn btn-outline-primary" (click)="back()">Back</button>
