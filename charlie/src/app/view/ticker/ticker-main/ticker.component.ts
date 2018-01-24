@@ -16,17 +16,15 @@ export class TickerComponent extends LiveDataComponent implements OnInit {
   }
 
   ngOnInit() {
-    super.ngOnInit();
+    super.subscribeToData();;
   }
 
   refreshData(): void {
-    this.setDataSubscription(
-      this.http.getTickerItems().subscribe(data => {
-          this.items = data;
-        },
-        err => alert(JSON.stringify(err))
-      ));
-    this.subscribeToData();
+    this.http.getTickerItems().subscribe(data => {
+        this.items = data;
+      },
+      err => console.log(JSON.stringify(err))
+    );
   }
 
   removeItem(item: TickerData): void {

@@ -58,7 +58,7 @@ export class EventAddComponent implements OnInit {
     this.http.getInvolvedParties().subscribe(data => {
       this.party = toDropdownItem(data[0], party => party);
       this.availableParties = toDropdownItems(data, party => party)
-    }, err => alert(err));
+    }, err => console.log(err));
 
     this.availablePriorities = toDropdownItems(
       ['FINE', 'PROBLEMATIC', 'CRITICAL'],

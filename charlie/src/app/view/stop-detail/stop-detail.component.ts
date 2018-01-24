@@ -1,17 +1,18 @@
 import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Location} from '@angular/common';
+import {HttpRoutingService} from '../../services/http-routing.service';
+import {LiveDataComponent} from '../../shared/components/live-data/live-data.component';
+import {LineForStopData} from "../../shared/data/line-for-stop-data";
+import {ServiceRequestData} from '../../shared/data/service-request-data';
 import {TripData} from '../../shared/data/trip-data';
 import {TripStopData} from '../../shared/data/trip-stop-data';
-import { StopData } from '../../shared/data/stop-data';
-import { ActivatedRoute } from '@angular/router';
-import { Location } from '@angular/common';
-import { HttpRoutingService } from '../../services/http-routing.service';
-import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
-import {LineForStopData} from "../../shared/data/line-for-stop-data";
-import { FeedbackData } from '../../shared/data/feedback-data';
+import {StopData} from '../../shared/data/stop-data';
+import {FeedbackData} from '../../shared/data/feedback-data';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {SkipStopComponent} from "../stop-skip/stop-skip";
-import { AnnouncementData } from '../../shared/data/announcement-data';
-import {ServiceRequestData} from "../../shared/data/service-request-data";
+import {AnnouncementData} from '../../shared/data/announcement-data';
+import {SkipData} from "../../shared/data/skip-data";
 
 @Component({
   selector: 'app-stop-detail-view',
@@ -39,6 +40,7 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
 
   ngOnInit(): void {
     this.getStop();
+    super.subscribeToData();
   }
 
   skipStop(): void {
@@ -59,8 +61,7 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
         this.stop = stop;
         this.getLines();
         this.getAdditionalData();
-        // This starts periodical calls for live-data after first data was received
-        super.ngOnInit();
+        this.getTripsForStop(stopId);
       },
       err => console.log('Could not fetch stop data!')
     );
@@ -77,7 +78,7 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
             let rightStopInTrip: TripStopData;
             trip.stops.forEach(
               stop => {
-                if(stop.id === stopId) {
+                if (stop.id === stopId) {
                   rightStopInTrip = stop;
                 }
               }
@@ -134,18 +135,7 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
 
   // update stop data
   refreshData(): void {
-    this.setDataSubscription(
-      this.http.getStopDetails(this.stop.id).subscribe(data => {
-          this.stop = data;
-          this.getLines();
-          this.getAdditionalData();
-        },
-        err =>
-          console.log('Could not fetch new stop-data.')
-      ));
-    this.subscribeToData();
-
-    this.getTripsForStop(this.stop.id);
+    this.getStop();
   }
 
 }
