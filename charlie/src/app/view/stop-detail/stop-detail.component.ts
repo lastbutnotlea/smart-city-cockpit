@@ -128,7 +128,7 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
 
   // update stop data
   refreshData(): void {
-    this.getStop();
+    this.getData();
   }
 
 }
