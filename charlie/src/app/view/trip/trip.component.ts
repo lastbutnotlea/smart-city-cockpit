@@ -32,6 +32,7 @@ export class TripComponent extends LiveDataComponent implements OnInit {
     this.title = 'Trip View';
     this.addFilter();
     this.getTrips();
+    super.subscribeToData();
   }
 
   private getTrips(): void {
@@ -42,7 +43,6 @@ export class TripComponent extends LiveDataComponent implements OnInit {
         this.loaded = true;
         this.trips.forEach(trip => trip.stops = this.stopSortService.sortStops(trip.stops));
         // This starts periodical calls for live-data after first data was received
-        super.ngOnInit();
         },
       err => console.log('Could not fetch trips.')
     );
@@ -85,15 +85,6 @@ export class TripComponent extends LiveDataComponent implements OnInit {
 
   // update trips
   refreshData(): void {
-    this.setDataSubscription(
-    this.http.getTrips().subscribe( data => {
-        this.trips = data;
-        this.trips.forEach(trip => trip.stops = this.stopSortService.sortStops(trip.stops));
-        this.subscribeToData();
-      },
-      err =>
-        console.log('Could not fetch new line-data.')
-    ));
-    this.subscribeToData();
+    this.getTrips();
   }
 }

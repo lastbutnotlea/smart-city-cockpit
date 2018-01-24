@@ -6,7 +6,7 @@
       <app-filter-group-view></app-filter-group-view>
     </div>
 
-    <div class="d-flex flex-grow-1 fit-screen">
+    <div *ngIf="loaded && filterGroup.getFiltered(serviceRequests).length > 0" class="d-flex flex-grow-1 fit-screen">
       <table class="table fit-screen d-flex flex-column">
         <thead class="flex-grow-1">
         <tr class="d-flex">
@@ -22,7 +22,7 @@
         <tbody class="d-flex flex-column flex-grow-1 fit-screen">
         <tr *ngFor="let serviceRequest of filterGroup.getFiltered(serviceRequests)">
           <td>
-            <a routerLink="{{serviceRequest.id}}">
+            <a href="serviceRequests/detail/{{serviceRequest.id}}">
               {{ serviceRequest.id }}
             </a>
           </td>
@@ -35,24 +35,23 @@
           <span [ngClass]="{'color-fine': serviceRequest.priority === 'FINE',
            'color-problematic': serviceRequest.priority === 'PROBLEMATIC',
           'color-critical': serviceRequest.priority === 'CRITICAL' }">
-            <i class="fa fa-lightbulb-o" aria-hidden="true"></i>
+            <i class="fa fa-exclamation-circle fa-2x" aria-hidden="true"></i>
           </span>
           </td>
         </tr>
         </tbody>
       </table>
     </div>
-    <div class="no-float m-3 no-margin-left">
-      <button class="btn btn-outline-primary" (click)="addServiceRequest()">Add new service
-        request
-      </button>
-    </div>
-
     <div *ngIf="!loaded">
       <h3>Loading...</h3>
     </div>
     <div *ngIf="loaded && filterGroup.getFiltered(serviceRequests).length == 0">
       <h3>No service request available</h3>
     </div>
+  </div>
+  <div class="no-float m-3 no-margin-left">
+    <button class="btn btn-outline-primary" (click)="addServiceRequest()">Add new service
+      request
+    </button>
   </div>
 </div>

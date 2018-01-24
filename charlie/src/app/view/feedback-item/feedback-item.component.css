@@ -1,1 +1,22 @@
+.no-margin-bottom {
+  margin-bottom: 0;
+}
+
+.margin-left-20 {
+  margin-left: 20px;
+}
+
+.processed {
+  margin-bottom: 0;
+  margin-top: 4px;
+}
+
+.check-style {
+  margin-left: 10px;
+}
+
+.processed-button {
+  padding: 4px 39px 0px 39px;
+}
+
 

@@ -3,14 +3,19 @@ package de.team5.super_cute.crocodile.controller;
 import de.team5.super_cute.crocodile.config.AppConfiguration;
 import de.team5.super_cute.crocodile.data.BaseData;
 import de.team5.super_cute.crocodile.data.LineData;
+import de.team5.super_cute.crocodile.data.SkipStopData;
+import de.team5.super_cute.crocodile.data.TripData;
 import de.team5.super_cute.crocodile.jsonclasses.LineForStopData;
 import de.team5.super_cute.crocodile.model.Line;
+import de.team5.super_cute.crocodile.model.SkipStop;
 import de.team5.super_cute.crocodile.model.Stop;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,11 +24,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class StopController extends BaseController<Stop> {
 
   private LineData lineData;
+  private TripData tripData;
+  private SkipStopData skipStopData;
 
   @Autowired
-  public StopController(BaseData<Stop> stopData, LineData lineData) {
+  public StopController(BaseData<Stop> stopData, LineData lineData, TripData tripData, SkipStopData skipStopData) {
     data = stopData;
     this.lineData = lineData;
+    this.tripData = tripData;
+    this.skipStopData = skipStopData;
   }
 
   @GetMapping
@@ -51,5 +60,15 @@ public class StopController extends BaseController<Stop> {
       }
     }
     return lineForStopData;
+  }
+
+  @PostMapping("/{id}/skip")
+  public SkipStop skipStop(@PathVariable String id, @RequestBody SkipStop skipStop) {
+    Stop stop = getObjectForId(id);
+    tripData.skipStopsInTimeFrameForAllTrips(id, skipStop.getFrom(), skipStop.getTo());
+    stop.addSkipStop(skipStop);
+    skipStopData.addObject(skipStop);
+    editObject(stop);
+    return skipStop;
   }
 }

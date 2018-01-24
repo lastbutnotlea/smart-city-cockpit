@@ -300,10 +300,10 @@ public class Vehicle extends IdentifiableObject implements Serializable, Stateab
 
   @Override
   public String getItemDescription() {
-    String description = this.getId() + ":\n"
-        + "load: " + this.getLoad() + "/" + this.getCapacity() + "\n"
-        + "temperature: " + this.getTemperature() + "\n"
-        + "delay: " + this.getDelay() + "\n"
+    String description = this.getId() + ":<br />"
+        + "load: " + this.getLoad() + "/" + this.getCapacity() + "<br />"
+        + "temperature: " + this.getTemperature() + "<br />"
+        + "delay: " + Math.round(this.getDelay() / 60) + "<br />"
         + "defects: ";
     Iterator<String> defects = this.getDefects().iterator();
     for (int i = 0; i < this.getDefects().size(); i++) {

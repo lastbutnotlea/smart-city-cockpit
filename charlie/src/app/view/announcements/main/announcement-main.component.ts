@@ -24,7 +24,7 @@ export class AnnouncementMainComponent implements OnInit {
         this.data = data;
         this.loaded = true;
       },
-    err => alert('Could not fetch data'));
+    err => console.log('Could not fetch data'));
   }
 
   add(): void {

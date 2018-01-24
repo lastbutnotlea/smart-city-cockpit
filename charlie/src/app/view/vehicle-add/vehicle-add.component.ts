@@ -39,9 +39,6 @@ export class VehicleAddComponent implements OnInit {
     }).subscribe(
       () => this.activeModal.close('Close click'),
       err => {
-        if(err == null) {
-          alert("Could not add vehicle")
-        }
         console.log(JSON.stringify(err));
       });
   }

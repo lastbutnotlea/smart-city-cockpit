@@ -8,8 +8,4 @@ import {Component, EventEmitter, Input, Output} from '@angular/core';
 export class EditAnnounementTextComponent {
   @Output() textChange = new EventEmitter<string>();
   @Input() text: string;
-
-  onTextChange(event: Event): void {
-    this.textChange.emit(this.text);
-  }
 }

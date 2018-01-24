@@ -12,9 +12,10 @@ import { LinePositionData } from '../shared/data/line-position-data';
 import {FeedbackData} from '../shared/data/feedback-data';
 import {TickerData} from '../shared/data/ticker-data';
 import {AnnouncementData} from '../shared/data/announcement-data';
+import {SkipData} from "../shared/data/skip-data";
 import {EventData} from '../shared/data/event-data';
 import {PartyData} from '../shared/data/party-data';
-import {LineForStopData} from "../shared/data/LineForStopData";
+import {LineForStopData} from "../shared/data/line-for-stop-data";
 
 @Injectable()
 export class HttpRoutingService {
@@ -116,6 +117,14 @@ export class HttpRoutingService {
     return this.http.put(this.urlBuilder.getTripsUrl(), trip);
   }
 
+  public processFeedback(feedbackId: string): Observable<any> {
+    return this.http.put(this.urlBuilder.getFeedbackProcessUrl(feedbackId), feedbackId);
+  }
+
+  public unprocessFeedback(feedbackId: string): Observable<any> {
+    return this.http.put(this.urlBuilder.getFeedbackUnprocessUrl(feedbackId), feedbackId);
+  }
+
   public deleteTrip(tripId: string): Observable<any> {
     return this.http.delete(this.urlBuilder.getTripDetailsUrl(tripId));
   }
@@ -151,6 +160,10 @@ export class HttpRoutingService {
 
   public editServiceRequest(serviceRequest: ServiceRequestData): Observable<any> {
     return this.http.put(this.urlBuilder.getServiceRequestsUrl(), serviceRequest);
+  }
+
+  public skipStop(stopId: string, skipData: SkipData): Observable<any> {
+    return this.http.post(this.urlBuilder.getStopSkipUrl(stopId), skipData);
   }
 
   public deleteServiceRequest(id: string): Observable<any> {
@@ -232,4 +245,13 @@ export class HttpRoutingService {
   public getTripsForVehicle(vehicleId: string): Observable<TripData[]> {
     return this.http.get<TripData[]>(this.urlBuilder.getTripsForVehicleUrl(vehicleId));
   }
+
+  public getVehicleServiceRequests(vehicleId: string): Observable<ServiceRequestData[]> {
+    return this.http.get<ServiceRequestData[]>(this.urlBuilder.getVehicleServiceRequestsUrl(vehicleId));
+  }
+
+  public getStopServiceRequests(stopId: string): Observable<ServiceRequestData[]> {
+    return this.http.get<ServiceRequestData[]>(this.urlBuilder.getStopServiceRequestsUrl(stopId));
+  }
+
 }

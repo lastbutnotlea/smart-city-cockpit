@@ -1,8 +1,31 @@
 <div class="bounding-box" style="width: 100%;">
-  <div class="d-flex flex-wrap justify-content-around">
-    <div>Feedback {{ item.id }}:</div>
-    <div>{{ item.feedbackType }} for {{ item.objective.id }} at {{ time }}</div>
-    <div>Rating: {{ item.rating }}</div>
+  <div class="d-flex justify-content-around flex-column">
+    <h4 class="text-center">
+      <div [ngClass]="{'color-fine': item.rating === 'FINE',
+       'color-problematic': item.rating === 'PROBLEMATIC',
+       'color-critical': item.rating === 'CRITICAL' }">
+        <i class="fa fa-star fa-2x float-right padding-right-20" aria-hidden="true"></i>
+      </div>
+      Details <label class="text-primary">{{item.id}}</label>
+    </h4>
+    <div>
+      <p *ngIf="item.feedbackType === 'STOP_FEEDBACK'" class="no-margin-bottom">Feedback for stop
+        <label class="text-primary">{{item.objective.id}}</label>:</p>
+      <p *ngIf="item.feedbackType === 'VEHICLE_FEEDBACK'" class="no-margin-bottom">Feedback for
+        <label class="text-primary">{{item.objective.id}}</label>:</p>
+      <p class="margin-left-20">"{{item.message}}"</p>
+    </div>
+
+    <div>
+      <button *ngIf="!item.processed" class="btn btn-outline-primary float-right"
+              (click)="processFeedback()">Set feedback processed
+      </button>
+      <button *ngIf="item.processed" class="btn btn-outline-primary float-right processed-button"
+              (click)="processFeedback()">
+        <span class="processed">processed</span>
+        <span class="fa fa-check fa-2x float-right check-style" aria-hidden="true"></span>
+      </button>
+
+    </div>
   </div>
-  <p>{{ item.message }}</p>
 </div>

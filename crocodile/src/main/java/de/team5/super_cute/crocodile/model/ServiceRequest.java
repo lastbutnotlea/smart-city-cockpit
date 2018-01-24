@@ -82,7 +82,6 @@ public class ServiceRequest extends C4CEntity {
    * The id of the feedbackGroup this service request answers to.
    */
   @C4CProperty(name = "FeedbackReference", maxLength = 36)
-  @JsonIgnore
   private String referencedFeedback;
 
   private Set<Feedback> feedbacks;
