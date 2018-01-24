@@ -19,20 +19,23 @@
 
   <div class="d-flex flex-row">
     <div class="d-flex flex-1 flex-column">
-
-      <div class="d-flex flex-1 flex-column bounding-box">
+      <div class="bounding-box">
         <app-embedded-vehicle [vehicle]="vehicle"></app-embedded-vehicle>
       </div>
-
-      <div class="flex-1 bounding-box">
+      <div class="bounding-box">
+        <app-embedded-trip [trips]="trips" [areTripsForVehicle]="true"></app-embedded-trip>
+      </div>
+    </div>
+    <div class="d-flex flex-1 float-right flex-column">
+      <div class="bounding-box">
+        <app-embedded-line *ngIf="vehicle.currentLine !== null" [line]="vehicle.currentLine"></app-embedded-line>
+      </div>
+      <div class="bounding-box">
+        <app-embedded-feedback [feedback]="feedback"></app-embedded-feedback>
+      </div>
+      <div class="bounding-box">
         <app-embedded-service-requests [serviceRequests]="serviceRequests"></app-embedded-service-requests>
       </div>
-      <app-embedded-feedback [feedback]="feedback" class="flex-1 bounding-box"></app-embedded-feedback>
-      <app-embedded-line *ngIf="vehicle.currentLine !== null" [line]="vehicle.currentLine" class="flex-1 bounding-box"></app-embedded-line>
     </div>
-
-    <!--TODO merge conflict with frontend/improvevehicles incoming-->
-    <app-embedded-trip [trips]="trips" [areTripsForVehicle]="true" class="flex-1 bounding-box"></app-embedded-trip>
   </div>
-
 </div>
