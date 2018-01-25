@@ -9,7 +9,7 @@
     {{title}}
   </h3>
 
-  <div class="d-flex flex-row">
+  <div *ngIf="loaded" class="d-flex flex-row">
     <div class="fit-screen flex-2 overflow-x">
       <app-network-map></app-network-map>
     </div>
@@ -38,6 +38,9 @@
     </span>
       </p>
     </div>
+  </div>
+  <div *ngIf="!loaded">
+    <h3>Loading...</h3>
   </div>
 </div>
 
