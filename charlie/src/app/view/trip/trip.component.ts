@@ -50,7 +50,6 @@ export class TripComponent extends LiveDataComponent implements OnInit {
 
   addTrip(): void {
     const modal = this.modalService.open(TripAddComponent);
-    modal.componentInstance.initData();
   }
 
   private addFilter(): void {
