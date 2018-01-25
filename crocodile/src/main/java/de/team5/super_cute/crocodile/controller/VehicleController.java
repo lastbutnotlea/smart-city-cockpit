@@ -7,6 +7,7 @@ import de.team5.super_cute.crocodile.data.BaseData;
 import de.team5.super_cute.crocodile.data.LineData;
 import de.team5.super_cute.crocodile.data.TripData;
 import de.team5.super_cute.crocodile.model.EState;
+import de.team5.super_cute.crocodile.model.EVehicleType;
 import de.team5.super_cute.crocodile.model.Trip;
 import de.team5.super_cute.crocodile.model.Vehicle;
 import de.team5.super_cute.crocodile.util.Helpers;
@@ -114,7 +115,22 @@ public class VehicleController extends BaseController<Vehicle> {
     return StateCalculator.getState((int) data.getData().stream().mapToInt(Vehicle::getSeverity).average().getAsDouble());
   }
 
+  @GetMapping("/type/{type}")
+  public List<Vehicle> getAllVehiclesWithType(@PathVariable String type) {
+    return data.getData().stream().filter(v -> v.getType().equals(EVehicleType.valueOf(type))).collect(Collectors.toList());
+  }
+
+  @GetMapping("/{vehicleId}/free-from")
+  public LocalDateTime getVehicleFreeFrom(@PathVariable String vehicleId) {
+    Vehicle vehicle = data.getObjectForId(vehicleId);
+    tripData.setFreeFrom(vehicle);
+    return vehicle.getFreeFrom();
+  }
+
   private void setCurrentTrip(Vehicle vehicle) {
+    if (vehicle == null) {
+      return;
+    }
     if (vehicle.getOutdateCurrentTrip().isBefore(LocalDateTime.now())) {
       Trip current = tripData.getCurrentTripOfVehicle(vehicle, LocalDateTime.now());
       if (current != null) {
