@@ -11,7 +11,9 @@
       <i class="fa fa-lightbulb-o fa-2x float-right padding-right-20" aria-hidden="true"></i>
     </div>
     {{title}}
-    <label class="text-primary">{{stop.commonName}}</label>
+    <a href="network/stop/{{stop.id}}">
+      <label class="text-primary">{{stop.commonName}}</label>
+    </a>
   </h3>
   <div class="no-float margin-bottom-30">
     <button class="btn btn-outline-dark" (click)="goBack()">Back</button>
@@ -22,7 +24,8 @@
       Stop skipped:
     </h4>
     <h5 *ngFor="let skipData of stop.skipData">
-      from {{skipData.from  | date:'MM/dd/yyyy HH:mm'}} to {{skipData.to | date:'MM/dd/yyyy HH:mm'}} because of {{skipData.reason}}
+      from {{skipData.from | date:'MM/dd/yyyy HH:mm'}} to {{skipData.to | date:'MM/dd/yyyy HH:mm'}}
+      because of {{skipData.reason}}
     </h5>
   </div>
 

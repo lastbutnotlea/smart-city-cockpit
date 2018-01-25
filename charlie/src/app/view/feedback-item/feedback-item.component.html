@@ -6,13 +6,25 @@
        'color-critical': item.rating === 'CRITICAL' }">
         <i class="fa fa-star fa-2x float-right padding-right-20" aria-hidden="true"></i>
       </div>
-      Details <label class="text-primary">{{item.id}}</label>
+      Details <label class="text-primary">
+      <a href="feedback">
+        {{item.id}}
+      </a>
+    </label>
     </h4>
     <div>
       <p *ngIf="item.feedbackType === 'STOP_FEEDBACK'" class="no-margin-bottom">Feedback for stop
-        <label class="text-primary">{{item.objective.id}}</label>:</p>
+        <label class="text-primary">
+          <a href="network/stop/{{item.objective.id}}">
+          {{item.objective.id}}
+          </a>
+        </label>:</p>
       <p *ngIf="item.feedbackType === 'VEHICLE_FEEDBACK'" class="no-margin-bottom">Feedback for
-        <label class="text-primary">{{item.objective.id}}</label>:</p>
+        <label class="text-primary">
+          <a href="vehicles/{{item.objective.id}}">
+            {{item.objective.id}}
+          </a>
+        </label>:</p>
       <p class="margin-left-20">"{{item.message}}"</p>
     </div>
 

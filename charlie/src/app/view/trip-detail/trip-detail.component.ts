@@ -8,8 +8,7 @@ import {TripEditComponent} from '../trip-edit/trip-edit.component';
 import {ConfirmDeletionComponent} from '../../shared/components/confirm-popup/confirm-deletion.component';
 import {StopSortService} from '../../services/stop-sort.service';
 import {TripEditDepartureComponent} from '../trip-edit-departure/trip-edit-departure.component';
-import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
-
+import {LiveDataComponent} from '../../shared/components/live-data/live-data.component';
 
 
 @Component({
@@ -68,10 +67,11 @@ export class TripDetailComponent extends LiveDataComponent implements OnInit {
     const modal = this.modalService.open(ConfirmDeletionComponent);
     modal.componentInstance.objectToDelete = 'trip ' + this.trip.id;
     modal.componentInstance.deletionEvent.subscribe(($event) => {
-      this.deleteTrip($event);});
+      this.deleteTrip($event);
+    });
   }
 
-  deleteTrip(event) : void {
+  deleteTrip(event): void {
     super.ngOnDestroy();
     this.http.deleteTrip(this.trip.id).subscribe(
       data => this.location.back(),
@@ -80,7 +80,7 @@ export class TripDetailComponent extends LiveDataComponent implements OnInit {
         // This means deleting the trip was successful
         // http-response is interpreted as error, therefore the message must be checked here, not in data
         // TODO: http-response should not always be considered an error / backend should return different value?
-        if(err.status === 200){
+        if (err.status === 200) {
           this.location.back();
         } else {
           console.log('Could not delete trip!');

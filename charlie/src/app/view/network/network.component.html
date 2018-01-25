@@ -17,10 +17,12 @@
     <!-- stopState of each line -->
     <!-- this could be extracted into an embedded component to keep this file smaller, but it is not needed in any other component -->
     <div class="flex-1 bounding-box min-width">
-      <h4 class="text-lg-left">
-        <i class="fa fa-exchange fa-2x float-left padding-left-5 text-primary"></i>
-        <label class="padding-emb-box-headline">Lines</label>
-      </h4>
+      <a href="network">
+        <h4 class="text-lg-left">
+          <i class="fa fa-exchange fa-2x float-left padding-left-5 text-primary"></i>
+          <label class="padding-emb-box-headline">Lines</label>
+        </h4>
+      </a>
       <p *ngFor="let line of lines">
         <a href="network/detail/{{line.id}}">
       <span *ngIf="line.type === 'BUS'" [style.color]="line.color">
@@ -29,8 +31,8 @@
           <span *ngIf="line.type === 'SUBWAY'" [style.color]="line.color">
         <i class="fa fa-subway float-left padding-left-5 padding-right-5"></i>
       </span>
+          {{line.name}}
         </a>
-        {{line.name}}
         <span [ngClass]="{'color-fine': line.state === 'FINE',
        'color-problematic': line.state === 'PROBLEMATIC',
        'color-critical': line.state === 'CRITICAL' }">
