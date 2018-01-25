@@ -15,29 +15,13 @@ export class TickerItemComponent {
   @Output()
   onDelete: EventEmitter<TickerData> = new EventEmitter<TickerData>();
 
-  itemClass: string = 'no-highlight';
-  crossClass: string = 'bg-white';
-
   hoverOnCross: boolean = false;
 
   constructor(private http: HttpRoutingService, private router: Router) {
   }
 
-  outerHover(flag: boolean): void {
-    if (flag) {
-      this.itemClass = 'highlight';
-    } else {
-      this.itemClass = 'no-highlight';
-    }
-  }
-
   innerHover(flag: boolean): void {
     this.hoverOnCross = flag;
-    if (flag) {
-      this.crossClass = '';
-    } else {
-      this.crossClass = 'bg-white';
-    }
   }
 
   deleteItem(): void {
@@ -47,6 +31,7 @@ export class TickerItemComponent {
   }
 
   goToLink(): void {
+    // do NOT route if the user clicked on the X button
     if (!this.hoverOnCross) {
       let link : string = AppRoutingModule.getUrlForId(this.data.item.id);
       this.router.navigate([link]);

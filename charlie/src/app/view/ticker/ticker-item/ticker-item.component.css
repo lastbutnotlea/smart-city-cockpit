@@ -2,12 +2,21 @@
   border-color: white;
 }
 
-.highlight {
+.highlight:hover {
   border-width: 3px;
   padding: 8px
 }
 
-.no-highlight {
+.highlight {
   border-width: 1px;
   padding: 10px;
+  cursor: pointer;
+}
+
+.button {
+  background-color: white;
+}
+
+.button:hover {
+  background-color: inherit;
 }
