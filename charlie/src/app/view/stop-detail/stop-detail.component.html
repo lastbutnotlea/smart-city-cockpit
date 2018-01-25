@@ -5,11 +5,7 @@
 <div class="fit-screen d-flex flex-column" *ngIf="loaded">
 
   <h3 class="text-center">
-    <div [ngClass]="{'color-fine': stop.state === 'FINE',
-       'color-problematic': stop.state === 'PROBLEMATIC',
-       'color-critical': stop.state === 'CRITICAL' }">
-      <i class="fa fa-lightbulb-o fa-2x float-right padding-right-20" aria-hidden="true"></i>
-    </div>
+    <app-state-icon-large class="float-right" [state]="stop.state"></app-state-icon-large>
     {{title}}
     <label class="text-primary">{{stop.commonName}}</label>
   </h3>

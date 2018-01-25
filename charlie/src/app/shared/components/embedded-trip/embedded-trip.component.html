@@ -4,11 +4,7 @@
 </h4>
 
 <div *ngFor="let trip of trips">
-  <div [ngClass]="{'color-fine': trip.vehicle.state === 'FINE',
-     'color-problematic': trip.vehicle.state === 'PROBLEMATIC',
-     'color-critical': trip.vehicle.state === 'CRITICAL' }">
-    <i class="fa fa-lightbulb-o fa-2x float-right small-padding-right" aria-hidden="true"></i>
-  </div>
+  <app-state-icon-medium class="float-right" [state]="trip.vehicle.state"></app-state-icon-medium>
 
   <p *ngIf="areTripsForVehicle">
       <label class="text-primary">{{trip.id}} </label>

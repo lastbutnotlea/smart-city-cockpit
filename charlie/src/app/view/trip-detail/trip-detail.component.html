@@ -5,12 +5,7 @@
 <div *ngIf="loaded" class="fit-screen d-flex flex-column">
 
   <h3 class="text-center">
-    <div [ngClass]="{'color-fine': trip.vehicle.state === 'FINE',
-       'color-problematic': trip.vehicle.state === 'PROBLEMATIC',
-       'color-critical': trip.vehicle.state === 'CRITICAL' }">
-      <i class="fa fa-lightbulb-o fa-3x float-right padding-right-20"
-         aria-hidden="true"></i>
-    </div>
+    <app-state-icon-large class="float-right" [state]="trip.vehicle.state"></app-state-icon-large>
     Details <label class="text-primary"> {{trip.id}} </label>
   </h3>
 
@@ -32,12 +27,7 @@
       <p *ngFor='let stop of trip.stops'>
         <label class="text-secondary">{{stop.departureTime | date:'MM/dd/yyyy HH:mm'}}</label>
         {{stop.name}}
-        <span [ngClass]="{'color-fine': stop.state === 'FINE',
-       'color-problematic': stop.state === 'PROBLEMATIC',
-       'color-critical': stop.state === 'CRITICAL' }">
-        <i class="fa fa-lightbulb-o  fa-2x float-right padding-right-20"
-           aria-hidden="true"></i>
-      </span>
+        <app-state-icon-medium class="float-right" [state]="stop.state"></app-state-icon-medium>
       </p>
     </div>
 
