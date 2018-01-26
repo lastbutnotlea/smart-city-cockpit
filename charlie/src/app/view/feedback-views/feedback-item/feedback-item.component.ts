@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FeedbackData} from '../../shared/data/feedback-data';
-import {HttpRoutingService} from "../../services/http-routing.service";
+import {FeedbackData} from "../../../shared/data/feedback-data";
+import {HttpRoutingService} from "../../../services/http-routing.service";
+import {ActivatedRoute, Params} from "@angular/router";
 
 @Component({
   selector: 'app-feedback-item',

@@ -6,10 +6,9 @@ import {HttpRoutingService} from '../../../services/http-routing.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FilterComponent} from '../../../shared/components/filter/filter.component';
 import {VehicleAddComponent} from '../vehicle-add/vehicle-add.component';
-import {LiveDataComponent} from '../../shared/components/live-data/live-data.component';
 import {Router} from "@angular/router";
-import {getUrlForId} from "../../shared/util/routing-util";
 import {StringFormatterService} from '../../../services/string-formatter';
+import {getUrlForId} from "../../../shared/util/routing-util";
 
 @Component({
   selector: 'app-vehicles-component',

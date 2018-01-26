@@ -1,7 +1,4 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { ServiceRequestAddComponent } from '../service-request-add/service-request-add.component';
-import {getUrlForId} from "../../shared/util/routing-util";
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ServiceRequestAddComponent} from '../service-request-add/service-request-add.component';
 import {StringFormatterService} from '../../../services/string-formatter';
