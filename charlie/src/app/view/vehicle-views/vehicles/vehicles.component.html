@@ -36,7 +36,7 @@
             <td>{{ (vehicle.delay / 60.0).toFixed(0) }}</td>
             <td>{{ vehicle.temperature }}</td>
             <td>{{ vehicle.defects }}</td>
-            <td>{{ vehicle.type }}</td>
+            <td>{{ stringFormatter.toFirstUpperRestLower(vehicle.type) }}</td>
             <td>
               <app-state-icon [size]="'fa-2x'" [state]="vehicle.state"></app-state-icon>
             </td>

@@ -10,7 +10,8 @@
 </h4>
 
 <p class="text-primary"> <label class="text-secondary">ID: </label> {{vehicle.id}}</p>
-<p> <label class="text-secondary">Type: </label> {{vehicle.type}}</p>
+  <p> <label class="text-secondary">Type:</label>
+    {{ stringFormatter.toFirstUpperRestLower(vehicle.type) }}</p>
 <p> <label class="text-secondary">Capacity: </label> {{vehicle.capacity}}</p>
 <p> <label class="text-secondary">Load: </label> {{vehicle.load}}</p>
 <p> <label class="text-secondary">Delay: </label> {{(vehicle.delay / 60.0).toFixed(0)}}</p>

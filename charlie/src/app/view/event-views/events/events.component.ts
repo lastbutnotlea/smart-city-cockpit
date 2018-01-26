@@ -3,6 +3,7 @@ import {HttpRoutingService} from '../../../services/http-routing.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {EventData} from '../../../shared/data/event-data';
 import {EventAddComponent} from '../event-add/event-add.component';
+import {StringFormatterService} from '../../../services/string-formatter';
 
 @Component({
   selector: 'app-event-view',
@@ -17,7 +18,8 @@ export class EventsComponent implements OnInit {
   events: EventData[] = [];
 
   constructor(private http: HttpRoutingService,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private stringFormatter: StringFormatterService) {
   }
 
   public ngOnInit(): void {
