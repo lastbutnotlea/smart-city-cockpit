@@ -4,6 +4,6 @@
     <label class="padding-emb-box-headline">Ticker</label>
   </h4>
 </div>
-<div *ngFor="let item of items">
-  <app-ticker-item [data]="item" (onDelete)="removeItem($event)" class="box"></app-ticker-item>
-</div>
+<ng-container *ngFor="let item of items">
+  <app-ticker-item [data]="item" (onDelete)="removeItem($event)"></app-ticker-item>
+</ng-container>
