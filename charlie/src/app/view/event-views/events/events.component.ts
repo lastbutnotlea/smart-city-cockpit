@@ -43,7 +43,6 @@ export class EventsComponent implements OnInit {
   }
 
   goToLink(id: string): void {
-    let link: string = "events/detail/" + id;
-    this.router.navigate([link]);
+    this.router.navigate(["events/detail/" + id]);
   }
 }

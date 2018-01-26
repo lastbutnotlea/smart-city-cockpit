@@ -22,6 +22,6 @@ export class CharliesRouterReuseStrategy implements RouteReuseStrategy {
   }
 
   shouldReuseRoute(future: ActivatedRouteSnapshot, curr: ActivatedRouteSnapshot): boolean {
-    return false
+    return false;
   }
 }

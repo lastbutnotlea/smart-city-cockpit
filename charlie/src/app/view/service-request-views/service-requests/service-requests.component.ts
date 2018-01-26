@@ -75,7 +75,6 @@ export class ServiceRequestsComponent implements OnInit {
   }
 
   goToLink(id: string): void {
-    let link: string = "serviceRequests/detail/" + id;
-    this.router.navigate([link]);
+    this.router.navigate(["serviceRequests/detail/" + id]);
   }
 }

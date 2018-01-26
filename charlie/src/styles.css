@@ -108,10 +108,14 @@ h4 {
   text-align: center;
 }
 
-/*a:link {
-  color:inherit !important;
-}*/
-
 .color-inherit{
   color:inherit !important;
+}
+
+.highlight:hover {
+  background-color: gainsboro;
+}
+
+.highlight {
+  cursor: pointer;
 }

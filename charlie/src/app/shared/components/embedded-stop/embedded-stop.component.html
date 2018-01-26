@@ -21,7 +21,7 @@
   <label *ngFor="let line of lineForStopDataInbound; let i=index">
     <label *ngIf="i>0">,</label>
     <a href="network/detail/{{line.id}}">
-      <p>{{line.line}}</p>
+      {{line.line}}
     </a>
   </label>
 </div>
@@ -30,7 +30,7 @@
   <label *ngFor="let line of lineForStopDataOutbound; let i=index">
     <label *ngIf="i>0">,</label>
     <a href="network/detail/{{line.id}}">
-      <p>{{line.line}}</p>
+      {{line.line}}
     </a>
   </label>
 </div>

@@ -48,10 +48,3 @@ tbody td, thead th {
   width: 400px !important;
 }
 
-.highlight:hover {
-  background-color: gainsboro;
-}
-
-.highlight {
-  cursor: pointer;
-}
