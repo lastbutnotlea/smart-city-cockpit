@@ -1,6 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FeedbackData} from '../../shared/data/feedback-data';
-import {DateParserService} from '../../services/date-parser.service';
 import {HttpRoutingService} from "../../services/http-routing.service";
 
 @Component({
@@ -39,6 +38,13 @@ export class FeedbackItemComponent implements OnInit {
         },
         err => console.log('Could not process feedback.')
       );
+    }
+  }
+
+  scrollFeedback(to: string){
+    let x = document.querySelector("#" + to);
+    if (x){
+      x.scrollIntoView();
     }
   }
 
