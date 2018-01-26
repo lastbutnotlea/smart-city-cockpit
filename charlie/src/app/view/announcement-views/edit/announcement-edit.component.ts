@@ -14,7 +14,7 @@ import {isNullOrUndefined} from "util";
 })
 export class AnnouncementEditComponent implements OnInit {
   state: number = 0;
-
+  saveDisabled: boolean = false;
   text: string = "";
 
   validFrom: Date = new Date(now);
@@ -76,6 +76,7 @@ export class AnnouncementEditComponent implements OnInit {
   onErr = (err: any) => alert('Could not add/edit announcement: ' + JSON.stringify(err));
 
   confirm(): void {
+    this.saveDisabled = true;
     this.data.text = this.text;
     this.data.stops = Array.from(this.selectedStops);
     this.data.validFrom = this.validFrom;

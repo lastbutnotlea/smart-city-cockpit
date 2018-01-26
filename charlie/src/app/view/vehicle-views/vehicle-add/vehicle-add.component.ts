@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {DropdownValue} from '../../../shared/components/dropdown/dropdown.component';
+import {StringFormatterService} from '../../../services/string-formatter.service';
 import {DateParserService} from "../../../services/date-parser.service";
 
 @Component({
@@ -15,9 +16,12 @@ export class VehicleAddComponent implements OnInit {
   vehicleTypes: string[] = [];
   selected: DropdownValue = new DropdownValue(null, "");
   capacity: number;
+  saveDisabled: boolean = false;
 
-
-  constructor(public activeModal: NgbActiveModal, private http: HttpRoutingService, private dateParser: DateParserService) {
+  constructor(public activeModal: NgbActiveModal,
+              private http: HttpRoutingService,
+              private stringFormatter: StringFormatterService,
+              private dateParser: DateParserService) {
   }
 
   ngOnInit(): void {
@@ -25,6 +29,7 @@ export class VehicleAddComponent implements OnInit {
   }
 
   confirm(): void {
+    this.saveDisabled = true;
     this.http.addVehicle({
       id: null,
       capacity: this.capacity,
@@ -46,6 +51,6 @@ export class VehicleAddComponent implements OnInit {
   }
 
   toDropdown(types: string[]): DropdownValue[] {
-    return types.map(t => new DropdownValue(t, t));
+    return types.map(t => new DropdownValue(t, this.stringFormatter.toFirstUpperRestLower(t)));
   }
 }

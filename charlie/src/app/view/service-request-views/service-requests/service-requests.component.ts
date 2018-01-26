@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ServiceRequestAddComponent} from '../service-request-add/service-request-add.component';
-import {StringFormatterService} from '../../../services/string-formatter';
+import {StringFormatterService} from '../../../services/string-formatter.service';
 import {ServiceRequestData} from '../../../shared/data/service-request-data';
 import {FilterGroupComponent} from '../../../shared/components/filter-group/filter-group.component';
 import {HttpRoutingService} from '../../../services/http-routing.service';
@@ -53,9 +53,9 @@ export class ServiceRequestsComponent implements OnInit {
       data => {
         // TODO: change this if needed data can be requested from backend
         let stateFilter = new FilterComponent();
-        stateFilter.addFilter('Fine', serviceRequest => serviceRequest.priority === 'FINE');
-        stateFilter.addFilter('Problematic', serviceRequest => serviceRequest.priority === 'PROBLEMATIC');
-        stateFilter.addFilter('Critical', serviceRequest => serviceRequest.priority === 'CRITICAL');
+        stateFilter.addFilter('Low', serviceRequest => serviceRequest.priority === 'FINE');
+        stateFilter.addFilter('Medium', serviceRequest => serviceRequest.priority === 'PROBLEMATIC');
+        stateFilter.addFilter('High', serviceRequest => serviceRequest.priority === 'CRITICAL');
         this.filterGroup.addFilterComponent(stateFilter);
 
         let serviceTypeFilter = new FilterComponent();
@@ -72,6 +72,9 @@ export class ServiceRequestsComponent implements OnInit {
   addServiceRequest(): void {
     const modal = this.modalService.open(ServiceRequestAddComponent);
     modal.componentInstance.data = this.serviceRequests;
+    modal.componentInstance.onAdd(item => {
+      this.serviceRequests.push(item);
+    });
   }
 
   goToLink(id: string): void {

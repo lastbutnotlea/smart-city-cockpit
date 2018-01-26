@@ -46,5 +46,7 @@
 
 <div class="modal-footer">
   <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cancel</button>
-  <button type="button" class="btn btn-outline-primary" (click)="confirm()">Save</button>
+  <button type="button" class="btn btn-outline-primary" (click)="confirm()" [disabled]="saveDisabled">
+    Save
+  </button>
 </div>
