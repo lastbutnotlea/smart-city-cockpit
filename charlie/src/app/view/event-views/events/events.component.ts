@@ -23,12 +23,12 @@ export class EventsComponent implements OnInit {
   public ngOnInit(): void {
     this.title = 'Events';
     this.getEvents();
-    this.loaded = true;
   }
 
   private getEvents(): void {
     this.http.getEvents().subscribe(data => {
       this.events = data;
+      this.loaded = true;
     });
   }
 

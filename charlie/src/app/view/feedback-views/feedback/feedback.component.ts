@@ -21,7 +21,10 @@ export class FeedbackComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.http.getFeedback().subscribe(data => {this.feedback = data; this.loaded = true;});
+    this.http.getFeedback().subscribe(data => {
+      this.feedback = data;
+      this.loaded = true;
+    });
     let ratingFilter: FilterComponent = new FilterComponent();
     ratingFilter.addFilter("Fine", feedback => feedback.rating === "FINE");
     ratingFilter.addFilter("Problematic", feedback => feedback.rating === "PROBLEMATIC");
