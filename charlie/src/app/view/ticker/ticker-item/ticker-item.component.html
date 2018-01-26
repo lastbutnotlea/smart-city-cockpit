@@ -1,18 +1,16 @@
-<div>
-  <h5 class="text-lg-left">
-    <button class="btn btn-outline-primary float-right padding-3 no-border" (click)="deleteItem()">
-      <span class="fa fa-times float-right" aria-hidden="true"></span>
-    </button>
-    <a href="{{link}}" class="fill-div color-inherit">
+<div (click)="goToLink()" class="bounding-box d-flex mx-0 my-1 flex-column w-100 highlight">
+  <div id="header" class="d-flex flex-nowrap justify-content-between align-items-center">
     <div [ngClass]="{'color-fine': data.item.itemPriority <= 5,
      'color-problematic': data.item.itemPriority > 5 && data.item.itemPriority <= 10,
      'color-critical': data.item.itemPriority > 10}">
-      <i class="fa fa-exclamation-circle float-left padding-right-5" aria-hidden="true"></i>
+      <i class="fa fa-2x fa-exclamation-circle pr-2" aria-hidden="true"></i>
     </div>
-    <label>{{data.item.itemHeader}}</label>
-    </a>
-  </h5>
-  <a href="{{link}}" class="fill-div color-inherit">
-  <p class="no-margin-bottom" [innerHTML]=data.item.itemDescription></p>
-  </a>
+    <h5 class="m-0">{{data.item.itemHeader}}</h5>
+    <button class="btn btn-outline-primary float-right p-1 no-border"
+            (click)="deleteItem()"
+            (mouseover)="innerHover(true)" (mouseout)="innerHover(false)">
+      <span class="fa fa-times float-right" aria-hidden="true"></span>
+    </button>
+  </div>
+  <p class="mb-0" [innerHtml]="data.item.itemDescription"></p>
 </div>
