@@ -1,26 +1,36 @@
-<h4 class="text-lg-left">
-  <div [ngClass]="{'color-fine': stop.state === 'FINE',
+<a class="color-inherit" href="network">
+  <h4 class="text-lg-left">
+    <div [ngClass]="{'color-fine': stop.state === 'FINE',
      'color-problematic': stop.state === 'PROBLEMATIC',
      'color-critical': stop.state === 'CRITICAL' }">
-    <i class="fa fa-lightbulb-o fa-2x float-right" aria-hidden="true"></i>
-  </div>
-  <i class="fa fa-map-marker fa-2x float-left padding-left-5 text-primary"></i>
-  <label class="padding-emb-box-headline">Stop</label>
-</h4>
+      <i class="fa fa-lightbulb-o fa-2x float-right" aria-hidden="true"></i>
+    </div>
+    <i class="fa fa-map-marker fa-2x float-left padding-left-5 text-primary"></i>
+    <label class="padding-emb-box-headline">Stop</label>
+  </h4>
+</a>
 
-<p class="text-primary"><label class="text-secondary">ID: </label> {{stop.id}}</p>
+<p class="text-primary"><label class="text-secondary">ID:</label>
+  <a href="network/stop/{{stop.id}}">
+    {{stop.id}}
+  </a>
+</p>
 <p><label class="text-secondary">People waiting: </label> {{stop.peopleWaiting}}</p>
 <div>
   <label *ngIf="lineForStopDataInbound.length>0" class="text-secondary">Lines inbound:</label>
   <label *ngFor="let line of lineForStopDataInbound; let i=index">
     <label *ngIf="i>0">,</label>
-    <label>{{line.line}}</label>
+    <a href="network/detail/{{line.id}}">
+      {{line.line}}
+    </a>
   </label>
 </div>
 <div>
   <label *ngIf="lineForStopDataOutbound.length>0" class="text-secondary">Lines outbound:</label>
   <label *ngFor="let line of lineForStopDataOutbound; let i=index">
     <label *ngIf="i>0">,</label>
-    <label>{{line.line}}</label>
+    <a href="network/detail/{{line.id}}">
+      {{line.line}}
+    </a>
   </label>
 </div>

@@ -6,6 +6,7 @@ import {ServiceRequestData} from '../../../shared/data/service-request-data';
 import {FilterGroupComponent} from '../../../shared/components/filter-group/filter-group.component';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {FilterComponent} from '../../../shared/components/filter/filter.component';
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-service-requests-view',
@@ -23,11 +24,12 @@ export class ServiceRequestsComponent implements OnInit {
 
   constructor(private http: HttpRoutingService,
               private modalService: NgbModal,
+              private router: Router,
               private stringFormatter: StringFormatterService) {
   }
 
   public ngOnInit(): void {
-    this.title = 'Service Request View';
+    this.title = 'Service Requests';
     this.addFilter();
     this.getServiceRequests();
   }
@@ -70,5 +72,9 @@ export class ServiceRequestsComponent implements OnInit {
   addServiceRequest(): void {
     const modal = this.modalService.open(ServiceRequestAddComponent);
     modal.componentInstance.data = this.serviceRequests;
+  }
+
+  goToLink(id: string): void {
+    this.router.navigate(["serviceRequests/detail/" + id]);
   }
 }

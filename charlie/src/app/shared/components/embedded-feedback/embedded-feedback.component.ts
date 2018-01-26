@@ -11,4 +11,11 @@ export class EmbeddedFeedbackComponent{
 
   @Input() feedback: FeedbackData[] = [];
 
+  scrollFeedback(to: string){
+
+    let x = document.querySelector("#" + to);
+    if (x){
+      x.scrollIntoView();
+    }
+  }
 }
