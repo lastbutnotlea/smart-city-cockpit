@@ -13,7 +13,7 @@
           <th>ID</th>
           <th>Name</th>
           <th>Type</th>
-          <th>Status</th>
+          <th>Degree of Processing</th>
           <th>Due date</th>
           <th>Completion date</th>
           <th>Priority</th>
@@ -27,8 +27,8 @@
             </a>
           </td>
           <td>{{ serviceRequest.name }}</td>
-          <td>{{ serviceRequest.serviceType }}</td>
-          <td>{{ serviceRequest.statusCode }}</td>
+          <td>{{ stringFormatter.toFirstUpperRestLower(serviceRequest.serviceType) }}</td>
+          <td>{{ stringFormatter.toFirstUpperRestLower(serviceRequest.statusCode) }}</td>
           <td>{{ serviceRequest.dueDate | date:'MM/dd/yyyy HH:mm'}}</td>
           <td>{{ serviceRequest.completionDate | date:'MM/dd/yyyy HH:mm'}}</td>
           <td>

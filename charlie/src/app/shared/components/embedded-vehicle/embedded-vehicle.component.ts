@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {VehicleData} from '../../data/vehicle-data';
+import {StringFormatterService} from '../../../services/string-formatter';
 
 @Component({
   selector: 'app-embedded-vehicle',
@@ -7,11 +8,10 @@ import {VehicleData} from '../../data/vehicle-data';
   styleUrls: ['./embedded-vehicle.component.css']
 })
 
-export class EmbeddedVehicleComponent implements OnInit {
+export class EmbeddedVehicleComponent{
 
   @Input() vehicle: VehicleData;
 
-  public ngOnInit(): void {
-  }
+  constructor(private stringFormatter: StringFormatterService){};
 
 }

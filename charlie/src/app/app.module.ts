@@ -57,6 +57,7 @@ import {EditAnnounementTextComponent} from './view/announcement-views/edit/text/
 import {EditAnnouncementDatetimeComponent} from './view/announcement-views/edit/datetime/edit-announcement-datetime.component';
 import {EditAnnouncementStopsComponent} from './view/announcement-views/edit/stops/edit-announcement-stops.component';
 import {RouteReuseStrategy} from "@angular/router";
+import {StringFormatterService} from './services/string-formatter';
 import {CharliesRouterReuseStrategy} from "./services/router-reuse-strategy";
 
 
@@ -124,6 +125,7 @@ import {CharliesRouterReuseStrategy} from "./services/router-reuse-strategy";
     MapCreatorService,
     StopSortService,
     DateParserService,
+    StringFormatterService,
     {provide: RouteReuseStrategy, useClass: CharliesRouterReuseStrategy},
   ],
   bootstrap: [AppComponent],
