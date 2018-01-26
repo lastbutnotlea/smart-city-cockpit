@@ -115,16 +115,19 @@ public class VehicleController extends BaseController<Vehicle> {
     return StateCalculator.getState((int) data.getData().stream().mapToInt(Vehicle::getSeverity).average().getAsDouble());
   }
 
-  @GetMapping("/type/{type}")
-  public List<Vehicle> getAllVehiclesWithType(@PathVariable String type) {
-    return data.getData().stream().filter(v -> v.getType().equals(EVehicleType.valueOf(type))).collect(Collectors.toList());
-  }
-
-  @GetMapping("/{vehicleId}/free-from")
-  public LocalDateTime getVehicleFreeFrom(@PathVariable String vehicleId) {
-    Vehicle vehicle = data.getObjectForId(vehicleId);
-    tripData.setFreeFrom(vehicle);
-    return vehicle.getFreeFrom();
+  /**
+   * @return all vehicles with the type
+   * @param type free for the time
+   * @param timeString .
+   */
+  @GetMapping("/type/{type}/free-from/{timeString}")
+  public List<Vehicle> getVehiclesFreeFrom(@PathVariable String type, @PathVariable String timeString) {
+    logger.info("Got Request to return all Vehicles of Type " + type + " free from " + timeString);
+    return data.getData().stream()
+        .filter(v -> v.getType().equals(EVehicleType.valueOf(type)))
+        .peek(tripData::setFreeFrom)
+        .filter(v -> v.getFreeFrom().isBefore(LocalDateTime.parse(timeString)))
+        .collect(Collectors.toList());
   }
 
   private void setCurrentTrip(Vehicle vehicle) {
