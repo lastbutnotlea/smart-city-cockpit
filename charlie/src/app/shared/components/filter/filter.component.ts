@@ -24,4 +24,9 @@ export class FilterComponent {
     return result;
   }
 
+  changeAll(select: boolean){
+    for (const filter of this.filters) {
+      filter[1] = select;
+    }
+  }
 }

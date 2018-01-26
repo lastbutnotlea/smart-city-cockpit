@@ -10,6 +10,7 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 export class ConfirmDeletionComponent implements OnInit {
   @Input() objectToDelete: String;
   @Output() deletionEvent = new EventEmitter<boolean>();
+  deleteDisabled: boolean = false;
 
   constructor(public activeModal: NgbActiveModal) { }
 
@@ -17,6 +18,7 @@ export class ConfirmDeletionComponent implements OnInit {
   }
 
   confirm(): void {
+    this.deleteDisabled = true;
     this.deletionEvent.emit(true);
     this.activeModal.close('Close click');
   }

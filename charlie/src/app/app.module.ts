@@ -58,7 +58,7 @@ import {EditAnnounementTextComponent} from './view/announcement-views/edit/text/
 import {EditAnnouncementDatetimeComponent} from './view/announcement-views/edit/datetime/edit-announcement-datetime.component';
 import {EditAnnouncementStopsComponent} from './view/announcement-views/edit/stops/edit-announcement-stops.component';
 import {RouteReuseStrategy} from "@angular/router";
-import {StringFormatterService} from './services/string-formatter';
+import {StringFormatterService} from './services/string-formatter.service';
 import {CharliesRouterReuseStrategy} from "./services/router-reuse-strategy";
 
 

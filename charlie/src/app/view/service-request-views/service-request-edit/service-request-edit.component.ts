@@ -1,11 +1,12 @@
 import {Component, Input, Output} from '@angular/core';
 import {NgbActiveModal, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {ServiceRequestData} from '../../../shared/data/service-request-data';
-import {DropdownValue} from '../../../shared/components/dropdown/dropdown.component';
+import {DropdownValue, priorityDropdownItems} from '../../../shared/components/dropdown/dropdown.component';
 import {now} from '../../../shared/data/dates';
 import {FeedbackData} from '../../../shared/data/feedback-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {DateParserService} from '../../../services/date-parser.service';
+import {StringFormatterService} from '../../../services/string-formatter.service';
 
 @Component({
   selector: 'app-service-request-edit',
@@ -18,6 +19,7 @@ export class ServiceRequestEditComponent {
   data: ServiceRequestData;
 
   dataEdited: boolean = false;
+  saveDisabled: boolean = false;
 
   selectedPriority: DropdownValue;
   description: string;
@@ -28,12 +30,13 @@ export class ServiceRequestEditComponent {
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
-              private dateParser: DateParserService) {
+              private dateParser: DateParserService,
+              private stringFormatter: StringFormatterService) {
   }
 
   initData(): void {
     if (this.data != null) {
-      this.selectedPriority = new DropdownValue(this.data.priority, this.data.priority);
+      this.selectedPriority = new DropdownValue(this.data.priority, this.stringFormatter.priorityToLabel(this.data.priority));
       if (this.data.serviceRequestDescription.length != 0) {
         this.description = this.data.serviceRequestDescription[0].text;
       }
@@ -73,6 +76,7 @@ export class ServiceRequestEditComponent {
   }
 
   editServiceRequest(): void {
+    this.saveDisabled = true;
     this.data.priority = this.selectedPriority.value;
     this.data.dueDate = this.selectedDate;
     this.data.serviceRequestDescription = [{"id": "", "text": this.description, "objectId": this.data.serviceRequestDescription[0].objectId}];
@@ -116,12 +120,7 @@ export class ServiceRequestEditComponent {
   }
 
   priorityItems(): DropdownValue[] {
-    // TODO: Get data from meta data controller, do not set manually
-    let prioItems: DropdownValue[] = [];
-    prioItems.push(new DropdownValue('FINE', 'Low'));
-    prioItems.push(new DropdownValue('PROBLEMATIC', 'Medium'));
-    prioItems.push(new DropdownValue('CRITICAL', 'High'));
-    return prioItems;
+    return priorityDropdownItems();
   }
 
   stepBack() {
