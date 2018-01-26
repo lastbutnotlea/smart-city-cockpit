@@ -6,6 +6,7 @@ import {now} from '../../../shared/data/dates';
 import {FeedbackData} from '../../../shared/data/feedback-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {DateParserService} from '../../../services/date-parser.service';
+import {StringFormatterService} from '../../../services/string-formatter.service';
 
 @Component({
   selector: 'app-service-request-edit',
@@ -29,12 +30,13 @@ export class ServiceRequestEditComponent {
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
-              private dateParser: DateParserService) {
+              private dateParser: DateParserService,
+              private stringFormatter: StringFormatterService) {
   }
 
   initData(): void {
     if (this.data != null) {
-      this.selectedPriority = new DropdownValue(this.data.priority, this.data.priority);
+      this.selectedPriority = new DropdownValue(this.data.priority, this.stringFormatter.priorityToLabel(this.data.priority));
       if (this.data.serviceRequestDescription.length != 0) {
         this.description = this.data.serviceRequestDescription[0].text;
       }
