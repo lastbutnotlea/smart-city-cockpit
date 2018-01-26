@@ -107,3 +107,15 @@ h4 {
   margin-bottom: 20px;
   text-align: center;
 }
+
+.color-inherit{
+  color:inherit !important;
+}
+
+.highlight:hover {
+  background-color: gainsboro;
+}
+
+.highlight {
+  cursor: pointer;
+}

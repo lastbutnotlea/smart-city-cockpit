@@ -1,12 +1,15 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {TripAddComponent} from '../trip-add/trip-add.component';
+import {Router} from "@angular/router";
 import {LiveDataComponent} from '../../../shared/components/live-data/live-data.component';
 import {TripData} from '../../../shared/data/trip-data';
 import {FilterGroupComponent} from "../../../shared/components/filter-group/filter-group.component";
+import {StringFormatterService} from '../../../services/string-formatter.service';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {StopSortService} from '../../../services/stop-sort.service';
 import {FilterComponent} from '../../../shared/components/filter/filter.component';
+import {getUrlForId} from "../../../shared/util/routing-util";
 
 
 @Component({
@@ -25,7 +28,9 @@ export class TripComponent extends LiveDataComponent implements OnInit {
 
   constructor(private http: HttpRoutingService,
               private modalService: NgbModal,
-              private stopSortService: StopSortService) {
+              private router: Router,
+              private stopSortService: StopSortService,
+              private stringFormatter: StringFormatterService) {
     super();
   }
 
@@ -61,7 +66,7 @@ export class TripComponent extends LiveDataComponent implements OnInit {
         let vehicleFilter = new FilterComponent();
         for (let val in data.types) {
           let name = data.types[val];
-          vehicleFilter.addFilter(name, trip => trip.vehicle.type === name);
+          vehicleFilter.addFilter(this.stringFormatter.toFirstUpperRestLower(name), trip => trip.vehicle.type === name);
         }
         this.filterGroup.addFilterComponent(vehicleFilter);
         // add filters for lines
@@ -87,5 +92,10 @@ export class TripComponent extends LiveDataComponent implements OnInit {
   // update trips
   refreshData(): void {
     this.getTrips();
+  }
+
+  goToLink(id: string): void {
+    let link: string = getUrlForId(id);
+    this.router.navigate([link]);
   }
 }

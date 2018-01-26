@@ -3,12 +3,13 @@ import {NgbActiveModal, NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-boo
 import {EventData} from '../../../shared/data/event-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {
-  DropdownValue, toDropdownItem,
+  DropdownValue, priorityDropdownItems, toDropdownItem,
   toDropdownItems
 } from '../../../shared/components/dropdown/dropdown.component';
 import {now} from '../../../shared/data/dates';
 import {DateParserService} from '../../../services/date-parser.service';
 import {PartyData} from '../../../shared/data/party-data';
+import {StringFormatterService} from '../../../services/string-formatter.service';
 
 
 @Component({
@@ -24,7 +25,7 @@ export class EventEditComponent implements OnInit {
   selected: EventData;
 
   availablePriorities: Array<DropdownValue> = [];
-  priority: DropdownValue = new DropdownValue('FINE', 'fine');
+  priority: DropdownValue = new DropdownValue(null, 'loading');
 
   fromTime: NgbTimeStruct = {
     hour: now.getHours(),
@@ -45,15 +46,12 @@ export class EventEditComponent implements OnInit {
 
   availableParties: Array<DropdownValue> = [];
   party: DropdownValue = new DropdownValue(null, 'loading');
-
-  // selectedVehicle: DropdownValue;
-  //
-  // availLines: LineData[] = [];
-  // availVehicles: VehicleData[] = [];
+  saveDisabled: boolean = false;
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
-              public dateParser: DateParserService) {
+              public dateParser: DateParserService,
+              private stringFormatter: StringFormatterService) {
   }
 
 
@@ -82,7 +80,7 @@ export class EventEditComponent implements OnInit {
       }
 
       this.party = toDropdownItem(this.selected.appointmentInvolvedParties[0], party => party.partyName);
-      this.priority = toDropdownItem(this.selected.priority, item => item.toLowerCase());
+      this.priority = toDropdownItem(this.selected.priority, item => this.stringFormatter.priorityToLabel(item));
     }
   }
 
@@ -91,11 +89,7 @@ export class EventEditComponent implements OnInit {
       console.log(data);
       this.availableParties = toDropdownItems(data, party => party)
     }, err => console.log(err));
-
-
-    this.availablePriorities = toDropdownItems(
-      ['FINE', 'PROBLEMATIC', 'CRITICAL'],
-      item => item.toLowerCase());
+    this.availablePriorities = priorityDropdownItems();
 
     console.log(this.fromTime);
     console.log(this.toTime);
@@ -118,6 +112,7 @@ export class EventEditComponent implements OnInit {
   }
 
   confirm(): void {
+    this.saveDisabled = true;
     this.data.subject = this.selected.subject;
     this.data.priority = this.priority.value;
     this.data.startTime = this.selected.startTime;

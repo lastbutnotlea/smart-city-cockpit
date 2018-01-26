@@ -6,6 +6,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {ConfirmDeletionComponent} from '../../../shared/components/confirm-popup/confirm-deletion.component';
 import {EventEditComponent} from '../event-edit/event-edit.component';
+import {StringFormatterService} from '../../../services/string-formatter.service';
 
 @Component({
   selector: 'app-event-detail-view',
@@ -21,7 +22,8 @@ export class EventDetailComponent implements OnInit {
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
               private location: Location,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private stringFormatter: StringFormatterService) {
   }
 
   ngOnInit(): void {

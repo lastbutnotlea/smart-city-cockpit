@@ -1,13 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {NgbActiveModal, NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {now} from '../../../shared/data/dates';
-import {DateParserService} from '../../../services/date-parser.service';
 import {StopData} from '../../../shared/data/stop-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
-import {
-  DropdownValue,
-  toDropdownItems
-} from '../../../shared/components/dropdown/dropdown.component';
 import {LineData} from '../../../shared/data/line-data';
 import {AnnouncementData} from '../../../shared/data/announcement-data';
 import {isNullOrUndefined} from "util";
@@ -19,7 +14,7 @@ import {isNullOrUndefined} from "util";
 })
 export class AnnouncementEditComponent implements OnInit {
   state: number = 0;
-
+  saveDisabled: boolean = false;
   text: string = "";
 
   validFrom: Date = new Date(now);
@@ -81,6 +76,7 @@ export class AnnouncementEditComponent implements OnInit {
   onErr = (err: any) => alert('Could not add/edit announcement: ' + JSON.stringify(err));
 
   confirm(): void {
+    this.saveDisabled = true;
     this.data.text = this.text;
     this.data.stops = Array.from(this.selectedStops);
     this.data.validFrom = this.validFrom;

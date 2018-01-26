@@ -6,6 +6,9 @@ import {HttpRoutingService} from '../../../services/http-routing.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FilterComponent} from '../../../shared/components/filter/filter.component';
 import {VehicleAddComponent} from '../vehicle-add/vehicle-add.component';
+import {StringFormatterService} from '../../../services/string-formatter.service';
+import {Router} from "@angular/router";
+import {getUrlForId} from "../../../shared/util/routing-util";
 
 @Component({
   selector: 'app-vehicles-component',
@@ -22,7 +25,10 @@ export class VehiclesComponent extends LiveDataComponent implements OnInit {
 
   vehicles: VehicleData[];
 
-  constructor(private http: HttpRoutingService, private modalService: NgbModal) {
+  constructor(private http: HttpRoutingService,
+              private modalService: NgbModal,
+              private stringFormatter: StringFormatterService,
+              private router: Router) {
     super();
   }
 
@@ -31,12 +37,13 @@ export class VehiclesComponent extends LiveDataComponent implements OnInit {
     this.http.getVehicleTypes().subscribe(types => {
       let typeFilter: FilterComponent = new FilterComponent();
       types.forEach(type =>
-        typeFilter.addFilter(type, vehicle => vehicle.type === type));
+        typeFilter.addFilter(this.stringFormatter.toFirstUpperRestLower(type),
+            vehicle => vehicle.type === type));
       this.filterGroup.addFilterComponent(typeFilter);
 
       // TODO: change this if needed data can be requested from backend
       let stateFilter = new FilterComponent();
-      stateFilter.addFilter('Fine', vehicle =>vehicle.state === 'FINE');
+      stateFilter.addFilter('Fine', vehicle => vehicle.state === 'FINE');
       stateFilter.addFilter('Problematic', vehicle => vehicle.state === 'PROBLEMATIC');
       stateFilter.addFilter('Critical', vehicle => vehicle.state === 'CRITICAL');
       this.filterGroup.addFilterComponent(stateFilter);
@@ -65,5 +72,10 @@ export class VehiclesComponent extends LiveDataComponent implements OnInit {
   // update vehicles
   refreshData(): void {
     this.getVehicles();
+  }
+
+  goToLink(id: string): void {
+    let link: string = getUrlForId(id);
+    this.router.navigate([link]);
   }
 }

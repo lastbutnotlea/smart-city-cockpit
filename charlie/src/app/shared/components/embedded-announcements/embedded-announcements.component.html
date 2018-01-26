@@ -1,14 +1,19 @@
-<h4 class="text-lg-left">
-  <i class="fa fa-bullhorn fa-2x float-left padding-left-5 text-primary"></i>
-  <label class="padding-emb-box-headline">Announcements</label>
-</h4>
+<a class="color-inherit" href="announcements">
+  <h4 class="text-lg-left">
+    <i class="fa fa-bullhorn fa-2x float-left padding-left-5 text-primary"></i>
+    <label class="padding-emb-box-headline">Announcements</label>
+  </h4>
+</a>
 <div *ngFor="let announcement of announcements">
-  <marquee behavior="scroll" direction="left">
-    {{announcement.text}}
-  </marquee>
+  <a href="announcements/?id={{announcement.id}}">
+    <marquee behavior="scroll" direction="left">
+      {{announcement.text}}
+    </marquee>
+  </a>
   <p>
     <label class="text-secondary">
-      From {{announcement.validFrom | date:'MM/dd/yyyy HH:mm'}} to {{announcement.validTo | date:'MM/dd/yyyy HH:mm'}}
+      From {{announcement.validFrom | date:'MM/dd/yyyy HH:mm'}} to {{announcement.validTo |
+      date:'MM/dd/yyyy HH:mm'}}
     </label>
   </p>
 </div>

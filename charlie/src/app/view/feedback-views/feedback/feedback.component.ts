@@ -31,5 +31,4 @@ export class FeedbackComponent implements OnInit {
     ratingFilter.addFilter("Critical", feedback => feedback.rating === "CRITICAL");
     this.filterGroup.addFilterComponent(ratingFilter);
   }
-
 }
