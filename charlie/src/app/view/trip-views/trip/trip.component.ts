@@ -38,6 +38,7 @@ export class TripComponent extends LiveDataComponent implements OnInit {
     this.addFilter();
     this.getTrips();
     super.subscribeToData();
+
   }
 
   private getTrips(): void {

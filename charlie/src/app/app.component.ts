@@ -1,10 +1,19 @@
-import { Component } from '@angular/core';
+import {Component, OnInit, ViewContainerRef} from '@angular/core';
+import {ToastService} from './services/toast.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'app';
+
+  constructor(public vcr: ViewContainerRef,
+              public toastService: ToastService) {
+  }
+
+  ngOnInit() {
+    this.toastService.setViewContrainerRef(this.vcr);
+  }
 }

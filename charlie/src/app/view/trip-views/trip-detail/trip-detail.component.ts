@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {LiveDataComponent} from '../../../shared/components/live-data/live-data.component';
 import {TripData} from '../../../shared/data/trip-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
@@ -9,6 +9,7 @@ import {TripEditComponent} from '../trip-edit/trip-edit.component';
 import {TripEditDepartureComponent} from '../trip-edit-departure/trip-edit-departure.component';
 import {ConfirmDeletionComponent} from '../../../shared/components/confirm-popup/confirm-deletion.component';
 import {Location} from '@angular/common';
+import {ToastsManager} from 'ng2-toastr';
 
 @Component({
   selector: 'app-trip-detail-view',
@@ -25,8 +26,11 @@ export class TripDetailComponent extends LiveDataComponent implements OnInit {
               private route: ActivatedRoute,
               private location: Location,
               private modalService: NgbModal,
-              private stopSortService: StopSortService) {
+              private stopSortService: StopSortService,
+              public toastr: ToastsManager,
+              vcr: ViewContainerRef) {
     super();
+    this.toastr.setRootViewContainerRef(vcr);
   }
 
   ngOnInit(): void {
@@ -82,6 +86,7 @@ export class TripDetailComponent extends LiveDataComponent implements OnInit {
           this.location.back();
         } else {
           console.log('Could not delete trip!');
+          this.toastr.error('Failed to delete trip.', 'Error!');
           this.refreshData();
         }
       }

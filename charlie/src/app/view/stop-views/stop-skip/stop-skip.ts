@@ -99,7 +99,6 @@ export class SkipStopComponent implements OnInit {
     skipData.reason = this.text;
     skipData.from = this.from;
     skipData.to = this.to;
-    debugger;
     this.http.skipStop(this.data.id, skipData).subscribe(
       data => {
         this.data.skipData.push(data);

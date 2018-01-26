@@ -60,6 +60,7 @@ import {RouteReuseStrategy} from "@angular/router";
 import {CharliesRouterReuseStrategy} from "./services/router-reuse-strategy";
 import {ToastModule} from 'ng2-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {ToastService} from './services/toast.service';
 
 @NgModule({
   declarations: [
@@ -127,6 +128,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
     MapCreatorService,
     StopSortService,
     DateParserService,
+    ToastService,
     {provide: RouteReuseStrategy, useClass: CharliesRouterReuseStrategy},
   ],
   bootstrap: [AppComponent],
