@@ -12,6 +12,7 @@ import {HttpRoutingService} from '../../../services/http-routing.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {SkipStopComponent} from '../stop-skip/stop-skip';
 import {TripStopData} from '../../../shared/data/trip-stop-data';
+import {SkipData} from "../../shared/data/skip-data";
 
 @Component({
   selector: 'app-stop-detail-view',
@@ -39,6 +40,7 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
 
   ngOnInit(): void {
     this.getStop();
+    super.subscribeToData();
   }
 
   skipStop(): void {
