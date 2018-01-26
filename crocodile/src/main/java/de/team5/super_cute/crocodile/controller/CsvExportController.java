@@ -25,7 +25,7 @@ public class CsvExportController {
 
   @GetMapping("/vehicles")
   public String exportVehicles() throws IOException, SQLException {
-    return exportTable("vehicles");
+    return exportTable("vehicle");
   }
 
   @GetMapping("/announcement")
@@ -34,11 +34,14 @@ public class CsvExportController {
   }
 
   private String exportTable(String tablename) throws IOException, SQLException {
-    CSVWriter writer = new CSVWriter(new StringWriter(), ',', '\"', '\\', "\n");
+    StringWriter s = new StringWriter();
+    CSVWriter writer = new CSVWriter(s, ',', CSVWriter.NO_QUOTE_CHARACTER,
+        CSVWriter.NO_ESCAPE_CHARACTER,
+        CSVWriter.DEFAULT_LINE_END);
     ResultSet myResultSet = dataSource.getConnection().prepareStatement("select * from " + tablename).executeQuery();
     writer.writeAll(myResultSet, true);
     writer.close();
-    return writer.toString();
+    return s.toString();
   }
 
 }
