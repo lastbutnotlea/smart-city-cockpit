@@ -1,7 +1,11 @@
 <div class="filter-component d-flex flex-column">
+  <label class="btn active">
+    <input type="checkbox" checked #elem (change)=changeAll(elem.checked) autocomplete="off">
+    {{elem.checked?"Deselect all":"Select all"}}
+  </label>
   <ng-container *ngFor="let item of (filters); let i = index">
     <label class="btn {{filters[i][1]? 'active' : ''}}">
-      <input type="checkbox" checked #elem (change)="filters[i][1]=elem.checked" autocomplete="off">
+      <input type="checkbox" checked="{{filters[i][1]? 'checked' : ''}}" #elem (change)="filters[i][1]=elem.checked" autocomplete="off">
       {{filters[i][0]}}
     </label>
   </ng-container>
