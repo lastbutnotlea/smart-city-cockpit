@@ -3,7 +3,7 @@
     <button class="btn btn-outline-primary float-right padding-3 no-border" (click)="deleteItem()">
       <span class="fa fa-times float-right" aria-hidden="true"></span>
     </button>
-    <a href="{{link}}" class="fill-div">
+    <a href="{{link}}" class="fill-div color-inherit">
     <div [ngClass]="{'color-fine': data.item.itemPriority <= 5,
      'color-problematic': data.item.itemPriority > 5 && data.item.itemPriority <= 10,
      'color-critical': data.item.itemPriority > 10}">
@@ -12,7 +12,7 @@
     <label>{{data.item.itemHeader}}</label>
     </a>
   </h5>
-  <a href="{{link}}" class="fill-div">
+  <a href="{{link}}" class="fill-div color-inherit">
   <p class="no-margin-bottom" [innerHTML]=data.item.itemDescription></p>
   </a>
 </div>

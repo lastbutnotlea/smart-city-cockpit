@@ -25,7 +25,7 @@ export class ServiceRequestsComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.title = 'Service Request View';
+    this.title = 'Service Requests';
     this.addFilter();
     this.getServiceRequests();
   }

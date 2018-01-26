@@ -1,4 +1,4 @@
-<a href="vehicles">
+<a class="color-inherit" href="vehicles">
   <h4 class="text-lg-left">
     <div [ngClass]="{'color-fine': vehicle.state === 'FINE',
      'color-problematic': vehicle.state === 'PROBLEMATIC',
@@ -15,10 +15,10 @@
   </a>
 </p>
 <p><label class="text-secondary">Type: </label> {{vehicle.type}}</p>
-<p><label class="text-secondary">Capacity: </label> {{vehicle.capacity}}</p>
-<p><label class="text-secondary">Load: </label> {{vehicle.load}}</p>
-<p><label class="text-secondary">Delay: </label> {{(vehicle.delay / 60.0).toFixed(0)}}</p>
-<p><label class="text-secondary">Temperature: </label> {{vehicle.temperature}}</p>
+<p><label class="text-secondary">Capacity(persons): </label> {{vehicle.capacity}}</p>
+<p><label class="text-secondary">Load(persons): </label> {{vehicle.load}}</p>
+<p><label class="text-secondary">Delay(minutes): </label> {{(vehicle.delay / 60.0).toFixed(0)}}</p>
+<p><label class="text-secondary">Temperature(°C): </label> {{vehicle.temperature}}</p>
 <p><label class="text-secondary">Shut Down: </label> {{vehicle.isShutDown}}</p>
 <div *ngFor="let defect of vehicle.defects; let i=index">
   <label class="text-secondary">Defects: </label>
