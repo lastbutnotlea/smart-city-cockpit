@@ -45,3 +45,11 @@ tbody td, thead th {
   width: 12.5%;
   float: left;
 }
+
+.highlight:hover {
+  background-color: gainsboro;
+}
+
+.highlight {
+  cursor: pointer;
+}

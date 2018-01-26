@@ -1,8 +1,8 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {TickerData} from '../../../shared/data/ticker-data';
-import {AppRoutingModule} from '../../../app-routing.module';
 import {Router} from "@angular/router";
+import {getUrlForId} from "../../../shared/util/routing-util";
 
 @Component({
   selector: 'app-ticker-item',
@@ -33,7 +33,7 @@ export class TickerItemComponent {
   goToLink(): void {
     // do NOT route if the user clicked on the X button
     if (!this.hoverOnCross) {
-      let link : string = AppRoutingModule.getUrlForId(this.data.item.id);
+      let link : string = getUrlForId(this.data.item.id);
       this.router.navigate([link]);
     }
   }

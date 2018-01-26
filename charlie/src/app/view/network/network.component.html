@@ -25,19 +25,21 @@
       </a>
       <p *ngFor="let line of lines">
         <a href="network/detail/{{line.id}}">
+          <div>
       <span *ngIf="line.type === 'BUS'" [style.color]="line.color">
         <i class="fa fa-bus float-left padding-left-5 padding-right-5"></i>
       </span>
-          <span *ngIf="line.type === 'SUBWAY'" [style.color]="line.color">
+            <span *ngIf="line.type === 'SUBWAY'" [style.color]="line.color">
         <i class="fa fa-subway float-left padding-left-5 padding-right-5"></i>
       </span>
-          {{line.name}}
-        </a>
-        <span [ngClass]="{'color-fine': line.state === 'FINE',
+            {{line.name}}
+            <span [ngClass]="{'color-fine': line.state === 'FINE',
        'color-problematic': line.state === 'PROBLEMATIC',
        'color-critical': line.state === 'CRITICAL' }">
         <i class="fa fa-lightbulb-o float-right padding-right-20" aria-hidden="true"></i>
-    </span>
+          </span>
+          </div>
+        </a>
       </p>
     </div>
   </div>

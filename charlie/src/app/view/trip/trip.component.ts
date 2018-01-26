@@ -7,6 +7,8 @@ import {TripAddComponent} from '../trip-add/trip-add.component';
 import { FilterGroupComponent } from '../../shared/components/filter-group/filter-group.component';
 import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
 import {StopSortService} from '../../services/stop-sort.service';
+import {Router} from "@angular/router";
+import {getUrlForId} from "../../shared/util/routing-util";
 
 @Component({
   selector: 'app-trip-view',
@@ -24,7 +26,8 @@ export class TripComponent extends LiveDataComponent implements OnInit {
 
   constructor(private http: HttpRoutingService,
               private modalService: NgbModal,
-              private stopSortService: StopSortService) {
+              private stopSortService: StopSortService,
+              private router: Router) {
     super();
   }
 
@@ -86,5 +89,10 @@ export class TripComponent extends LiveDataComponent implements OnInit {
   // update trips
   refreshData(): void {
     this.getTrips();
+  }
+
+  goToLink(id: string): void {
+    let link: string = getUrlForId(id);
+    this.router.navigate([link]);
   }
 }

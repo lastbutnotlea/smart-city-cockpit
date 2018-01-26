@@ -47,3 +47,11 @@ tbody td, thead th {
 .filter-fully-visible {
   width: 400px !important;
 }
+
+.highlight:hover {
+  background-color: gainsboro;
+}
+
+.highlight {
+  cursor: pointer;
+}

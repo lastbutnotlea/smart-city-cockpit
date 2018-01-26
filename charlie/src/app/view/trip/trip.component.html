@@ -20,11 +20,8 @@
         </thead>
         <tbody class="d-flex flex-column flex-grow-1 fit-screen">
         <tr *ngFor="let trip of filterGroup.getFiltered(trips)">
-          <td>
-            <a routerLink="detail/{{trip.id}}">
-              {{ trip.id }}
-            </a>
-          </td>
+          <div (click)="goToLink(trip.id)" class="d-flex highlight">
+          <td>{{ trip.id }}</td>
           <td>{{ trip.vehicle.id }}</td>
           <td>
             {{ trip.vehicle.type }}
@@ -45,6 +42,7 @@
               <i class="fa fa-lightbulb-o fa-2x" aria-hidden="true"></i>
             </span>
           </td>
+          </div>
         </tr>
         </tbody>
       </table>

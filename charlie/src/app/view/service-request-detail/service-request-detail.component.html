@@ -69,6 +69,7 @@
             <label class="padding-emb-box-headline">Feedback</label>
           </h4>
         </a>
+        <p *ngIf="serviceRequest.feedbacks.length === 0">No feedback referenced</p>
         <p *ngFor="let feedback of serviceRequest.feedbacks">
           <label class="text-secondary">
             <a href="feedback">
