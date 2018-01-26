@@ -12,7 +12,6 @@ import {FeedbackData} from '../../shared/data/feedback-data';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {SkipStopComponent} from "../stop-skip/stop-skip";
 import {AnnouncementData} from '../../shared/data/announcement-data';
-import {SkipData} from "../../shared/data/skip-data";
 
 @Component({
   selector: 'app-stop-detail-view',
@@ -40,6 +39,7 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
 
   ngOnInit(): void {
     this.getStop();
+    super.subscribeToData();
   }
 
   skipStop(): void {
