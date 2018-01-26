@@ -34,6 +34,7 @@ export class ServiceRequestsComponent implements OnInit {
     // get trip data
     this.http.getServiceRequests().subscribe(
       data => {
+        debugger;
         this.serviceRequests = data;
         for(let s of this.serviceRequests){
           s.feedbacks = [];
@@ -58,12 +59,6 @@ export class ServiceRequestsComponent implements OnInit {
         serviceTypeFilter.addFilter('Cleaning', serviceRequest => serviceRequest.serviceType === 'CLEANING');
         serviceTypeFilter.addFilter('Maintenance', serviceRequest => serviceRequest.serviceType === 'MAINTENANCE');
         this.filterGroup.addFilterComponent(serviceTypeFilter);
-
-        // TODO: This filter does not work yet because some requests in backend do not contain targets
-       /* let targetTypeFilter = new FilterComponent();
-        targetTypeFilter.addFilter('Vehicle', serviceRequest => serviceRequest.target.identifiableType === 'vehicle');
-        targetTypeFilter.addFilter('Stop', serviceRequest => serviceRequest.target.identifiableType === 'stop');
-        this.filterGroup.addFilterComponent(targetTypeFilter);*/
       },
       err => {
         console.log('Could not fetch filter data!');
@@ -74,5 +69,9 @@ export class ServiceRequestsComponent implements OnInit {
   addServiceRequest(): void {
     const modal = this.modalService.open(ServiceRequestAddComponent);
     modal.componentInstance.data = this.serviceRequests;
+    modal.componentInstance.onAdd(item => {
+      debugger;
+      this.serviceRequests.push(item);
+    });
   }
 }

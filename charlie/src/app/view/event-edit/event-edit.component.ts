@@ -45,11 +45,7 @@ export class EventEditComponent implements OnInit {
 
   availableParties: Array<DropdownValue> = [];
   party: DropdownValue = new DropdownValue(null, 'loading');
-
-  // selectedVehicle: DropdownValue;
-  //
-  // availLines: LineData[] = [];
-  // availVehicles: VehicleData[] = [];
+  saveDisabled: boolean = false;
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
@@ -118,6 +114,7 @@ export class EventEditComponent implements OnInit {
   }
 
   confirm(): void {
+    this.saveDisabled = true;
     this.data.subject = this.selected.subject;
     this.data.priority = this.priority.value;
     this.data.startTime = this.selected.startTime;

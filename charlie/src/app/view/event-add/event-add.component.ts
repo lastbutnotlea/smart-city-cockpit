@@ -48,6 +48,7 @@ export class EventAddComponent implements OnInit {
   party: DropdownValue = new DropdownValue(null, 'loading');
 
   notes: string = "";
+  saveDisabled: boolean = false;
 
   constructor(public activeModal: NgbActiveModal,
               public dateParser: DateParserService,
@@ -87,6 +88,7 @@ export class EventAddComponent implements OnInit {
   }
 
   confirm(): void {
+    this.saveDisabled = true;
     let event: EventData = new EventData();
     event.id = '';
     event.subject = this.subject;

@@ -14,6 +14,7 @@ export class VehicleAddComponent implements OnInit {
   vehicleTypes: string[] = [];
   selected: DropdownValue = new DropdownValue(null, "");
   capacity: number;
+  saveDisabled: boolean = false;
 
   constructor(public activeModal: NgbActiveModal, private http: HttpRoutingService) {
   }
@@ -23,6 +24,7 @@ export class VehicleAddComponent implements OnInit {
   }
 
   confirm(): void {
+    this.saveDisabled = true;
     this.http.addVehicle({
       id: null,
       capacity: this.capacity,

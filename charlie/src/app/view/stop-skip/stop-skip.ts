@@ -16,7 +16,7 @@ export class SkipStopComponent implements OnInit {
   @Input() @Output()
   data: StopData;
 
-  dataEdited: boolean = false;
+  saveDisabled: boolean = false;
 
   text: string = "";
 
@@ -95,11 +95,11 @@ export class SkipStopComponent implements OnInit {
   }
 
   confirm(): void {
+    this.saveDisabled = true;
     let skipData: SkipData = new SkipData();
     skipData.reason = this.text;
     skipData.from = this.from;
     skipData.to = this.to;
-    debugger;
     this.http.skipStop(this.data.id, skipData).subscribe(
       data => {
         this.data.skipData.push(data);

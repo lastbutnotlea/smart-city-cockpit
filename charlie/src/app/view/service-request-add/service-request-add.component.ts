@@ -7,6 +7,7 @@ import { ServiceRequestTarget } from '../../shared/data/service-request-target';
 import { now } from '../../shared/data/dates';
 import { DateParserService } from '../../services/date-parser.service';
 import { FeedbackData } from '../../shared/data/feedback-data';
+import {AnnouncementData} from '../../shared/data/announcement-data';
 
 @Component({
   selector: 'app-service-request-add',
@@ -22,6 +23,7 @@ export class ServiceRequestAddComponent implements OnInit {
 
   targetTypeChosen: boolean = false;
   dataChosen: boolean = false;
+  saveDisabled: boolean = false;
 
   selectedTargetType: DropdownValue;
 
@@ -129,6 +131,7 @@ export class ServiceRequestAddComponent implements OnInit {
    * adds service request with selected data
    */
   addServiceRequest() {
+    this.saveDisabled = true;
     this.selected.target = this.selectedTarget.value;
     this.selected.serviceType = this.selectedType.value;
     this.selected.priority = this.selectedPriority.value;
@@ -139,19 +142,11 @@ export class ServiceRequestAddComponent implements OnInit {
     this.http.addServiceRequest(this.selected).subscribe(
       data => {
         console.log('Added service request.');
-        this.data.push(data);
+        this.callback(data);
         this.activeModal.close('Close click');
       },
-      // TODO: these messages should not be interpreted as errors!
       err => {
-        if(err.status === 200){
-          this.data.push(this.selected);
-          console.log('Added service request.');
-          this.activeModal.close('Close click');
-        } else {
-          console.log('Could not add service request.');
-          this.activeModal.close('Close click');
-        }
+        console.log('Could not add service request.');
       }
     );
   }
@@ -212,5 +207,12 @@ export class ServiceRequestAddComponent implements OnInit {
     } else if(this.targetTypeChosen) {
       this.targetTypeChosen = false;
     }
+  }
+
+  private callback: (param: ServiceRequestData) => void = () => {
+  };
+
+  public onAdd(callback: (param: ServiceRequestData) => void) {
+    this.callback = callback;
   }
 }

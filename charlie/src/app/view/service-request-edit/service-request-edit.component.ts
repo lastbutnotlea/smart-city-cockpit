@@ -18,6 +18,7 @@ export class ServiceRequestEditComponent implements OnInit {
   data: ServiceRequestData;
 
   dataEdited: boolean = false;
+  saveDisabled: boolean = false;
 
   selectedPriority: DropdownValue;
   description: string;
@@ -76,6 +77,7 @@ export class ServiceRequestEditComponent implements OnInit {
   }
 
   editServiceRequest(): void {
+    this.saveDisabled = true;
     this.data.priority = this.selectedPriority.value;
     this.data.dueDate = this.selectedDate;
     this.data.serviceRequestDescription = [{"id": "", "text": this.description, "objectId": this.data.serviceRequestDescription[0].objectId}];
