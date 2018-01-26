@@ -4,6 +4,7 @@ import {HttpRoutingService} from '../../../services/http-routing.service';
 import {DropdownValue} from '../../../shared/components/dropdown/dropdown.component';
 import {ToastsManager} from 'ng2-toastr';
 import {DateParserService} from "../../../services/date-parser.service";
+import {ToastService} from '../../../services/toast.service';
 
 @Component({
   selector: 'app-vehicle-add',
@@ -13,15 +14,14 @@ import {DateParserService} from "../../../services/date-parser.service";
 
 export class VehicleAddComponent implements OnInit {
 
-  @Output() successEvent = new EventEmitter<boolean>();
-
   vehicleTypes: string[] = [];
   selected: DropdownValue = new DropdownValue(null, "");
   capacity: number;
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
-              private dateParser: DateParserService) {
+              private dateParser: DateParserService,
+              private toastService: ToastService) {
   }
 
   ngOnInit(): void {
@@ -43,12 +43,12 @@ export class VehicleAddComponent implements OnInit {
       isShutDown: false,
       currentLine: null
     }).subscribe(
-      () => {
-        this.successEvent.emit(true);
+      data => {
+        this.toastService.showSuccessToast('Added ' + data.id);
         this.activeModal.close('Close click');
       },
           err => {
-            this.successEvent.emit(false);
+            this.toastService.showErrorToast('Failed to add vehicle');
           }
       );
   }

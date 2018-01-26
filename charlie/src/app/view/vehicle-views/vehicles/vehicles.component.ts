@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {LiveDataComponent} from '../../../shared/components/live-data/live-data.component';
 import {FilterGroupComponent} from '../../../shared/components/filter-group/filter-group.component';
 import {VehicleData} from '../../../shared/data/vehicle-data';
@@ -7,7 +7,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FilterComponent} from '../../../shared/components/filter/filter.component';
 import {VehicleAddComponent} from '../vehicle-add/vehicle-add.component';
 import {StringFormatterService} from '../../../services/string-formatter';
-import {ToastsManager} from 'ng2-toastr';
+import {ToastService} from '../../../services/toast.service';
 
 @Component({
   selector: 'app-vehicles-component',
@@ -27,10 +27,8 @@ export class VehiclesComponent extends LiveDataComponent implements OnInit {
   constructor(private http: HttpRoutingService,
               private modalService: NgbModal,
               private stringFormatter: StringFormatterService,
-              public toastr: ToastsManager,
-              vcr: ViewContainerRef) {
+              public toastService: ToastService) {
     super();
-    this.toastr.setRootViewContainerRef(vcr);
   }
 
   ngOnInit() {
@@ -68,14 +66,6 @@ export class VehiclesComponent extends LiveDataComponent implements OnInit {
 
   add(): void {
     const modal = this.modalService.open(VehicleAddComponent);
-    modal.componentInstance.successEvent.subscribe(success => {
-      if (success == true) {
-        this.toastr.success('Added vehicle. ', 'Success!');
-      }
-      else {
-        this.toastr.error('Failed to add vehicle.', 'Error!');
-      }
-    });
   }
 
   // update vehicles

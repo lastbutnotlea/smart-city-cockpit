@@ -74,12 +74,12 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
   delete(): void {
     this.http.deleteVehicle(this.vehicle.id).subscribe(
       () => {
-        this.toastService.success();
+        this.toastService.showSuccessToast('Deleted ' + this.vehicle.id);
         this.goBack();
       },
           () => {
             // alert("Could not delete vehicle");
-            this.toastService.error();
+            this.toastService.showErrorToast('Failed to delete ' + this.vehicle.id);
           }
       );
   }

@@ -15,13 +15,18 @@ export class ToastService {
     this.vcr = vcr;
   }
 
-  public success() {
+  public showSuccessToast(successMessage: string) {
     this.toastr.setRootViewContainerRef(this.vcr);
-    this.toastr.success('successmessage', 'Success!');
+    this.toastr.success(successMessage, 'Success!');
   }
 
-  public error() {
+  public showErrorToast(errorMessage: string) {
     this.toastr.setRootViewContainerRef(this.vcr);
-    this.toastr.error('successmessage', 'Error!');
+    this.toastr.error(errorMessage, 'Error!');
+  }
+
+  public showInfoToast(info: string) {
+    this.toastr.setRootViewContainerRef(this.vcr);
+    this.toastr.info(info);
   }
 }

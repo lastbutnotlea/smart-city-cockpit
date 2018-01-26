@@ -10,6 +10,7 @@ import {
 import {EventData} from '../../../shared/data/event-data';
 import {PartyData} from '../../../shared/data/party-data';
 import {C4CNotes} from '../../../shared/data/c4c-notes';
+import {ToastService} from '../../../services/toast.service';
 
 @Component({
   selector: 'app-event-add',
@@ -51,7 +52,8 @@ export class EventAddComponent implements OnInit {
 
   constructor(public activeModal: NgbActiveModal,
               public dateParser: DateParserService,
-              public http: HttpRoutingService) {
+              public http: HttpRoutingService,
+              public toastService: ToastService) {
   }
 
   ngOnInit() {
@@ -101,11 +103,12 @@ export class EventAddComponent implements OnInit {
     console.log(event);
     this.http.addEvent(event).subscribe(
       data => {
-        console.log('Added event.')
+        console.log('Added event.');
+        this.toastService.showSuccessToast('Added event ' + data.id);
         this.data.push(data);
         this.activeModal.close('Close click');
       },
-      err => alert('Could not add event.' + err)
+      err => this.toastService.showErrorToast('Failed to add event')
     );
   }
 }
