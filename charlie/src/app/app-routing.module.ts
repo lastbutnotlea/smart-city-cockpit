@@ -1,18 +1,18 @@
 import {RouterModule, Routes} from '@angular/router';
-import {NetworkComponent} from './view/network/network.component';
-import {TripComponent} from './view/trip/trip.component';
+import {TripComponent} from './view/trip-views/trip/trip.component';
+import {TripDetailComponent} from './view/trip-views/trip-detail/trip-detail.component';
+import {NetworkComponent} from './view/network-views/network/network.component';
+import {LineDetailComponent} from './view/line-views/line-detail/line-detail.component';
+import {StopDetailComponent} from './view/stop-views/stop-detail/stop-detail.component';
+import {VehiclesComponent} from './view/vehicle-views/vehicles/vehicles.component';
+import {VehicleDetailComponent} from './view/vehicle-views/vehicle-detail/vehicle-detail.component';
+import {FeedbackComponent} from './view/feedback-views/feedback/feedback.component';
+import {EventsComponent} from './view/event-views/events/events.component';
+import {EventDetailComponent} from './view/event-views/event-detail/event-detail.component';
+import {ServiceRequestsComponent} from './view/service-request-views/service-requests/service-requests.component';
+import {ServiceRequestDetailComponent} from './view/service-request-views/service-request-detail/service-request-detail.component';
+import {AnnouncementMainComponent} from './view/announcement-views/main/announcement-main.component';
 import {NgModule} from '@angular/core';
-import {TripDetailComponent} from './view/trip-detail/trip-detail.component';
-import {LineDetailComponent} from './view/line-detail/line-detail.component';
-import {StopDetailComponent} from './view/stop-detail/stop-detail.component';
-import {VehiclesComponent} from './view/vehicles/vehicles.component';
-import {VehicleDetailComponent} from './view/vehicle-detail/vehicle-detail.component';
-import {ServiceRequestsComponent} from './view/service-requests/service-requests.component';
-import {ServiceRequestDetailComponent} from './view/service-request-detail/service-request-detail.component';
-import {FeedbackComponent} from './view/feedback/feedback.component';
-import {AnnouncementMainComponent} from './view/announcements/main/announcement-main.component';
-import {EventsComponent} from './view/events/events.component';
-import {EventDetailComponent} from './view/event-detail/event-detail.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/network', pathMatch: 'full'},
@@ -37,21 +37,5 @@ const routes: Routes = [
 })
 
 export class AppRoutingModule {
-  static getUrlForId(id: string): string {
-    if (id.startsWith('Trip_')) {
-      return '/trip/detail/' + id;
-    } else if (id.startsWith('Line_')) {
-      return '/network/detail/' + id;
-    } else if (id.startsWith('Stop_')) {
-      // This is actually dead because the backend has stop Ids without the Stop_ prefix.
-      return '/network/stop/' + id;
-    } else if (id.startsWith('Vehicle_')) {
-      return '/vehicles/' + id;
-    } else if (id.startsWith('Feedback_')) {
-      return '/feedback';
-    } else {
-      console.debug('No target for \'' + id + '\' found, assuming it is a stop');
-      return '/network/stop/' + id;
-    }
-  }
+
 }

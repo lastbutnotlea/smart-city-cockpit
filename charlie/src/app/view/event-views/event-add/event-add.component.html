@@ -1,0 +1,52 @@
+<div class="modal-header">
+  <h4 class="modal-title">
+    Create new event
+  </h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+<div class="modal-body container d-flex flex-column">
+  <div class="form-group m-2">
+    <label for="subject">Subject:</label>
+    <textarea class="form-control" rows="5" id="subject" [(ngModel)]="subject"></textarea>
+  </div>
+
+  <div class="d-flex flex-nowrap m-2">
+    <label>Priority: </label>
+    <app-dropdown class="col" [values]="availablePriorities" [(selected)]="priority"></app-dropdown>
+  </div>
+
+  <div>
+    <label class="m-2">Valid from: {{from | date:'MM/dd/yyyy HH:mm'}}</label>
+    <ngb-datepicker [(ngModel)]="fromDate" (select)="updateFromDate()"
+                    class="float-left datepicker m-2">
+
+    </ngb-datepicker>
+    <ngb-timepicker [(ngModel)]="fromTime" (click)="updateFromTime()" (change)="updateFromTime()"></ngb-timepicker>
+  </div>
+
+  <div>
+    <label class="m-2">Valid until: {{to | date:'MM/dd/yyyy HH:mm'}}</label>
+    <ngb-datepicker [(ngModel)]="toDate" (select)="updateToDate()" class="float-left datepicker m-2"></ngb-datepicker>
+    <ngb-timepicker [(ngModel)]="toTime" (click)="updateToTime()" (change)="updateToTime()"></ngb-timepicker>
+  </div>
+
+  <div class="d-flex flex-nowrap m-2">
+    <label>Involved Party: </label>
+    <app-dropdown class="col" [values]="availableParties" [(selected)]="party"></app-dropdown>
+  </div>
+
+  <div class="form-group m-2">
+    <label for="notes">Notes:</label>
+    <textarea class="form-control" rows="5" id="notes" [(ngModel)]="notes"></textarea>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cancel</button>
+  <button type="button" class="btn btn-outline-primary" (click)="confirm()" [disabled]="saveDisabled">
+    Save
+  </button>
+</div>

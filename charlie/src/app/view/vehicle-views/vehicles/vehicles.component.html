@@ -1,0 +1,56 @@
+<div class="d-flex flex-column fit-screen">
+  <h3 class="text-center">
+    <app-state-icon class="float-right" [size]="'fa-2x'" [state]="state"></app-state-icon>
+    {{title}}
+  </h3>
+
+  <div class="d-flex flex-row fit-screen">
+    <div class="fit-screen">
+      <app-filter-group-view></app-filter-group-view>
+    </div>
+
+    <div *ngIf="loaded && filterGroup.getFiltered(vehicles).length > 0"
+         class="d-flex flex-grow-1 fit-screen">
+      <table class="table fit-screen d-flex flex-column">
+        <thead>
+        <tr class="d-flex">
+          <th>Vehicle-ID</th>
+          <th>Capacity</th>
+          <th>Load</th>
+          <th>Current Delay</th>
+          <th>Temperature</th>
+          <th>Defects</th>
+          <th>Type</th>
+          <th>Status</th>
+        </tr>
+        </thead>
+        <tbody class="d-flex flex-column flex-grow-1 fit-screen">
+        <tr *ngFor="let vehicle of filterGroup.getFiltered(vehicles)">
+          <div *ngIf="!vehicle.isShutDown" (click)="goToLink(vehicle.id)" class="d-flex highlight">
+            <td>{{ vehicle.id }}</td>
+            <td>{{ vehicle.capacity }}</td>
+            <td>{{ vehicle.load }}</td>
+            <td>{{ (vehicle.delay / 60.0).toFixed(0) }}</td>
+            <td>{{ vehicle.temperature }}</td>
+            <td>{{ vehicle.defects }}</td>
+            <td>{{ stringFormatter.toFirstUpperRestLower(vehicle.type) }}</td>
+            <td>
+              <app-state-icon [size]="'fa-2x'" [state]="vehicle.state"></app-state-icon>
+            </td>
+          </div>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="!loaded">
+      <h3>Loading...</h3>
+    </div>
+    <div *ngIf="loaded && filterGroup.getFiltered(vehicles).length == 0">
+      <h3>No vehicles available</h3>
+    </div>
+  </div>
+
+  <div class="no-float m-3 no-m-left">
+    <button class="btn btn-outline-primary" (click)="add()">Add new vehicle</button>
+  </div>
+</div>

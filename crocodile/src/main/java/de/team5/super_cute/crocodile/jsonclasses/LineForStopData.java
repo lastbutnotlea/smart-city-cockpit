@@ -7,9 +7,15 @@ public class LineForStopData {
   boolean isInbound;
   @JsonProperty
   String line;
+  /**
+   * The id of the respective line.
+   */
+  @JsonProperty
+  String id;
 
-  public LineForStopData(boolean isInbound, String line) {
+  public LineForStopData(boolean isInbound, String line, String id) {
     this.isInbound = isInbound;
     this.line = line;
+    this.id = id;
   }
 }

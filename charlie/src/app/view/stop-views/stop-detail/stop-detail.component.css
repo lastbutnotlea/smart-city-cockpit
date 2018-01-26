@@ -1,0 +1,23 @@
+.no-float {
+  clear: both;
+}
+
+.margin-bottom-30 {
+  margin-bottom: 30px;
+}
+
+.padding-top-50 {
+  padding-top: 50px;
+}
+
+.stop-list {
+  list-style-type: circle;
+}
+
+.decreased-size {
+  width: 60%;
+}
+
+.height-50{
+  max-height:50%;
+}
