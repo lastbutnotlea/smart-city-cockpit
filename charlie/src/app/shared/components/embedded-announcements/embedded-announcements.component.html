@@ -5,7 +5,7 @@
   </h4>
 </a>
 <div *ngFor="let announcement of announcements">
-  <a href="announcements">
+  <a href="announcements/?id={{announcement.id}}">
     <marquee behavior="scroll" direction="left">
       {{announcement.text}}
     </marquee>

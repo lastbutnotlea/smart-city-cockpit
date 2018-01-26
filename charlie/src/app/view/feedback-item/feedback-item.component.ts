@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {FeedbackData} from '../../shared/data/feedback-data';
 import {HttpRoutingService} from "../../services/http-routing.service";
+import {ActivatedRoute, Params} from "@angular/router";
 
 @Component({
   selector: 'app-feedback-item',
@@ -13,12 +14,17 @@ export class FeedbackItemComponent implements OnInit {
   item: FeedbackData;
   time: string;
 
-  constructor(private http: HttpRoutingService) {
+  constructor(private http: HttpRoutingService,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit() {
     console.log(this.item);
     this.time = new Date(this.item.timestamp).toString();
+    this.route.queryParams.forEach((params: Params) => {
+      let id = params['id'];
+      this.scrollFeedback(id);
+    });
   }
 
   processFeedback() {
@@ -42,9 +48,9 @@ export class FeedbackItemComponent implements OnInit {
   }
 
   scrollFeedback(to: string){
-    let x = document.querySelector("#" + to);
+    let x = document.querySelector('#' + to);
     if (x){
-      x.scrollIntoView();
+      x.scrollIntoView(true);
     }
   }
 

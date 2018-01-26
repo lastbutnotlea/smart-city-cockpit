@@ -34,7 +34,12 @@ export class TickerItemComponent {
     // do NOT route if the user clicked on the X button
     if (!this.hoverOnCross) {
       let link : string = getUrlForId(this.data.item.id);
-      this.router.navigate([link]);
+      if(this.data.item.id.startsWith('Feedback_')){
+        this.router.navigate([link], { queryParams: { id: this.data.item.id} } );
+      } else {
+        this.router.navigate([link]);
+      }
+
     }
   }
 }
