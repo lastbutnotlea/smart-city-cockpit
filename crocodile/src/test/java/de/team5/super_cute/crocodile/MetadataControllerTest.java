@@ -38,8 +38,18 @@ public class MetadataControllerTest {
 
   @Test
   public void testLinesMetadata() throws Exception {
-    testFilterJson("/lines",
-        "[\"10\",\"283\",\"46\",\"228\",\"7\",\"Bakerloo\",\"Hammersmith & City\",\"Jubilee\",\"Victoria\",\"Waterloo & City\"]");
+    String linesJson = mockMvc.perform(get(METADATA_MAPPING + "/lines")).andReturn().getResponse()
+        .getContentAsString();
+    Assert.assertTrue(linesJson.contains("10"));
+    Assert.assertTrue(linesJson.contains("283"));
+    Assert.assertTrue(linesJson.contains("46"));
+    Assert.assertTrue(linesJson.contains("228"));
+    Assert.assertTrue(linesJson.contains("7"));
+    Assert.assertTrue(linesJson.contains("Bakerloo"));
+    Assert.assertTrue(linesJson.contains("Hammersmith & City"));
+    Assert.assertTrue(linesJson.contains("Jubilee"));
+    Assert.assertTrue(linesJson.contains("Victoria"));
+    Assert.assertTrue(linesJson.contains("Waterloo & City"));
   }
 
   @Test
