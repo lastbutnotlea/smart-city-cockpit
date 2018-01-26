@@ -29,8 +29,6 @@ import {NetworkComponent} from './view/network-views/network/network.component';
 import {TripComponent} from './view/trip-views/trip/trip.component';
 import {MenuComponent} from './menu/menu.component';
 import {TripDetailComponent} from './view/trip-views/trip-detail/trip-detail.component';
-import {TripEditComponent} from './view/trip-views/trip-edit/trip-edit.component';
-import {TripEditDepartureComponent} from './view/trip-views/trip-edit-departure/trip-edit-departure.component';
 import {MapComponent} from './view/network-views/map/map.component';
 import {LineDetailComponent} from './view/line-views/line-detail/line-detail.component';
 import {StopDetailComponent} from './view/stop-views/stop-detail/stop-detail.component';
@@ -67,8 +65,6 @@ import {CharliesRouterReuseStrategy} from "./services/router-reuse-strategy";
     TripComponent,
     MenuComponent,
     TripDetailComponent,
-    TripEditComponent,
-    TripEditDepartureComponent,
     FilterComponent,
     FilterGroupComponent,
     MapComponent,
@@ -129,9 +125,7 @@ import {CharliesRouterReuseStrategy} from "./services/router-reuse-strategy";
   bootstrap: [AppComponent],
   // modal dialogs:
   entryComponents: [
-    TripEditComponent,
     VehicleAddComponent,
-    TripEditDepartureComponent,
     ConfirmDeletionComponent,
     TripAddComponent,
     ServiceRequestAddComponent,

@@ -3,12 +3,13 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {StopData} from '../../../shared/data/stop-data';
 import {
-  DropdownValue,
+  DropdownValue, toDropdownItem,
   toDropdownItems
 } from '../../../shared/components/dropdown/dropdown.component';
 import {TripData} from "../../../shared/data/trip-data";
 import {TripStopData} from "../../../shared/data/trip-stop-data";
 import {DateParserService} from "../../../services/date-parser.service";
+import {isNullOrUndefined} from "util";
 
 @Component({
   selector: 'app-trip-add',
@@ -21,7 +22,6 @@ export class TripAddComponent implements OnInit {
   private static readonly selectDropdown: DropdownValue = new DropdownValue(null, "please select");
   private static readonly noVehiclesAvailDropdown: DropdownValue = new DropdownValue(null, "no vehicles available");
 
-  @Input()
   model: TripData = null;
 
   availableLines: DropdownValue[] = [];
@@ -40,13 +40,33 @@ export class TripAddComponent implements OnInit {
               private dateParser: DateParserService) {
   }
 
+  public setModel(data: TripData): void {
+    this.model = data;
+  }
+
+  public initData(): void {
+    if (this.model) {
+      this.selectedLine = toDropdownItem(this.model.line, line => line.name);
+      this.selectedDirection = new DropdownValue(this.model.isInbound, this.getDirectionString(this.getStops(this.model.isInbound)));
+      this.selectedVehicle = toDropdownItem(this.model.vehicle, vehicle => vehicle.id);
+      this.getStops().forEach(stop => {
+        this.selectedStops.set(stop, this.model.stops.filter(s => {
+          return s.id === stop.id;
+        }).length !== 0);
+      });
+      this.selectedDate = new Date(this.model.stops[0].departureTime);
+    }
+  }
+
   ngOnInit(): void {
     this.http.getLines().subscribe(
       data => {
         this.availableLines = toDropdownItems(data, line => line.name);
-        this.selectedLine = TripAddComponent.selectDropdown;
+        // only if not already set to something meaningful
+        if (!this.model) this.selectedLine = TripAddComponent.selectDropdown;
       },
-      err => console.log("Err: " + JSON.stringify(err)));
+      err => console.log("Err: " + JSON.stringify(err))
+    );
   }
 
   getDirectionDropdownItems(): DropdownValue[] {
@@ -61,7 +81,8 @@ export class TripAddComponent implements OnInit {
   }
 
   selectedLineChanged(): void {
-    this.selectedDirection = TripAddComponent.selectDropdown;
+    if (!this.getDirectionDropdownItems().some(item => item.label === this.getDirectionString(this.getStops())))
+      this.selectedDirection = TripAddComponent.selectDropdown;
   }
 
   selectedDirectionChanged(): void {
@@ -69,10 +90,13 @@ export class TripAddComponent implements OnInit {
     this.getStops().forEach(stop => this.selectedStops.set(stop, true));
   }
 
-  getStops(): StopData[] {
-    if (this.selectedLine.value === null || this.selectedDirection.value === null) {
+  getStops(inbound?: boolean): StopData[] {
+    if (isNullOrUndefined(inbound)) {
+      inbound = this.selectedDirection.value;
+    }
+    if (this.selectedLine.value === null || inbound === null) {
       return [];
-    } else if (this.selectedDirection.value) {
+    } else if (inbound) {
       return this.selectedLine.value.stopsInbound;
     } else {
       return this.selectedLine.value.stopsOutbound;
@@ -97,7 +121,13 @@ export class TripAddComponent implements OnInit {
     this.http.getVehiclesByTimeAndType(date, this.selectedLine.value.type).subscribe(
       data => {
         this.availableVehicles = toDropdownItems(data, v => v.id);
-        if (this.availableVehicles.length == 0) {
+        if (this.model) {
+          let selected: DropdownValue = new DropdownValue(this.model.vehicle, this.model.vehicle.id);
+          this.selectedVehicle = selected;
+          if (this.availableVehicles.filter(dv => dv.value.id === selected.value.id).length === 0) {
+            this.availableVehicles.push(selected);
+          }
+        } else if (this.availableVehicles.length == 0) {
           this.selectedVehicle = TripAddComponent.noVehiclesAvailDropdown;
         } else {
           this.selectedVehicle = TripAddComponent.selectDropdown;
@@ -142,8 +172,24 @@ export class TripAddComponent implements OnInit {
     this.state--;
   }
 
-  private confirmAddTrip() {
+  private confirmAddTrip(): void {
     this.model = new TripData();
+    this.setDataInModel();
+    this.http.addTrip(this.model).subscribe(
+      data => this.activeModal.close('Close click'),
+      err => console.log("An error occurred: " + JSON.stringify(err))
+    );
+  }
+
+  private confirmEditTrip(): void {
+    this.setDataInModel();
+    this.http.editTrip(this.model).subscribe(
+      data => this.activeModal.close('Close click'),
+      err => console.log("An error occurred: " + JSON.stringify(err))
+    );
+  }
+
+  private setDataInModel(): void {
     this.model.line = this.selectedLine.value;
     this.model.vehicle = this.selectedVehicle.value;
     this.model.isInbound = this.selectedDirection.value;
@@ -151,13 +197,5 @@ export class TripAddComponent implements OnInit {
       return this.selectedStops.get(stop);
     }).map(stop => new TripStopData(stop.id, null, null, null));
     this.model.stops[0].departureTime = this.dateParser.cutTimezoneInformation(this.selectedDate);
-    this.http.addTrip(this.model).subscribe(
-      data => this.activeModal.close('Close click'),
-      err => console.log("An error occurred: " + JSON.stringify(err))
-    );
-  }
-
-  private confirmEditTrip() {
-    // TODO
   }
 }

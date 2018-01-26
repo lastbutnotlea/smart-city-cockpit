@@ -5,10 +5,9 @@ import {HttpRoutingService} from '../../../services/http-routing.service';
 import {ActivatedRoute} from '@angular/router';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {StopSortService} from '../../../services/stop-sort.service';
-import {TripEditComponent} from '../trip-edit/trip-edit.component';
-import {TripEditDepartureComponent} from '../trip-edit-departure/trip-edit-departure.component';
 import {ConfirmDeletionComponent} from '../../../shared/components/confirm-popup/confirm-deletion.component';
 import {Location} from '@angular/common';
+import {TripAddComponent} from "../trip-add/trip-add.component";
 
 @Component({
   selector: 'app-trip-detail-view',
@@ -50,15 +49,9 @@ export class TripDetailComponent extends LiveDataComponent implements OnInit {
     this.location.back();
   }
 
-  editStops(): void {
-    const modal = this.modalService.open(TripEditComponent);
-    modal.componentInstance.data = this.trip;
-    modal.componentInstance.initData();
-  }
-
-  editDepartureTime(): void {
-    const modal = this.modalService.open(TripEditDepartureComponent);
-    modal.componentInstance.data = this.trip;
+  edit(): void {
+    const modal = this.modalService.open(TripAddComponent);
+    modal.componentInstance.setModel(this.trip);
     modal.componentInstance.initData();
   }
 
