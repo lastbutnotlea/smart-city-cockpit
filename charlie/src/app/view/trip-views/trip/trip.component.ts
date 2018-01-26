@@ -4,7 +4,7 @@ import {TripAddComponent} from '../trip-add/trip-add.component';
 import {LiveDataComponent} from '../../../shared/components/live-data/live-data.component';
 import {TripData} from '../../../shared/data/trip-data';
 import {FilterGroupComponent} from "../../../shared/components/filter-group/filter-group.component";
-import {StringFormatterService} from '../../../services/string-formatter';
+import {StringFormatterService} from '../../../services/string-formatter.service';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {StopSortService} from '../../../services/stop-sort.service';
 import {FilterComponent} from '../../../shared/components/filter/filter.component';

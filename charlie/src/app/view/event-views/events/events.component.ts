@@ -3,7 +3,7 @@ import {HttpRoutingService} from '../../../services/http-routing.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {EventData} from '../../../shared/data/event-data';
 import {EventAddComponent} from '../event-add/event-add.component';
-import {StringFormatterService} from '../../../services/string-formatter';
+import {StringFormatterService} from '../../../services/string-formatter.service';
 
 @Component({
   selector: 'app-event-view',

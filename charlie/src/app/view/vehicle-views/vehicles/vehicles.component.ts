@@ -6,7 +6,7 @@ import {HttpRoutingService} from '../../../services/http-routing.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FilterComponent} from '../../../shared/components/filter/filter.component';
 import {VehicleAddComponent} from '../vehicle-add/vehicle-add.component';
-import {StringFormatterService} from '../../../services/string-formatter';
+import {StringFormatterService} from '../../../services/string-formatter.service';
 
 @Component({
   selector: 'app-vehicles-component',

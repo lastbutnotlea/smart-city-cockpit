@@ -23,7 +23,7 @@
             </a>
           </td>
           <td>{{event.subject}}</td>
-          <td>{{ stringFormatter.toFirstUpperRestLower(event.priority) }}</td>
+          <td>{{ stringFormatter.priorityToLabel(event.priority) }}</td>
           <td>{{event.startTime | date:'MM/dd/yyyy HH:mm'}}</td>
           <td>{{event.endTime | date:'MM/dd/yyyy HH:mm'}}</td>
           <td>

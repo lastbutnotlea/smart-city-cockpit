@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {DropdownValue} from '../../../shared/components/dropdown/dropdown.component';
+import {StringFormatterService} from '../../../services/string-formatter.service';
 
 @Component({
   selector: 'app-vehicle-add',
@@ -16,7 +17,9 @@ export class VehicleAddComponent implements OnInit {
   capacity: number;
   saveDisabled: boolean = false;
 
-  constructor(public activeModal: NgbActiveModal, private http: HttpRoutingService) {
+  constructor(public activeModal: NgbActiveModal,
+              private http: HttpRoutingService,
+              private stringFormatter: StringFormatterService) {
   }
 
   ngOnInit(): void {
@@ -46,6 +49,6 @@ export class VehicleAddComponent implements OnInit {
   }
 
   toDropdown(types: string[]): DropdownValue[] {
-    return types.map(t => new DropdownValue(t, t));
+    return types.map(t => new DropdownValue(t, this.stringFormatter.toFirstUpperRestLower(t)));
   }
 }

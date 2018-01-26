@@ -2,7 +2,7 @@ import {Component, Input, OnInit, Output} from '@angular/core';
 import { NgbActiveModal, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {ServiceRequestData} from '../../../shared/data/service-request-data';
 import {ServiceRequestTarget} from '../../../shared/data/service-request-target';
-import {DropdownValue} from '../../../shared/components/dropdown/dropdown.component';
+import {DropdownValue, priorityDropdownItems} from '../../../shared/components/dropdown/dropdown.component';
 import {FeedbackData} from '../../../shared/data/feedback-data';
 import {now} from '../../../shared/data/dates';
 import {HttpRoutingService} from '../../../services/http-routing.service';
@@ -167,12 +167,7 @@ export class ServiceRequestAddComponent implements OnInit {
   }
 
   priorityItems(): DropdownValue[] {
-    // TODO: Get data from meta data controller, do not set manually
-    let prioItems: DropdownValue[] = [];
-    prioItems.push(new DropdownValue('FINE', 'Low'));
-    prioItems.push(new DropdownValue('PROBLEMATIC', 'Medium'));
-    prioItems.push(new DropdownValue('CRITICAL', 'High'));
-    return prioItems;
+    return priorityDropdownItems();
   }
 
   updateDate(): void {
