@@ -1,19 +1,14 @@
-:host {
+.highlight:hover {
+  border-width: 3px;
+  padding: 8px
+}
+
+.highlight {
+  border-width: 1px;
   padding: 10px;
-  border-radius: 10px;
-  margin: 5px 0px;
-  display: flex;
-  flex-direction: column;
+  cursor: pointer;
 }
 
-.padding-3 {
-  padding: 3px;
-}
-
-.no-margin-bottom {
-  margin-bottom: 0px;
-}
-
-.no-border {
-  border-color: white;
+button {
+  border-width: 0;
 }
