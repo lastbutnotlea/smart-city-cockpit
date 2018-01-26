@@ -103,11 +103,6 @@ public class TripController extends BaseController<Trip> {
   public String editTrip(@RequestBody Trip tripInput) {
     logger.info("Got Request to edit trip " + tripInput);
     insertCorrectTimesForTrip(tripInput);
-    if (tripInput.getVehicle() != null) {
-      if (!vehicleValidation.checkVehicleAvailability(tripInput)) {
-        return "Vehicle not available!";
-      }
-    }
     tripInput.initializeTrip();
     return Helpers.makeIdToJSON(editObject(tripInput));
   }
