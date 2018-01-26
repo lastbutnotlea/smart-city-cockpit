@@ -1,22 +1,32 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {AnnouncementData} from "../../../shared/data/announcement-data";
 import {HttpRoutingService} from "../../../services/http-routing.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {AnnouncementEditComponent} from "../edit/announcement-edit.component";
 import {ConfirmDeletionComponent} from '../../../shared/components/confirm-popup/confirm-deletion.component';
+import {ActivatedRoute, Params} from "@angular/router";
 
 @Component({
   selector: 'app-announcement-item',
   templateUrl: './announcement-item.component.html',
   styleUrls: ['./announcement-item.component.css'],
 })
-export class AnnouncementItemComponent {
+export class AnnouncementItemComponent implements OnInit{
+
+  ngOnInit(): void {
+    this.route.queryParams.forEach((params: Params) => {
+      let id = params['id'];
+      this.scrollAnnouncement(id);
+    });
+  }
+
   @Input()
   data: AnnouncementData;
 
   deleted: boolean = false;
 
-  constructor(private http: HttpRoutingService, private modalService: NgbModal) {
+  constructor(private http: HttpRoutingService, private modalService: NgbModal,
+              private route: ActivatedRoute) {
   }
 
   editItem(): void {
@@ -39,6 +49,13 @@ export class AnnouncementItemComponent {
     modal.componentInstance.objectToDelete = this.data.id;
     modal.componentInstance.deletionEvent.subscribe(($event) => {
       this.deleteItem();});
+  }
+  
+  scrollAnnouncement(to: string){
+    let x = document.querySelector('#' + to);
+    if (x){
+      x.scrollIntoView(true);
+    }
   }
 
 }

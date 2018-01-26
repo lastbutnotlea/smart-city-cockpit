@@ -21,11 +21,8 @@
         </thead>
         <tbody class="d-flex flex-column flex-grow-1 fit-screen">
         <tr *ngFor="let serviceRequest of filterGroup.getFiltered(serviceRequests)">
-          <td>
-            <a href="serviceRequests/detail/{{serviceRequest.id}}">
-              {{ serviceRequest.id }}
-            </a>
-          </td>
+          <div (click)="goToLink(serviceRequest.id)" class="d-flex highlight">
+            <td>{{ serviceRequest.id }}</td>
           <td>{{ serviceRequest.name }}</td>
           <td>{{ stringFormatter.toFirstUpperRestLower(serviceRequest.serviceType) }}</td>
           <td>{{ stringFormatter.toFirstUpperRestLower(serviceRequest.statusCode) }}</td>
@@ -38,6 +35,7 @@
             <i class="fa fa-exclamation-circle fa-2x" aria-hidden="true"></i>
           </span>
           </td>
+    </div>
         </tr>
         </tbody>
       </table>

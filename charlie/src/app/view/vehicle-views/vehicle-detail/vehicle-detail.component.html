@@ -27,8 +27,15 @@
       </div>
     </div>
     <div class="d-flex flex-1 float-right flex-column">
-      <div class="bounding-box">
-        <app-embedded-line *ngIf="vehicle.currentLine !== null" [line]="vehicle.currentLine"></app-embedded-line>
+      <div *ngIf="vehicle.currentLine !== null" class="bounding-box">
+        <app-embedded-line [line]="vehicle.currentLine"></app-embedded-line>
+      </div>
+      <div *ngIf="vehicle.currentLine === null" class="bounding-box">
+        <h4 class="text-lg-left">
+          <i class="fa fa-home fa-2x float-left padding-left-5 text-primary"></i>
+          <label class="padding-emb-box-headline">In depot</label>
+        </h4>
+        <p>Vehicle currently not on a line</p>
       </div>
       <div class="bounding-box">
         <app-embedded-feedback [feedback]="feedback"></app-embedded-feedback>
