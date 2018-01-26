@@ -15,6 +15,7 @@ export class NetworkComponent extends LiveDataComponent implements OnInit {
   lines: LineData[] = [];
   state: string = "";
   loaded: boolean = false;
+  mapLoaded: boolean = false;
 
   @ViewChild(MapComponent)
   networkMap: MapComponent;
@@ -27,7 +28,6 @@ export class NetworkComponent extends LiveDataComponent implements OnInit {
     this.title = 'Network';
     // get line data
     this.getNetworkData();
-    this.getMapData();
     super.subscribeToData();
   }
 
@@ -35,6 +35,9 @@ export class NetworkComponent extends LiveDataComponent implements OnInit {
     this.http.getLines().subscribe( data => {
         this.lines = data;
         this.loaded = true;
+        if(!this.mapLoaded){
+          this.getMapData();
+        }
       },
       err => {
         console.log('Could not fetch lines.');
@@ -51,6 +54,7 @@ export class NetworkComponent extends LiveDataComponent implements OnInit {
   }
 
   private getMapData(): void {
+    this.mapLoaded = true;
     // TODO: If this is causing any performance issues, change back to parallel calls, in each subscribe, check if data from other two calls is already available
     this.http.getMapDataStations().subscribe(stationsData => {
       this.http.getMapDataLines().subscribe(linesData => {

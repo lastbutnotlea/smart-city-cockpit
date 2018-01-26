@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {VehicleData} from '../../data/vehicle-data';
-import {StringFormatterService} from '../../../services/string-formatter';
+import {StringFormatterService} from '../../../services/string-formatter.service';
 
 @Component({
   selector: 'app-embedded-vehicle',
