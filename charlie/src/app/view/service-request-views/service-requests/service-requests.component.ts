@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ServiceRequestAddComponent} from '../service-request-add/service-request-add.component';
+import {StringFormatterService} from '../../../services/string-formatter';
 import {ServiceRequestData} from '../../../shared/data/service-request-data';
 import {FilterGroupComponent} from '../../../shared/components/filter-group/filter-group.component';
 import {HttpRoutingService} from '../../../services/http-routing.service';
@@ -21,7 +22,8 @@ export class ServiceRequestsComponent implements OnInit {
   filterGroup: FilterGroupComponent;
 
   constructor(private http: HttpRoutingService,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private stringFormatter: StringFormatterService) {
   }
 
   public ngOnInit(): void {
@@ -58,12 +60,6 @@ export class ServiceRequestsComponent implements OnInit {
         serviceTypeFilter.addFilter('Cleaning', serviceRequest => serviceRequest.serviceType === 'CLEANING');
         serviceTypeFilter.addFilter('Maintenance', serviceRequest => serviceRequest.serviceType === 'MAINTENANCE');
         this.filterGroup.addFilterComponent(serviceTypeFilter);
-
-        // TODO: This filter does not work yet because some requests in backend do not contain targets
-       /* let targetTypeFilter = new FilterComponent();
-        targetTypeFilter.addFilter('Vehicle', serviceRequest => serviceRequest.target.identifiableType === 'vehicle');
-        targetTypeFilter.addFilter('Stop', serviceRequest => serviceRequest.target.identifiableType === 'stop');
-        this.filterGroup.addFilterComponent(targetTypeFilter);*/
       },
       err => {
         console.log('Could not fetch filter data!');

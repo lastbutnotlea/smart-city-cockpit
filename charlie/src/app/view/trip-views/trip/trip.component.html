@@ -27,7 +27,7 @@
           </td>
           <td>{{ trip.vehicle.id }}</td>
           <td>
-            {{ trip.vehicle.type }}
+            {{ stringFormatter.toFirstUpperRestLower(trip.vehicle.type) }}
           </td>
           <td>{{ trip.line.name }}</td>
           <td>
