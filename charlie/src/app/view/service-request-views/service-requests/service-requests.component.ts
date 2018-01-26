@@ -7,6 +7,7 @@ import {FilterGroupComponent} from '../../../shared/components/filter-group/filt
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {FilterComponent} from '../../../shared/components/filter/filter.component';
 import {Router} from "@angular/router";
+import {dummyDate} from '../../../shared/data/dates';
 
 @Component({
   selector: 'app-service-requests-view',
@@ -76,5 +77,9 @@ export class ServiceRequestsComponent implements OnInit {
 
   goToLink(id: string): void {
     this.router.navigate(["serviceRequests/detail/" + id]);
+  }
+
+  hasCompletionDate(serviceRequest: ServiceRequestData): boolean {
+    return serviceRequest.completionDate !== dummyDate;
   }
 }

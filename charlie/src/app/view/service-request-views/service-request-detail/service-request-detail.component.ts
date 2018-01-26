@@ -6,6 +6,7 @@ import {ServiceRequestEditComponent} from '../service-request-edit/service-reque
 import {ServiceRequestData} from '../../../shared/data/service-request-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {ConfirmDeletionComponent} from '../../../shared/components/confirm-popup/confirm-deletion.component';
+import {dummyDate} from '../../../shared/data/dates';
 
 @Component({
   selector: 'app-service-request-detail-view',
@@ -82,5 +83,9 @@ export class ServiceRequestDetailComponent implements OnInit {
 
   hasTarget(){
     return this.serviceRequest.target !== null;
+  }
+
+  hasCompletionDate(serviceRequest: ServiceRequestData): boolean {
+    return serviceRequest.completionDate !== dummyDate;
   }
 }

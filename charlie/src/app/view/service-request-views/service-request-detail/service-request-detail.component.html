@@ -49,7 +49,14 @@
       <p><label class="text-secondary">Type: </label> {{serviceRequest.serviceType}}</p>
       <p><label class="text-secondary">Degree of Processing: </label> {{serviceRequest.statusCode}}</p>
       <p><label class="text-secondary">Due Date: </label> {{(serviceRequest.dueDate) | date:'MM/dd/yyyy HH:mm'}}</p>
-      <p><label class="text-secondary">Completion Date: </label> {{serviceRequest.completionDate | date:'MM/dd/yyyy HH:mm'}}</p>
+      <p><label class="text-secondary">Completion Date: </label>
+        <span *ngIf="hasCompletionDate(serviceRequest)">
+          {{serviceRequest.completionDate | date:'MM/dd/yyyy'}}
+        </span>
+        <span *ngIf="hasCompletionDate(serviceRequest)">
+          Not completed yet
+        </span>
+      </p>
       <p><label *ngIf="serviceRequest.serviceRequestDescription.length > 0" class="text-secondary">Description: </label>
         <span *ngFor="let description of serviceRequest.serviceRequestDescription">
         {{description.text}}
@@ -60,25 +67,7 @@
     <div class="d-flex flex-1 flex-column">
       <!-- feedback -->
       <div class="bounding-box">
-        <a class="color-inherit" href="feedback">
-          <h4 class="text-lg-left">
-            <i class="fa fa-comments-o fa-2x float-left padding-left-5 text-primary"></i>
-            <label class="padding-emb-box-headline">Feedback</label>
-          </h4>
-        </a>
-        <p *ngIf="serviceRequest.feedbacks.length === 0">No feedback referenced</p>
-        <p *ngFor="let feedback of serviceRequest.feedbacks">
-          <label class="text-secondary">
-            <a href="feedback/?id={{feedback.id}}">
-              {{feedback.message}}
-            </a>
-          </label>
-          <span [ngClass]="{'color-fine': feedback.rating === 'FINE',
-       'color-problematic': feedback.rating === 'PROBLEMATIC',
-       'color-critical': feedback.rating === 'CRITICAL' }">
-        <i class="fa fa-star float-right small-padding-right" aria-hidden="true"></i>
-      </span>
-        </p>
+        <app-embedded-feedback [feedback]="serviceRequest.feedbacks"></app-embedded-feedback>
       </div>
 
 
