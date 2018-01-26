@@ -4,11 +4,7 @@
 
 <div class="fit-screen d-flex flex-column" *ngIf="loaded">
   <h3 class="text-center">
-    <div [ngClass]="{'color-fine': vehicle.state === 'FINE',
-       'color-problematic': vehicle.state === 'PROBLEMATIC',
-       'color-critical': vehicle.state === 'CRITICAL' }">
-      <i class="fa fa-lightbulb-o fa-3x float-right padding-right-20" aria-hidden="true"></i>
-    </div>
+    <app-state-icon [size]="'fa-3x'"class="float-right" [state]="vehicle.state"></app-state-icon>
     Details <label class="text-primary">{{vehicle.id}}</label>
   </h3>
 
