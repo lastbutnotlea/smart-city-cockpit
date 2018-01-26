@@ -3,6 +3,7 @@ import {HttpRoutingService} from '../../../services/http-routing.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {EventData} from '../../../shared/data/event-data';
 import {EventAddComponent} from '../event-add/event-add.component';
+import {getUrlForId} from "../../../shared/util/routing-util";
 import {Router} from "@angular/router";
 import {StringFormatterService} from '../../../services/string-formatter';
 
