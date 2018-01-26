@@ -128,9 +128,6 @@ public class Feedback extends IdentifiableObject implements Serializable, Ticker
       case STOP_FEEDBACK:
         feedbackType = "stops";
         break;
-      case LINE_FEEDBACK:
-        feedbackType = "lines";
-        break;
     }
     return "Customer feedback about one of our " + feedbackType;
   }
