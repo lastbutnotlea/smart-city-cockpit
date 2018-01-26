@@ -27,6 +27,7 @@ import {EmbeddedFeedbackComponent} from './shared/components/embedded-feedback/e
 import {EmbeddedAnnouncementsComponent} from './shared/components/embedded-announcements/embedded-announcements.component';
 import {NetworkComponent} from './view/network-views/network/network.component';
 import {TripComponent} from './view/trip-views/trip/trip.component';
+import {StateIconComponent} from './shared/components/state-icon/state-icon.component';
 import {MenuComponent} from './menu/menu.component';
 import {TripDetailComponent} from './view/trip-views/trip-detail/trip-detail.component';
 import {TripEditComponent} from './view/trip-views/trip-edit/trip-edit.component';
@@ -110,6 +111,7 @@ import {CharliesRouterReuseStrategy} from "./services/router-reuse-strategy";
     EmbeddedAnnouncementsComponent,
     EmbeddedTripComponent,
     EmbeddedServiceRequestComponent,
+    StateIconComponent,
   ],
   imports: [
     BrowserModule,
