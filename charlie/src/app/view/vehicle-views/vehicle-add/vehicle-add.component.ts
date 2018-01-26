@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {DropdownValue} from '../../../shared/components/dropdown/dropdown.component';
+import {DateParserService} from "../../../services/date-parser.service";
 
 @Component({
   selector: 'app-vehicle-add',
@@ -15,7 +16,8 @@ export class VehicleAddComponent implements OnInit {
   selected: DropdownValue = new DropdownValue(null, "");
   capacity: number;
 
-  constructor(public activeModal: NgbActiveModal, private http: HttpRoutingService) {
+
+  constructor(public activeModal: NgbActiveModal, private http: HttpRoutingService, private dateParser: DateParserService) {
   }
 
   ngOnInit(): void {
@@ -33,7 +35,7 @@ export class VehicleAddComponent implements OnInit {
       type: this.selected.value,
       state: 'FINE',
       identifiableType: "vehicle",
-      freeFrom: '',
+      freeFrom: this.dateParser.cutTimezoneInformation(new Date()),
       isShutDown: false,
       currentLine: null
     }).subscribe(
