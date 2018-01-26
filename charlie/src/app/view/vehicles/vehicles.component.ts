@@ -6,6 +6,7 @@ import {VehicleAddComponent} from '../vehicle-add/vehicle-add.component';
 import {FilterGroupComponent} from '../../shared/components/filter-group/filter-group.component';
 import {FilterComponent} from '../../shared/components/filter/filter.component';
 import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
+import {StringFormatterService} from '../../services/string-formatter';
 
 @Component({
   selector: 'app-vehicles-component',
@@ -22,7 +23,9 @@ export class VehiclesComponent extends LiveDataComponent implements OnInit {
 
   vehicles: VehicleData[];
 
-  constructor(private http: HttpRoutingService, private modalService: NgbModal) {
+  constructor(private http: HttpRoutingService,
+              private modalService: NgbModal,
+              private stringFormatter: StringFormatterService) {
     super();
   }
 
@@ -31,7 +34,8 @@ export class VehiclesComponent extends LiveDataComponent implements OnInit {
     this.http.getVehicleTypes().subscribe(types => {
       let typeFilter: FilterComponent = new FilterComponent();
       types.forEach(type =>
-        typeFilter.addFilter(type, vehicle => vehicle.type === type));
+        typeFilter.addFilter(this.stringFormatter.toFirstUpperRestLower(type),
+            vehicle => vehicle.type === type));
       this.filterGroup.addFilterComponent(typeFilter);
 
       // TODO: change this if needed data can be requested from backend

@@ -7,6 +7,7 @@ import {TripAddComponent} from '../trip-add/trip-add.component';
 import { FilterGroupComponent } from '../../shared/components/filter-group/filter-group.component';
 import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
 import {StopSortService} from '../../services/stop-sort.service';
+import {StringFormatterService} from '../../services/string-formatter';
 
 @Component({
   selector: 'app-trip-view',
@@ -24,7 +25,8 @@ export class TripComponent extends LiveDataComponent implements OnInit {
 
   constructor(private http: HttpRoutingService,
               private modalService: NgbModal,
-              private stopSortService: StopSortService) {
+              private stopSortService: StopSortService,
+              private stringFormatter: StringFormatterService) {
     super();
   }
 
@@ -60,7 +62,7 @@ export class TripComponent extends LiveDataComponent implements OnInit {
         let vehicleFilter = new FilterComponent();
         for (let val in data.types) {
           let name = data.types[val];
-          vehicleFilter.addFilter(name, trip => trip.vehicle.type === name);
+          vehicleFilter.addFilter(this.stringFormatter.toFirstUpperRestLower(name), trip => trip.vehicle.type === name);
         }
         this.filterGroup.addFilterComponent(vehicleFilter);
         // add filters for lines

@@ -9,6 +9,7 @@ import {
 import {now} from '../../shared/data/dates';
 import {DateParserService} from '../../services/date-parser.service';
 import {PartyData} from '../../shared/data/party-data';
+import {StringFormatterService} from '../../services/string-formatter';
 
 
 @Component({
@@ -24,7 +25,7 @@ export class EventEditComponent implements OnInit {
   selected: EventData;
 
   availablePriorities: Array<DropdownValue> = [];
-  priority: DropdownValue = new DropdownValue('FINE', 'fine');
+  priority: DropdownValue = new DropdownValue('FINE', 'Low');
 
   fromTime: NgbTimeStruct = {
     hour: now.getHours(),
@@ -53,7 +54,8 @@ export class EventEditComponent implements OnInit {
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
-              public dateParser: DateParserService) {
+              public dateParser: DateParserService,
+              private stringFormatter: StringFormatterService) {
   }
 
 
@@ -82,7 +84,7 @@ export class EventEditComponent implements OnInit {
       }
 
       this.party = toDropdownItem(this.selected.appointmentInvolvedParties[0], party => party.partyName);
-      this.priority = toDropdownItem(this.selected.priority, item => item.toLowerCase());
+      this.priority = toDropdownItem(this.selected.priority, item => this.stringFormatter.toFirstUpperRestLower(item));
     }
   }
 

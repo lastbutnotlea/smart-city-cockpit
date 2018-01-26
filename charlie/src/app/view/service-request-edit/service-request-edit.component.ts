@@ -121,9 +121,9 @@ export class ServiceRequestEditComponent implements OnInit {
   priorityItems(): DropdownValue[] {
     // TODO: Get data from meta data controller, do not set manually
     let prioItems: DropdownValue[] = [];
-    prioItems.push(new DropdownValue('FINE', 'FINE'));
-    prioItems.push(new DropdownValue('PROBLEMATIC', 'PROBLEMATIC'));
-    prioItems.push(new DropdownValue('CRITICAL', 'CRITICAL'));
+    prioItems.push(new DropdownValue('FINE', 'Low'));
+    prioItems.push(new DropdownValue('PROBLEMATIC', 'Medium'));
+    prioItems.push(new DropdownValue('CRITICAL', 'High'));
     return prioItems;
   }
 

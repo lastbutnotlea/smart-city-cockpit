@@ -59,6 +59,7 @@ import {AnnouncementMainComponent} from "./view/announcements/main/announcement-
 import {AnnouncementItemComponent} from "./view/announcements/item/announcement-item.component";
 import {CharliesRouterReuseStrategy} from "./services/router-reuse-strategy";
 import {RouteReuseStrategy} from "@angular/router";
+import {StringFormatterService} from './services/string-formatter';
 
 @NgModule({
   declarations: [
@@ -125,6 +126,7 @@ import {RouteReuseStrategy} from "@angular/router";
     MapCreatorService,
     StopSortService,
     DateParserService,
+    StringFormatterService,
     {provide: RouteReuseStrategy, useClass: CharliesRouterReuseStrategy},
   ],
   bootstrap: [AppComponent],
