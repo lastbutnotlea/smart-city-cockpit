@@ -1,6 +1,11 @@
 <h4 class="text-lg-left">
   <app-state-icon class="float-right" [size]="'fa-2x'" [state]="vehicle.state"></app-state-icon>
-  <i class="fa fa-subway fa-2x float-left padding-left-5 text-primary"></i>
+    <div *ngIf="vehicle.type === 'BUS'">
+      <i class="fa fa-bus fa-2x float-left padding-left-5 text-primary"></i>
+    </div>
+    <div *ngIf="vehicle.type === 'SUBWAY'">
+      <i class="fa fa-subway fa-2x float-left padding-left-5 text-primary"></i>
+    </div>
   <label class="padding-emb-box-headline">Vehicle</label>
 </h4>
 

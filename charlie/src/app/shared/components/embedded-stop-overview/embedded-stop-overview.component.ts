@@ -1,5 +1,4 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {LineData} from '../../data/line-data';
 import { LinePositionData } from '../../data/line-position-data';
 
 
