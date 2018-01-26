@@ -59,6 +59,8 @@ import {AnnouncementMainComponent} from "./view/announcements/main/announcement-
 import {AnnouncementItemComponent} from "./view/announcements/item/announcement-item.component";
 import {CharliesRouterReuseStrategy} from "./services/router-reuse-strategy";
 import {RouteReuseStrategy} from "@angular/router";
+import {ToastModule} from 'ng2-toastr';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -117,6 +119,8 @@ import {RouteReuseStrategy} from "@angular/router";
     AppRoutingModule,
     FormsModule,
     Angular2FontawesomeModule,
+    ToastModule.forRoot(),
+    BrowserAnimationsModule,
     NgbModule.forRoot(),
   ],
   providers: [

@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import { HttpRoutingService } from '../../services/http-routing.service';
 import {FilterComponent} from '../../shared/components/filter/filter.component';
 import { TripData } from '../../shared/data/trip-data';
@@ -7,6 +7,7 @@ import {TripAddComponent} from '../trip-add/trip-add.component';
 import { FilterGroupComponent } from '../../shared/components/filter-group/filter-group.component';
 import { LiveDataComponent } from '../../shared/components/live-data/live-data.component';
 import {StopSortService} from '../../services/stop-sort.service';
+import {ToastsManager} from 'ng2-toastr';
 
 @Component({
   selector: 'app-trip-view',
@@ -24,8 +25,11 @@ export class TripComponent extends LiveDataComponent implements OnInit {
 
   constructor(private http: HttpRoutingService,
               private modalService: NgbModal,
-              private stopSortService: StopSortService) {
+              private stopSortService: StopSortService,
+              public toastr: ToastsManager,
+              vcr: ViewContainerRef) {
     super();
+    this.toastr.setRootViewContainerRef(vcr);
   }
 
   public ngOnInit(): void {
@@ -51,6 +55,11 @@ export class TripComponent extends LiveDataComponent implements OnInit {
   addTrip(): void {
     const modal = this.modalService.open(TripAddComponent);
     modal.componentInstance.initData();
+    this.toastr.success('You are awesome!', 'Success!');
+    this.toastr.error('You are awesome!', 'Success!');
+    this.toastr.warning('You are awesome!', 'Success!');
+    this.toastr.info('You are awesome!', 'Success!');
+    debugger;
   }
 
   private addFilter(): void {
