@@ -8,41 +8,43 @@
   </button>
 </div>
 <div class="modal-body d-flex flex-column">
-  <div class="d-flex justify-content-between">
-    <label>Line: </label>
-    <app-dropdown [values]="getLineDropdownItems()" [(selected)]="selectedLine"
-                  (selectedChange)="selectedLineChanged()"></app-dropdown>
-  </div>
-  <div *ngIf="selectedLine.value !== null" class="d-flex justify-content-between">
-    <label>Direction: </label>
-    <app-dropdown [values]="getDirectionDropdownItems()"
-                  [(selected)]="selectedDirection"
-                  (selectedChange)="selectedDirectionChanged()"></app-dropdown>
-  </div>
-
-  <ng-container *ngIf="selectedDirection.value !== null">
-    <button type="button" class="btn btn-outline-dark" (click)="showStops = !showStops"
-            [attr.aria-expanded]="!showStops" aria-controls="stopList">Edit stops
-    </button>
-    <div *ngIf="showStops">
-      <div *ngFor="let stop of getStops()" class="d-flex justify-content-around">
-        <label>
-          <input type="checkbox" [ngModel]="selectedStops.get(stop)" (change)="stopSelectionChanged(stop)">
-          {{stop.commonName}}
-        </label>
-      </div>
+  <ng-container *ngIf="state == 0">
+    <div class="d-flex justify-content-between align-items-center m-3">
+      <label class="m-0">Line: </label>
+      <app-dropdown [values]="availableLines" [(selected)]="selectedLine"
+                    (selectedChange)="selectedLineChanged()"></app-dropdown>
     </div>
+    <div *ngIf="selectedLine.value !== null"
+         class="d-flex justify-content-between align-items-center m-3">
+      <label class="m-0">Direction: </label>
+      <app-dropdown [values]="getDirectionDropdownItems()"
+                    [(selected)]="selectedDirection"
+                    (selectedChange)="selectedDirectionChanged()"></app-dropdown>
+    </div>
+  </ng-container>
 
-    <app-datetime-picker [text]="'Departure time:'"
-                         [(model)]="selectedDate"
-                         (modelChanged)="refreshVehicles($event)"
-                         [isValid]="isValidDeparture">
-    </app-datetime-picker>
+  <app-datetime-picker *ngIf="state == 1"
+                       [text]="'Departure time: '"
+                       (modelChanged)="selectedDate=$event"
+                       [(model)]="selectedDate"
+                       [isValid]="isValidDeparture">
+  </app-datetime-picker>
 
-    <div class="d-flex justify-content-between">
-      <label>Vehicle</label>
-      <app-dropdown [values]="getVehicleDropdownItems()"
-                    [(selected)]="selectedVehicle"></app-dropdown>
+  <div *ngIf="state == 2" class="d-flex justify-content-between align-items-center m-3">
+    <label class="m-0">Vehicle</label>
+    <app-dropdown [values]="availableVehicles"
+                  [(selected)]="selectedVehicle"></app-dropdown>
+  </div>
+
+  <ng-container *ngIf="state == 3">
+    <div *ngFor="let stop of getStops()"
+         class="d-flex justify-content-between align-items-center {{selectedStops.get(stop)? '': 'text-secondary'}}">
+      {{stop.commonName}}
+      <button
+        class="btn {{selectedStops.get(stop)? 'btn-outline-primary' : 'btn-outline-secondary'}} icon-button"
+        (click)="stopSelectionChanged(stop)">
+        <i class="fa {{selectedStops.get(stop)?'fa-check' : 'fa-times'}}" aria-hidden="true"></i>
+      </button>
     </div>
   </ng-container>
 </div>
@@ -50,5 +52,20 @@
   <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">
     Cancel
   </button>
-  <button type="button" class="btn btn-outline-primary" (click)="confirm()">Save</button>
+  <button *ngIf="state !== 0" type="button"
+          class="btn btn-outline-dark {{isBackEnabled()? '' : 'disabled'}}" (click)="back()">
+    Back
+  </button>
+  <button *ngIf="state === 2" type="button"
+          class="btn btn-outline-dark {{isNextEnabled()? '' : 'disabled'}}" (click)="next()">
+    Edit Stops
+  </button>
+  <button *ngIf="state < 2" type="button"
+          class="btn btn-outline-primary {{isNextEnabled()? '' : 'disabled'}}" (click)="next()">
+    Next
+  </button>
+  <button *ngIf="state >= 2" type="button"
+          class="btn btn-outline-primary {{isNextEnabled()? '' : 'disabled'}}" (click)="next(true)">
+    Save
+  </button>
 </div>

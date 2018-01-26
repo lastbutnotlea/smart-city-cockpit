@@ -112,7 +112,7 @@ export class UrlBuilderService {
   public getFeedbackUnprocessUrl(feedbackId: string): string {
     return this.feedbackBaseUrl + '/' + feedbackId + '/unprocess';
   }
-  
+
   public getAnnouncementsUrl(): string {
     return this.announcementBaseUrl;
   }
@@ -156,7 +156,7 @@ export class UrlBuilderService {
   public getVehicleServiceRequestsUrl(vehicleId: string): string {
     return this.serviceRequestsBaseUrl + '/vehicle/' + vehicleId;
   }
-  
+
   public getTripsForStopUrl(stopId: string): string {
     return this.tripBaseUrl + '/stop/' + stopId;
   }
@@ -164,8 +164,12 @@ export class UrlBuilderService {
   public getStopServiceRequestsUrl(stopId: string): string {
     return this.serviceRequestsBaseUrl + '/stop/' + stopId;
   }
-  
+
   public getTripsForVehicleUrl(vehicleId: string): string {
     return this.tripBaseUrl + '/vehicle/' + vehicleId;
+  }
+
+  public getVehiclesForTimeAndTypeUrl(date: string, type: string) {
+    return this.vehicleBaseUrl + '/type/' + type + '/free-from/' + date;
   }
 }

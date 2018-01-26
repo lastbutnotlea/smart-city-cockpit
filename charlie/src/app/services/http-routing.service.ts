@@ -254,4 +254,7 @@ export class HttpRoutingService {
     return this.http.get<ServiceRequestData[]>(this.urlBuilder.getStopServiceRequestsUrl(stopId));
   }
 
+  getVehiclesByTimeAndType(date: string, type: string) {
+    return this.http.get<VehicleData[]>(this.urlBuilder.getVehiclesForTimeAndTypeUrl(date, type));
+  }
 }

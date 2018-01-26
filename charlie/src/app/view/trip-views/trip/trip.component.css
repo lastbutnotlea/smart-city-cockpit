@@ -12,10 +12,6 @@
   margin-left: 0 !important;
 }
 
-.flex-grow-1 {
-  flex-grow: 1;
-}
-
 table {
   flex-grow: 1;
   margin-bottom: 0;
