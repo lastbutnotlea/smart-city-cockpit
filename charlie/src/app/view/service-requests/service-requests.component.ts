@@ -34,7 +34,6 @@ export class ServiceRequestsComponent implements OnInit {
     // get trip data
     this.http.getServiceRequests().subscribe(
       data => {
-        debugger;
         this.serviceRequests = data;
         for(let s of this.serviceRequests){
           s.feedbacks = [];
