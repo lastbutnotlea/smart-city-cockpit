@@ -7,7 +7,6 @@ import {FeedbackData} from '../../../shared/data/feedback-data';
 import {now} from '../../../shared/data/dates';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {DateParserService} from '../../../services/date-parser.service';
-import {AnnouncementData} from '../../shared/data/announcement-data';
 
 @Component({
   selector: 'app-service-request-add',

@@ -71,7 +71,6 @@ export class ServiceRequestsComponent implements OnInit {
     const modal = this.modalService.open(ServiceRequestAddComponent);
     modal.componentInstance.data = this.serviceRequests;
     modal.componentInstance.onAdd(item => {
-      debugger;
       this.serviceRequests.push(item);
     });
   }
