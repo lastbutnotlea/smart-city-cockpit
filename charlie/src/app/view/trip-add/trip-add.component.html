@@ -10,7 +10,8 @@
 <div class="modal-body">
   <div class="d-flex justify-content-between">
     <label>Line: </label>
-    <app-dropdown [values]="getLineDropdownItems()" [(selected)]="selectedLine" (selectedChange)="selectedLineChanged()"></app-dropdown>
+    <app-dropdown [values]="getLineDropdownItems()" [(selected)]="selectedLine"
+                  (selectedChange)="selectedLineChanged()"></app-dropdown>
   </div>
   <div *ngIf="selectedLine.value !== null" class="d-flex justify-content-between">
     <label>Direction: </label>
@@ -22,10 +23,9 @@
     <button type="button" class="btn btn-outline-dark" (click)="showStops = !showStops"
             [attr.aria-expanded]="!showStops" aria-controls="stopList">Edit stops
     </button>
-    <div id="stopsList" [ngbCollapse]="!showStops">
-      <ng-container *ngFor="let stop of getStops()">
-        <p>{{stop.commonName}}</p>
-      </ng-container>
+    <div *ngFor="let stop of (data.isInbound ? data.line.stopsInbound : data.line.stopsOutbound); let i = index">
+      <input #box type="checkbox" [ngModel]="isChecked(stop)" (change)="includeStop(stop, box.checked)">
+      <label class="padding-left">{{stop.commonName}}</label>
     </div>
   </ng-container>
 </div>

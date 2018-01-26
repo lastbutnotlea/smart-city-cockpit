@@ -1,19 +1,14 @@
-import {Component, Input, OnInit, Output} from '@angular/core';
-import {NgbActiveModal, NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
-import {TripData} from '../../shared/data/trip-data';
+import {Component, OnInit} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {HttpRoutingService} from '../../services/http-routing.service';
 import {LineData} from '../../shared/data/line-data';
-import {VehicleData} from '../../shared/data/vehicle-data';
 import {StopData} from '../../shared/data/stop-data';
-import {TripStopData} from '../../shared/data/trip-stop-data';
 import {
-  DropdownComponent,
   DropdownValue,
   toDropdownItems
 } from '../../shared/components/dropdown/dropdown.component';
 import {StopSortService} from '../../services/stop-sort.service';
 import {DateParserService} from '../../services/date-parser.service';
-import {dummyDate, now} from '../../shared/data/dates';
 
 @Component({
   selector: 'app-trip-add',
