@@ -108,3 +108,21 @@ h4 {
   margin-bottom: 20px;
   text-align: center;
 }
+
+/* STYLING TOASTS */
+
+.toast-success {
+  background-color: #007bff;
+}
+
+.toast-error {
+  background-color: #dd3645;
+}
+
+.toast-warning {
+  background-color: #ffb300;
+}
+
+.toast-info {
+  background-color: lightgray;
+}

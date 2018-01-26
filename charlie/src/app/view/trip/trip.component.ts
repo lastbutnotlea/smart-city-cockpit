@@ -59,7 +59,6 @@ export class TripComponent extends LiveDataComponent implements OnInit {
     this.toastr.error('You are awesome!', 'Success!');
     this.toastr.warning('You are awesome!', 'Success!');
     this.toastr.info('You are awesome!', 'Success!');
-    debugger;
   }
 
   private addFilter(): void {
