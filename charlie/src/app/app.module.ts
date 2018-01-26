@@ -60,6 +60,8 @@ import {AnnouncementItemComponent} from "./view/announcements/item/announcement-
 import {StateIconSmallComponent} from './shared/components/state-icon/small/state-icon-small.component';
 import {StateIconMediumComponent} from './shared/components/state-icon/medium/state-icon-medium.component';
 import {StateIconLargeComponent} from './shared/components/state-icon/large/state-icon-large.component';
+import {CharliesRouterReuseStrategy} from "./services/router-reuse-strategy";
+import {RouteReuseStrategy} from "@angular/router";
 
 @NgModule({
   declarations: [
@@ -129,6 +131,7 @@ import {StateIconLargeComponent} from './shared/components/state-icon/large/stat
     MapCreatorService,
     StopSortService,
     DateParserService,
+    {provide: RouteReuseStrategy, useClass: CharliesRouterReuseStrategy},
   ],
   bootstrap: [AppComponent],
   // modal dialogs:
