@@ -4,7 +4,7 @@
 </h4>
 
 <div *ngFor="let trip of trips">
-  <app-state-icon-medium class="float-right" [state]="trip.vehicle.state"></app-state-icon-medium>
+  <app-state-icon class="float-right" [size]="'fa-2x'" [state]="trip.vehicle.state"></app-state-icon>
 
   <p *ngIf="areTripsForVehicle">
       <label class="text-primary">{{trip.id}} </label>

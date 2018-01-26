@@ -11,7 +11,7 @@
       {{data.stopName}}
     </a>
     <!-- status icon -->
-    <app-state-icon-small [state]="data.stopState"></app-state-icon-small>
+    <app-state-icon [state]="data.stopState"></app-state-icon>
     <!-- vehicle icons -->
     <span class="float-right" *ngFor="let vehicle of data.vehiclePositionData">
           <a href="vehicles/{{vehicle.id}}">
