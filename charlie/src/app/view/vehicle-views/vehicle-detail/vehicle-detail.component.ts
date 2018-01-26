@@ -7,6 +7,8 @@ import {FeedbackData} from '../../../shared/data/feedback-data';
 import {ServiceRequestData} from '../../../shared/data/service-request-data';
 import {TripData} from '../../../shared/data/trip-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
+import {ConfirmDeletionComponent} from '../../../shared/components/confirm-popup/confirm-deletion.component';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-vehicle-detail',
@@ -23,7 +25,8 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
 
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
-              private location: Location) {
+              private location: Location,
+              private modalService: NgbModal) {
     super();
   }
 
@@ -73,6 +76,13 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
     this.http.deleteVehicle(this.vehicle.id).subscribe(
       () => this.goBack(),
       () => alert("Could not delete vehicle"));
+  }
+
+  showConfirmModal(): void {
+    const modal = this.modalService.open(ConfirmDeletionComponent);
+    modal.componentInstance.objectToDelete = this.vehicle.id;
+    modal.componentInstance.deletionEvent.subscribe(($event) => {
+      this.delete();});
   }
 
   // update trip data

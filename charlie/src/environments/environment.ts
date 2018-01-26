@@ -8,5 +8,5 @@ export const environment = {
   backendUrl: "http://localhost:8080/api",
   zoomScale: [0.5, 6],
   initalTraslate: [0, 300],
-  initialZoom: 2.5
+  initialZoom: 2
 };
