@@ -121,7 +121,8 @@ public class TripController extends BaseController<Trip> {
   private void insertCorrectTimesForTrip(Trip tripInput) {
     // Filter out Stops with dummy value + find stop in the trip with a specified time
     String firstStopIdOfTrip = tripInput.getStops().entrySet().stream()
-        .filter(e -> !e.getValue().equals(Helpers.DUMMY_TIME))
+        .filter(e -> e.getValue() != null)
+        //.filter(e -> !e.getValue().equals(Helpers.DUMMY_TIME))
         .map(Entry::getKey).findAny()
         .orElseThrow(() -> new IllegalArgumentException(
             "No Stop in trip that has something else than a dummy time"));
