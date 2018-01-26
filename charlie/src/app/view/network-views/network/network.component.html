@@ -4,7 +4,7 @@
     {{title}}
   </h3>
 
-  <div class="d-flex flex-row">
+  <div *ngIf="loaded" class="d-flex flex-row">
     <div class="fit-screen flex-2 overflow-x">
       <app-network-map class="bounding-box"></app-network-map>
     </div>
@@ -29,6 +29,9 @@
         <app-state-icon class="float-right" [state]="line.state"></app-state-icon>
       </p>
     </div>
+  </div>
+  <div *ngIf="!loaded">
+    <h3>Loading...</h3>
   </div>
 </div>
 
