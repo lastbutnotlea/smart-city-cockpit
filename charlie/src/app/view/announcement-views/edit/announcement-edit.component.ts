@@ -15,7 +15,7 @@ import {ToastService} from '../../../services/toast.service';
 })
 export class AnnouncementEditComponent implements OnInit {
   state: number = 0;
-
+  saveDisabled: boolean = false;
   text: string = "";
 
   validFrom: Date = new Date(now);
@@ -71,6 +71,7 @@ export class AnnouncementEditComponent implements OnInit {
   }
 
   confirm(): void {
+    this.saveDisabled = true;
     this.data.text = this.text;
     this.data.stops = Array.from(this.selectedStops);
     this.data.validFrom = this.validFrom;

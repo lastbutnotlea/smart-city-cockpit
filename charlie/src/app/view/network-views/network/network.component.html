@@ -1,11 +1,6 @@
 <div class="d-flex flex-column fit-screen">
   <h3 class="text-center">
-    <div [ngClass]="{'color-fine': state === 'FINE',
-         'color-problematic': state === 'PROBLEMATIC',
-         'color-critical': state === 'CRITICAL' }">
-      <i class="fa fa-lightbulb-o fa-3x float-right padding-right-20"
-         aria-hidden="true"></i>
-    </div>
+    <app-state-icon class="float-right" [size]="'fa-3x'" [state]="state"></app-state-icon>
     {{title}}
   </h3>
 
@@ -33,11 +28,7 @@
         <i class="fa fa-subway float-left padding-left-5 padding-right-5"></i>
       </span>
             {{line.name}}
-            <span [ngClass]="{'color-fine': line.state === 'FINE',
-       'color-problematic': line.state === 'PROBLEMATIC',
-       'color-critical': line.state === 'CRITICAL' }">
-        <i class="fa fa-lightbulb-o float-right padding-right-20" aria-hidden="true"></i>
-          </span>
+        <app-state-icon class="float-right" [state]="line.state"></app-state-icon>
           </div>
         </a>
       </p>

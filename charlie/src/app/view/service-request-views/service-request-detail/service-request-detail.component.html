@@ -46,10 +46,10 @@
         </a>
       </p>
       <p><label class="text-secondary">Name: </label> {{serviceRequest.name}}</p>
-      <p><label class="text-secondary">Type: </label> {{serviceRequest.serviceType}}</p>
-      <p><label class="text-secondary">Degree of Processing: </label> {{serviceRequest.statusCode}}</p>
-      <p><label class="text-secondary">Due Date: </label> {{(serviceRequest.dueDate) | date:'MM/dd/yyyy HH:mm'}}</p>
-      <p><label class="text-secondary">Completion Date: </label> {{serviceRequest.completionDate | date:'MM/dd/yyyy HH:mm'}}</p>
+      <p><label class="text-secondary">Type: </label> {{ stringFormatter.toFirstUpperRestLower(serviceRequest.serviceType) }}</p>
+      <p><label class="text-secondary">Degree of Processing: </label> {{stringFormatter.toFirstUpperRestLower(serviceRequest.statusCode) }}</p>
+      <p><label class="text-secondary">Due Date: </label> {{(serviceRequest.dueDate) | date:'MM/dd/yyyy'}}</p>
+      <p><label class="text-secondary">Completion Date: </label> {{serviceRequest.completionDate | date:'MM/dd/yyyy'}}</p>
       <p><label *ngIf="serviceRequest.serviceRequestDescription.length > 0" class="text-secondary">Description: </label>
         <span *ngFor="let description of serviceRequest.serviceRequestDescription">
         {{description.text}}

@@ -27,6 +27,7 @@ import {EmbeddedFeedbackComponent} from './shared/components/embedded-feedback/e
 import {EmbeddedAnnouncementsComponent} from './shared/components/embedded-announcements/embedded-announcements.component';
 import {NetworkComponent} from './view/network-views/network/network.component';
 import {TripComponent} from './view/trip-views/trip/trip.component';
+import {StateIconComponent} from './shared/components/state-icon/state-icon.component';
 import {MenuComponent} from './menu/menu.component';
 import {TripDetailComponent} from './view/trip-views/trip-detail/trip-detail.component';
 import {TripEditComponent} from './view/trip-views/trip-edit/trip-edit.component';
@@ -57,7 +58,7 @@ import {EditAnnounementTextComponent} from './view/announcement-views/edit/text/
 import {EditAnnouncementDatetimeComponent} from './view/announcement-views/edit/datetime/edit-announcement-datetime.component';
 import {EditAnnouncementStopsComponent} from './view/announcement-views/edit/stops/edit-announcement-stops.component';
 import {RouteReuseStrategy} from "@angular/router";
-import {StringFormatterService} from './services/string-formatter';
+import {StringFormatterService} from './services/string-formatter.service';
 import {CharliesRouterReuseStrategy} from "./services/router-reuse-strategy";
 import {ToastModule} from 'ng2-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -112,6 +113,7 @@ import {ToastService} from './services/toast.service';
     EmbeddedAnnouncementsComponent,
     EmbeddedTripComponent,
     EmbeddedServiceRequestComponent,
+    StateIconComponent,
   ],
   imports: [
     BrowserModule,

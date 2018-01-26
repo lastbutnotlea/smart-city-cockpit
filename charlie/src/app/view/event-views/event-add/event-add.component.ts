@@ -1,10 +1,10 @@
-import {Component, Input, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal, NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 import {now} from '../../../shared/data/dates';
 import {DateParserService} from '../../../services/date-parser.service';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {
-  DropdownValue, toDropdownItem,
+  DropdownValue, priorityDropdownItems, toDropdownItem,
   toDropdownItems
 } from '../../../shared/components/dropdown/dropdown.component';
 import {EventData} from '../../../shared/data/event-data';
@@ -49,6 +49,7 @@ export class EventAddComponent implements OnInit {
   party: DropdownValue = new DropdownValue(null, 'loading');
 
   notes: string = "";
+  saveDisabled: boolean = false;
 
   constructor(public activeModal: NgbActiveModal,
               public dateParser: DateParserService,
@@ -62,9 +63,7 @@ export class EventAddComponent implements OnInit {
       this.availableParties = toDropdownItems(data, party => party)
     }, err => console.log(err));
 
-    this.availablePriorities = toDropdownItems(
-      ['FINE', 'PROBLEMATIC', 'CRITICAL'],
-      item => item.toLowerCase());
+    this.availablePriorities = priorityDropdownItems();
 
     this.updateFromDate();
     this.updateFromTime();
@@ -89,6 +88,7 @@ export class EventAddComponent implements OnInit {
   }
 
   confirm(): void {
+    this.saveDisabled = true;
     let event: EventData = new EventData();
     event.id = '';
     event.subject = this.subject;

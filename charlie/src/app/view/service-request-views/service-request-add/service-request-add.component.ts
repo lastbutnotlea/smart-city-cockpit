@@ -2,7 +2,7 @@ import {Component, Input, OnInit, Output} from '@angular/core';
 import { NgbActiveModal, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {ServiceRequestData} from '../../../shared/data/service-request-data';
 import {ServiceRequestTarget} from '../../../shared/data/service-request-target';
-import {DropdownValue} from '../../../shared/components/dropdown/dropdown.component';
+import {DropdownValue, priorityDropdownItems} from '../../../shared/components/dropdown/dropdown.component';
 import {FeedbackData} from '../../../shared/data/feedback-data';
 import {now} from '../../../shared/data/dates';
 import {HttpRoutingService} from '../../../services/http-routing.service';
@@ -23,6 +23,7 @@ export class ServiceRequestAddComponent implements OnInit {
 
   targetTypeChosen: boolean = false;
   dataChosen: boolean = false;
+  saveDisabled: boolean = false;
 
   selectedTargetType: DropdownValue;
 
@@ -131,6 +132,7 @@ export class ServiceRequestAddComponent implements OnInit {
    * adds service request with selected data
    */
   addServiceRequest() {
+    this.saveDisabled = true;
     this.selected.target = this.selectedTarget.value;
     this.selected.serviceType = this.selectedType.value;
     this.selected.priority = this.selectedPriority.value;
@@ -141,22 +143,13 @@ export class ServiceRequestAddComponent implements OnInit {
     this.http.addServiceRequest(this.selected).subscribe(
       data => {
         console.log('Added service request.');
-        this.data.push(data);
+        this.callback(data);
         this.toastService.showSuccessToast('Added service request ' + data.id);
         this.activeModal.close('Close click');
       },
-      // TODO: these messages should not be interpreted as errors!
       err => {
-        if(err.status === 200){
-          this.data.push(this.selected);
-          console.log('Added service request.');
-          this.activeModal.close('Close click');
-          this.toastService.showSuccessToast('Added service request');
-        } else {
-          console.log('Could not add service request.');
-          this.activeModal.close('Close click');
-          this.toastService.showErrorToast('Failed to add service request');
-        }
+        this.toastService.showErrorToast('Failed to add service request');
+        console.log('Could not add service request.');
       }
     );
   }
@@ -178,12 +171,7 @@ export class ServiceRequestAddComponent implements OnInit {
   }
 
   priorityItems(): DropdownValue[] {
-    // TODO: Get data from meta data controller, do not set manually
-    let prioItems: DropdownValue[] = [];
-    prioItems.push(new DropdownValue('FINE', 'Low'));
-    prioItems.push(new DropdownValue('PROBLEMATIC', 'Medium'));
-    prioItems.push(new DropdownValue('CRITICAL', 'High'));
-    return prioItems;
+    return priorityDropdownItems();
   }
 
   updateDate(): void {
@@ -217,5 +205,12 @@ export class ServiceRequestAddComponent implements OnInit {
     } else if(this.targetTypeChosen) {
       this.targetTypeChosen = false;
     }
+  }
+
+  private callback: (param: ServiceRequestData) => void = () => {
+  };
+
+  public onAdd(callback: (param: ServiceRequestData) => void) {
+    this.callback = callback;
   }
 }

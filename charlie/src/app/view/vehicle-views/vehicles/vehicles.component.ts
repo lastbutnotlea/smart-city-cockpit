@@ -6,10 +6,10 @@ import {HttpRoutingService} from '../../../services/http-routing.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FilterComponent} from '../../../shared/components/filter/filter.component';
 import {VehicleAddComponent} from '../vehicle-add/vehicle-add.component';
+import {StringFormatterService} from '../../../services/string-formatter.service';
 import {Router} from "@angular/router";
-import {StringFormatterService} from '../../../services/string-formatter';
-import {ToastService} from '../../../services/toast.service';
 import {getUrlForId} from "../../../shared/util/routing-util";
+import {ToastService} from '../../../services/toast.service';
 
 @Component({
   selector: 'app-vehicles-component',
