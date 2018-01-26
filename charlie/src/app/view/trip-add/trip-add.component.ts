@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {HttpRoutingService} from '../../services/http-routing.service';
 import {LineData} from '../../shared/data/line-data';
@@ -7,8 +7,10 @@ import {
   DropdownValue,
   toDropdownItems
 } from '../../shared/components/dropdown/dropdown.component';
-import {StopSortService} from '../../services/stop-sort.service';
-import {DateParserService} from '../../services/date-parser.service';
+import {VehicleData} from "../../shared/data/vehicle-data";
+import {TripData} from "../../shared/data/trip-data";
+import {TripStopData} from "../../shared/data/trip-stop-data";
+import {DateParserService} from "../../services/date-parser.service";
 
 @Component({
   selector: 'app-trip-add',
@@ -17,14 +19,22 @@ import {DateParserService} from '../../services/date-parser.service';
 })
 
 export class TripAddComponent implements OnInit {
+  @Input()
+  model: TripData = null;
+
   availableLines: LineData[] = [];
-  selectedLine = new DropdownValue(null, "select line");
-  selectedDirection = new DropdownValue(null, "select direction");
-  showStops = false;
+  availableVehicles: VehicleData[] = [];
+
+  selectedLine: DropdownValue = new DropdownValue(null, "select line");
+  selectedDirection: DropdownValue = new DropdownValue(null, "select direction");
+  selectedVehicle: DropdownValue = new DropdownValue(null, "select vehicle");
+  selectedStops: Map<StopData, boolean> = new Map()
+  selectedDate: Date = new Date();
+
+  showStops: boolean = false;
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
-              private stopSortService: StopSortService,
               private dateParser: DateParserService) {
   }
 
@@ -54,6 +64,11 @@ export class TripAddComponent implements OnInit {
     this.showStops = false;
   }
 
+  selectedDirectionChanged(): void {
+    this.selectedStops = new Map();
+    this.getStops().forEach(stop => this.selectedStops.set(stop, true));
+  }
+
   getStops(): StopData[] {
     if (this.selectedLine.value === null || this.selectedDirection.value === null) {
       return [];
@@ -64,7 +79,46 @@ export class TripAddComponent implements OnInit {
     }
   }
 
+  getVehicleDropdownItems(): DropdownValue[] {
+    return toDropdownItems(this.availableVehicles, v => v.id);
+  }
+
+  isValidDeparture(date: Date): boolean {
+    return date > new Date();
+  }
+
   getDirectionString(stops: StopData[]): string {
     return stops[0].commonName + ' -> ' + stops[stops.length - 1].commonName;
+  }
+
+  refreshVehicles(availableAt: Date) {
+    this.availableVehicles = [];
+    this.http.getVehicles().subscribe(
+      data => this.availableVehicles = data,
+      err => console.log("Could not get vehicles: " + JSON.stringify(err)));
+  }
+
+  confirm(): void {
+    if (this.model) {
+      this.confirmEditTrip();
+    } else {
+      this.confirmAddTrip();
+    }
+  }
+
+  private confirmAddTrip() {
+    this.model = new TripData();
+    this.model.line = this.selectedLine.value;
+    this.model.vehicle = this.selectedVehicle.value;
+    this.model.isInbound = this.selectedDirection.value;
+    this.model.stops = this.getStops().filter(stop => {
+      return this.selectedStops.get(stop);
+    }).map(stop => new TripStopData(null, null, stop.commonName, null));
+    this.model.stops[0].departureTime = this.dateParser.cutTimezoneInformation(this.selectedDate);
+    // TODO
+  }
+
+  private confirmEditTrip() {
+    // TODO
   }
 }

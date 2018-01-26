@@ -7,7 +7,7 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<div class="modal-body">
+<div class="modal-body d-flex flex-column">
   <div class="d-flex justify-content-between">
     <label>Line: </label>
     <app-dropdown [values]="getLineDropdownItems()" [(selected)]="selectedLine"
@@ -16,16 +16,33 @@
   <div *ngIf="selectedLine.value !== null" class="d-flex justify-content-between">
     <label>Direction: </label>
     <app-dropdown [values]="getDirectionDropdownItems()"
-                  [(selected)]="selectedDirection"></app-dropdown>
+                  [(selected)]="selectedDirection"
+                  (selectedChange)="selectedDirectionChanged()"></app-dropdown>
   </div>
 
   <ng-container *ngIf="selectedDirection.value !== null">
     <button type="button" class="btn btn-outline-dark" (click)="showStops = !showStops"
             [attr.aria-expanded]="!showStops" aria-controls="stopList">Edit stops
     </button>
-    <div *ngFor="let stop of (data.isInbound ? data.line.stopsInbound : data.line.stopsOutbound); let i = index">
-      <input #box type="checkbox" [ngModel]="isChecked(stop)" (change)="includeStop(stop, box.checked)">
-      <label class="padding-left">{{stop.commonName}}</label>
+    <div *ngIf="showStops">
+      <div *ngFor="let stop of getStops()" class="d-flex justify-content-around">
+        <label>
+          <input type="checkbox" [(ngModel)]="selectedStops.get(stop)">
+          {{stop.commonName}}
+        </label>
+      </div>
+    </div>
+
+    <app-datetime-picker [text]="'Departure time:'"
+                         [(model)]="selectedDate"
+                         (modelChanged)="refreshVehicles($event)"
+                         [isValid]="isValidDeparture">
+    </app-datetime-picker>
+
+    <div class="d-flex justify-content-between">
+      <label>Vehicle</label>
+      <app-dropdown [values]="getVehicleDropdownItems()"
+                    [(selected)]="selectedVehicle"></app-dropdown>
     </div>
   </ng-container>
 </div>
