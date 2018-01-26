@@ -9,11 +9,11 @@ import {ToastService} from './services/toast.service';
 export class AppComponent implements OnInit {
   title = 'app';
 
-  constructor(public vcr: ViewContainerRef,
+  constructor(public viewContainerReference: ViewContainerRef,
               private toastService: ToastService) {
   }
 
   ngOnInit() {
-    this.toastService.setViewContrainerRef(this.vcr);
+    this.toastService.setViewContrainerRef(this.viewContainerReference);
   }
 }
