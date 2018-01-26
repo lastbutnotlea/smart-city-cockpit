@@ -23,7 +23,8 @@ export class ServiceRequestDetailComponent implements OnInit {
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
               private location: Location,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private stringFormatter: StringFormatterService) {
   }
 
   ngOnInit(): void {

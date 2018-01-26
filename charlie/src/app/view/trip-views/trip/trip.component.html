@@ -36,11 +36,7 @@
             {{trip.stops[trip.stops.length-1].name}}
           </td>
           <td>
-            <span [ngClass]="{'color-fine': trip.vehicle.state === 'FINE',
-             'color-problematic': trip.vehicle.state === 'PROBLEMATIC',
-            'color-critical': trip.vehicle.state === 'CRITICAL' }">
-              <i class="fa fa-lightbulb-o fa-2x" aria-hidden="true"></i>
-            </span>
+            <app-state-icon [size]="'fa-2x'" [state]="trip.vehicle.state"></app-state-icon>
           </td>
           </div>
         </tr>

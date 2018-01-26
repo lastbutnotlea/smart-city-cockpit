@@ -6,7 +6,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {ConfirmDeletionComponent} from '../../../shared/components/confirm-popup/confirm-deletion.component';
 import {EventEditComponent} from '../event-edit/event-edit.component';
-import {StringFormatterService} from '../../../services/string-formatter';
+import {StringFormatterService} from '../../../services/string-formatter.service';
 
 @Component({
   selector: 'app-event-detail-view',

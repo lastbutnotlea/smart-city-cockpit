@@ -28,6 +28,7 @@
         <label class="padding-emb-box-headline">Information</label>
       </h4>
       <p>Subject: {{event.subject}}</p>
+      <p>Priority: {{ stringFormatter.priorityToLabel(event.priority) }}</p>
       <p>Start Date: {{event.startTime | date:'MM/dd/yyyy HH:mm'}}</p>
       <p>Start Date: {{event.endTime | date:'MM/dd/yyyy HH:mm'}}</p>
     </div>
