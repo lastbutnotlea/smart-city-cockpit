@@ -10,7 +10,7 @@ export class AppComponent implements OnInit {
   title = 'app';
 
   constructor(public vcr: ViewContainerRef,
-              public toastService: ToastService) {
+              private toastService: ToastService) {
   }
 
   ngOnInit() {

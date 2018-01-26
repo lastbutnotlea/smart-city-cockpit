@@ -6,6 +6,7 @@ import {HttpRoutingService} from '../../../services/http-routing.service';
 import {LineData} from '../../../shared/data/line-data';
 import {AnnouncementData} from '../../../shared/data/announcement-data';
 import {isNullOrUndefined} from "util";
+import {ToastService} from '../../../services/toast.service';
 
 @Component({
   selector: 'app-announcement-edit',
@@ -30,7 +31,9 @@ export class AnnouncementEditComponent implements OnInit {
   private callback: (param: AnnouncementData) => void = () => {
   };
 
-  constructor(public activeModal: NgbActiveModal, public http: HttpRoutingService) {
+  constructor(public activeModal: NgbActiveModal,
+              public http: HttpRoutingService,
+              private toastService: ToastService) {
   }
 
   ngOnInit() {
@@ -67,23 +70,31 @@ export class AnnouncementEditComponent implements OnInit {
     this.selectedStops = stops;
   }
 
-  onSuccess: (data: AnnouncementData) => void = (data: AnnouncementData) => {
-    this.activeModal.close('Close click');
-    this.data.id = data.id;
-    this.callback(this.data);
-  };
-
-  onErr = (err: any) => alert('Could not add/edit announcement: ' + JSON.stringify(err));
-
   confirm(): void {
     this.data.text = this.text;
     this.data.stops = Array.from(this.selectedStops);
     this.data.validFrom = this.validFrom;
     this.data.validTo = this.validTo;
     if (isNullOrUndefined(this.data.id)) {
-      this.http.addAnnouncement(this.data).subscribe(this.onSuccess, this.onErr);
+      this.http.addAnnouncement(this.data).subscribe(
+        data => {
+          this.activeModal.close('Close click');
+          this.data.id = data.id;
+          this.toastService.showSuccessToast('Added ' + data.id);
+          this.callback(this.data);
+        },
+        err => this.toastService.showErrorToast('Failed to add announcement')
+        );
     } else {
-      this.http.editAnnouncement(this.data).subscribe(this.onSuccess, this.onErr);
+      this.http.editAnnouncement(this.data).subscribe(
+        data => {
+          this.activeModal.close('Close click');
+          this.data.id = data.id;
+          this.toastService.showSuccessToast('Edited ' + data.id);
+          this.callback(this.data);
+        },
+        err => this.toastService.showErrorToast('Failed to edit ' + this.data.id)
+      );
     }
   }
 

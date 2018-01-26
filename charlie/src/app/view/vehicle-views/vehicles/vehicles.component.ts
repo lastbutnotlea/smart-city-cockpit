@@ -30,7 +30,7 @@ export class VehiclesComponent extends LiveDataComponent implements OnInit {
               private modalService: NgbModal,
               private stringFormatter: StringFormatterService,
               private router: Router,
-              public toastService: ToastService) {
+              private toastService: ToastService) {
     super();
   }
 

@@ -28,7 +28,7 @@ export class TripDetailComponent extends LiveDataComponent implements OnInit {
               private location: Location,
               private modalService: NgbModal,
               private stopSortService: StopSortService,
-              public toastService: ToastService) {
+              private toastService: ToastService) {
     super();
   }
 

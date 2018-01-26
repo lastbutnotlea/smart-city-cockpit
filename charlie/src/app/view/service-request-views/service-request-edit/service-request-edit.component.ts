@@ -6,6 +6,7 @@ import {now} from '../../../shared/data/dates';
 import {FeedbackData} from '../../../shared/data/feedback-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {DateParserService} from '../../../services/date-parser.service';
+import {ToastService} from '../../../services/toast.service';
 
 @Component({
   selector: 'app-service-request-edit',
@@ -28,7 +29,8 @@ export class ServiceRequestEditComponent {
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
-              private dateParser: DateParserService) {
+              private dateParser: DateParserService,
+              private toastService: ToastService) {
   }
 
   initData(): void {
@@ -81,12 +83,14 @@ export class ServiceRequestEditComponent {
 
     this.http.editServiceRequest(this.data).subscribe(
       data => {
-        console.log('Added service request.');
+        console.log('Edited service request.');
         this.activeModal.close('Close click');
+        this.toastService.showSuccessToast('Edited service request ' + data.id);
       },
       err => {
-        console.log('Could not add service request.');
+        console.log('Could not edit service request.');
         this.activeModal.close('Close click');
+        this.toastService.showErrorToast('Failed to edit service request ' + this.data.id);
       });
   }
 

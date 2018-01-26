@@ -6,6 +6,7 @@ import {ServiceRequestEditComponent} from '../service-request-edit/service-reque
 import {ServiceRequestData} from '../../../shared/data/service-request-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {ConfirmDeletionComponent} from '../../../shared/components/confirm-popup/confirm-deletion.component';
+import {ToastService} from '../../../services/toast.service';
 
 @Component({
   selector: 'app-service-request-detail-view',
@@ -22,7 +23,8 @@ export class ServiceRequestDetailComponent implements OnInit {
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
               private location: Location,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private toastService: ToastService) {
   }
 
   ngOnInit(): void {
@@ -64,9 +66,11 @@ export class ServiceRequestDetailComponent implements OnInit {
     this.http.deleteServiceRequest(this.serviceRequest.id).subscribe(
       data => {
         this.location.back();
+        this.toastService.showSuccessToast('Deleted service request ' + this.serviceRequest.id);
         console.log('Deleted successfully')
       },
       err => {
+        this.toastService.showErrorToast('Failed to delete service request ' + this.serviceRequest.id);
         console.log('Could not delete trip!');
       }
     );

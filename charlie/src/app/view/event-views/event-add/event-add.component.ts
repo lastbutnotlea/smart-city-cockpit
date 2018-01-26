@@ -53,7 +53,7 @@ export class EventAddComponent implements OnInit {
   constructor(public activeModal: NgbActiveModal,
               public dateParser: DateParserService,
               public http: HttpRoutingService,
-              public toastService: ToastService) {
+              private toastService: ToastService) {
   }
 
   ngOnInit() {
