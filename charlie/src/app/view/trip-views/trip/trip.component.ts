@@ -49,17 +49,16 @@ export class TripComponent extends LiveDataComponent implements OnInit {
         this.trips.forEach(trip => trip.stops = this.stopSortService.sortStops(trip.stops));
         // This starts periodical calls for live-data after first data was received
         },
-      err => console.log('Could not fetch trips.')
+      err => {
+        console.log('Could not fetch trips.');
+        this.toastr.error('Could not fetch trips.', 'Error!');
+      }
     );
   }
 
   addTrip(): void {
     const modal = this.modalService.open(TripAddComponent);
     modal.componentInstance.initData();
-    this.toastr.success('You are awesome!', 'Success!');
-    this.toastr.error('You are awesome!', 'Success!');
-    this.toastr.warning('You are awesome!', 'Success!');
-    this.toastr.info('You are awesome!', 'Success!');
   }
 
   private addFilter(): void {

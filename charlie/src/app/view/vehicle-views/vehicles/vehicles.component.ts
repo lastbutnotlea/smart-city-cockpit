@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {LiveDataComponent} from '../../../shared/components/live-data/live-data.component';
 import {FilterGroupComponent} from '../../../shared/components/filter-group/filter-group.component';
 import {VehicleData} from '../../../shared/data/vehicle-data';
@@ -6,6 +6,7 @@ import {HttpRoutingService} from '../../../services/http-routing.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {FilterComponent} from '../../../shared/components/filter/filter.component';
 import {VehicleAddComponent} from '../vehicle-add/vehicle-add.component';
+import {ToastsManager} from 'ng2-toastr';
 
 @Component({
   selector: 'app-vehicles-component',
@@ -22,8 +23,12 @@ export class VehiclesComponent extends LiveDataComponent implements OnInit {
 
   vehicles: VehicleData[];
 
-  constructor(private http: HttpRoutingService, private modalService: NgbModal) {
+  constructor(private http: HttpRoutingService,
+              private modalService: NgbModal,
+              public toastr: ToastsManager,
+              vcr: ViewContainerRef) {
     super();
+    this.toastr.setRootViewContainerRef(vcr);
   }
 
   ngOnInit() {
@@ -36,7 +41,7 @@ export class VehiclesComponent extends LiveDataComponent implements OnInit {
 
       // TODO: change this if needed data can be requested from backend
       let stateFilter = new FilterComponent();
-      stateFilter.addFilter('Fine', vehicle =>vehicle.state === 'FINE');
+      stateFilter.addFilter('Fine', vehicle => vehicle.state === 'FINE');
       stateFilter.addFilter('Problematic', vehicle => vehicle.state === 'PROBLEMATIC');
       stateFilter.addFilter('Critical', vehicle => vehicle.state === 'CRITICAL');
       this.filterGroup.addFilterComponent(stateFilter);
@@ -60,6 +65,14 @@ export class VehiclesComponent extends LiveDataComponent implements OnInit {
 
   add(): void {
     const modal = this.modalService.open(VehicleAddComponent);
+    modal.componentInstance.successEvent.subscribe(success => {
+      if (success == true) {
+        this.toastr.success('Added vehicle. ', 'Success!');
+      }
+      else {
+        this.toastr.error('Failed to add vehicle.', 'Error!');
+      }
+    });
   }
 
   // update vehicles
