@@ -2,7 +2,7 @@
 
 <div *ngIf="loaded && data.length > 0" class="d-flex flex-column scrollable container">
   <ng-container *ngFor="let announcement of data">
-    <app-announcement-item class="flex-1" [data]="announcement"></app-announcement-item>
+    <app-announcement-item class="flex-1" [data]="announcement" id="{{announcement.id}}"></app-announcement-item>
   </ng-container>
 </div>
 <ng-container *ngIf="!loaded">

@@ -17,25 +17,23 @@
         </thead>
         <tbody class="d-flex flex-column flex-grow-1 fit-screen">
         <tr *ngFor="let event of events">
-          <td>
-            <a routerLink="detail/{{event.id}}">
-              {{ event.id }}
-            </a>
-          </td>
-          <td>{{event.subject}}</td>
+          <div (click)="goToLink(event.id)" class="d-flex highlight">
+            <td>{{ event.id }}</td>
+            <td>{{event.subject}}</td>
           <td>{{ stringFormatter.priorityToLabel(event.priority) }}</td>
-          <td>{{event.startTime | date:'MM/dd/yyyy HH:mm'}}</td>
-          <td>{{event.endTime | date:'MM/dd/yyyy HH:mm'}}</td>
-          <td>
-            <label *ngFor="let party of event.appointmentInvolvedParties">
-              {{party.partyName}}
-            </label>
-          </td>
-          <td>
-            <label *ngFor="let note of event.appointmentNotes">
-              {{note.text}}
-            </label>
-          </td>
+            <td>{{event.startTime | date:'MM/dd/yyyy HH:mm'}}</td>
+            <td>{{event.endTime | date:'MM/dd/yyyy HH:mm'}}</td>
+            <td>
+              <label *ngFor="let party of event.appointmentInvolvedParties">
+                {{party.partyName}}
+              </label>
+            </td>
+            <td>
+              <label *ngFor="let note of event.appointmentNotes">
+                {{note.text}}
+              </label>
+            </td>
+          </div>
         </tr>
         </tbody>
       </table>
