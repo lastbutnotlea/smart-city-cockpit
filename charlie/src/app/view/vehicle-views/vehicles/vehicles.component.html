@@ -9,7 +9,8 @@
       <app-filter-group-view></app-filter-group-view>
     </div>
 
-    <div *ngIf="loaded && filterGroup.getFiltered(vehicles).length > 0" class="d-flex flex-grow-1 fit-screen">
+    <div *ngIf="loaded && filterGroup.getFiltered(vehicles).length > 0"
+         class="d-flex flex-grow-1 fit-screen">
       <table class="table fit-screen d-flex flex-column">
         <thead>
         <tr class="d-flex">
@@ -25,12 +26,8 @@
         </thead>
         <tbody class="d-flex flex-column flex-grow-1 fit-screen">
         <tr *ngFor="let vehicle of filterGroup.getFiltered(vehicles)">
-          <div *ngIf="!vehicle.isShutDown">
-            <td>
-              <a routerLink="{{vehicle.id}}">
-                {{ vehicle.id }}
-              </a>
-            </td>
+          <div *ngIf="!vehicle.isShutDown" (click)="goToLink(vehicle.id)" class="d-flex highlight">
+            <td>{{ vehicle.id }}</td>
             <td>{{ vehicle.capacity }}</td>
             <td>{{ vehicle.load }}</td>
             <td>{{ (vehicle.delay / 60.0).toFixed(0) }}</td>
