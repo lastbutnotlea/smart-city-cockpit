@@ -57,6 +57,8 @@ import {SkipStopComponent} from "./view/stop-skip/stop-skip";
 import {EmbeddedAnnouncementsComponent} from './shared/components/embedded-announcements/embedded-announcements.component';
 import {AnnouncementMainComponent} from "./view/announcements/main/announcement-main.component";
 import {AnnouncementItemComponent} from "./view/announcements/item/announcement-item.component";
+import {CharliesRouterReuseStrategy} from "./services/router-reuse-strategy";
+import {RouteReuseStrategy} from "@angular/router";
 
 @NgModule({
   declarations: [
@@ -123,6 +125,7 @@ import {AnnouncementItemComponent} from "./view/announcements/item/announcement-
     MapCreatorService,
     StopSortService,
     DateParserService,
+    {provide: RouteReuseStrategy, useClass: CharliesRouterReuseStrategy},
   ],
   bootstrap: [AppComponent],
   // modal dialogs:
