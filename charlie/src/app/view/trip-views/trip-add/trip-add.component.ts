@@ -128,7 +128,6 @@ export class TripAddComponent implements OnInit {
       // The response should contain the http-code 200 (ok) if adding the trip was successful
       // TODO: these messages should not be interpreted as errors!
       err => {
-        // debugger;
         if (err.status === 200) {
           console.log('Added trip.');
         } else {

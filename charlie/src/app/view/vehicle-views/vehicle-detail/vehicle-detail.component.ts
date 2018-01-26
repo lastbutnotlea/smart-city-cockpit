@@ -7,6 +7,7 @@ import {FeedbackData} from '../../../shared/data/feedback-data';
 import {ServiceRequestData} from '../../../shared/data/service-request-data';
 import {TripData} from '../../../shared/data/trip-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
+import {ToastService} from '../../../services/toast.service';
 
 @Component({
   selector: 'app-vehicle-detail',
@@ -23,7 +24,8 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
 
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
-              private location: Location) {
+              private location: Location,
+              private toastService: ToastService) {
     super();
   }
 
@@ -71,8 +73,14 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
 
   delete(): void {
     this.http.deleteVehicle(this.vehicle.id).subscribe(
-      () => this.goBack(),
-      () => alert("Could not delete vehicle"));
+      () => {
+        this.toastService.showSuccessToast('Deleted ' + this.vehicle.id);
+        this.goBack();
+      },
+          () => {
+            this.toastService.showErrorToast('Failed to delete ' + this.vehicle.id);
+          }
+      );
   }
 
   // update trip data
