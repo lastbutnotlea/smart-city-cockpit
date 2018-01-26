@@ -57,6 +57,7 @@ import {EditAnnounementTextComponent} from './view/announcement-views/edit/text/
 import {EditAnnouncementDatetimeComponent} from './view/announcement-views/edit/datetime/edit-announcement-datetime.component';
 import {EditAnnouncementStopsComponent} from './view/announcement-views/edit/stops/edit-announcement-stops.component';
 import {RouteReuseStrategy} from "@angular/router";
+import {StringFormatterService} from './services/string-formatter';
 import {CharliesRouterReuseStrategy} from "./services/router-reuse-strategy";
 import {ToastModule} from 'ng2-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
@@ -128,6 +129,7 @@ import {ToastService} from './services/toast.service';
     MapCreatorService,
     StopSortService,
     DateParserService,
+    StringFormatterService,
     ToastService,
     {provide: RouteReuseStrategy, useClass: CharliesRouterReuseStrategy},
   ],

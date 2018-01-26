@@ -4,6 +4,7 @@ import {TripAddComponent} from '../trip-add/trip-add.component';
 import {LiveDataComponent} from '../../../shared/components/live-data/live-data.component';
 import {TripData} from '../../../shared/data/trip-data';
 import {FilterGroupComponent} from "../../../shared/components/filter-group/filter-group.component";
+import {StringFormatterService} from '../../../services/string-formatter';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {StopSortService} from '../../../services/stop-sort.service';
 import {FilterComponent} from '../../../shared/components/filter/filter.component';
@@ -28,7 +29,8 @@ export class TripComponent extends LiveDataComponent implements OnInit {
               private modalService: NgbModal,
               private stopSortService: StopSortService,
               public toastr: ToastsManager,
-              vcr: ViewContainerRef) {
+              vcr: ViewContainerRef,
+              private stringFormatter: StringFormatterService) {
     super();
     this.toastr.setRootViewContainerRef(vcr);
   }
@@ -38,7 +40,6 @@ export class TripComponent extends LiveDataComponent implements OnInit {
     this.addFilter();
     this.getTrips();
     super.subscribeToData();
-
   }
 
   private getTrips(): void {
@@ -69,7 +70,7 @@ export class TripComponent extends LiveDataComponent implements OnInit {
         let vehicleFilter = new FilterComponent();
         for (let val in data.types) {
           let name = data.types[val];
-          vehicleFilter.addFilter(name, trip => trip.vehicle.type === name);
+          vehicleFilter.addFilter(this.stringFormatter.toFirstUpperRestLower(name), trip => trip.vehicle.type === name);
         }
         this.filterGroup.addFilterComponent(vehicleFilter);
         // add filters for lines
