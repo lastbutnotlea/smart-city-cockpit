@@ -42,7 +42,7 @@ public class DatabaseConfig {
         .buildSessionFactory();
   }
 
-  @Bean
+  @Bean(name = "dataSourceExport")
   public DataSource getDataSource() {
     URI dbUri = null;
     BasicDataSource dataSource = new BasicDataSource();

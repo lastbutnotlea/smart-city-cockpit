@@ -1,6 +1,7 @@
-import {Component, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {TripAddComponent} from '../trip-add/trip-add.component';
+import {Router} from "@angular/router";
 import {LiveDataComponent} from '../../../shared/components/live-data/live-data.component';
 import {TripData} from '../../../shared/data/trip-data';
 import {FilterGroupComponent} from "../../../shared/components/filter-group/filter-group.component";
@@ -9,6 +10,7 @@ import {HttpRoutingService} from '../../../services/http-routing.service';
 import {StopSortService} from '../../../services/stop-sort.service';
 import {FilterComponent} from '../../../shared/components/filter/filter.component';
 import {ToastsManager} from 'ng2-toastr';
+import {getUrlForId} from "../../../shared/util/routing-util";
 
 
 @Component({
@@ -27,12 +29,10 @@ export class TripComponent extends LiveDataComponent implements OnInit {
 
   constructor(private http: HttpRoutingService,
               private modalService: NgbModal,
+              private router: Router,
               private stopSortService: StopSortService,
-              public toastr: ToastsManager,
-              vcr: ViewContainerRef,
               private stringFormatter: StringFormatterService) {
     super();
-    this.toastr.setRootViewContainerRef(vcr);
   }
 
   public ngOnInit(): void {
@@ -51,10 +51,7 @@ export class TripComponent extends LiveDataComponent implements OnInit {
         this.trips.forEach(trip => trip.stops = this.stopSortService.sortStops(trip.stops));
         // This starts periodical calls for live-data after first data was received
         },
-      err => {
-        console.log('Could not fetch trips.');
-        this.toastr.error('Could not fetch trips.', 'Error!');
-      }
+      err => console.log('Could not fetch trips.')
     );
   }
 
@@ -96,5 +93,10 @@ export class TripComponent extends LiveDataComponent implements OnInit {
   // update trips
   refreshData(): void {
     this.getTrips();
+  }
+
+  goToLink(id: string): void {
+    let link: string = getUrlForId(id);
+    this.router.navigate([link]);
   }
 }

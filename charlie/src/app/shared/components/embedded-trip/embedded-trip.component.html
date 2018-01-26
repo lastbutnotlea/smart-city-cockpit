@@ -1,7 +1,9 @@
-<h4 class="text-lg-left">
-  <i class="fa fa-list fa-2x float-left padding-left-5 text-primary"></i>
-  <label class="padding-emb-box-headline">Trips</label>
-</h4>
+<a class="color-inherit" href="trip">
+  <h4 class="text-lg-left">
+    <i class="fa fa-list fa-2x float-left padding-left-5 text-primary"></i>
+    <label class="padding-emb-box-headline">Trips</label>
+  </h4>
+</a>
 
 <div *ngFor="let trip of trips">
   <div [ngClass]="{'color-fine': trip.vehicle.state === 'FINE',
@@ -11,17 +13,38 @@
   </div>
 
   <p *ngIf="areTripsForVehicle">
-      <label class="text-primary">{{trip.id}} </label>
-      from {{trip.stops[0].name}}
-      <label class="text-secondary">(departure: {{trip.stops[0].departureTime | date:'MM/dd/yyyy HH:mm'}})</label>
-      to {{trip.stops[trip.stops.length - 1].name}}
-      <label class="text-secondary">(arrival: {{trip.stops[trip.stops.length - 1].departureTime | date:'MM/dd/yyyy HH:mm'}})</label>
+    <label class="text-primary">
+      <a href="trip/detail/{{trip.id}}">
+        {{trip.id}}
+      </a>
+    </label>
+    from
+    <a href="network/stop/{{trip.stops[0].id}}">
+      {{trip.stops[0].name}}
+    </a>
+    <label class="text-secondary">(departure: {{trip.stops[0].departureTime |
+      date:'MM/dd/yyyyHH:mm'}})</label>
+    to
+    <a href="network/stop/{{trip.stops[trip.stops.length - 1].id}}">
+      {{trip.stops[trip.stops.length - 1].name}}
+    </a>
+    <label class="text-secondary">(arrival: {{trip.stops[trip.stops.length - 1].departureTime |
+      date:'MM/dd/yyyy HH:mm'}})</label>
   </p>
 
   <p *ngIf="!areTripsForVehicle">
-      <label class="text-primary">{{trip.id}} </label>
-      on line <label class="text-primary"> {{trip.line.name}} </label>
-      departs at <label class="text-secondary">{{trip.stops[trip.stops.length - 1].departureTime | date:'MM/dd/yyyy HH:mm'}}</label>
+    <label class="text-primary">
+      <a href="trip/detail/{{trip.id}}">
+        {{trip.id}}
+      </a>
+    </label>
+    on line <label class="text-primary">
+    <a href="network/detail/{{trip.line.id}}">
+      {{trip.line.name}}
+    </a>
+  </label>
+    departs at <label class="text-secondary">{{trip.stops[trip.stops.length - 1].departureTime |
+    date:'MM/dd/yyyy HH:mm'}}</label>
   </p>
 </div>
 

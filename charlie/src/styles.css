@@ -109,6 +109,18 @@ h4 {
   text-align: center;
 }
 
+.color-inherit{
+  color:inherit !important;
+}
+
+.highlight:hover {
+  background-color: gainsboro;
+}
+
+.highlight {
+  cursor: pointer;
+}
+
 /* STYLING TOASTS */
 
 .toast-success {

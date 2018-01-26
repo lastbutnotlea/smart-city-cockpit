@@ -1,4 +1,3 @@
-
 <div *ngIf="!loaded">Loading...</div>
 
 <div class="fit-screen d-flex flex-column" *ngIf="loaded">
@@ -9,7 +8,10 @@
       <i class="fa fa-lightbulb-o fa-3x float-right padding-right-20"
          aria-hidden="true"></i>
     </div>
-    Details <label class="text-primary"> {{line.name}} </label>
+    Details
+    <a href="network/detail/{{line.id}}">
+      <label class="text-primary"> {{line.name}} </label>
+    </a>
   </h3>
 
   <div class="no-float margin-bottom-30">
@@ -19,9 +21,11 @@
   <div *ngIf="loaded" class="d-flex">
     <app-embedded-stop-overview [linePositionData]="inboundPositionData"
                                 [title]="'inbound'"
-                                [color]="line.color" class="flex-1 bounding-box" ></app-embedded-stop-overview>
+                                [color]="line.color"
+                                class="flex-1 bounding-box"></app-embedded-stop-overview>
     <app-embedded-stop-overview [linePositionData]="outboundPositionData" [title]="'outbound'"
-                                [color]="line.color" class="flex-1 bounding-box"></app-embedded-stop-overview>
+                                [color]="line.color"
+                                class="flex-1 bounding-box"></app-embedded-stop-overview>
   </div>
 </div>
 
