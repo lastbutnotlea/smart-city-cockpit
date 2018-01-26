@@ -10,7 +10,7 @@ import {environment} from '../../../environments/environment';
 @Component({
   selector: 'app-network-map',
   templateUrl: './map.component.html',
-  styleUrls: ['./map.component.css', '../../shared/styling/map.css']
+  styleUrls: ['./map.component.css']
 })
 @Injectable()
 export class MapComponent {
@@ -63,18 +63,20 @@ export class MapComponent {
   private addLineEvents(): void {
     // get all lines from the svg
     const mapLines = d3.selectAll('.lines').selectAll('path');
+    //increas stroke-width of lines
+    mapLines.each(line => {
+      const lineSvg =  d3.select('path#' + line.name);
+      lineSvg.attr('stroke-width', lineSvg.attr('stroke-width') * 1.5);
+    });
     // add click-event to lines
     mapLines.on('click', line => {
       this.router.navigate(['/network/detail/' + line.name]);
     }).on('mouseover', line => {
-      // line does not contain some attributes of the svg (like stroke-width)
-      // lineSvg is the corresponding svg-element that contains these attributes as well
-      // TODO: look for a solution where we don't need to select this lineSvg
       const lineSvg =  d3.select('path#' + line.name);
-      lineSvg.attr('stroke-width', lineSvg.attr('stroke-width') * 1.6);
+      lineSvg.attr('stroke-width', lineSvg.attr('stroke-width') * 1.5);
     }).on('mouseout', line => {
       const lineSvg =  d3.select('path#' + line.name);
-      lineSvg.attr('stroke-width', lineSvg.attr('stroke-width') / 1.6);
+      lineSvg.attr('stroke-width', lineSvg.attr('stroke-width') / 1.5);
     });
   }
 

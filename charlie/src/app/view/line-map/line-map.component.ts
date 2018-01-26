@@ -11,7 +11,6 @@ import { StopData } from '../../shared/data/stop-data';
 @Component({
   selector: 'app-line-map',
   templateUrl: './line-map.component.html',
-  styleUrls: ['../../shared/styling/map.css']
 })
 @Injectable()
 export class LineMapComponent {
