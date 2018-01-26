@@ -78,7 +78,7 @@ export class DateParserService {
     return current;
   }
 
-  private cutTimezoneInformation(input: Date): string {
+  public cutTimezoneInformation(input: Date): string {
     let date = input.toISOString();
     // cuts the last character 'Z' to obtain the right date format
     return date.substr(0, date.length - 2);

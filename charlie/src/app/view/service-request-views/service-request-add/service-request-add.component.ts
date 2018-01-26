@@ -1,5 +1,5 @@
 import {Component, Input, OnInit, Output} from '@angular/core';
-import {NgbActiveModal, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {ServiceRequestData} from '../../../shared/data/service-request-data';
 import {ServiceRequestTarget} from '../../../shared/data/service-request-target';
 import {DropdownValue} from '../../../shared/components/dropdown/dropdown.component';
@@ -46,8 +46,8 @@ export class ServiceRequestAddComponent implements OnInit {
 
     // TODO: Get data from meta data controller, do not set manually
     this.selectedTargetType = new DropdownValue(true, 'Vehicle');
-    this.selectedType = new DropdownValue('CLEANING', 'CLEANING');
-    this.selectedPriority = new DropdownValue('FINE', 'FINE');
+    this.selectedType = new DropdownValue('CLEANING', 'Cleaning');
+    this.selectedPriority = new DropdownValue('FINE', 'Low');
     this.description = "";
 
     this.date = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
@@ -167,17 +167,17 @@ export class ServiceRequestAddComponent implements OnInit {
   typeItems(): DropdownValue[] {
     // TODO: Get data from meta data controller, do not set manually
     let typeItems: DropdownValue[] = [];
-    typeItems.push(new DropdownValue('CLEANING', 'CLEANING'));
-    typeItems.push(new DropdownValue('MAINTENANCE', 'MAINTENANCE'));
+    typeItems.push(new DropdownValue('CLEANING', 'Cleaning'));
+    typeItems.push(new DropdownValue('MAINTENANCE', 'Maintenance'));
     return typeItems;
   }
 
   priorityItems(): DropdownValue[] {
     // TODO: Get data from meta data controller, do not set manually
     let prioItems: DropdownValue[] = [];
-    prioItems.push(new DropdownValue('FINE', 'FINE'));
-    prioItems.push(new DropdownValue('PROBLEMATIC', 'PROBLEMATIC'));
-    prioItems.push(new DropdownValue('CRITICAL', 'CRITICAL'));
+    prioItems.push(new DropdownValue('FINE', 'Low'));
+    prioItems.push(new DropdownValue('PROBLEMATIC', 'Medium'));
+    prioItems.push(new DropdownValue('CRITICAL', 'High'));
     return prioItems;
   }
 
