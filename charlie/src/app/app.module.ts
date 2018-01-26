@@ -122,6 +122,7 @@ import {EditAnnouncementStopsComponent} from './view/announcement-views/edit/sto
     MapCreatorService,
     StopSortService,
     DateParserService,
+    {provide: RouteReuseStrategy, useClass: CharliesRouterReuseStrategy},
   ],
   bootstrap: [AppComponent],
   // modal dialogs:
