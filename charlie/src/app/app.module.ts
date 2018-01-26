@@ -56,6 +56,8 @@ import {EventEditComponent} from './view/event-views/event-edit/event-edit.compo
 import {EditAnnounementTextComponent} from './view/announcement-views/edit/text/edit-announcement-text.component';
 import {EditAnnouncementDatetimeComponent} from './view/announcement-views/edit/datetime/edit-announcement-datetime.component';
 import {EditAnnouncementStopsComponent} from './view/announcement-views/edit/stops/edit-announcement-stops.component';
+import {RouteReuseStrategy} from "@angular/router";
+import {CharliesRouterReuseStrategy} from "./services/router-reuse-strategy";
 
 
 @NgModule({
