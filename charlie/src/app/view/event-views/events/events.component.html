@@ -1,0 +1,48 @@
+<div class="d-flex flex-column fit-screen">
+  <h3 class="text-center">{{title}}</h3>
+
+  <div class="d-flex flex-row fit-screen">
+    <div *ngIf="loaded" class="d-flex flex-grow-1 fit-screen">
+      <table class="table fit-screen d-flex flex-column">
+        <thead>
+        <tr class="d-flex">
+          <th>Event-ID</th>
+          <th>Subject</th>
+          <th nowrap>Priority</th>
+          <th>Starts</th>
+          <th>Ends</th>
+          <th>Involved Parties</th>
+          <th>Notes</th>
+        </tr>
+        </thead>
+        <tbody class="d-flex flex-column flex-grow-1 fit-screen">
+        <tr *ngFor="let event of events">
+          <div (click)="goToLink(event.id)" class="d-flex highlight">
+            <td>{{ event.id }}</td>
+            <td>{{event.subject}}</td>
+            <td>{{ stringFormatter.toFirstUpperRestLower(event.priority) }}</td>
+            <td>{{event.startTime | date:'MM/dd/yyyy HH:mm'}}</td>
+            <td>{{event.endTime | date:'MM/dd/yyyy HH:mm'}}</td>
+            <td>
+              <label *ngFor="let party of event.appointmentInvolvedParties">
+                {{party.partyName}}
+              </label>
+            </td>
+            <td>
+              <label *ngFor="let note of event.appointmentNotes">
+                {{note.text}}
+              </label>
+            </td>
+          </div>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="!loaded">
+      <h3>Loading...</h3>
+    </div>
+  </div>
+  <div class="no-float margin-bottom-30">
+    <button class="btn btn-outline-primary no-float" (click)="addEvent()">Add new event</button>
+  </div>
+</div>

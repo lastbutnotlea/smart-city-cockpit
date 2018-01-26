@@ -19,7 +19,8 @@
     {{vehicle.id}}
   </a>
 </p>
-<p><label class="text-secondary">Type: </label> {{vehicle.type}}</p>
+<p> <label class="text-secondary">Type:</label>
+  {{ stringFormatter.toFirstUpperRestLower(vehicle.type) }}</p>
 <p><label class="text-secondary">Capacity(persons): </label> {{vehicle.capacity}}</p>
 <p><label class="text-secondary">Load(persons): </label> {{vehicle.load}}</p>
 <p><label class="text-secondary">Delay(minutes): </label> {{(vehicle.delay / 60.0).toFixed(0)}}</p>
