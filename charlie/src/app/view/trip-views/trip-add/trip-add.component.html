@@ -27,7 +27,7 @@
     <div *ngIf="showStops">
       <div *ngFor="let stop of getStops()" class="d-flex justify-content-around">
         <label>
-          <input type="checkbox" [(ngModel)]="selectedStops.get(stop)">
+          <input type="checkbox" [ngModel]="selectedStops.get(stop)" (change)="stopSelectionChanged(stop)">
           {{stop.commonName}}
         </label>
       </div>

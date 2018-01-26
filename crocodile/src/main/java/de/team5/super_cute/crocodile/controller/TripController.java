@@ -90,13 +90,13 @@ public class TripController extends BaseController<Trip> {
       }
     }
     tripInput.initializeTrip();
-    return addObject(tripInput);
+    return Helpers.makeIdToJSON(addObject(tripInput));
   }
 
   @DeleteMapping("/{id}")
   public String deleteTrip(@PathVariable String id) {
     logger.info("Got Request to delete trip with id " + id);
-    return deleteObject(id);
+    return Helpers.makeIdToJSON(deleteObject(id));
   }
 
   @PutMapping
@@ -109,7 +109,7 @@ public class TripController extends BaseController<Trip> {
       }
     }
     tripInput.initializeTrip();
-    return editObject(tripInput);
+    return Helpers.makeIdToJSON(editObject(tripInput));
   }
 
   /**
@@ -135,7 +135,7 @@ public class TripController extends BaseController<Trip> {
 
     int tripToLineOffset = travelTime.get(firstStopIdOfTrip);
     List<String> stopIdsThatNeedCorrectTime = tripInput.getStops().entrySet().stream()
-        .filter(e -> e.getValue().equals(Helpers.DUMMY_TIME))
+        .filter(e -> e.getValue() == null)
         .map(Entry::getKey)
         .collect(Collectors.toList());
 
