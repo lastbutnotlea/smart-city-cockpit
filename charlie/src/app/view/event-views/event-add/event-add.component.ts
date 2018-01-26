@@ -22,7 +22,7 @@ export class EventAddComponent implements OnInit {
   subject: string = "";
 
   availablePriorities: Array<DropdownValue> = [];
-  priority: DropdownValue = new DropdownValue('FINE', 'fine');
+  priority: DropdownValue = new DropdownValue('FINE', 'Low');
 
   from: string = now.toISOString();
   to: string = now.toISOString();
