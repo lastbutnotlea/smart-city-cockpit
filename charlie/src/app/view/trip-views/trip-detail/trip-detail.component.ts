@@ -7,7 +7,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {StopSortService} from '../../../services/stop-sort.service';
 import {ConfirmDeletionComponent} from '../../../shared/components/confirm-popup/confirm-deletion.component';
 import {Location} from '@angular/common';
-import {TripAddComponent} from "../trip-add/trip-add.component";
+import {TripEditComponent} from "../trip-edit/trip-edit.component";
 
 @Component({
   selector: 'app-trip-detail-view',
@@ -50,7 +50,7 @@ export class TripDetailComponent extends LiveDataComponent implements OnInit {
   }
 
   edit(): void {
-    const modal = this.modalService.open(TripAddComponent);
+    const modal = this.modalService.open(TripEditComponent);
     modal.componentInstance.setModel(this.trip);
     modal.componentInstance.initData();
   }

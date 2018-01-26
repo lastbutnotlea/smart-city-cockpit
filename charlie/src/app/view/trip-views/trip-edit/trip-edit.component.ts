@@ -13,11 +13,11 @@ import {isNullOrUndefined} from "util";
 
 @Component({
   selector: 'app-trip-add',
-  templateUrl: './trip-add.component.html',
-  styleUrls: ['./trip-add.component.css']
+  templateUrl: './trip-edit.component.html',
+  styleUrls: ['./trip-edit.component.css']
 })
 
-export class TripAddComponent implements OnInit {
+export class TripEditComponent implements OnInit {
   private static readonly loadingDropdown: DropdownValue = new DropdownValue(null, "loading...");
   private static readonly selectDropdown: DropdownValue = new DropdownValue(null, "please select");
   private static readonly noVehiclesAvailDropdown: DropdownValue = new DropdownValue(null, "no vehicles available");
@@ -27,9 +27,9 @@ export class TripAddComponent implements OnInit {
   availableLines: DropdownValue[] = [];
   availableVehicles: DropdownValue[] = [];
 
-  selectedLine: DropdownValue = TripAddComponent.loadingDropdown;
-  selectedDirection: DropdownValue = TripAddComponent.selectDropdown;
-  selectedVehicle: DropdownValue = TripAddComponent.loadingDropdown;
+  selectedLine: DropdownValue = TripEditComponent.loadingDropdown;
+  selectedDirection: DropdownValue = TripEditComponent.selectDropdown;
+  selectedVehicle: DropdownValue = TripEditComponent.loadingDropdown;
   selectedStops: Map<StopData, boolean> = new Map();
   selectedDate: Date = new Date();
 
@@ -63,7 +63,7 @@ export class TripAddComponent implements OnInit {
       data => {
         this.availableLines = toDropdownItems(data, line => line.name);
         // only if not already set to something meaningful
-        if (!this.model) this.selectedLine = TripAddComponent.selectDropdown;
+        if (!this.model) this.selectedLine = TripEditComponent.selectDropdown;
       },
       err => console.log("Err: " + JSON.stringify(err))
     );
@@ -82,7 +82,7 @@ export class TripAddComponent implements OnInit {
 
   selectedLineChanged(): void {
     if (!this.getDirectionDropdownItems().some(item => item.label === this.getDirectionString(this.getStops())))
-      this.selectedDirection = TripAddComponent.selectDropdown;
+      this.selectedDirection = TripEditComponent.selectDropdown;
   }
 
   selectedDirectionChanged(): void {
@@ -128,9 +128,9 @@ export class TripAddComponent implements OnInit {
             this.availableVehicles.push(selected);
           }
         } else if (this.availableVehicles.length == 0) {
-          this.selectedVehicle = TripAddComponent.noVehiclesAvailDropdown;
+          this.selectedVehicle = TripEditComponent.noVehiclesAvailDropdown;
         } else {
-          this.selectedVehicle = TripAddComponent.selectDropdown;
+          this.selectedVehicle = TripEditComponent.selectDropdown;
         }
       },
       err => console.log("Error: " + JSON.stringify(err))

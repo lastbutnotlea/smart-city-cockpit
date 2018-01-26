@@ -32,7 +32,7 @@ import {TripDetailComponent} from './view/trip-views/trip-detail/trip-detail.com
 import {MapComponent} from './view/network-views/map/map.component';
 import {LineDetailComponent} from './view/line-views/line-detail/line-detail.component';
 import {StopDetailComponent} from './view/stop-views/stop-detail/stop-detail.component';
-import {TripAddComponent} from './view/trip-views/trip-add/trip-add.component';
+import {TripEditComponent} from './view/trip-views/trip-edit/trip-edit.component';
 import {VehiclesComponent} from './view/vehicle-views/vehicles/vehicles.component';
 import {VehicleAddComponent} from './view/vehicle-views/vehicle-add/vehicle-add.component';
 import {VehicleDetailComponent} from './view/vehicle-views/vehicle-detail/vehicle-detail.component';
@@ -77,7 +77,7 @@ import {CharliesRouterReuseStrategy} from "./services/router-reuse-strategy";
     ConfirmDeletionComponent,
     TickerComponent,
     TickerItemComponent,
-    TripAddComponent,
+    TripEditComponent,
     VehiclesComponent,
     VehicleDetailComponent,
     VehicleAddComponent,
@@ -127,7 +127,7 @@ import {CharliesRouterReuseStrategy} from "./services/router-reuse-strategy";
   entryComponents: [
     VehicleAddComponent,
     ConfirmDeletionComponent,
-    TripAddComponent,
+    TripEditComponent,
     ServiceRequestAddComponent,
     ServiceRequestEditComponent,
     SkipStopComponent,
