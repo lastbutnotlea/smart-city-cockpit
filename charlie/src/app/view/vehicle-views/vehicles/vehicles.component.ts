@@ -9,6 +9,7 @@ import {VehicleAddComponent} from '../vehicle-add/vehicle-add.component';
 import {StringFormatterService} from '../../../services/string-formatter.service';
 import {Router} from "@angular/router";
 import {getUrlForId} from "../../../shared/util/routing-util";
+import {ToastService} from '../../../services/toast.service';
 
 @Component({
   selector: 'app-vehicles-component',
@@ -28,7 +29,8 @@ export class VehiclesComponent extends LiveDataComponent implements OnInit {
   constructor(private http: HttpRoutingService,
               private modalService: NgbModal,
               private stringFormatter: StringFormatterService,
-              private router: Router) {
+              private router: Router,
+              private toastService: ToastService) {
     super();
   }
 

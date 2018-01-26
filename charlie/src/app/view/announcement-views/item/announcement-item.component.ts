@@ -5,13 +5,14 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {AnnouncementEditComponent} from "../edit/announcement-edit.component";
 import {ConfirmDeletionComponent} from '../../../shared/components/confirm-popup/confirm-deletion.component';
 import {ActivatedRoute, Params} from "@angular/router";
+import {ToastService} from '../../../services/toast.service';
 
 @Component({
   selector: 'app-announcement-item',
   templateUrl: './announcement-item.component.html',
   styleUrls: ['./announcement-item.component.css'],
 })
-export class AnnouncementItemComponent implements OnInit{
+export class AnnouncementItemComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.queryParams.forEach((params: Params) => {
@@ -25,8 +26,10 @@ export class AnnouncementItemComponent implements OnInit{
 
   deleted: boolean = false;
 
-  constructor(private http: HttpRoutingService, private modalService: NgbModal,
-              private route: ActivatedRoute) {
+  constructor(private http: HttpRoutingService,
+              private modalService: NgbModal,
+              private route: ActivatedRoute,
+              private toastService: ToastService) {
   }
 
   editItem(): void {
@@ -36,9 +39,12 @@ export class AnnouncementItemComponent implements OnInit{
 
   deleteItem(): void {
     this.http.deleteAnnouncement(this.data).subscribe(
-      data => this.deleted = true,
+      data => {
+        this.deleted = true;
+        this.toastService.showSuccessToast('Deleted ' + this.data.id);
+      },
       err => {
-        alert("An Error occurred. Could not delete announcement.");
+        this.toastService.showErrorToast('Failed to delete ' + this.data.id);
         console.log(JSON.stringify(err));
       }
     );
@@ -51,9 +57,9 @@ export class AnnouncementItemComponent implements OnInit{
       this.deleteItem();});
   }
   
-  scrollAnnouncement(to: string){
+  scrollAnnouncement(to: string) {
     let x = document.querySelector('#' + to);
-    if (x){
+    if (x) {
       x.scrollIntoView(true);
     }
   }
