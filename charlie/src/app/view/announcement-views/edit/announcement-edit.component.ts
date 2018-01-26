@@ -1,13 +1,8 @@
 import {Component, OnInit} from '@angular/core';
-import {NgbActiveModal, NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {now} from '../../../shared/data/dates';
-import {DateParserService} from '../../../services/date-parser.service';
 import {StopData} from '../../../shared/data/stop-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
-import {
-  DropdownValue,
-  toDropdownItems
-} from '../../../shared/components/dropdown/dropdown.component';
 import {LineData} from '../../../shared/data/line-data';
 import {AnnouncementData} from '../../../shared/data/announcement-data';
 import {isNullOrUndefined} from "util";

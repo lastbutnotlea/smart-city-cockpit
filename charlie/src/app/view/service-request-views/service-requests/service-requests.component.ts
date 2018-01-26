@@ -1,6 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ServiceRequestAddComponent} from '../service-request-add/service-request-add.component';
+import {StringFormatterService} from '../../../services/string-formatter';
 import {ServiceRequestData} from '../../../shared/data/service-request-data';
 import {FilterGroupComponent} from '../../../shared/components/filter-group/filter-group.component';
 import {HttpRoutingService} from '../../../services/http-routing.service';
@@ -21,7 +22,8 @@ export class ServiceRequestsComponent implements OnInit {
   filterGroup: FilterGroupComponent;
 
   constructor(private http: HttpRoutingService,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private stringFormatter: StringFormatterService) {
   }
 
   public ngOnInit(): void {

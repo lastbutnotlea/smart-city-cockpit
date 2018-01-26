@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FilterComponent } from '../filter/filter.component';
+import {Component} from '@angular/core';
+import {FilterComponent} from '../filter/filter.component';
 
 @Component({
   selector: 'app-filter-group-view',
