@@ -78,7 +78,6 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
         this.goBack();
       },
           () => {
-            // alert("Could not delete vehicle");
             this.toastService.showErrorToast('Failed to delete ' + this.vehicle.id);
           }
       );
