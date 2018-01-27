@@ -6,7 +6,6 @@ import {
   DropdownValue, priorityDropdownItems, toDropdownItem,
   toDropdownItems
 } from '../../../shared/components/dropdown/dropdown.component';
-import {now} from '../../../shared/data/dates';
 import {DateParserService} from '../../../services/date-parser.service';
 import {PartyData} from '../../../shared/data/party-data';
 import {StringFormatterService} from '../../../services/string-formatter.service';
@@ -29,21 +28,21 @@ export class EventEditComponent implements OnInit {
   priority: DropdownValue = new DropdownValue(null, 'loading');
 
   fromTime: NgbTimeStruct = {
-    hour: now.getHours(),
-    minute: now.getMinutes(),
-    second: now.getSeconds()
+    hour: (new Date()).getHours(),
+    minute: (new Date()).getMinutes(),
+    second: (new Date()).getSeconds()
   };
   fromDate: NgbDateStruct = {
-    year: now.getFullYear(),
-    month: now.getMonth() + 1,
-    day: now.getDate()
+    year: (new Date()).getFullYear(),
+    month: (new Date()).getMonth() + 1,
+    day: (new Date()).getDate()
   };
   toTime: NgbTimeStruct = {
-    hour: now.getHours(),
-    minute: now.getMinutes(),
-    second: now.getSeconds()
+    hour: (new Date()).getHours(),
+    minute: (new Date()).getMinutes(),
+    second: (new Date()).getSeconds()
   };
-  toDate: NgbDateStruct = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
+  toDate: NgbDateStruct = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
 
   availableParties: Array<DropdownValue> = [];
   party: DropdownValue = new DropdownValue(null, 'loading');
@@ -120,7 +119,7 @@ export class EventEditComponent implements OnInit {
     this.data.startTime = this.selected.startTime;
     this.data.endTime = this.selected.endTime;
     this.data.appointmentInvolvedParties = new Array(
-      new PartyData(this.data.appointmentInvolvedParties[0].id, this.party.value.partyName,
+      new PartyData(this.data.appointmentInvolvedParties[0].id, this.party.value,
         this.data.appointmentInvolvedParties[0].objectId));
     this.data.appointmentNotes = this.selected.appointmentNotes;
 
