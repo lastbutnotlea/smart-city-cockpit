@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal, NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
-import {now} from '../../../shared/data/dates';
 import {DateParserService} from '../../../services/date-parser.service';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {
@@ -25,25 +24,25 @@ export class EventAddComponent implements OnInit {
   availablePriorities: Array<DropdownValue> = [];
   priority: DropdownValue = new DropdownValue('FINE', 'Low');
 
-  from: string = now.toISOString();
-  to: string = now.toISOString();
+  from: string = (new Date()).toISOString();
+  to: string = (new Date()).toISOString();
 
   fromTime: NgbTimeStruct = {
-    hour: now.getHours(),
-    minute: now.getMinutes(),
-    second: now.getSeconds()
+    hour: (new Date()).getHours(),
+    minute: (new Date()).getMinutes(),
+    second: (new Date()).getSeconds()
   };
   fromDate: NgbDateStruct = {
-    year: now.getFullYear(),
-    month: now.getMonth() + 1,
-    day: now.getDate()
+    year: (new Date()).getFullYear(),
+    month: (new Date()).getMonth() + 1,
+    day: (new Date()).getDate()
   };
   toTime: NgbTimeStruct = {
-    hour: now.getHours(),
-    minute: now.getMinutes(),
-    second: now.getSeconds()
+    hour: (new Date()).getHours(),
+    minute: (new Date()).getMinutes(),
+    second: (new Date()).getSeconds()
   };
-  toDate: NgbDateStruct = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
+  toDate: NgbDateStruct = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
 
   availableParties: Array<DropdownValue> = [];
   party: DropdownValue = new DropdownValue(null, 'loading');
