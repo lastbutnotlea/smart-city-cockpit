@@ -4,7 +4,6 @@ import {ServiceRequestData} from '../../../shared/data/service-request-data';
 import {ServiceRequestTarget} from '../../../shared/data/service-request-target';
 import {DropdownValue, priorityDropdownItems} from '../../../shared/components/dropdown/dropdown.component';
 import {FeedbackData} from '../../../shared/data/feedback-data';
-import {now} from '../../../shared/data/dates';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {DateParserService} from '../../../services/date-parser.service';
 import {ToastService} from '../../../services/toast.service';
@@ -32,7 +31,7 @@ export class ServiceRequestAddComponent implements OnInit {
   selectedType: DropdownValue;
   selectedPriority: DropdownValue;
   description: string;
-  selectedDate: string = now.toISOString();
+  selectedDate: string = (new Date()).toISOString();
   date: NgbDateStruct;
 
   availFeedback: FeedbackData[];
@@ -53,7 +52,7 @@ export class ServiceRequestAddComponent implements OnInit {
     this.selectedPriority = new DropdownValue('FINE', 'Low');
     this.description = "";
 
-    this.date = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
+    this.date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
     this.updateDate();
 
     this.selectedFeedback = []

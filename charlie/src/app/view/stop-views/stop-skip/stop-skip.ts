@@ -1,7 +1,6 @@
 import {Component, Input, OnInit, Output} from '@angular/core';
 import {NgbActiveModal, NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 import {StopData} from '../../../shared/data/stop-data';
-import {now} from '../../../shared/data/dates';
 import {DateParserService} from '../../../services/date-parser.service';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {SkipData} from '../../../shared/data/skip-data';
@@ -21,25 +20,28 @@ export class SkipStopComponent implements OnInit {
 
   text: string = "";
 
-  from: Date = new Date(now);
-  to: Date = new Date(now);
+  from: Date = new Date();
+  to: Date = new Date();
 
   fromTime: NgbTimeStruct = {
-    hour: now.getHours(),
-    minute: now.getMinutes(),
-    second: now.getSeconds()
+    hour: this.from.getHours(),
+    minute: this.from.getMinutes(),
+    second: this.from.getSeconds()
   };
   fromDate: NgbDateStruct = {
-    year: now.getFullYear(),
-    month: now.getMonth() + 1,
-    day: now.getDate()
+    year: this.from.getFullYear(),
+    month: this.from.getMonth() + 1,
+    day: this.from.getDate()
   };
   toTime: NgbTimeStruct = {
-    hour: now.getHours(),
-    minute: now.getMinutes(),
-    second: now.getSeconds()
+    hour: this.to.getHours(),
+    minute: this.to.getMinutes(),
+    second: this.to.getSeconds()
   };
-  toDate: NgbDateStruct = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
+  toDate: NgbDateStruct = {
+    year: this.to.getFullYear(),
+    month: this.to.getMonth() + 1,
+    day: this.to.getDate()};
 
   private callback: (param: StopData) => void;
 

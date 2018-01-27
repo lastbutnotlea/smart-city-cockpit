@@ -6,7 +6,7 @@ import {TripStopData} from '../../../shared/data/trip-stop-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {DateParserService} from '../../../services/date-parser.service';
 import {StopSortService} from '../../../services/stop-sort.service';
-import {dummyDate, now} from '../../../shared/data/dates';
+import {dummyDate} from '../../../shared/data/dates';
 import {LineData} from '../../../shared/data/line-data';
 import {VehicleData} from '../../../shared/data/vehicle-data';
 
@@ -30,8 +30,8 @@ export class TripEditDepartureComponent implements OnInit {
               private stopSortService: StopSortService) { }
 
   ngOnInit(): void {
-    this.time = {hour: now.getHours(), minute: now.getMinutes(), second: now.getSeconds()};
-    this.date = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
+    this.time = {hour: (new Date()).getHours(), minute: (new Date()).getMinutes(), second: (new Date()).getSeconds()};
+    this.date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
   }
 
   initData(): void {
