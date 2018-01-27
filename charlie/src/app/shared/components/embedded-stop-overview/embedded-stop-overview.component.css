@@ -1,3 +1,11 @@
 .invisible-text{
   opacity: 0.0;
 }
+
+.invisible-text app-state-icon {
+  opacity: 0.0;
+}
+
+p {
+  margin-bottom: 0.3rem;
+}
