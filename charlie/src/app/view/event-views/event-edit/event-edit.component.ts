@@ -123,13 +123,16 @@ export class EventEditComponent implements OnInit {
         this.data.appointmentInvolvedParties[0].objectId));
     this.data.appointmentNotes = this.selected.appointmentNotes;
 
-    this.activeModal.close('Close click');
     this.http.editEvent(this.data).subscribe(
       data => {
+        this.activeModal.close('Close click');
         this.toastService.showSuccessToast('Edited event ' + data.id);
         console.log('Received for Edit: ' + data)
       },
-      err => this.toastService.showErrorToast('Failed to edit event ' + this.data.id)
+      err => {
+        this.toastService.showErrorToast('Failed to edit event ' + this.data.id);
+        this.saveDisabled = false;
+      }
     );
   }
 }

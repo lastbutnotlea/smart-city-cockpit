@@ -1,4 +1,4 @@
-<div [ngClass]="{'greyed-out': saveDisabled}" class="fit-screen">
+<div [ngClass]="{'greyed-out': saveDisabled}">
   <div class="modal-header">
     <h4 class="modal-title">
       Create new event
@@ -53,4 +53,4 @@
   </div>
 </div>
 
-<div *ngIf="saveDisabled" class="modal-body fa fa-spinner fa-pulse fa-5x center-center"></div>
+<div *ngIf="saveDisabled" class="fa fa-spinner fa-pulse fa-5x center-center text-primary"></div>
