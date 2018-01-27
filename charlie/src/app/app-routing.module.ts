@@ -13,6 +13,7 @@ import {ServiceRequestsComponent} from './view/service-request-views/service-req
 import {ServiceRequestDetailComponent} from './view/service-request-views/service-request-detail/service-request-detail.component';
 import {AnnouncementMainComponent} from './view/announcement-views/main/announcement-main.component';
 import {NgModule} from '@angular/core';
+import {AdminViewComponent} from './view/admin-view/admin-view.component';
 
 const routes: Routes = [
   {path: '', redirectTo: '/network', pathMatch: 'full'},
@@ -29,6 +30,7 @@ const routes: Routes = [
   {path: 'serviceRequests', component: ServiceRequestsComponent},
   {path: 'serviceRequests/detail/:id', component: ServiceRequestDetailComponent},
   {path: 'announcements', component: AnnouncementMainComponent},
+  {path: 'admin', component: AdminViewComponent},
 ];
 
 @NgModule({
