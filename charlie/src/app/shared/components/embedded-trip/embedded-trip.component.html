@@ -6,7 +6,7 @@
 </a>
 
 <div *ngFor="let trip of trips">
-  <app-state-icon class="float-right" [size]="'fa-2x'" [state]="trip.vehicle.state"></app-state-icon>
+  <app-state-icon class="float-right" [size]="'fa-2x'" [state]="trip.vehicle.state" [paddingr]="'padding-right-20'"></app-state-icon>
 
   <p *ngIf="areTripsForVehicle">
     <label class="text-primary">
@@ -19,7 +19,7 @@
       {{trip.stops[0].name}}
     </a>
     <label class="text-secondary">(departure: {{trip.stops[0].departureTime |
-      date:'MM/dd/yyyyHH:mm'}})</label>
+      date:'MM/dd/yyyy HH:mm'}})</label>
     to
     <a href="network/stop/{{trip.stops[trip.stops.length - 1].id}}">
       {{trip.stops[trip.stops.length - 1].name}}
