@@ -16,6 +16,8 @@ import {ToastService} from '../../../services/toast.service';
 export class AnnouncementEditComponent implements OnInit {
   state: number = 0;
   waitForBackend: boolean = false;
+  title: string = "Create new announcement";
+
   text: string = "";
 
   validFrom: Date = new Date(now);
@@ -52,6 +54,7 @@ export class AnnouncementEditComponent implements OnInit {
 
   public setModel(data: AnnouncementData): void {
     this.data = data;
+    this.title = data.id? "Edit " + data.id : "Create new announcement";
     this.text = data.text ? data.text : '';
     this.validFrom = data.validFrom ? new Date(data.validFrom) : new Date();
     this.validTo = data.validTo ? new Date(data.validTo) : new Date();
