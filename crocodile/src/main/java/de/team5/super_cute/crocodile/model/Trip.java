@@ -130,7 +130,7 @@ public class Trip extends IdentifiableObject implements Serializable {
     return stops.entrySet().stream().map(entry -> {
       StopDepartureData data = new StopDepartureData();
       data.id = entry.getKey();
-      data.departureTime = entry.getValue().toString();
+      data.departureTime = entry.getValue() == null? null : entry.getValue().toString();
       Stop stop = getTripStopForId(entry.getKey());
       data.name = stop.getCommonName();
       data.state = stop.getState();

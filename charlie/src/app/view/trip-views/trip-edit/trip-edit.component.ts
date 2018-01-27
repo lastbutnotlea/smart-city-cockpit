@@ -120,22 +120,21 @@ export class TripEditComponent implements OnInit {
 
   refreshVehicles(): void {
     this.availableVehicles = [];
-    if (!this.selectedVehicle.value) {
-      this.selectedVehicle = TripEditComponent.loadingDropdown;
-    }
+    let selected = this.selectedVehicle;
+    this.selectedVehicle = TripEditComponent.loadingDropdown;
     let date = this.dateParser.cutTimezoneInformation(this.selectedDate);
     this.http.getVehiclesByTimeAndType(date, this.selectedLine.value.type, this.model).subscribe(
       data => {
         this.availableVehicles = toDropdownItems(data, v => v.id);
-        let isSelectedValid = this.selectedVehicle.value && this.availableVehicles.some(v => {
-          return v.value.id === this.selectedVehicle.value.id;
+        let isSelectedValid = selected.value && this.availableVehicles.some(v => {
+          return v.value.id === selected.value.id;
         });
-        if (!isSelectedValid) {
-          if (this.availableVehicles.length == 0) {
-            this.selectedVehicle = TripEditComponent.noVehiclesAvailDropdown;
-          } else {
-            this.selectedVehicle = TripEditComponent.selectDropdown;
-          }
+        if (isSelectedValid) {
+          this.selectedVehicle = selected;
+        } else if (this.availableVehicles.length == 0) {
+          this.selectedVehicle = TripEditComponent.noVehiclesAvailDropdown;
+        } else {
+          this.selectedVehicle = TripEditComponent.selectDropdown;
         }
       },
       err => console.log("Error: " + JSON.stringify(err))
