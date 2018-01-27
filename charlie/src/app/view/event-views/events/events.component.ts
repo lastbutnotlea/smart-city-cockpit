@@ -21,8 +21,7 @@ export class EventsComponent implements OnInit {
 
   constructor(private http: HttpRoutingService,
               private modalService: NgbModal,
-              private router: Router,
-              private stringFormatter: StringFormatterService) {
+              private router: Router) {
   }
 
   public ngOnInit(): void {

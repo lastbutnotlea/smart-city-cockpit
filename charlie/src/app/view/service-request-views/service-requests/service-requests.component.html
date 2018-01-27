@@ -14,8 +14,8 @@
           <th>Name</th>
           <th>Type</th>
           <th>Degree of Processing</th>
-          <th>Due date</th>
-          <th>Completion date</th>
+          <th>Due Date</th>
+          <th>Completion Date</th>
           <th>Priority</th>
         </tr>
         </thead>
@@ -26,14 +26,15 @@
           <td>{{ serviceRequest.name }}</td>
           <td>{{ stringFormatter.toFirstUpperRestLower(serviceRequest.serviceType) }}</td>
           <td>{{ stringFormatter.toFirstUpperRestLower(serviceRequest.statusCode) }}</td>
-          <td>{{ serviceRequest.dueDate | date:'MM/dd/yyyy HH:mm'}}</td>
-          <td>{{ serviceRequest.completionDate | date:'MM/dd/yyyy HH:mm'}}</td>
+          <td>{{ serviceRequest.dueDate | date:'MM/dd/yyyy'}}</td>
+          <td *ngIf="hasCompletionDate(serviceRequest)">{{ serviceRequest.completionDate | date:'MM/dd/yyyy'}}</td>
+          <td *ngIf="!hasCompletionDate(serviceRequest)">Not completed yet</td>
           <td>
-          <span [ngClass]="{'color-fine': serviceRequest.priority === 'FINE',
-           'color-problematic': serviceRequest.priority === 'PROBLEMATIC',
-          'color-critical': serviceRequest.priority === 'CRITICAL' }">
-            <i class="fa fa-exclamation-circle fa-2x" aria-hidden="true"></i>
-          </span>
+            <span [ngClass]="{'color-fine': serviceRequest.priority === 'FINE',
+             'color-problematic': serviceRequest.priority === 'PROBLEMATIC',
+            'color-critical': serviceRequest.priority === 'CRITICAL' }">
+              <i class="fa fa-exclamation-circle fa-2x" aria-hidden="true"></i>
+            </span>
           </td>
     </div>
         </tr>

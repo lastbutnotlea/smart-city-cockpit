@@ -1,9 +1,9 @@
-.highlight:hover {
+.highlight-ticker:hover {
   border-width: 3px;
   padding: 8px
 }
 
-.highlight {
+.highlight-ticker {
   border-width: 1px;
   padding: 10px;
   cursor: pointer;

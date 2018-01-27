@@ -10,6 +10,7 @@ import {now} from '../../../shared/data/dates';
 import {DateParserService} from '../../../services/date-parser.service';
 import {PartyData} from '../../../shared/data/party-data';
 import {StringFormatterService} from '../../../services/string-formatter.service';
+import {ToastService} from '../../../services/toast.service';
 
 
 @Component({
@@ -51,7 +52,8 @@ export class EventEditComponent implements OnInit {
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
               public dateParser: DateParserService,
-              private stringFormatter: StringFormatterService) {
+              private stringFormatter: StringFormatterService,
+              private toastService: ToastService) {
   }
 
 
@@ -125,9 +127,10 @@ export class EventEditComponent implements OnInit {
     this.activeModal.close('Close click');
     this.http.editEvent(this.data).subscribe(
       data => {
+        this.toastService.showSuccessToast('Edited event ' + data.id);
         console.log('Received for Edit: ' + data)
       },
-      err => console.log('Could not edit event.')
+      err => this.toastService.showErrorToast('Failed to edit event ' + this.data.id)
     );
   }
 }
