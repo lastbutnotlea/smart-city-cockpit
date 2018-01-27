@@ -5,6 +5,7 @@ import {now} from '../../../shared/data/dates';
 import {DateParserService} from '../../../services/date-parser.service';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {SkipData} from '../../../shared/data/skip-data';
+import {ToastService} from '../../../services/toast.service';
 
 @Component({
   selector: 'app-service-request-edit',
@@ -42,7 +43,10 @@ export class SkipStopComponent implements OnInit {
 
   private callback: (param: StopData) => void;
 
-  constructor(public activeModal: NgbActiveModal, public dateParser: DateParserService, public http: HttpRoutingService) {
+  constructor(public activeModal: NgbActiveModal,
+              public dateParser: DateParserService,
+              public http: HttpRoutingService,
+              private toastService: ToastService) {
   }
 
   ngOnInit(): void {
@@ -103,9 +107,12 @@ export class SkipStopComponent implements OnInit {
     this.http.skipStop(this.data.id, skipData).subscribe(
       data => {
         this.data.skipData.push(data);
+        this.toastService.showSuccessToast('Skipped stop ' + this.data.commonName);
         this.activeModal.close('Close click');
       },
-      err => alert('Could not skip stop.' + err)
+      err => {
+        this.toastService.showErrorToast('Failed to skip stop ' + this.data.commonName);
+      }
     );
   }
 
