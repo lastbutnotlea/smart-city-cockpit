@@ -36,7 +36,11 @@
   <!-- for vehicles between stops -->
   <p>
     <!-- This keeps a empty line between stops even if no vehicle is displayed there -->
-    <span class="invisible-text">.</span>
+
+    <span class="invisible-text">
+    <app-state-icon [state]="data.stopState" [paddingr]="'padding-right-20'" [size]="'fa-2x'"></app-state-icon>
+      I am invisible! No one can stop me!
+    </span>
     <!-- vehicle icons -->
     <span class="float-right"
           *ngFor="let vehicle of linePositionData.positionAfterStops[i].vehiclePositionData">

@@ -101,6 +101,10 @@ p {
   overflow-y: auto;
 }
 
+app-ticker-item .bounding-box {
+  overflow-y: hidden;
+}
+
 .flex-3 {
   flex-grow: 2;
   max-width: 100%;
