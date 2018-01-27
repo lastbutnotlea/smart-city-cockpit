@@ -15,7 +15,7 @@ import {ToastService} from '../../../services/toast.service';
 })
 export class AnnouncementEditComponent implements OnInit {
   state: number = 0;
-  saveDisabled: boolean = false;
+  waitForBackend: boolean = false;
   text: string = "";
 
   validFrom: Date = new Date(now);
@@ -52,10 +52,10 @@ export class AnnouncementEditComponent implements OnInit {
 
   public setModel(data: AnnouncementData): void {
     this.data = data;
-    this.text = data.text? data.text : '';
-    this.validFrom = data.validFrom? new Date(data.validFrom) : new Date();
-    this.validTo = data.validTo? new Date(data.validTo) : new Date();
-    this.selectedStops = data.stops? data.stops: [];
+    this.text = data.text ? data.text : '';
+    this.validFrom = data.validFrom ? new Date(data.validFrom) : new Date();
+    this.validTo = data.validTo ? new Date(data.validTo) : new Date();
+    this.selectedStops = data.stops ? data.stops : [];
   }
 
   /**
@@ -71,7 +71,7 @@ export class AnnouncementEditComponent implements OnInit {
   }
 
   confirm(): void {
-    this.saveDisabled = true;
+    this.waitForBackend = true;
     this.data.text = this.text;
     this.data.stops = Array.from(this.selectedStops);
     this.data.validFrom = this.validFrom;
@@ -84,8 +84,10 @@ export class AnnouncementEditComponent implements OnInit {
           this.toastService.showSuccessToast('Added ' + data.id);
           this.callback(this.data);
         },
-        err => this.toastService.showErrorToast('Failed to add announcement')
-        );
+        err => {
+          this.toastService.showErrorToast('Failed to add announcement');
+          this.waitForBackend = false;
+        });
     } else {
       this.http.editAnnouncement(this.data).subscribe(
         data => {
@@ -94,12 +96,28 @@ export class AnnouncementEditComponent implements OnInit {
           this.toastService.showSuccessToast('Edited ' + data.id);
           this.callback(this.data);
         },
-        err => this.toastService.showErrorToast('Failed to edit ' + this.data.id)
-      );
+        err => {
+          this.toastService.showErrorToast('Failed to edit ' + this.data.id);
+          this.waitForBackend = false;
+        });
+    }
+  }
+
+  isNextEnabled(): boolean {
+    if (this.waitForBackend) return false;
+    switch (this.state) {
+      case 0:
+        console.log(this.text);
+        return this.text !== '';
+      case 2:
+        return this.selectedStops.length > 0;
+      default:
+        return true;
     }
   }
 
   next(): void {
+    if (!this.isNextEnabled()) return;
     switch (this.state) {
       case 0:
       case 1:
@@ -111,7 +129,13 @@ export class AnnouncementEditComponent implements OnInit {
     }
   }
 
+  isBackEnabled(): boolean {
+    if (this.waitForBackend) return false;
+    return this.state > 0;
+  }
+
   back(): void {
+    if (!this.isBackEnabled()) return;
     switch (this.state) {
       case 0:
         break;
