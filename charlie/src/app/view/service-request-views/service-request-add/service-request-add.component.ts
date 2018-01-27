@@ -8,6 +8,7 @@ import {now} from '../../../shared/data/dates';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {DateParserService} from '../../../services/date-parser.service';
 import {ToastService} from '../../../services/toast.service';
+import {StringFormatterService} from '../../../services/string-formatter.service';
 
 @Component({
   selector: 'app-service-request-add',
@@ -42,12 +43,12 @@ export class ServiceRequestAddComponent implements OnInit {
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
               private dateParser: DateParserService,
-              private toastService: ToastService) { }
+              private toastService: ToastService,
+              private stringFormatter: StringFormatterService) { }
 
   ngOnInit(): void {
     this.selected = new ServiceRequestData();
     this.selected.feedbacks = [];
-
     // TODO: Get data from meta data controller, do not set manually
     if(this.targetEditable) {
       this.selectedTargetType = new DropdownValue(true, 'Vehicle');
@@ -58,8 +59,7 @@ export class ServiceRequestAddComponent implements OnInit {
 
     this.date = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
     this.updateDate();
-
-    this.selectedFeedback = []
+    this.selectedFeedback = [];
   }
 
   /**
@@ -147,8 +147,6 @@ export class ServiceRequestAddComponent implements OnInit {
     this.selected.priority = this.selectedPriority.value;
     this.selected.dueDate = this.selectedDate;
     this.selected.serviceRequestDescription = [{"id": "", "text": this.description, "objectId": ""}];
-    console.log(this.selected);
-
     this.http.addServiceRequest(this.selected).subscribe(
       data => {
         console.log('Added service request.');
@@ -209,7 +207,7 @@ export class ServiceRequestAddComponent implements OnInit {
   }
 
   stepBack() {
-    if(this.dataChosen){
+   if(this.dataChosen){
       this.dataChosen = false;
     } else if(this.targetTypeChosen) {
       this.targetTypeChosen = false;
@@ -236,5 +234,9 @@ export class ServiceRequestAddComponent implements OnInit {
     // set state of add-window
     this.targetTypeChosen = true;
     this.targetEditable = false;
+  }
+
+  public editServiceRequest(): void {
+
   }
 }

@@ -9,6 +9,7 @@ import {ConfirmDeletionComponent} from '../../../shared/components/confirm-popup
 import {dummyDate} from '../../../shared/data/dates';
 import {ToastService} from '../../../services/toast.service';
 import {StringFormatterService} from '../../../services/string-formatter.service';
+import {ServiceRequestAddComponent} from '../service-request-add/service-request-add.component';
 
 @Component({
   selector: 'app-service-request-detail-view',
