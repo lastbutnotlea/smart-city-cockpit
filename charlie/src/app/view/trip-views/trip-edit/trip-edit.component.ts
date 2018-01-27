@@ -35,6 +35,8 @@ export class TripEditComponent implements OnInit {
 
   state: number = 0;
 
+  title: string = "Add new trip";
+
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
               private dateParser: DateParserService) {
@@ -55,6 +57,7 @@ export class TripEditComponent implements OnInit {
         }).length !== 0);
       });
       this.selectedDate = new Date(this.model.stops[0].departureTime);
+      this.title = "Edit " + this.model.id;
     }
   }
 
@@ -81,7 +84,7 @@ export class TripEditComponent implements OnInit {
   }
 
   selectedLineChanged(): void {
-    if (!this.getDirectionDropdownItems().some(item => item.label === this.getDirectionString(this.getStops())))
+    if (!this.model || !this.getDirectionDropdownItems().some(item => item.label === this.getDirectionString(this.getStops())))
       this.selectedDirection = TripEditComponent.selectDropdown;
   }
 
