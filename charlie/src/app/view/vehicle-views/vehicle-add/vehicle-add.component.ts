@@ -2,8 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {DropdownValue} from '../../../shared/components/dropdown/dropdown.component';
-import {StringFormatterService} from '../../../services/string-formatter.service';
 import {DateParserService} from "../../../services/date-parser.service";
+import {StringFormatterService} from '../../../services/string-formatter.service';
+import {ToastService} from '../../../services/toast.service';
 
 @Component({
   selector: 'app-vehicle-add',
@@ -21,7 +22,8 @@ export class VehicleAddComponent implements OnInit {
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
               private stringFormatter: StringFormatterService,
-              private dateParser: DateParserService) {
+              private dateParser: DateParserService,
+              private toastService: ToastService) {
   }
 
   ngOnInit(): void {
@@ -44,10 +46,14 @@ export class VehicleAddComponent implements OnInit {
       isShutDown: false,
       currentLine: null
     }).subscribe(
-      () => this.activeModal.close('Close click'),
-      err => {
-        console.log(JSON.stringify(err));
-      });
+      data => {
+        this.toastService.showSuccessToast('Added ' + data.id);
+        this.activeModal.close('Close click');
+      },
+          err => {
+            this.toastService.showErrorToast('Failed to add vehicle');
+          }
+      );
   }
 
   toDropdown(types: string[]): DropdownValue[] {
