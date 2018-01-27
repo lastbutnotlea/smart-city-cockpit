@@ -77,8 +77,8 @@ export class TripEditComponent implements OnInit {
   getDirectionDropdownItems(): DropdownValue[] {
     if (this.selectedLine.value !== null) {
       return [
-        new DropdownValue(true, this.getDirectionString(this.selectedLine.value.stopsInbound)),
-        new DropdownValue(false, this.getDirectionString(this.selectedLine.value.stopsOutbound)),
+        new DropdownValue(true, this.getDirectionString(this.getStops(true))),
+        new DropdownValue(false, this.getDirectionString(this.getStops(false))),
       ];
     } else {
       return [];
@@ -86,8 +86,7 @@ export class TripEditComponent implements OnInit {
   }
 
   selectedLineChanged(): void {
-    if (!this.model || !this.getDirectionDropdownItems().some(item => item.label === this.getDirectionString(this.getStops())))
-      this.selectedDirection = TripEditComponent.selectDropdown;
+    this.selectedDirection = TripEditComponent.selectDropdown;
   }
 
   selectedDirectionChanged(): void {
