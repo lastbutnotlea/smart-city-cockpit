@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {EventData} from '../../../shared/data/event-data';
@@ -6,6 +6,7 @@ import {EventAddComponent} from '../event-add/event-add.component';
 import {StringFormatterService} from '../../../services/string-formatter.service';
 import {getUrlForId} from "../../../shared/util/routing-util";
 import {Router} from "@angular/router";
+import {FilterGroupComponent} from "../../../shared/components/filter-group/filter-group.component";
 
 @Component({
   selector: 'app-event-view',
@@ -18,6 +19,9 @@ export class EventsComponent implements OnInit {
   loaded: boolean = false;
 
   events: EventData[] = [];
+
+  @ViewChild(FilterGroupComponent)
+  filterGroup: FilterGroupComponent;
 
   constructor(private http: HttpRoutingService,
               private modalService: NgbModal,

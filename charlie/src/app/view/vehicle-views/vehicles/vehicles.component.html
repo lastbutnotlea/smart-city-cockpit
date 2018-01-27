@@ -9,7 +9,7 @@
       <app-filter-group-view></app-filter-group-view>
     </div>
 
-    <div *ngIf="loaded && filterGroup.getFiltered(vehicles).length > 0"
+    <div *ngIf="loaded && filterGroup.searchVehicle(filterGroup.getFiltered(vehicles)).length > 0"
          class="d-flex flex-grow-1 fit-screen">
       <table class="table fit-screen d-flex flex-column">
         <thead>
@@ -45,7 +45,7 @@
     <div *ngIf="!loaded">
       <h3>Loading...</h3>
     </div>
-    <div *ngIf="loaded && filterGroup.getFiltered(vehicles).length == 0">
+    <div *ngIf="loaded && filterGroup.searchVehicle(filterGroup.getFiltered(vehicles)).length == 0">
       <h3>No vehicles available</h3>
     </div>
   </div>
