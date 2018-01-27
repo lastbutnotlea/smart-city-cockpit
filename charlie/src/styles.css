@@ -159,3 +159,7 @@ h4 {
 .toast-info {
   background-color: lightgray;
 }
+
+.width-300 {
+  width: 300px;
+}

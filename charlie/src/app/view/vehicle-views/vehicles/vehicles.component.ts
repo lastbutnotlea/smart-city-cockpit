@@ -80,4 +80,16 @@ export class VehiclesComponent extends LiveDataComponent implements OnInit {
     let link: string = getUrlForId(id);
     this.router.navigate([link]);
   }
+
+  searchVehicle(list: VehicleData[], text: string): VehicleData[] {
+    return list.filter(v => v.load.toString().toLowerCase().includes(text.toLowerCase())
+      || v.capacity.toString().toLowerCase().includes(text.toLowerCase())
+      || v.delay.toString().toLowerCase().includes(text.toLowerCase())
+      || v.temperature.toString().toLowerCase().includes(text.toLowerCase())
+      || v.defects.toString().toLowerCase().includes(text.toLowerCase())
+      || v.type.toLowerCase().includes(text.toLowerCase())
+      || v.state.toLowerCase().includes(text.toLowerCase())
+      || v.freeFrom.toLowerCase().includes(text.toLowerCase())
+      || v.currentLine.name.toLowerCase().includes(text.toLowerCase()));
+  }
 }

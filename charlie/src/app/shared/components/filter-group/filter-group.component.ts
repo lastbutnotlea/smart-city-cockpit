@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {FilterComponent} from '../filter/filter.component';
+import {VehicleData} from "../../data/vehicle-data";
 
 @Component({
   selector: 'app-filter-group-view',
@@ -9,6 +10,7 @@ import {FilterComponent} from '../filter/filter.component';
 export class FilterGroupComponent {
 
   filters: FilterComponent[] = [];
+  text: string = "";
 
   public addFilterComponent(filter: FilterComponent): void {
     this.filters.push(filter);
@@ -21,4 +23,17 @@ export class FilterGroupComponent {
     return list;
   }
 
+  searchVehicle(list: VehicleData[]): VehicleData[] {
+    return list.filter(v =>
+         v.id.toLowerCase().includes(this.text.toLowerCase())
+      || v.load.toString().toLowerCase().includes(this.text.toLowerCase())
+      || v.capacity.toString().toLowerCase().includes(this.text.toLowerCase())
+      || v.delay.toString().toLowerCase().includes(this.text.toLowerCase())
+      || v.temperature.toString().toLowerCase().includes(this.text.toLowerCase())
+      || v.defects.toString().toLowerCase().includes(this.text.toLowerCase())
+      || v.type.toLowerCase().includes(this.text.toLowerCase())
+      || v.state.toLowerCase().includes(this.text.toLowerCase())
+      || v.freeFrom.toLowerCase().includes(this.text.toLowerCase())
+      || ((v.currentLine === null)?false:v.currentLine.name.toLowerCase().includes(this.text.toLowerCase())));
+  }
 }

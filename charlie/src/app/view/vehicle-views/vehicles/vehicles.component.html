@@ -5,7 +5,7 @@
   </h3>
 
   <div class="d-flex flex-row fit-screen">
-    <div class="fit-screen width-200">
+    <div class="fit-screen width-300">
       <app-filter-group-view></app-filter-group-view>
     </div>
 
@@ -25,7 +25,7 @@
         </tr>
         </thead>
         <tbody class="d-flex flex-column flex-grow-1 fit-screen">
-        <tr *ngFor="let vehicle of filterGroup.getFiltered(vehicles)">
+        <tr *ngFor="let vehicle of filterGroup.searchVehicle(filterGroup.getFiltered(vehicles))">
           <div *ngIf="!vehicle.isShutDown" (click)="goToLink(vehicle.id)" class="d-flex highlight">
             <td>{{ vehicle.id }}</td>
             <td>{{ vehicle.capacity }}</td>
