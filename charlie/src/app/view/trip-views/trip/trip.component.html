@@ -2,7 +2,7 @@
   <h3 class="text-center m-3">Trips</h3>
 
   <div class="d-flex flex-row fit-screen">
-    <div class="fit-screen filter-fully-visible">
+    <div class="fit-screen width-300">
       <app-filter-group-view></app-filter-group-view>
     </div>
     <div *ngIf="loaded && filterGroup.getFiltered(trips).length > 0" class="d-flex fit-screen">
