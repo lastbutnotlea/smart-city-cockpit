@@ -6,7 +6,7 @@
 </a>
 
 <div *ngFor="let trip of trips">
-  <app-state-icon class="float-right" [size]="'fa-2x'" [state]="trip.vehicle.state"></app-state-icon>
+  <app-state-icon class="float-right" [size]="'fa-2x'" [state]="trip.vehicle.state" [paddingr]="'padding-right-20'"></app-state-icon>
 
   <p *ngIf="areTripsForVehicle">
     <label class="text-primary">
