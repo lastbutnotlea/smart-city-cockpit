@@ -1,5 +1,6 @@
 package de.team5.super_cute.crocodile.config;
 
+import de.team5.super_cute.crocodile.jsonclasses.LiveDataConfiguration;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -7,12 +8,32 @@ import java.util.Map;
 
 public class LiveDataConfig {
 
-  public static final int CREATE_STOP_DEFECT_PERCENTAGE = 5;
-  public static final int CREATE_VEHICLE_DEFECT_PERCENTAGE = 5;
-  public static final int REMOVE_STOP_DEFECT_PERCENTAGE = 10;
-  public static final int REMOVE_VEHICLE_DEFECT_PERCENTAGE = 10;
-  public static final int DEFECT_FEEDBACK_PERCENTAGE = 5;
-  public static final int VALUE_FEEDBACK_PERCENTAGE = 1;
+  public static int CREATE_STOP_DEFECT_PERCENTAGE = 5;
+  public static int CREATE_VEHICLE_DEFECT_PERCENTAGE = 5;
+  public static int REMOVE_STOP_DEFECT_PERCENTAGE = 10;
+  public static int REMOVE_VEHICLE_DEFECT_PERCENTAGE = 10;
+  public static int DEFECT_FEEDBACK_PERCENTAGE = 5;
+  public static int VALUE_FEEDBACK_PERCENTAGE = 1;
+
+  /**
+   * Sets the current system configuration according to the given
+   * @param configuration
+   */
+  public static void setLiveDataConfiguration(LiveDataConfiguration configuration) {
+    CREATE_STOP_DEFECT_PERCENTAGE = configuration.defectChance;
+    CREATE_VEHICLE_DEFECT_PERCENTAGE = configuration.defectChance;
+    REMOVE_STOP_DEFECT_PERCENTAGE = configuration.defectRemoveChance;
+    REMOVE_VEHICLE_DEFECT_PERCENTAGE = configuration.defectRemoveChance;
+    DEFECT_FEEDBACK_PERCENTAGE = configuration.feedbackChance * 5;
+    VALUE_FEEDBACK_PERCENTAGE = configuration.feedbackChance;
+  }
+
+  /**
+   * @return a LiveDataConfiguration representing the current system configuration
+   */
+  public static LiveDataConfiguration getCurrentConfiguration() {
+    return new LiveDataConfiguration(CREATE_STOP_DEFECT_PERCENTAGE, REMOVE_STOP_DEFECT_PERCENTAGE, VALUE_FEEDBACK_PERCENTAGE);
+  }
 
   public static final int MAX_FEEDBACK_COUNT = 100;
 
