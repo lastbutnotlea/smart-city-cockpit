@@ -9,6 +9,7 @@ import {StringFormatterService} from '../../../services/string-formatter.service
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {StopSortService} from '../../../services/stop-sort.service';
 import {FilterComponent} from '../../../shared/components/filter/filter.component';
+import {ToastsManager} from 'ng2-toastr';
 import {getUrlForId} from "../../../shared/util/routing-util";
 
 
