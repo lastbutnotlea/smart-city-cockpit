@@ -67,7 +67,7 @@ export class TripDetailComponent extends LiveDataComponent implements OnInit {
 
   showConfirmModal(): void {
     const modal = this.modalService.open(ConfirmDeletionComponent);
-    modal.componentInstance.objectToDelete = 'trip ' + this.trip.id;
+    modal.componentInstance.objectToDelete = this.trip.id;
     modal.componentInstance.deletionEvent.subscribe(($event) => {
       this.deleteTrip($event);
     });
