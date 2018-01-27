@@ -15,7 +15,8 @@ thead, tbody, tr, td, th { display: block; }
 
 thead th {
   text-align: left;
-  width: 14% !important;
+  width: 14.28% !important;
+
 }
 
 tbody {
@@ -30,6 +31,10 @@ thead {
 
 tbody td, thead th {
   /* 100/7 */
-  width: 14.2857142857%;
+  width: 14.28%;
   float: left;
+}
+
+.width-200 {
+  max-width: 200px;
 }

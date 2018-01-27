@@ -19,6 +19,10 @@ table {
   margin-right: 10px;
 }
 
+p {
+  margin-bottom: 0.5rem;
+}
+
 
 /* MARGIN AND PADDING */
 
@@ -40,6 +44,10 @@ table {
 
 .padding-right-5 {
   padding-right: 5px;
+}
+
+.padding-right-10 {
+  padding-right: 10px;
 }
 
 .padding-right-20 {
@@ -87,10 +95,14 @@ table {
 .bounding-box {
   float: left;
   margin: 20px 20px 0 0;
-  padding: 10px;
+  padding: 10px 10px 10px 15px;
   border-radius: 10px;
   border: 1px solid #007bff;
   overflow-y: auto;
+}
+
+app-ticker-item .bounding-box {
+  overflow-y: hidden;
 }
 
 .flex-3 {
@@ -104,7 +116,7 @@ table {
 }
 
 h4 {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   text-align: center;
 }
 
@@ -118,4 +130,44 @@ h4 {
 
 .highlight {
   cursor: pointer;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 18px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #007bff;
+  border-radius: 10px;
+  border: 4px solid transparent;
+  background-clip: content-box;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+}
+
+/* STYLING TOASTS */
+
+.toast-success {
+  background-color: #7dbcff;
+}
+
+.toast-error {
+  background-color: #dd3645;
+}
+
+.toast-warning {
+  background-color: #ffb300;
+}
+
+.toast-info {
+  background-color: lightgray;
 }

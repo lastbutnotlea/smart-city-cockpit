@@ -4,9 +4,17 @@
 
 <div class="fit-screen d-flex flex-column" *ngIf="isLoaded()">
 
-  <h3 class="text-center margin-bottom-30"> {{title}} <label class="text-primary">{{event.id}}</label></h3>
+  <h3 class="text-center margin-bottom-30">
+    <div [ngClass]="{'color-fine': event.priority === 'FINE',
+       'color-problematic': event.priority === 'PROBLEMATIC',
+       'color-critical': event.priority === 'CRITICAL' }">
+      <i class="fa fa-exclamation-circle fa-3x float-right padding-right-20" aria-hidden="true"></i>
+    </div>
+    {{title}}
+    <label class="text-primary">{{event.id}}</label>
+  </h3>
 
-  <div class="no-float margin-bottom-30">
+  <div class="no-float">
     <button class="btn btn-outline-dark" (click)="goBack()">Back</button>
     <button class="btn btn-outline-primary" (click)="editEvent()">Edit Event</button>
     <button class="btn btn-outline-danger" (click)="showConfirmModal()">Delete</button>

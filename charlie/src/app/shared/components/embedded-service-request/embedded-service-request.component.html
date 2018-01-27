@@ -17,7 +17,7 @@
         <a href="serviceRequests/detail/{{serviceRequest.id}}">
           {{serviceRequest.name}}
         </a>
-        <app-state-icon class="float-right" [size]="'fa-2x'" [state]="serviceRequest.priority"></app-state-icon>
+        <app-state-icon class="float-right" [size]="'fa-2x'" [state]="serviceRequest.priority" [paddingr]="'padding-right-20'"></app-state-icon>
       </p>
       <p>
         <label class="text-secondary">Due on {{serviceRequest.dueDate
@@ -34,7 +34,7 @@
         <a href="serviceRequests/detail/{{serviceRequest.id}}">
           {{serviceRequest.name}}
         </a>
-        <app-state-icon class="float-right" [size]="'fa-2x'" [state]="serviceRequest.priority"></app-state-icon>
+        <app-state-icon class="float-right" [size]="'fa-2x'" [state]="serviceRequest.priority" [paddingr]="'padding-right-20'"></app-state-icon>
       </p>
       <p>
         <label class="text-secondary">Completed on {{serviceRequest.completionDate |

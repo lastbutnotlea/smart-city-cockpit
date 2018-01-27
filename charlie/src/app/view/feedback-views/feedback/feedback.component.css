@@ -14,3 +14,7 @@
   margin: 0;
   overflow-y: auto;
 }
+
+.width-200 {
+  max-width: 200px;
+}
