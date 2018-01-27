@@ -2,7 +2,6 @@ import {Component, Input, Output} from '@angular/core';
 import {NgbActiveModal, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {ServiceRequestData} from '../../../shared/data/service-request-data';
 import {DropdownValue, priorityDropdownItems} from '../../../shared/components/dropdown/dropdown.component';
-import {now} from '../../../shared/data/dates';
 import {FeedbackData} from '../../../shared/data/feedback-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {DateParserService} from '../../../services/date-parser.service';
@@ -24,7 +23,7 @@ export class ServiceRequestEditComponent {
 
   selectedPriority: DropdownValue;
   description: string;
-  selectedDate: string = now.toISOString();
+  selectedDate: string = (new Date()).toISOString();
   date: NgbDateStruct;
   availFeedback: FeedbackData[];
   selectedFeedback: FeedbackData[];
