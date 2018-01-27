@@ -70,7 +70,10 @@ export class TripEditComponent implements OnInit {
         // only if not already set to something meaningful
         if (!this.model) this.selectedLine = TripEditComponent.selectDropdown;
       },
-      err => console.log("Err: " + JSON.stringify(err))
+      err => {
+        console.log("Err: " + JSON.stringify(err));
+        this.toastService.showErrorToast("Could not load lines.");
+      }
     );
   }
 
@@ -138,7 +141,10 @@ export class TripEditComponent implements OnInit {
           this.selectedVehicle = TripEditComponent.selectDropdown;
         }
       },
-      err => console.log("Error: " + JSON.stringify(err))
+      err => {
+        console.log("Error: " + JSON.stringify(err));
+        this.toastService.showErrorToast("Could not get available vehicles.");
+      }
     );
   }
 
