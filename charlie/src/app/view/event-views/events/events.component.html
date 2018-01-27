@@ -8,11 +8,11 @@
         <tr class="d-flex">
           <th>Event-ID</th>
           <th>Subject</th>
-          <th nowrap>Priority</th>
           <th>Starts</th>
           <th>Ends</th>
           <th>Involved Parties</th>
           <th>Notes</th>
+          <th>Priority</th>
         </tr>
         </thead>
         <tbody class="d-flex flex-column flex-grow-1 fit-screen">
@@ -20,7 +20,6 @@
           <div (click)="goToLink(event.id)" class="d-flex highlight">
             <td>{{ event.id }}</td>
             <td>{{event.subject}}</td>
-          <td>{{ stringFormatter.priorityToLabel(event.priority) }}</td>
             <td>{{event.startTime | date:'MM/dd/yyyy HH:mm'}}</td>
             <td>{{event.endTime | date:'MM/dd/yyyy HH:mm'}}</td>
             <td>
@@ -32,6 +31,13 @@
               <label *ngFor="let note of event.appointmentNotes">
                 {{note.text}}
               </label>
+            </td>
+            <td>
+              <span [ngClass]="{'color-fine': event.priority === 'FINE',
+               'color-problematic': event.priority === 'PROBLEMATIC',
+              'color-critical': event.priority === 'CRITICAL' }">
+                <i class="fa fa-exclamation-circle fa-2x" aria-hidden="true"></i>
+              </span>
             </td>
           </div>
         </tr>
