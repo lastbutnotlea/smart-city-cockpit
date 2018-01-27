@@ -10,13 +10,13 @@
 
   <div *ngIf="!targetTypeChosen" class="margin-bottom">
     <label>Target Type: </label>
-    <app-dropdown [values]="targetItems()" [(selected)]="selectedTargetType"></app-dropdown>
+    <app-dropdown [values]="targetItems()" [(selected)]="selectedTargetType" [isDisabled]="!targetEditable"></app-dropdown>
   </div>
 
   <div *ngIf="targetTypeChosen && !dataChosen">
     <div class="margin-bottom">
       <label>Target: </label>
-      <app-dropdown [values]="toDropdownItemsTarget(availTargets)" [(selected)]="selectedTarget"></app-dropdown>
+      <app-dropdown [values]="toDropdownItemsTarget(availTargets)" [(selected)]="selectedTarget" [isDisabled]="!targetEditable"></app-dropdown>
     </div>
 
     <div class="margin-bottom">

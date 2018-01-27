@@ -14,7 +14,7 @@ export class DropdownValue {
   templateUrl: './dropdown.component.html',
   styleUrls: ['./dropdown.component.css']
 })
-export class DropdownComponent implements OnInit {
+export class DropdownComponent {
   @Input()
   values: DropdownValue[];
 
@@ -24,7 +24,8 @@ export class DropdownComponent implements OnInit {
   @Output()
   selectedChange: EventEmitter<DropdownValue> = new EventEmitter<DropdownValue>();
 
-  ngOnInit(): void {}
+  @Input()
+  isDisabled: boolean = false;
 
   constructor() {
     this.selectedChange.subscribe(value => this.selected = value);

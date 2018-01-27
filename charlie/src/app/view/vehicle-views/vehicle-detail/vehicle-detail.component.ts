@@ -37,7 +37,7 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
     // vehicle data
     this.http.getVehicle(id).subscribe(
       vehicle => {
-        this.vehicle = vehicle;;
+        this.vehicle = vehicle;
         this.loaded = true;
       },
       err => console.log('Could not fetch vehicle data!')

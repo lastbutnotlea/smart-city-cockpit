@@ -23,6 +23,7 @@ export class ServiceRequestAddComponent implements OnInit {
   targetTypeChosen: boolean = false;
   dataChosen: boolean = false;
   saveDisabled: boolean = false;
+  targetEditable: boolean = true;
 
   selectedTargetType: DropdownValue;
 
@@ -91,20 +92,23 @@ export class ServiceRequestAddComponent implements OnInit {
    */
   getTargetOfSelectedTargetType() {
     // get all available objects of selected target type
-    if(this.selectedTargetType.value){
+    if(this.selectedTargetType.value && this.targetEditable){
       this.http.getVehicles().subscribe(data => {
         this.availTargets = data;
         this.selectedTarget = this.toDropdownItemTarget(this.availTargets[0]);
         this.targetTypeChosen = true;
       },
       err => console.log('Could not load vehicle targets.'));
-    } else{
+    } else if(!this.selectedTargetType.value && this.targetEditable){
       this.http.getStops().subscribe(data => {
           this.availTargets = data;
           this.selectedTarget = this.toDropdownItemTarget(this.availTargets[0]);
           this.targetTypeChosen = true;
         },
         err => console.log('Could not load vehicle targets.'));
+    } else {
+      // target has already been selected and is not editable
+      this.targetTypeChosen = true;
     }
   }
 
@@ -208,5 +212,20 @@ export class ServiceRequestAddComponent implements OnInit {
 
   public onAdd(callback: (param: ServiceRequestData) => void) {
     this.callback = callback;
+  }
+
+  public skipSteps(isVehicleTarget: boolean, target: ServiceRequestTarget): void {
+    // set target type
+    if(isVehicleTarget){
+      this.selectedTargetType = new DropdownValue(true, 'Vehicle');
+    } else {
+      this.selectedTargetType = new DropdownValue(false, 'Stop');
+    }
+    // set target
+    this.availTargets = [target];
+    this.selectedTarget = this.toDropdownItemTarget(target);
+    // set state of add-window
+    this.targetTypeChosen = true;
+    this.targetEditable = false;
   }
 }
