@@ -92,6 +92,7 @@ export class ServiceRequestEditComponent {
       },
       err => {
         console.log('Could not edit service request.');
+        this.saveDisabled = false;
         this.activeModal.close('Close click');
         this.toastService.showErrorToast('Failed to edit service request ' + this.data.id);
       });

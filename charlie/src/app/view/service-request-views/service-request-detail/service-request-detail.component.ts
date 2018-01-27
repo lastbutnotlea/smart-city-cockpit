@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {ServiceRequestEditComponent} from '../service-request-edit/service-request-edit.component';
 import {ServiceRequestData} from '../../../shared/data/service-request-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
@@ -62,18 +62,20 @@ export class ServiceRequestDetailComponent implements OnInit {
     const modal = this.modalService.open(ConfirmDeletionComponent);
     modal.componentInstance.objectToDelete = 'service request ' + this.serviceRequest.id;
     modal.componentInstance.deletionEvent.subscribe(($event) => {
-      this.deleteServiceRequest($event);});
+      this.deleteServiceRequest(modal);});
   }
 
-  deleteServiceRequest(event) : void {
+  deleteServiceRequest(modal: NgbModalRef) : void {
     this.http.deleteServiceRequest(this.serviceRequest.id).subscribe(
       data => {
         this.location.back();
+        modal.close('Close click');
         this.toastService.showSuccessToast('Deleted service request ' + this.serviceRequest.id);
         console.log('Deleted successfully')
       },
       err => {
         this.toastService.showErrorToast('Failed to delete service request ' + this.serviceRequest.id);
+        modal.componentInstance.deleteDisabled = false;
         console.log('Could not delete trip!');
       }
     );
