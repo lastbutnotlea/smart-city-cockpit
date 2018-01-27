@@ -6,12 +6,12 @@
 <div *ngFor="let data of linePositionData.positionAtStops; let i = index">
   <!-- for vehicles at stops -->
   <p>
+    <!-- status icon -->
+    <app-state-icon [state]="data.stopState" [paddingr]="'padding-right-20'" [size]="'fa-2x'"></app-state-icon>
     <!-- stop icon -->
     <a href="network/stop/{{data.stopId}}">
       {{data.stopName}}
     </a>
-    <!-- status icon -->
-    <app-state-icon [state]="data.stopState"></app-state-icon>
     <!-- vehicle icons -->
     <span class="float-right" *ngFor="let vehicle of data.vehiclePositionData">
           <a href="vehicles/{{vehicle.id}}">
@@ -20,14 +20,14 @@
                 [ngClass]="{'color-fine': vehicle.state === 'FINE',
                 'color-problematic': vehicle.state === 'PROBLEMATIC',
                 'color-critical': vehicle.state === 'CRITICAL' }">
-            <i class="fa fa-bus float-left padding-left-5"></i>
+            <i class="fa fa-bus fa-2x float-left padding-left-5"></i>
           </span>
             <!-- subway icon if subway -->
           <span *ngIf="vehicle.type === 'SUBWAY'"
                 [ngClass]="{'color-fine': vehicle.state === 'FINE',
                 'color-problematic': vehicle.state === 'PROBLEMATIC',
                 'color-critical': vehicle.state === 'CRITICAL' }">
-            <i class="fa fa-subway float-left padding-left-5"></i>
+            <i class="fa fa-subway fa-2x float-left padding-left-5"></i>
           </span>
           </a>
         </span>
@@ -36,7 +36,11 @@
   <!-- for vehicles between stops -->
   <p>
     <!-- This keeps a empty line between stops even if no vehicle is displayed there -->
-    <span class="invisible-text">.</span>
+
+    <span class="invisible-text">
+    <app-state-icon [state]="data.stopState" [paddingr]="'padding-right-20'" [size]="'fa-2x'"></app-state-icon>
+      I am invisible! No one can stop me!
+    </span>
     <!-- vehicle icons -->
     <span class="float-right"
           *ngFor="let vehicle of linePositionData.positionAfterStops[i].vehiclePositionData">
@@ -46,14 +50,14 @@
                   [ngClass]="{'color-fine': vehicle.state === 'FINE',
                 'color-problematic': vehicle.state === 'PROBLEMATIC',
                 'color-critical': vehicle.state === 'CRITICAL' }">
-              <i class="fa fa-bus float-left padding-left-5"></i>
+              <i class="fa fa-bus fa-2x float-left padding-left-5"></i>
             </span>
             <!-- subway icon if subway -->
             <span *ngIf="vehicle.type === 'SUBWAY'"
                   [ngClass]="{'color-fine': vehicle.state === 'FINE',
                 'color-problematic': vehicle.state === 'PROBLEMATIC',
                 'color-critical': vehicle.state === 'CRITICAL' }">
-              <i class="fa fa-subway float-left padding-left-5"></i>
+              <i class="fa fa-subway fa-2x float-left padding-left-5"></i>
             </span>
           </a>
         </span>
