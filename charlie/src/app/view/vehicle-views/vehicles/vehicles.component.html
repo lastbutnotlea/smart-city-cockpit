@@ -1,6 +1,6 @@
 <div class="d-flex flex-column fit-screen">
   <h3 class="text-center">
-    <app-state-icon class="float-right" [size]="'fa-2x'" [state]="state"></app-state-icon>
+    <app-state-icon class="float-right" [size]="'fa-2x'" [state]="state" [paddingr]="'padding-right-20'"></app-state-icon>
     {{title}}
   </h3>
 
@@ -35,7 +35,7 @@
             <td>{{ vehicle.defects }}</td>
             <td>{{ stringFormatter.toFirstUpperRestLower(vehicle.type) }}</td>
             <td>
-              <app-state-icon [size]="'fa-2x'" [state]="vehicle.state"></app-state-icon>
+              <app-state-icon [size]="'fa-2x'" [state]="vehicle.state" [paddingr]="'padding-right-20'"></app-state-icon>
             </td>
           </div>
         </tr>
