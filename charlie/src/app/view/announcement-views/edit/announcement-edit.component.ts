@@ -52,10 +52,10 @@ export class AnnouncementEditComponent implements OnInit {
 
   public setModel(data: AnnouncementData): void {
     this.data = data;
-    this.text = data.text;
-    this.validFrom = new Date(data.validFrom);
-    this.validTo = new Date(data.validTo);
-    this.selectedStops = data.stops;
+    this.text = data.text? data.text : '';
+    this.validFrom = data.validFrom? new Date(data.validFrom) : new Date();
+    this.validTo = data.validTo? new Date(data.validTo) : new Date();
+    this.selectedStops = data.stops? data.stops: [];
   }
 
   /**
