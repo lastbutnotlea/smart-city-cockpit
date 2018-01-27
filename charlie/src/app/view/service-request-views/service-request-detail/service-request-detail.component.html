@@ -53,9 +53,7 @@
         <span *ngIf="hasCompletionDate(serviceRequest)">
           {{serviceRequest.completionDate | date:'MM/dd/yyyy'}}
         </span>
-        <span *ngIf="hasCompletionDate(serviceRequest)">
-          Not completed yet
-        </span>
+        <span *ngIf="hasCompletionDate(serviceRequest)"></span>
       </p>
       <p><label *ngIf="serviceRequest.serviceRequestDescription.length > 0" class="text-secondary">Description: </label>
         <span *ngFor="let description of serviceRequest.serviceRequestDescription">

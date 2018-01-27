@@ -26,6 +26,7 @@ export class ServiceRequestAddComponent implements OnInit {
   dataChosen: boolean = false;
   saveDisabled: boolean = false;
   targetEditable: boolean = true;
+  dataEdited: boolean = false;
 
   selectedTargetType: DropdownValue;
 
@@ -38,6 +39,7 @@ export class ServiceRequestAddComponent implements OnInit {
   date: NgbDateStruct;
 
   availFeedback: FeedbackData[];
+  checkedFeedback: FeedbackData[];
   selectedFeedback: FeedbackData[];
 
   constructor(public activeModal: NgbActiveModal,
@@ -47,6 +49,35 @@ export class ServiceRequestAddComponent implements OnInit {
               private stringFormatter: StringFormatterService) { }
 
   ngOnInit(): void {
+    // if service request should be edited, use current data of service request as default data;
+    if(this.dataEdited) {
+      this.setPreviousData();
+    } else {
+      this.setInitialData();
+    }
+  }
+
+  setPreviousData(): void {
+    this.selected = this.data[0];
+    const value = this.selected.target.identifiableType === "vehicle";
+    this.selectedTargetType =  new DropdownValue(value,
+      this.selected.target.identifiableType.charAt(0).toUpperCase() + this.selected.target.identifiableType.slice(1).toLowerCase());
+    this.getTargetOfSelectedTargetType();
+    this.selectedTarget = this.toDropdownItemTarget(this.selected.target);
+    this.selectedType = new DropdownValue(this.selected.serviceType,
+      this.stringFormatter.toFirstUpperRestLower(this.selected.serviceType));
+    this.selectedPriority = new DropdownValue(this.selected.priority,
+      this.stringFormatter.priorityToLabel(this.selected.priority));
+    this.date = this.dateParser.convertDateToNgbDateStruct(new Date(this.selected.dueDate));
+    this.updateDate();
+    if (this.selected.serviceRequestDescription.length != 0) {
+      this.description = this.selected.serviceRequestDescription[0].text;
+    }
+    this.checkedFeedback = [];
+    this.selectedFeedback = this.selected.feedbacks;
+  }
+
+  setInitialData(): void {
     this.selected = new ServiceRequestData();
     this.selected.feedbacks = [];
     // TODO: Get data from meta data controller, do not set manually
@@ -59,6 +90,7 @@ export class ServiceRequestAddComponent implements OnInit {
 
     this.date = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
     this.updateDate();
+    this.checkedFeedback = [];
     this.selectedFeedback = [];
   }
 
@@ -101,22 +133,30 @@ export class ServiceRequestAddComponent implements OnInit {
     // get all available objects of selected target type
     if(this.selectedTargetType.value && this.targetEditable){
       this.http.getVehicles().subscribe(data => {
-        this.availTargets = data;
-        this.selectedTarget = this.toDropdownItemTarget(this.availTargets[0]);
-        this.targetTypeChosen = true;
+        this.setTargetData(data);
       },
       err => console.log('Could not load vehicle targets.'));
     } else if(!this.selectedTargetType.value && this.targetEditable){
       this.http.getStops().subscribe(data => {
-          this.availTargets = data;
-          this.selectedTarget = this.toDropdownItemTarget(this.availTargets[0]);
-          this.targetTypeChosen = true;
+          this.setTargetData(data);
         },
-        err => console.log('Could not load vehicle targets.'));
+        err => console.log('Could not load stop targets.'));
     } else {
       // target has already been selected and is not editable
       this.targetTypeChosen = true;
     }
+  }
+
+  setTargetData(data: ServiceRequestTarget[]): void {
+    this.availTargets = data;
+    if(!this.dataEdited){
+      this.selectedTarget = this.toDropdownItemTarget(this.availTargets[0]);
+    } else if (this.selectedTarget.value.identifiableType !== this.selectedTargetType.label.toLowerCase()) {
+      this.selectedTarget = this.toDropdownItemTarget(this.availTargets[0]);
+      this.selectedFeedback = [];
+      this.checkedFeedback = [];
+    }
+    this.targetTypeChosen = true;
   }
 
   /**
@@ -146,19 +186,37 @@ export class ServiceRequestAddComponent implements OnInit {
     this.selected.serviceType = this.selectedType.value;
     this.selected.priority = this.selectedPriority.value;
     this.selected.dueDate = this.selectedDate;
-    this.selected.serviceRequestDescription = [{"id": "", "text": this.description, "objectId": ""}];
-    this.http.addServiceRequest(this.selected).subscribe(
-      data => {
-        console.log('Added service request.');
-        this.callback(data);
-        this.toastService.showSuccessToast('Added service request ' + data.id);
-        this.activeModal.close('Close click');
-      },
-      err => {
-        this.toastService.showErrorToast('Failed to add service request');
-        console.log('Could not add service request.');
-      }
-    );
+    this.selected.feedbacks = this.selectedFeedback;
+    if(this.dataEdited) {
+      this.selected.name = null;
+      this.selected.serviceRequestDescription[0].text = this.description;
+      this.http.editServiceRequest(this.selected).subscribe(
+        data => {
+          this.callback(data);
+          console.log('Edited service request.');
+          this.toastService.showSuccessToast('Edited service request ' + data.id);
+          this.activeModal.close('Close click');
+        },
+        err => {
+          this.toastService.showErrorToast('Failed to edit service request');
+          console.log('Could not edit service request.');
+        }
+      );
+    } else {
+      this.selected.serviceRequestDescription = [{"id": "", "text": this.description, "objectId": ""}];
+      this.http.addServiceRequest(this.selected).subscribe(
+        data => {
+          console.log('Added service request.');
+          this.callback(data);
+          this.toastService.showSuccessToast('Added service request ' + data.id);
+          this.activeModal.close('Close click');
+        },
+        err => {
+          this.toastService.showErrorToast('Failed to add service request');
+          console.log('Could not add service request.');
+        }
+      );
+    }
   }
 
   toDropdownItemTarget(item: ServiceRequestTarget): DropdownValue {
@@ -193,17 +251,17 @@ export class ServiceRequestAddComponent implements OnInit {
   }
 
   isChecked(feedback: FeedbackData) {
-    return this.selectedFeedback.filter(feedback => feedback.id === feedback.id).length === 1;
+    return this.checkedFeedback.filter(feedback => feedback.id === feedback.id).length === 1;
   }
 
   includeFeedback(feedback: FeedbackData, included: boolean) {
     if (included) {
-      this.selected.feedbacks.push(feedback);
+      this.selectedFeedback.push(feedback);
     } else {
-      this.selected.feedbacks = this.selected.feedbacks.filter(filteredFeedback =>
+      this.selectedFeedback = this.selectedFeedback.filter(filteredFeedback =>
         filteredFeedback.id !== feedback.id);
     }
-    console.log(JSON.stringify(this.selected.feedbacks));
+    console.log(JSON.stringify(this.selectedFeedback));
   }
 
   stepBack() {
@@ -236,7 +294,7 @@ export class ServiceRequestAddComponent implements OnInit {
     this.targetEditable = false;
   }
 
-  public editServiceRequest(): void {
-
+  public editData(): void {
+    this.dataEdited = true;
   }
 }
