@@ -4,16 +4,15 @@
     <label class="padding-emb-box-headline">Feedback</label>
   </h4>
 </a>
-<p *ngFor="let data of feedback">
+<p *ngFor="let data of feedback; let i = index">
   <label class="text-secondary">{{data.timestamp}}</label>
   <a href="feedback/?id={{data.id}}">
     {{data.message}}
   </a>
-  <span [ngClass]="{'color-fine': data.rating === 'FINE',
-       'color-problematic': data.rating === 'PROBLEMATIC',
-       'color-critical': data.rating === 'CRITICAL' }">
-        <i class="fa fa-star float-right padding-right-20"
-           aria-hidden="true"></i>
-      </span>
+  <ngb-rating [rate]="ratingnumber[i]" class="float-right text-primary">
+    <ng-template let-fill="fill">
+      <span class="star" [class.filled]="fill === 100">&#9733;</span>
+    </ng-template>
+  </ngb-rating>
 </p>
 <p *ngIf="feedback.length === 0">No Feedback available</p>
