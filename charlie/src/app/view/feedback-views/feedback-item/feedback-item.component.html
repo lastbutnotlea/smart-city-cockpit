@@ -1,11 +1,11 @@
 <div class="bounding-box" style="width: 100%;">
   <div class="d-flex justify-content-around flex-column">
     <h4 class="text-center">
-      <div [ngClass]="{'color-fine': item.rating === 'FINE',
-       'color-problematic': item.rating === 'PROBLEMATIC',
-       'color-critical': item.rating === 'CRITICAL' }">
-        <i class="fa fa-star fa-2x float-right padding-right-20" aria-hidden="true"></i>
-      </div>
+      <ngb-rating [rate]="ratingnumber" class="float-right text-primary">
+        <ng-template let-fill="fill">
+          <span class="star" [class.filled]="fill === 100">&#9733;</span>
+        </ng-template>
+      </ngb-rating>
       Details <label class="text-primary">
       <a href="feedback/?id={{item.id}}">
         {{item.id}}
@@ -16,7 +16,7 @@
       <p *ngIf="item.feedbackType === 'STOP_FEEDBACK'" class="no-margin-bottom">Feedback for stop
         <label class="text-primary">
           <a href="network/stop/{{item.objective.id}}">
-          {{item.objective.id}}
+            {{item.objective.id}}
           </a>
         </label>:</p>
       <p *ngIf="item.feedbackType === 'VEHICLE_FEEDBACK'" class="no-margin-bottom">Feedback for

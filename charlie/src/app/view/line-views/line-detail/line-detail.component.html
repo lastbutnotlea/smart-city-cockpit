@@ -2,14 +2,14 @@
 
 <div class="fit-screen d-flex flex-column" *ngIf="loaded">
   <h3 class="text-center">
-    <app-state-icon class="float-right" [size]="'fa-3x'" [state]="line.state"></app-state-icon>
+    <app-state-icon class="float-right" [size]="'fa-3x'" [state]="line.state" [paddingr]="'padding-right-20'"></app-state-icon>
     Details
     <a href="network/detail/{{line.id}}">
       <label class="text-primary"> {{line.name}} </label>
     </a>
   </h3>
 
-  <div class="no-float margin-bottom-30">
+  <div class="no-float">
     <button class="btn btn-outline-dark" (click)="goBack()">Back</button>
   </div>
 
