@@ -100,10 +100,11 @@ p {
   border-radius: 10px;
   border: 1px solid #007bff;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 app-ticker-item .bounding-box {
-  overflow-y: hidden;
+  overflow-y: hidden !important;
 }
 
 .flex-3 {
