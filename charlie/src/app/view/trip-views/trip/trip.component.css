@@ -25,6 +25,7 @@ thead, tbody, tr, td, th { display: block; }
 
 thead th {
   text-align: left;
+  width: 14.07% !important;
 }
 
 tbody {
@@ -43,7 +44,7 @@ tbody td, thead th {
   float: left;
 }
 
-.filter-fully-visible {
-  width: 400px !important;
+.width-300 {
+  max-width: 300px;
 }
 
