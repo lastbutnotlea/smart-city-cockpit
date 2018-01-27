@@ -7,6 +7,7 @@ import {FeedbackData} from '../../../shared/data/feedback-data';
 import {now} from '../../../shared/data/dates';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {DateParserService} from '../../../services/date-parser.service';
+import {ToastService} from '../../../services/toast.service';
 
 @Component({
   selector: 'app-service-request-add',
@@ -39,7 +40,8 @@ export class ServiceRequestAddComponent implements OnInit {
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
-              private dateParser: DateParserService) { }
+              private dateParser: DateParserService,
+              private toastService: ToastService) { }
 
   ngOnInit(): void {
     this.selected = new ServiceRequestData();
@@ -142,9 +144,11 @@ export class ServiceRequestAddComponent implements OnInit {
       data => {
         console.log('Added service request.');
         this.callback(data);
+        this.toastService.showSuccessToast('Added service request ' + data.id);
         this.activeModal.close('Close click');
       },
       err => {
+        this.toastService.showErrorToast('Failed to add service request');
         console.log('Could not add service request.');
       }
     );

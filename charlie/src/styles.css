@@ -140,3 +140,21 @@ h4 {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
 }
+
+/* STYLING TOASTS */
+
+.toast-success {
+  background-color: #7dbcff;
+}
+
+.toast-error {
+  background-color: #dd3645;
+}
+
+.toast-warning {
+  background-color: #ffb300;
+}
+
+.toast-info {
+  background-color: lightgray;
+}
