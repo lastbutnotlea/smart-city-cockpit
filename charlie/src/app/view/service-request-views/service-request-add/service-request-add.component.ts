@@ -49,7 +49,9 @@ export class ServiceRequestAddComponent implements OnInit {
     this.selected.feedbacks = [];
 
     // TODO: Get data from meta data controller, do not set manually
-    this.selectedTargetType = new DropdownValue(true, 'Vehicle');
+    if(this.targetEditable) {
+      this.selectedTargetType = new DropdownValue(true, 'Vehicle');
+    }
     this.selectedType = new DropdownValue('CLEANING', 'Cleaning');
     this.selectedPriority = new DropdownValue('FINE', 'Low');
     this.description = "";
@@ -65,11 +67,14 @@ export class ServiceRequestAddComponent implements OnInit {
    * @returns {DropdownValue[]}
    */
   targetItems(): DropdownValue[] {
-    // TODO: Get data from meta data controller, do not set manually ?
-    let targetItems: DropdownValue[] = [];
-    targetItems.push(new DropdownValue(true, 'Vehicle'));
-    targetItems.push(new DropdownValue(false, 'Stop'));
-    return targetItems;
+    if(this.targetEditable){
+      // TODO: Get data from meta data controller, do not set manually ?
+      let targetItems: DropdownValue[] = [];
+      targetItems.push(new DropdownValue(true, 'Vehicle'));
+      targetItems.push(new DropdownValue(false, 'Stop'));
+      return targetItems;
+    }
+    return [this.selectedTargetType];
   }
 
   /**
@@ -124,7 +129,7 @@ export class ServiceRequestAddComponent implements OnInit {
         this.availFeedback = data;
         this.dataChosen = true;
       }, err => console.log('Could not load feedback for vehicle.'));
-    } else {
+    } else if(!this.selectedTargetType.value) {
       this.http.getStopFeedback(this.selectedTarget.value.id).subscribe( data => {
         this.availFeedback = data;
         this.dataChosen = true;
