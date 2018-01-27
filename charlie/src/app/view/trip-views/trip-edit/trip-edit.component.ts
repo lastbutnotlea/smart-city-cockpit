@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {StopData} from '../../../shared/data/stop-data';
@@ -10,6 +10,7 @@ import {TripData} from "../../../shared/data/trip-data";
 import {TripStopData} from "../../../shared/data/trip-stop-data";
 import {DateParserService} from "../../../services/date-parser.service";
 import {isNullOrUndefined} from "util";
+import {ToastService} from "../../../services/toast.service";
 
 @Component({
   selector: 'app-trip-add',
@@ -39,7 +40,8 @@ export class TripEditComponent implements OnInit {
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
-              private dateParser: DateParserService) {
+              private dateParser: DateParserService,
+              private toastService: ToastService) {
   }
 
   public setModel(data: TripData): void {
@@ -106,7 +108,7 @@ export class TripEditComponent implements OnInit {
     }
   }
 
-  stopSelectionChanged(stop: StopData, checked: boolean): void {
+  stopSelectionChanged(stop: StopData): void {
     this.selectedStops.set(stop, !this.selectedStops.get(stop));
   }
 
@@ -180,16 +182,28 @@ export class TripEditComponent implements OnInit {
     this.model = new TripData();
     this.setDataInModel();
     this.http.addTrip(this.model).subscribe(
-      data => this.activeModal.close('Close click'),
-      err => console.log("An error occurred: " + JSON.stringify(err))
+      data => {
+        this.activeModal.close('Close click');
+        this.toastService.showInfoToast(data.id + ' created.');
+      },
+      err => {
+        console.log("An error occurred: " + JSON.stringify(err));
+        this.toastService.showErrorToast('An error occurred.')
+      }
     );
   }
 
   private confirmEditTrip(): void {
     this.setDataInModel();
     this.http.editTrip(this.model).subscribe(
-      data => this.activeModal.close('Close click'),
-      err => console.log("An error occurred: " + JSON.stringify(err))
+      data => {
+        this.activeModal.close('Close click');
+        this.toastService.showInfoToast('Edited ' + this.model.id + '.');
+      },
+      err => {
+        console.log("An error occurred: " + JSON.stringify(err));
+        this.toastService.showErrorToast('An error occurred: ' + JSON.stringify(err));
+      }
     );
   }
 

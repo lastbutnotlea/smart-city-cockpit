@@ -8,7 +8,6 @@ import {StopSortService} from '../../../services/stop-sort.service';
 import {ConfirmDeletionComponent} from '../../../shared/components/confirm-popup/confirm-deletion.component';
 import {Location} from '@angular/common';
 import {TripEditComponent} from "../trip-edit/trip-edit.component";
-import {ToastsManager} from 'ng2-toastr';
 import {ToastService} from '../../../services/toast.service';
 
 @Component({
