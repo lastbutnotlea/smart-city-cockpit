@@ -16,7 +16,16 @@
 }
 
 .processed-button {
-  padding: 4px 39px 0px 39px;
+  padding: 4px 39px 0 39px;
+}
+
+.star {
+  font-size: 2rem;
+  color: #dddddd;
+}
+
+.filled {
+  color: #007aff;
 }
 
 
