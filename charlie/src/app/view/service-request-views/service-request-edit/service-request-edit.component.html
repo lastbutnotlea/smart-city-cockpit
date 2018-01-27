@@ -16,10 +16,13 @@
 
     <div class="margin-bottom">
       <label>Description: </label>
-      <input type="text" [(ngModel)]="description" ng-init="data.description">
+      <textarea class="form-control" rows="5" id="comment" [(ngModel)]="description"></textarea>
     </div>
 
-    <ngb-datepicker [(ngModel)]="date" (select)="updateDate()" class="float-left datepicker"></ngb-datepicker>
+    <div class="margin-bottom">
+      <label>Due Date: {{(selectedDate) | date:'MM/dd/yyyy'}}</label>
+      <ngb-datepicker [(ngModel)]="date" (select)="updateDate()" class="float-left datepicker"></ngb-datepicker>
+    </div>
   </div>
 
   <div *ngIf="dataEdited" class="d-block">
@@ -41,5 +44,7 @@
   <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cancel</button>
 
   <button *ngIf="!dataEdited" type="button" class="btn btn-outline-primary" (click)="confirm()">Next</button>
-  <button *ngIf="dataEdited" type="button" class="btn btn-outline-primary" (click)="confirm()">Save</button>
+  <button *ngIf="dataEdited" type="button" class="btn btn-outline-primary" (click)="confirm()" [disabled]="saveDisabled">
+    Save
+  </button>
 </div>

@@ -40,3 +40,11 @@ export function toDropdownItems(values: any[], label: (any) => string): Dropdown
 export function toDropdownItem(value: any, label: (any) => string): DropdownValue {
   return new DropdownValue(value, label(value));
 }
+
+export function priorityDropdownItems(): DropdownValue[] {
+  let prioItems: DropdownValue[] = [];
+  prioItems.push(new DropdownValue('FINE', 'Low'));
+  prioItems.push(new DropdownValue('PROBLEMATIC', 'Medium'));
+  prioItems.push(new DropdownValue('CRITICAL', 'High'));
+  return prioItems;
+}

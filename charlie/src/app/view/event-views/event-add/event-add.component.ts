@@ -1,15 +1,16 @@
-import {Component, Input, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal, NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 import {now} from '../../../shared/data/dates';
 import {DateParserService} from '../../../services/date-parser.service';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {
-  DropdownValue, toDropdownItem,
+  DropdownValue, priorityDropdownItems, toDropdownItem,
   toDropdownItems
 } from '../../../shared/components/dropdown/dropdown.component';
 import {EventData} from '../../../shared/data/event-data';
 import {PartyData} from '../../../shared/data/party-data';
 import {C4CNotes} from '../../../shared/data/c4c-notes';
+import {ToastService} from '../../../services/toast.service';
 
 @Component({
   selector: 'app-event-add',
@@ -22,7 +23,7 @@ export class EventAddComponent implements OnInit {
   subject: string = "";
 
   availablePriorities: Array<DropdownValue> = [];
-  priority: DropdownValue = new DropdownValue('FINE', 'fine');
+  priority: DropdownValue = new DropdownValue('FINE', 'Low');
 
   from: string = now.toISOString();
   to: string = now.toISOString();
@@ -48,10 +49,12 @@ export class EventAddComponent implements OnInit {
   party: DropdownValue = new DropdownValue(null, 'loading');
 
   notes: string = "";
+  saveDisabled: boolean = false;
 
   constructor(public activeModal: NgbActiveModal,
               public dateParser: DateParserService,
-              public http: HttpRoutingService) {
+              public http: HttpRoutingService,
+              private toastService: ToastService) {
   }
 
   ngOnInit() {
@@ -60,9 +63,7 @@ export class EventAddComponent implements OnInit {
       this.availableParties = toDropdownItems(data, party => party)
     }, err => console.log(err));
 
-    this.availablePriorities = toDropdownItems(
-      ['FINE', 'PROBLEMATIC', 'CRITICAL'],
-      item => item.toLowerCase());
+    this.availablePriorities = priorityDropdownItems();
 
     this.updateFromDate();
     this.updateFromTime();
@@ -87,6 +88,7 @@ export class EventAddComponent implements OnInit {
   }
 
   confirm(): void {
+    this.saveDisabled = true;
     let event: EventData = new EventData();
     event.id = '';
     event.subject = this.subject;
@@ -101,11 +103,12 @@ export class EventAddComponent implements OnInit {
     console.log(event);
     this.http.addEvent(event).subscribe(
       data => {
-        console.log('Added event.')
+        console.log('Added event.');
+        this.toastService.showSuccessToast('Added event ' + data.id);
         this.data.push(data);
         this.activeModal.close('Close click');
       },
-      err => alert('Could not add event.' + err)
+      err => this.toastService.showErrorToast('Failed to add event')
     );
   }
 }

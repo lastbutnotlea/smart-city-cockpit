@@ -204,6 +204,10 @@ public class ServiceRequestController {
       sr.setName(generateServiceRequestName(sr));
     }
 
+    if (StringUtils.isBlank(sr.getServiceRequestDescription().get(0).getText())) {
+      sr.getServiceRequestDescription().get(0).setText(generateServiceRequestName(sr));
+    }
+
     sr.setTargetId(((IdentifiableObject) sr.getTarget()).getId());
 
     if (sr.getCompletionDate() == null) {
@@ -228,7 +232,7 @@ public class ServiceRequestController {
       name.append("Stop ").append(((Stop) sr.getTarget()).getCommonName()).append(" (")
           .append(((Stop) sr.getTarget()).getId()).append(")");
     } else if (sr.getTarget() instanceof Vehicle) {
-      name.append("Vehicle ").append(((Vehicle) sr.getTarget()).getId());
+      name.append(((Vehicle) sr.getTarget()).getId());
     }
     return name.toString();
   }

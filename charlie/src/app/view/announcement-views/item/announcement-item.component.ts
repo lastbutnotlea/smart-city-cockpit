@@ -1,21 +1,35 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {AnnouncementData} from "../../../shared/data/announcement-data";
 import {HttpRoutingService} from "../../../services/http-routing.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {AnnouncementEditComponent} from "../edit/announcement-edit.component";
+import {ConfirmDeletionComponent} from '../../../shared/components/confirm-popup/confirm-deletion.component';
+import {ActivatedRoute, Params} from "@angular/router";
+import {ToastService} from '../../../services/toast.service';
 
 @Component({
   selector: 'app-announcement-item',
   templateUrl: './announcement-item.component.html',
   styleUrls: ['./announcement-item.component.css'],
 })
-export class AnnouncementItemComponent {
+export class AnnouncementItemComponent implements OnInit {
+
+  ngOnInit(): void {
+    this.route.queryParams.forEach((params: Params) => {
+      let id = params['id'];
+      this.scrollAnnouncement(id);
+    });
+  }
+
   @Input()
   data: AnnouncementData;
 
   deleted: boolean = false;
 
-  constructor(private http: HttpRoutingService, private modalService: NgbModal) {
+  constructor(private http: HttpRoutingService,
+              private modalService: NgbModal,
+              private route: ActivatedRoute,
+              private toastService: ToastService) {
   }
 
   editItem(): void {
@@ -25,12 +39,29 @@ export class AnnouncementItemComponent {
 
   deleteItem(): void {
     this.http.deleteAnnouncement(this.data).subscribe(
-      data => this.deleted = true,
+      data => {
+        this.deleted = true;
+        this.toastService.showSuccessToast('Deleted ' + this.data.id);
+      },
       err => {
-        alert("An Error occurred. Could not delete Announcement Item.");
+        this.toastService.showErrorToast('Failed to delete ' + this.data.id);
         console.log(JSON.stringify(err));
       }
     );
+  }
+
+  showConfirmModal(): void {
+    const modal = this.modalService.open(ConfirmDeletionComponent);
+    modal.componentInstance.objectToDelete = this.data.id;
+    modal.componentInstance.deletionEvent.subscribe(($event) => {
+      this.deleteItem();});
+  }
+  
+  scrollAnnouncement(to: string) {
+    let x = document.querySelector('#' + to);
+    if (x) {
+      x.scrollIntoView(true);
+    }
   }
 
 }

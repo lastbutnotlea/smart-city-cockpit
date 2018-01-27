@@ -3,6 +3,9 @@ import {HttpRoutingService} from '../../../services/http-routing.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {EventData} from '../../../shared/data/event-data';
 import {EventAddComponent} from '../event-add/event-add.component';
+import {StringFormatterService} from '../../../services/string-formatter.service';
+import {getUrlForId} from "../../../shared/util/routing-util";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-event-view',
@@ -17,7 +20,8 @@ export class EventsComponent implements OnInit {
   events: EventData[] = [];
 
   constructor(private http: HttpRoutingService,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private router: Router) {
   }
 
   public ngOnInit(): void {
@@ -35,5 +39,9 @@ export class EventsComponent implements OnInit {
   addEvent(): void {
     const modal = this.modalService.open(EventAddComponent);
     modal.componentInstance.data = this.events;
+  }
+
+  goToLink(id: string): void {
+    this.router.navigate(["events/detail/" + id]);
   }
 }

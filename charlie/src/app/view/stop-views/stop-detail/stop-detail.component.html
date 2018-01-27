@@ -5,13 +5,11 @@
 <div class="fit-screen d-flex flex-column" *ngIf="loaded">
 
   <h3 class="text-center">
-    <div [ngClass]="{'color-fine': stop.state === 'FINE',
-       'color-problematic': stop.state === 'PROBLEMATIC',
-       'color-critical': stop.state === 'CRITICAL' }">
-      <i class="fa fa-lightbulb-o fa-2x float-right padding-right-20" aria-hidden="true"></i>
-    </div>
+    <app-state-icon class="float-right" [size]="'fa-3x'" [state]="stop.state"></app-state-icon>
     {{title}}
-    <label class="text-primary">{{stop.commonName}}</label>
+    <a href="network/stop/{{stop.id}}">
+      <label class="text-primary">{{stop.commonName}}</label>
+    </a>
   </h3>
   <div class="no-float margin-bottom-30">
     <button class="btn btn-outline-dark" (click)="goBack()">Back</button>
@@ -22,7 +20,8 @@
       Stop skipped:
     </h4>
     <h5 *ngFor="let skipData of stop.skipData">
-      from {{skipData.from  | date:'MM/dd/yyyy HH:mm'}} to {{skipData.to | date:'MM/dd/yyyy HH:mm'}} because of {{skipData.reason}}
+      from {{skipData.from | date:'MM/dd/yyyy HH:mm'}} to {{skipData.to | date:'MM/dd/yyyy HH:mm'}}
+      because of {{skipData.reason}}
     </h5>
   </div>
 
@@ -33,7 +32,7 @@
                            [lineForStopDataInbound]="lineForStopDataInbound"
                            [lineForStopDataOutbound]="lineForStopDataOutbound"></app-embedded-stop>
       </div>
-      <div class="bounding-box">
+      <div class="bounding-box height-50">
         <app-embedded-trip [trips]="trips" [areTripsForVehicle]="false"></app-embedded-trip>
       </div>
     </div>

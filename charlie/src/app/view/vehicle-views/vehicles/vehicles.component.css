@@ -26,7 +26,6 @@ thead, tbody, tr, td, th { display: block; }
 
 thead th {
   text-align: left;
-  width: 12.35% !important;
 }
 
 tbody {

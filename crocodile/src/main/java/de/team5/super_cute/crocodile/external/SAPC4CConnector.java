@@ -383,7 +383,7 @@ public class SAPC4CConnector {
     if (response.getStatusLine().getStatusCode() == 204) {
       logger.info(
           "Deleted C4C Entity from " + entity.getCollectionName() + " with id " + entity.getId());
-      return "{\"id\":\"" + entity.getId() + "\"}";
+      return entity.getId();
     }
     return "Deletion of Entity " + entity + " failed";
   }

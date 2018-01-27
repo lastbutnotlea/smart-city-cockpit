@@ -8,34 +8,38 @@
         <tr class="d-flex">
           <th>Event-ID</th>
           <th>Subject</th>
-          <th nowrap>Priority</th>
           <th>Starts</th>
           <th>Ends</th>
           <th>Involved Parties</th>
           <th>Notes</th>
+          <th>Priority</th>
         </tr>
         </thead>
         <tbody class="d-flex flex-column flex-grow-1 fit-screen">
         <tr *ngFor="let event of events">
-          <td>
-            <a routerLink="detail/{{event.id}}">
-              {{ event.id }}
-            </a>
-          </td>
-          <td>{{event.subject}}</td>
-          <td>{{event.priority}}</td>
-          <td>{{event.startTime | date:'MM/dd/yyyy HH:mm'}}</td>
-          <td>{{event.endTime | date:'MM/dd/yyyy HH:mm'}}</td>
-          <td>
-            <label *ngFor="let party of event.appointmentInvolvedParties">
-              {{party.partyName}}
-            </label>
-          </td>
-          <td>
-            <label *ngFor="let note of event.appointmentNotes">
-              {{note.text}}
-            </label>
-          </td>
+          <div (click)="goToLink(event.id)" class="d-flex highlight">
+            <td>{{ event.id }}</td>
+            <td>{{event.subject}}</td>
+            <td>{{event.startTime | date:'MM/dd/yyyy HH:mm'}}</td>
+            <td>{{event.endTime | date:'MM/dd/yyyy HH:mm'}}</td>
+            <td>
+              <label *ngFor="let party of event.appointmentInvolvedParties">
+                {{party.partyName}}
+              </label>
+            </td>
+            <td>
+              <label *ngFor="let note of event.appointmentNotes">
+                {{note.text}}
+              </label>
+            </td>
+            <td>
+              <span [ngClass]="{'color-fine': event.priority === 'FINE',
+               'color-problematic': event.priority === 'PROBLEMATIC',
+              'color-critical': event.priority === 'CRITICAL' }">
+                <i class="fa fa-exclamation-circle fa-2x" aria-hidden="true"></i>
+              </span>
+            </td>
+          </div>
         </tr>
         </tbody>
       </table>

@@ -6,6 +6,8 @@ import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {ConfirmDeletionComponent} from '../../../shared/components/confirm-popup/confirm-deletion.component';
 import {EventEditComponent} from '../event-edit/event-edit.component';
+import {StringFormatterService} from '../../../services/string-formatter.service';
+import {ToastService} from '../../../services/toast.service';
 
 @Component({
   selector: 'app-event-detail-view',
@@ -21,7 +23,9 @@ export class EventDetailComponent implements OnInit {
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
               private location: Location,
-              private modalService: NgbModal) {
+              private modalService: NgbModal,
+              private stringFormatter: StringFormatterService,
+              private toastService: ToastService) {
   }
 
   ngOnInit(): void {
@@ -60,10 +64,11 @@ export class EventDetailComponent implements OnInit {
   deleteEvent(event): void {
     this.http.deleteEvent(this.event.id).subscribe(
       data => {
+        this.toastService.showSuccessToast('Deleted event ' + this.event.id);
         this.location.back();
       },
       err => {
-        console.log('Could not delete event!');
+        this.toastService.showErrorToast('Failed to delete event ' + this.event.id);
       }
     );
   }

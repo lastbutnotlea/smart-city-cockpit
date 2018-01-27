@@ -8,6 +8,8 @@ import {StopSortService} from '../../../services/stop-sort.service';
 import {ConfirmDeletionComponent} from '../../../shared/components/confirm-popup/confirm-deletion.component';
 import {Location} from '@angular/common';
 import {TripEditComponent} from "../trip-edit/trip-edit.component";
+import {ToastsManager} from 'ng2-toastr';
+import {ToastService} from '../../../services/toast.service';
 
 @Component({
   selector: 'app-trip-detail-view',
@@ -24,7 +26,8 @@ export class TripDetailComponent extends LiveDataComponent implements OnInit {
               private route: ActivatedRoute,
               private location: Location,
               private modalService: NgbModal,
-              private stopSortService: StopSortService) {
+              private stopSortService: StopSortService,
+              private toastService: ToastService) {
     super();
   }
 
@@ -57,24 +60,29 @@ export class TripDetailComponent extends LiveDataComponent implements OnInit {
 
   showConfirmModal(): void {
     const modal = this.modalService.open(ConfirmDeletionComponent);
-    modal.componentInstance.objectToDelete = 'trip ' + this.trip.id;
+    modal.componentInstance.objectToDelete = this.trip.id;
     modal.componentInstance.deletionEvent.subscribe(($event) => {
-      this.deleteTrip($event);});
+      this.deleteTrip($event);
+    });
   }
 
-  deleteTrip(event) : void {
+  deleteTrip(event): void {
     super.ngOnDestroy();
     this.http.deleteTrip(this.trip.id).subscribe(
-      data => this.location.back(),
+      data => {
+        this.toastService.showSuccessToast('Deleted ' + this.trip.id);
+        this.location.back();
+      },
       err => {
         // Currently, when deleting a trip, we get a http-response with http-code 200 (ok)
         // This means deleting the trip was successful
         // http-response is interpreted as error, therefore the message must be checked here, not in data
         // TODO: http-response should not always be considered an error / backend should return different value?
-        if(err.status === 200){
+        if (err.status === 200) {
+          this.toastService.showSuccessToast('Deleted ' + this.trip.id);
           this.location.back();
         } else {
-          console.log('Could not delete trip!');
+          this.toastService.showErrorToast('Failed to delete trip ' + this.trip.id);
           this.refreshData();
         }
       }
