@@ -120,20 +120,22 @@ export class TripEditComponent implements OnInit {
 
   refreshVehicles(): void {
     this.availableVehicles = [];
+    if (!this.selectedVehicle.value) {
+      this.selectedVehicle = TripEditComponent.loadingDropdown;
+    }
     let date = this.dateParser.cutTimezoneInformation(this.selectedDate);
-    this.http.getVehiclesByTimeAndType(date, this.selectedLine.value.type).subscribe(
+    this.http.getVehiclesByTimeAndType(date, this.selectedLine.value.type, this.model).subscribe(
       data => {
         this.availableVehicles = toDropdownItems(data, v => v.id);
-        if (this.model) {
-          let selected: DropdownValue = new DropdownValue(this.model.vehicle, this.model.vehicle.id);
-          this.selectedVehicle = selected;
-          if (this.availableVehicles.filter(dv => dv.value.id === selected.value.id).length === 0) {
-            this.availableVehicles.push(selected);
+        let isSelectedValid = this.selectedVehicle.value && this.availableVehicles.some(v => {
+          return v.value.id === this.selectedVehicle.value.id;
+        });
+        if (!isSelectedValid) {
+          if (this.availableVehicles.length == 0) {
+            this.selectedVehicle = TripEditComponent.noVehiclesAvailDropdown;
+          } else {
+            this.selectedVehicle = TripEditComponent.selectDropdown;
           }
-        } else if (this.availableVehicles.length == 0) {
-          this.selectedVehicle = TripEditComponent.noVehiclesAvailDropdown;
-        } else {
-          this.selectedVehicle = TripEditComponent.selectDropdown;
         }
       },
       err => console.log("Error: " + JSON.stringify(err))
