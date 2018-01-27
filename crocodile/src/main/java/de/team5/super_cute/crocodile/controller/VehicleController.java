@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -121,13 +122,18 @@ public class VehicleController extends BaseController<Vehicle> {
    * @param timeString .
    */
   @GetMapping("/type/{type}/free-from/{timeString}")
-  public List<Vehicle> getVehiclesFreeFrom(@PathVariable String type, @PathVariable String timeString) {
+  public List<Vehicle> getVehiclesFreeFrom(@PathVariable String type, @PathVariable String timeString, @RequestParam(defaultValue = "")
+      String ignoreTripId) {
     logger.info("Got Request to return all Vehicles of Type " + type + " free from " + timeString);
-    return data.getData().stream()
+    List<Vehicle> vehicles = data.getData().stream()
         .filter(v -> v.getType().equals(EVehicleType.valueOf(type)))
         .peek(tripData::setFreeFrom)
         .filter(v -> v.getFreeFrom().isBefore(LocalDateTime.parse(timeString)))
         .collect(Collectors.toList());
+    if (!ignoreTripId.equals("")) {
+      vehicles.add(tripData.getObjectForId(ignoreTripId).getVehicle());
+    }
+    return vehicles;
   }
 
   private void setCurrentTrip(Vehicle vehicle) {
