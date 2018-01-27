@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~bootstrap/dist/css/bootstrap.min.css';
 @import '../node_modules/font-awesome/css/font-awesome.css';
+@import '../node_modules/ng2-toastr/bundles/ng2-toastr.min.css';
 
 .fit-screen {
   height: 100%;
@@ -21,6 +22,12 @@ table {
 
 p {
   margin-bottom: 0.5rem;
+}
+
+.center-center {
+  position: absolute;
+  top: 50%;
+  left: 40%;
 }
 
 
@@ -88,6 +95,10 @@ p {
 
 .background-critical {
   background-color: #dd3645;
+}
+
+.greyed-out {
+  opacity: 0.3;
 }
 
 /* STYLING EMBEDDED COMPONENTS */
@@ -170,4 +181,15 @@ h4 {
 
 .toast-info {
   background-color: lightgray;
+}
+
+/* STYLING MODALS */
+
+.modal-body {
+  max-height: 66vh;
+  overflow: auto;
+}
+
+.no-flex-shrink {
+  flex-shrink: 0;
 }
