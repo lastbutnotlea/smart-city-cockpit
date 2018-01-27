@@ -47,10 +47,11 @@
     <div *ngIf="availFeedback.length !== 0">
       <label>Choose feedback of target for service request:</label>
       <div *ngFor="let feedback of availFeedback">
-        <label class="btn {{box.checked? 'active' : ''}}">
-          <input #box type="checkbox" [ngModel]="isChecked(feedback)" (change)="includeFeedback(feedback, box.checked)">
-          {{feedback.message}}
-        </label>
+        <div class="d-flex flex-row">
+          <p><input #box type="checkbox" [ngModel]="isChecked(feedback)"
+                    (change)="includeFeedback(feedback, box.checked)"></p>
+          <p class="padding-left"> "{{feedback.message}}"</p>
+        </div>
       </div>
     </div>
   </div>

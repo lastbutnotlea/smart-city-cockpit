@@ -1,7 +1,9 @@
-  <h3 class="text-center">{{title}}</h3>
+<h3 class="text-center">{{title}}</h3>
 
 <div class="d-flex">
-  <app-filter-group-view></app-filter-group-view>
+  <div class="width-200">
+    <app-filter-group-view></app-filter-group-view>
+  </div>
 
   <div *ngIf="loaded && filterGroup.getFiltered(feedback).length > 0"
        class="d-flex flex-column scrollable container">
