@@ -119,7 +119,7 @@ export class EventEditComponent implements OnInit {
     this.data.startTime = this.selected.startTime;
     this.data.endTime = this.selected.endTime;
     this.data.appointmentInvolvedParties = new Array(
-      new PartyData(this.data.appointmentInvolvedParties[0].id, this.party.value.partyName,
+      new PartyData(this.data.appointmentInvolvedParties[0].id, this.party.value,
         this.data.appointmentInvolvedParties[0].objectId));
     this.data.appointmentNotes = this.selected.appointmentNotes;
 
