@@ -3,6 +3,7 @@ import {AnnouncementData} from "../../../shared/data/announcement-data";
 import {HttpRoutingService} from "../../../services/http-routing.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {AnnouncementEditComponent} from "../edit/announcement-edit.component";
+import {ConfirmDeletionComponent} from '../../../shared/components/confirm-popup/confirm-deletion.component';
 import {ActivatedRoute, Params} from "@angular/router";
 import {ToastService} from '../../../services/toast.service';
 
@@ -49,6 +50,13 @@ export class AnnouncementItemComponent implements OnInit {
     );
   }
 
+  showConfirmModal(): void {
+    const modal = this.modalService.open(ConfirmDeletionComponent);
+    modal.componentInstance.objectToDelete = this.data.id;
+    modal.componentInstance.deletionEvent.subscribe(($event) => {
+      this.deleteItem();});
+  }
+  
   scrollAnnouncement(to: string) {
     let x = document.querySelector('#' + to);
     if (x) {
