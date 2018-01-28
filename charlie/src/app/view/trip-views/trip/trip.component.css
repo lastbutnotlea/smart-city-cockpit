@@ -12,6 +12,10 @@
   margin-left: 0 !important;
 }
 
+.width-70 {
+  max-width: 70%;
+}
+
 table {
   flex-grow: 1;
   margin-bottom: 0;

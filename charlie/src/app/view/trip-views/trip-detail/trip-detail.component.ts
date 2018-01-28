@@ -1,13 +1,14 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewContainerRef} from '@angular/core';
 import {LiveDataComponent} from '../../../shared/components/live-data/live-data.component';
 import {TripData} from '../../../shared/data/trip-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {ActivatedRoute} from '@angular/router';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {StopSortService} from '../../../services/stop-sort.service';
+import {TripEditComponent} from '../trip-edit/trip-edit.component';
 import {ConfirmDeletionComponent} from '../../../shared/components/confirm-popup/confirm-deletion.component';
 import {Location} from '@angular/common';
-import {TripEditComponent} from "../trip-edit/trip-edit.component";
+import {ToastsManager} from 'ng2-toastr';
 import {ToastService} from '../../../services/toast.service';
 
 @Component({
@@ -61,15 +62,16 @@ export class TripDetailComponent extends LiveDataComponent implements OnInit {
     const modal = this.modalService.open(ConfirmDeletionComponent);
     modal.componentInstance.objectToDelete = this.trip.id;
     modal.componentInstance.deletionEvent.subscribe(($event) => {
-      this.deleteTrip($event);
+      this.deleteTrip(modal);
     });
   }
 
-  deleteTrip(event): void {
+  deleteTrip(modal: NgbModalRef): void {
     super.ngOnDestroy();
     this.http.deleteTrip(this.trip.id).subscribe(
       data => {
         this.toastService.showSuccessToast('Deleted ' + this.trip.id);
+        modal.close('Close click');
         this.location.back();
       },
       err => {
@@ -79,13 +81,14 @@ export class TripDetailComponent extends LiveDataComponent implements OnInit {
         // TODO: http-response should not always be considered an error / backend should return different value?
         if (err.status === 200) {
           this.toastService.showSuccessToast('Deleted ' + this.trip.id);
+          modal.close('Close click');
           this.location.back();
         } else {
           this.toastService.showErrorToast('Failed to delete trip ' + this.trip.id);
+          modal.componentInstance.deleteDisabled = false;
           this.refreshData();
         }
-      }
-    );
+      });
   }
 
   // update trip data

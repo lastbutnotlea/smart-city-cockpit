@@ -31,7 +31,7 @@ export class TripComponent extends LiveDataComponent implements OnInit {
               private modalService: NgbModal,
               private router: Router,
               private stopSortService: StopSortService,
-              private stringFormatter: StringFormatterService) {
+              public stringFormatter: StringFormatterService) {
     super();
   }
 

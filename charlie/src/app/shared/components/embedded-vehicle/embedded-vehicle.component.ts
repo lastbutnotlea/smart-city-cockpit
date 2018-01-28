@@ -12,6 +12,6 @@ export class EmbeddedVehicleComponent{
 
   @Input() vehicle: VehicleData;
 
-  constructor(private stringFormatter: StringFormatterService){};
+  constructor(public stringFormatter: StringFormatterService){};
 
 }

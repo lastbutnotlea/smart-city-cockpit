@@ -6,8 +6,9 @@ import {Component, Input} from '@angular/core';
   styleUrls: []
 })
 
-export class StateIconComponent{
+export class StateIconComponent {
 
   @Input() state: string = "";
   @Input() size: string = "";
+  @Input() paddingr: string = "";
 }
