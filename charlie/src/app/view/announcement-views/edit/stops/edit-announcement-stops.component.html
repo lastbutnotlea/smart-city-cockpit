@@ -1,22 +1,26 @@
-<div class="d-flex flex-nowrap justify-content-around">
-  <div class="d-flex flex-column">
-    <app-dropdown class="m-2" [values]="availableStops" [(selected)]="selectedStop"></app-dropdown>
-    <button type="button" class="btn btn-outline-primary m-2" (click)="addSelectedStop()">
-      Add stop
+<div class="d-flex flex-nowrap flex-column">
+  <div class="d-flex flex-wrap align-items-center m-2">
+    <div>Add stops on</div>
+    <app-dropdown [values]="availableLines" [selected]="selectedLine"
+                  (selectedChange)="lineChanged($event)" class="my-1 mx-2" [width]="150"></app-dropdown>
+    <div>from</div>
+    <app-dropdown [values]="availableDirections" [(selected)]="selectedDirection"
+                  class="my-1 mx-2"></app-dropdown>
+    <div>to {{getEndOfSelectedLine()}}</div>
+    <button type="button" class="btn btn-outline-primary my-1 mx-2" (click)="addSelecedLine()">
+      Ok
     </button>
   </div>
-  <div class="d-flex flex-column">
-    <app-dropdown class="m-2" [values]="availableLines" [(selected)]="selectedLine"></app-dropdown>
-
-    <button type="button" class="btn btn-outline-primary m-2" (click)="addSelecedLineInbound()">
-      Add inbound
+  <div class="d-flex flex-wrap align-items-center m-2">
+    <div>Add</div>
+    <app-dropdown class="my-1 mx-2" [values]="availableStops"
+                  [(selected)]="selectedStop" [width]="300"></app-dropdown>
+    <button type="button" class="btn btn-outline-primary my-1 mx-2" (click)="addSelectedStop()">
+      Ok
     </button>
-    <button type="button" class="btn btn-outline-primary m-2" (click)="addSelecedLineOutbound()">
-      Add outbound
-    </button>
-    <button type="button" class="btn btn-outline-primary m-2" (click)="addSelecedLine()">
-      Add all
-    </button>
+  </div>
+  <div class="d-flex flex-wrap align-items-center m-2">
+    <button class="btn btn-outline-dark" (click)="removeAllStops()">Remove all stops</button>
   </div>
 </div>
 <div class="d-flex flex-column m-2 scrollable">

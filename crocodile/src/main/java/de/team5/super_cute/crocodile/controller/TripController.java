@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -81,35 +82,30 @@ public class TripController extends BaseController<Trip> {
   }
 
   @PostMapping
-  public String addTrip(@RequestBody Trip tripInput) {
+  public ResponseEntity<String> addTrip(@RequestBody Trip tripInput) {
     logger.info("Got Request to add trip " + tripInput);
     insertCorrectTimesForTrip(tripInput);
     if (tripInput.getVehicle() != null) {
       if (!vehicleValidation.checkVehicleAvailability(tripInput)) {
-        return "Vehicle not available!";
+        return ResponseEntity.badRequest().body("Vehicle not available!");
       }
     }
     tripInput.initializeTrip();
-    return addObject(tripInput);
+    return ResponseEntity.ok(Helpers.makeIdToJSON(addObject(tripInput)));
   }
 
   @DeleteMapping("/{id}")
   public String deleteTrip(@PathVariable String id) {
     logger.info("Got Request to delete trip with id " + id);
-    return deleteObject(id);
+    return Helpers.makeIdToJSON(deleteObject(id));
   }
 
   @PutMapping
   public String editTrip(@RequestBody Trip tripInput) {
     logger.info("Got Request to edit trip " + tripInput);
     insertCorrectTimesForTrip(tripInput);
-    if (tripInput.getVehicle() != null) {
-      if (!vehicleValidation.checkVehicleAvailability(tripInput)) {
-        return "Vehicle not available!";
-      }
-    }
     tripInput.initializeTrip();
-    return editObject(tripInput);
+    return Helpers.makeIdToJSON(editObject(tripInput));
   }
 
   /**
@@ -121,7 +117,8 @@ public class TripController extends BaseController<Trip> {
   private void insertCorrectTimesForTrip(Trip tripInput) {
     // Filter out Stops with dummy value + find stop in the trip with a specified time
     String firstStopIdOfTrip = tripInput.getStops().entrySet().stream()
-        .filter(e -> !e.getValue().equals(Helpers.DUMMY_TIME))
+        .filter(e -> e.getValue() != null)
+        //.filter(e -> !e.getValue().equals(Helpers.DUMMY_TIME))
         .map(Entry::getKey).findAny()
         .orElseThrow(() -> new IllegalArgumentException(
             "No Stop in trip that has something else than a dummy time"));
@@ -134,7 +131,7 @@ public class TripController extends BaseController<Trip> {
 
     int tripToLineOffset = travelTime.get(firstStopIdOfTrip);
     List<String> stopIdsThatNeedCorrectTime = tripInput.getStops().entrySet().stream()
-        .filter(e -> e.getValue().equals(Helpers.DUMMY_TIME))
+        .filter(e -> e.getValue() == null)
         .map(Entry::getKey)
         .collect(Collectors.toList());
 
