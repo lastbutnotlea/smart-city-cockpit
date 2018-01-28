@@ -2,9 +2,14 @@
   min-width: 0;
 }
 
-.scrollable-dropdown {
+.dropdown-container {
+  position: fixed;
+  margin-top: 14px;
   max-height: 300px;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: 0.25em;
+  z-index: 1;
 }
 
 .text-ellipsis {
@@ -16,10 +21,19 @@
   min-width: 0;
 }
 
-.button-dropdown {
-  display: inline-flex;
+.btn-dropdown {
+  background-color: white;
+  z-index: 10;
+}
+
+.btn-dropdown:hover {
+  background-color: #007bff;
 }
 
 .dropdown-toggle::after {
   margin-top: 0.5em;
+}
+
+.button-border {
+  border-radius: 0.25em;
 }

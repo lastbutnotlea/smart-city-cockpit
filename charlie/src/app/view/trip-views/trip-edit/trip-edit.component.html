@@ -53,19 +53,19 @@
     Cancel
   </button>
   <button *ngIf="state !== 0" type="button"
-          class="btn btn-outline-dark {{isBackEnabled()? '' : 'disabled'}}" (click)="back()">
+          class="btn btn-outline-dark" (click)="back()"  [disabled]="!isBackEnabled()">
     Back
   </button>
   <button *ngIf="state === 2" type="button"
-          class="btn btn-outline-dark {{isNextEnabled()? '' : 'disabled'}}" (click)="next()">
+          class="btn btn-outline-dark" (click)="next()"  [disabled]="!isNextEnabled()">
     Edit Stops
   </button>
   <button *ngIf="state < 2" type="button"
-          class="btn btn-outline-primary {{isNextEnabled()? '' : 'disabled'}}" (click)="next()">
+          class="btn btn-outline-primary" (click)="next()"  [disabled]="!isNextEnabled()">
     Next
   </button>
   <button *ngIf="state >= 2" type="button"
-          class="btn btn-outline-primary {{isNextEnabled()? '' : 'disabled'}}" (click)="next(true)">
+          class="btn btn-outline-primary" (click)="next(true)" [disabled]="!isNextEnabled()">
     Save
   </button>
 </div>
