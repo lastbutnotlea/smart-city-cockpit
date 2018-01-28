@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {
   DropdownValue, selectDropdown,
   toDropdownItems
@@ -12,7 +12,7 @@ import {isNullOrUndefined} from "util";
   templateUrl: './edit-announcement-stops.component.html',
   styleUrls: ['./edit-announcement-stops.component.css']
 })
-export class EditAnnouncementStopsComponent implements OnInit {
+export class EditAnnouncementStopsComponent {
   availableStops: DropdownValue[] = [];
   selectedStop: DropdownValue = selectDropdown;
 
