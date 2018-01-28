@@ -1,5 +1,5 @@
 <div ngbDropdown class="d-inline-block w-100">
-  <button class="btn btn-outline-primary w-100" ngbDropdownToggle>{{selected.label}}</button>
+  <button class="btn btn-outline-primary w-100" [disabled]="isDisabled" ngbDropdownToggle>{{selected.label}}</button>
   <div ngbDropdownMenu class="scrollable-dropdown" aria-labelledby="dropdownBasic1">
     <ng-container *ngFor="let value of values">
       <button class="dropdown-item" (click)="select(value);">{{value.label}}</button>

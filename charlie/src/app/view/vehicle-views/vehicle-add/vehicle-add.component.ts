@@ -15,8 +15,8 @@ import {ToastService} from '../../../services/toast.service';
 export class VehicleAddComponent implements OnInit {
 
   vehicleTypes: string[] = [];
-  selected: DropdownValue = loadingDropdown;
-  capacity: number = null;
+  selected: DropdownValue = new DropdownValue(null, "");
+  capacity: number;
   saveDisabled: boolean = false;
 
   minCapacity: number = 1;
