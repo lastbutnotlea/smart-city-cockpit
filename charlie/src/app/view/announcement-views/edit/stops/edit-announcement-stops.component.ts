@@ -5,6 +5,7 @@ import {
 } from "../../../../shared/components/dropdown/dropdown.component";
 import {StopData} from "../../../../shared/data/stop-data";
 import {LineData} from "../../../../shared/data/line-data";
+import {StringFormatterService} from '../../../../services/string-formatter.service';
 
 @Component({
   selector: 'app-edit-announcement-stops',
@@ -20,11 +21,13 @@ export class EditAnnouncementStopsComponent {
 
   selectedStopMap: Map<string, StopData> = new Map();
 
-  toStopId: (StopData) => string = (s: StopData) => s.commonName + ' (' + s.id + ')';
+  constructor(private stringFormatter: StringFormatterService){
+
+  }
 
   @Input()
   set stops(stops: StopData[]) {
-    this.availableStops = toDropdownItems(stops, this.toStopId);
+    this.availableStops = toDropdownItems(stops, item => this.stringFormatter.toStopId(item));
   }
 
   @Input()

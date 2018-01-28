@@ -119,7 +119,7 @@ public class ServiceRequestController {
   }
 
   @PutMapping
-  public String editServiceRequest(@RequestBody ServiceRequest serviceRequestInput)
+  public ServiceRequest editServiceRequest(@RequestBody ServiceRequest serviceRequestInput)
       throws IOException, BatchException, EdmException, EntityProviderException {
     logger.info("Got Request to edit Service Request: " + serviceRequestInput);
     handleServiceRequestFromFrontend(serviceRequestInput);
@@ -128,7 +128,7 @@ public class ServiceRequestController {
     cache.add(serviceRequestInput);
 
     connector.patchC4CEntity(serviceRequestInput);
-    return Helpers.makeIdToJSON(serviceRequestInput.getId());
+    return serviceRequestInput;
   }
 
   private List<ServiceRequest> getCache(Predicate<ServiceRequest> predicate)
