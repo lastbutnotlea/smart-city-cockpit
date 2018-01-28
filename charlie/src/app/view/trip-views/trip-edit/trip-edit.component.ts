@@ -63,11 +63,19 @@ export class TripEditComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    let selected = this.selectedLine;
+    this.selectedLine = loadingDropdown;
     this.http.getLines().subscribe(
       data => {
         this.availableLines = toDropdownItems(data, line => line.name);
-        // only if not already set to something meaningful
-        if (!this.model) this.selectedLine = selectDropdown;
+        let isSelectedValid = selected.value && this.availableLines.some(l => {
+          return l.value.id === selected.value.id;
+        });
+        if (isSelectedValid) {
+          this.selectedLine = selected;
+        } else {
+          this.selectedLine = selectDropdown;
+        }
       },
       err => {
         console.log("Err: " + JSON.stringify(err));

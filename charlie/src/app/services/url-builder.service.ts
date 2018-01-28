@@ -16,6 +16,8 @@ export class UrlBuilderService {
   private announcementBaseUrl = this.baseUrl + '/announcement';
   private tickerBaseUrl = this.baseUrl + '/ticker';
   private eventsBaseUrl = this.baseUrl + '/events';
+  private exportBaseUrl = this.baseUrl + '/export';
+  private configurationBaseUrl = this.baseUrl + '/configuration';
 
   public getNetworkUrl(): string {
     return this.networkBaseUrl;
@@ -167,6 +169,26 @@ export class UrlBuilderService {
 
   public getTripsForVehicleUrl(vehicleId: string): string {
     return this.tripBaseUrl + '/vehicle/' + vehicleId;
+  }
+
+  public getExportVehiclesUrl(): string {
+    return this.exportBaseUrl + '/vehicles';
+  }
+
+  public getExportAnnouncementsUrl(): string {
+    return this.exportBaseUrl + '/announcements';
+  }
+
+  public getConfigurationCollectionUrl(): string {
+    return this.configurationBaseUrl + '/standard';
+  }
+
+  public getCurrentConfigurationUrl(): string {
+    return this.configurationBaseUrl + '/current';
+  }
+
+  public getConfigurationUrl(): string {
+    return this.configurationBaseUrl;
   }
 
   public getVehiclesForTimeAndTypeUrl(date: string, type: string) {
