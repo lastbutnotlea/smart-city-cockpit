@@ -152,4 +152,10 @@ export class AdminViewComponent implements OnInit{
       event.preventDefault();
     }
   }
+
+  isDisabled() {
+    return this.selectedConfiguration.defectChance === null
+      || this.selectedConfiguration.defectRemoveChance === null
+      || this.selectedConfiguration.feedbackChance === null;
+  }
 }

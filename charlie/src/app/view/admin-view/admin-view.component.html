@@ -54,7 +54,7 @@
       </div>
     </div>
 
-    <button type="button" class="btn btn-outline-primary margin-bottom-30" (click)="updateConfigurations()">
+    <button type="button" class="btn btn-outline-primary margin-bottom-30" (click)="updateConfigurations()" [disabled]="isDisabled()">
       Update System Configurations
     </button>
   </div>

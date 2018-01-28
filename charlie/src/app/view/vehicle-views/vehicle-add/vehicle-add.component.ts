@@ -76,9 +76,12 @@ export class VehicleAddComponent implements OnInit {
   }
 
   validate(event) {
-    var input = this.capacity.toString();
-    var position = event.location;
-    var output = parseInt([input.slice(0, position), event.key, input.slice(position)].join(''));
+    var output = 1;
+    if(this.capacity != null){
+      var input = this.capacity.toString();
+      var position = event.location;
+      output = parseInt([input.slice(0, position), event.key, input.slice(position)].join(''));
+    }
     if(isNaN(parseInt(event.key)) || output < this.minCapacity || output > this.maxCapacity) {
       event.preventDefault();
     }
