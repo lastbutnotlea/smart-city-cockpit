@@ -11,6 +11,7 @@
   background-color: white;
   padding: 20px 0 20px 20px;
   border-radius: 10px;
+  overflow-y: hidden;
 }
 
 :host {
@@ -21,6 +22,7 @@
 
 .main-background {
   background-color: #1e379a;
-  height: 100%;
+  height: calc(100% - 56px);
+  overflow-y: hidden;
 }
 

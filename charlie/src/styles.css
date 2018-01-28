@@ -202,3 +202,7 @@ h4 {
 .filter-width {
   max-width: 225px;
 }
+
+body{
+  overflow-y: hidden;
+}
