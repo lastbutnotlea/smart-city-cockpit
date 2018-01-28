@@ -1,5 +1,6 @@
 package de.team5.super_cute.crocodile.generator;
 
+import static de.team5.super_cute.crocodile.config.C4CConfig.EVENT_TEST_LOCATION_NAME;
 import static de.team5.super_cute.crocodile.config.TickerConfig.ITEM_COUNT;
 import static de.team5.super_cute.crocodile.config.TickerConfig.STOP_COUNT;
 import static de.team5.super_cute.crocodile.config.TickerConfig.TICKER_FREQUENCY;
@@ -81,7 +82,9 @@ public class TickerItemGenerator {
     try {
       addTickerItems(sapc4CConnector.getEvents().stream()
           .filter(e ->
-              e.getStartTime().isAfter(LocalDateTime.now().minusHours(2))
+              // filter out test case events, location name is never set through our gui
+              !e.getLocationName().equals(EVENT_TEST_LOCATION_NAME)
+                  && e.getStartTime().isAfter(LocalDateTime.now().minusHours(2))
                   && e.getEndTime().isBefore(LocalDateTime.now().plusHours(2)))
           .map(TickerItemable.class::cast), Integer.MAX_VALUE);
     } catch (EntityProviderException | EdmException | IOException e) {
