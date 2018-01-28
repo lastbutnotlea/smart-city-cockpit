@@ -1,6 +1,7 @@
 package de.team5.super_cute.crocodile.controller;
 
 import static de.team5.super_cute.crocodile.config.AppConfiguration.API_PREFIX;
+import static de.team5.super_cute.crocodile.config.C4CConfig.EVENT_TEST_LOCATION_NAME;
 
 import de.team5.super_cute.crocodile.config.C4CConfig;
 import de.team5.super_cute.crocodile.external.SAPC4CConnector;
@@ -45,6 +46,8 @@ public class EventController {
     logger.info("Got Request for all Events");
 
     return connector.getEvents().stream()
+        // filter out events created by unit tests
+        .filter(e -> !e.getLocationName().equals(EVENT_TEST_LOCATION_NAME))
         .peek(this::prepareEventForFrontend)
         .collect(Collectors.toList());
   }
