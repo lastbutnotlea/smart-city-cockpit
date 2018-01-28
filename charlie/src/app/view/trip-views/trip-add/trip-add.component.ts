@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal, NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 import {TripData} from '../../../shared/data/trip-data';
 import {StopData} from '../../../shared/data/stop-data';
-import {dummyDate, now} from '../../../shared/data/dates';
 import {DropdownValue} from '../../../shared/components/dropdown/dropdown.component';
 import {LineData} from '../../../shared/data/line-data';
 import {VehicleData} from '../../../shared/data/vehicle-data';
@@ -10,6 +9,7 @@ import {HttpRoutingService} from '../../../services/http-routing.service';
 import {StopSortService} from '../../../services/stop-sort.service';
 import {DateParserService} from '../../../services/date-parser.service';
 import {TripStopData} from '../../../shared/data/trip-stop-data';
+import {dummyDate} from '../../../shared/data/dates';
 
 @Component({
   selector: 'app-trip-add',
@@ -22,7 +22,7 @@ export class TripAddComponent implements OnInit {
   selected: TripData;
   // this array is needed to display all available stops of the currently selected line
   selectedLineStops: StopData[];
-  selectedTime: string = now.toISOString();
+  selectedTime: string = (new Date()).toISOString();
   displayStops: boolean = false;
 
   // store values of dropdown components
@@ -47,8 +47,8 @@ export class TripAddComponent implements OnInit {
     this.selectedLine = new DropdownValue(0, 'loading');
     this.selectedDirection = this.directionItem();
 
-    this.time = {hour: now.getHours(), minute: now.getMinutes(), second: now.getSeconds()};
-    this.date = {year: now.getFullYear(), month: now.getMonth() + 1, day: now.getDate()};
+    this.time = {hour: (new Date()).getHours(), minute: (new Date()).getMinutes(), second: (new Date()).getSeconds()};
+    this.date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
     this.updateDate();
     this.updateTime();
   }

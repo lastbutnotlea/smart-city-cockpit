@@ -28,7 +28,7 @@ public class CsvExportController {
     return exportTable("vehicle");
   }
 
-  @GetMapping("/announcement")
+  @GetMapping("/announcements")
   public String exportAnnouncements() throws IOException, SQLException {
     return exportTable("announcement");
   }

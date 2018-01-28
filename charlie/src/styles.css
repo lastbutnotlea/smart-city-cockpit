@@ -1,6 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~bootstrap/dist/css/bootstrap.min.css';
 @import '../node_modules/font-awesome/css/font-awesome.css';
+@import '../node_modules/ng2-toastr/bundles/ng2-toastr.min.css';
 
 .fit-screen {
   height: 100%;
@@ -17,6 +18,16 @@
 
 table {
   margin-right: 10px;
+}
+
+p {
+  margin-bottom: 0.5rem;
+}
+
+.center-center {
+  position: absolute;
+  top: 36%;
+  left: 42%;
 }
 
 
@@ -40,6 +51,10 @@ table {
 
 .padding-right-5 {
   padding-right: 5px;
+}
+
+.padding-right-10 {
+  padding-right: 10px;
 }
 
 .padding-right-20 {
@@ -82,15 +97,24 @@ table {
   background-color: #dd3645;
 }
 
+.greyed-out {
+  opacity: 0.3;
+}
+
 /* STYLING EMBEDDED COMPONENTS */
 
 .bounding-box {
   float: left;
   margin: 20px 20px 0 0;
-  padding: 10px;
+  padding: 10px 10px 10px 15px;
   border-radius: 10px;
   border: 1px solid #007bff;
   overflow-y: auto;
+  overflow-x: hidden;
+}
+
+app-ticker-item .bounding-box {
+  overflow-y: hidden !important;
 }
 
 .flex-3 {
@@ -104,7 +128,7 @@ table {
 }
 
 h4 {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   text-align: center;
 }
 
@@ -158,4 +182,19 @@ h4 {
 
 .toast-info {
   background-color: lightgray;
+}
+
+/* STYLING MODALS */
+
+.modal-body {
+  max-height: 66vh;
+  overflow: auto;
+}
+
+.no-flex-shrink {
+  flex-shrink: 0;
+}
+
+.width-300 {
+  width: 300px;
 }
