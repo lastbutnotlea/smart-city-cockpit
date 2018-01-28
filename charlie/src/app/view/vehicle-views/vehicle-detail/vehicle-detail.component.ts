@@ -8,8 +8,9 @@ import {ServiceRequestData} from '../../../shared/data/service-request-data';
 import {TripData} from '../../../shared/data/trip-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {ConfirmDeletionComponent} from '../../../shared/components/confirm-popup/confirm-deletion.component';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {ToastService} from '../../../services/toast.service';
+import {StopSortService} from '../../../services/stop-sort.service';
 
 @Component({
   selector: 'app-vehicle-detail',
@@ -28,7 +29,8 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
               private route: ActivatedRoute,
               private location: Location,
               private modalService: NgbModal,
-              private toastService: ToastService) {
+              private toastService: ToastService,
+              private stopSortService: StopSortService) {
     super();
   }
 
@@ -49,7 +51,10 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
     );
     // trips for vehicle
     this.http.getTripsForVehicle(id).subscribe(
-      trips => this.trips = trips,
+      trips => {
+        this.trips = trips;
+        this.trips.forEach(trip => trip.stops = this.stopSortService.sortStops(trip.stops));
+      },
       err => console.log('Could not fetch trip data, sorry!')
     );
     // feedback for vehicle
@@ -74,23 +79,26 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
     this.location.back();
   }
 
-  delete(): void {
+  delete(modal: NgbModalRef): void {
     this.http.deleteVehicle(this.vehicle.id).subscribe(
       () => {
         this.toastService.showSuccessToast('Deleted ' + this.vehicle.id);
+        modal.close('Close click');
         this.goBack();
       },
-          () => {
-            this.toastService.showErrorToast('Failed to delete ' + this.vehicle.id);
-          }
-      );
+      () => {
+        this.toastService.showErrorToast('Failed to delete ' + this.vehicle.id);
+        modal.componentInstance.deleteDisabled = false;
+      }
+    );
   }
 
   showConfirmModal(): void {
     const modal = this.modalService.open(ConfirmDeletionComponent);
     modal.componentInstance.objectToDelete = this.vehicle.id;
     modal.componentInstance.deletionEvent.subscribe(($event) => {
-      this.delete();});
+      this.delete(modal);
+    });
   }
 
   // update trip data

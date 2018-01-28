@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {ServiceRequestEditComponent} from '../service-request-edit/service-request-edit.component';
 import {ServiceRequestData} from '../../../shared/data/service-request-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
@@ -9,7 +9,6 @@ import {ConfirmDeletionComponent} from '../../../shared/components/confirm-popup
 import {dummyDate} from '../../../shared/data/dates';
 import {ToastService} from '../../../services/toast.service';
 import {StringFormatterService} from '../../../services/string-formatter.service';
-import {ServiceRequestAddComponent} from '../service-request-add/service-request-add.component';
 
 @Component({
   selector: 'app-service-request-detail-view',
@@ -27,7 +26,7 @@ export class ServiceRequestDetailComponent implements OnInit {
               private route: ActivatedRoute,
               private location: Location,
               private modalService: NgbModal,
-              private stringFormatter: StringFormatterService,
+              public stringFormatter: StringFormatterService,
               private toastService: ToastService) {
   }
 
@@ -54,7 +53,7 @@ export class ServiceRequestDetailComponent implements OnInit {
   }
 
   editServiceRequest(): void {
-    const modal = this.modalService.open(ServiceRequestAddComponent);
+    const modal = this.modalService.open(ServiceRequestEditComponent);
     modal.componentInstance.data = [this.serviceRequest];
     modal.componentInstance.editData();
     modal.componentInstance.onAdd(item => {
@@ -66,18 +65,20 @@ export class ServiceRequestDetailComponent implements OnInit {
     const modal = this.modalService.open(ConfirmDeletionComponent);
     modal.componentInstance.objectToDelete = 'service request ' + this.serviceRequest.id;
     modal.componentInstance.deletionEvent.subscribe(($event) => {
-      this.deleteServiceRequest($event);});
+      this.deleteServiceRequest(modal);});
   }
 
-  deleteServiceRequest(event) : void {
+  deleteServiceRequest(modal: NgbModalRef) : void {
     this.http.deleteServiceRequest(this.serviceRequest.id).subscribe(
       data => {
         this.location.back();
+        modal.close('Close click');
         this.toastService.showSuccessToast('Deleted service request ' + this.serviceRequest.id);
         console.log('Deleted successfully')
       },
       err => {
         this.toastService.showErrorToast('Failed to delete service request ' + this.serviceRequest.id);
+        modal.componentInstance.deleteDisabled = false;
         console.log('Could not delete trip!');
       }
     );

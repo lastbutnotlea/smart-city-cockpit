@@ -21,7 +21,7 @@ export class VehicleAddComponent implements OnInit {
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
-              private stringFormatter: StringFormatterService,
+              public stringFormatter: StringFormatterService,
               private dateParser: DateParserService,
               private toastService: ToastService) {
   }
@@ -31,29 +31,35 @@ export class VehicleAddComponent implements OnInit {
   }
 
   confirm(): void {
-    this.saveDisabled = true;
-    this.http.addVehicle({
-      id: null,
-      capacity: this.capacity,
-      load: 0,
-      delay: 0,
-      temperature: null,
-      defects: [],
-      type: this.selected.value,
-      state: 'FINE',
-      identifiableType: "vehicle",
-      freeFrom: this.dateParser.cutTimezoneInformation(new Date()),
-      isShutDown: false,
-      currentLine: null
-    }).subscribe(
-      data => {
-        this.toastService.showSuccessToast('Added ' + data.id);
-        this.activeModal.close('Close click');
-      },
-          err => {
-            this.toastService.showErrorToast('Failed to add vehicle');
-          }
+    if(this.capacity <= 0) {
+      this.toastService.showErrorToast('Enter positive capacity please');
+    }
+    else {
+      this.saveDisabled = true;
+      this.http.addVehicle({
+        id: null,
+        capacity: this.capacity,
+        load: 0,
+        delay: 0,
+        temperature: null,
+        defects: [],
+        type: this.selected.value,
+        state: 'FINE',
+        identifiableType: "vehicle",
+        freeFrom: this.dateParser.cutTimezoneInformation(new Date()),
+        isShutDown: false,
+        currentLine: null
+      }).subscribe(
+        data => {
+          this.toastService.showSuccessToast('Added ' + data.id);
+          this.activeModal.close('Close click');
+        },
+        err => {
+          this.toastService.showErrorToast('Failed to add vehicle');
+          this.saveDisabled = false;
+        }
       );
+    }
   }
 
   toDropdown(types: string[]): DropdownValue[] {

@@ -1,108 +1,308 @@
-import {Component, Input, Output} from '@angular/core';
-import {NgbActiveModal, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
+import {Component, Input, OnInit, Output} from '@angular/core';
+import { NgbActiveModal, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {ServiceRequestData} from '../../../shared/data/service-request-data';
-import {DropdownValue, priorityDropdownItems} from '../../../shared/components/dropdown/dropdown.component';
-import {now} from '../../../shared/data/dates';
+import {ServiceRequestTarget} from '../../../shared/data/service-request-target';
+import {
+  DropdownValue, loadingDropdown,
+  priorityDropdownItems, selectDropdown, toDropdownItem, toDropdownItems
+} from '../../../shared/components/dropdown/dropdown.component';
 import {FeedbackData} from '../../../shared/data/feedback-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {DateParserService} from '../../../services/date-parser.service';
-import {StringFormatterService} from '../../../services/string-formatter.service';
 import {ToastService} from '../../../services/toast.service';
+import {StringFormatterService} from '../../../services/string-formatter.service';
+import {StopData} from '../../../shared/data/stop-data';
 
 @Component({
-  selector: 'app-service-request-edit',
+  selector: 'app-service-request-add',
   templateUrl: './service-request-edit.component.html',
   styleUrls: ['./service-request-edit.component.css']
 })
 
-export class ServiceRequestEditComponent {
+export class ServiceRequestEditComponent implements OnInit {
   @Input() @Output()
-  data: ServiceRequestData;
+  data: ServiceRequestData[];
+  // stores data of the new service request
+  selected: ServiceRequestData;
+  title: string = "";
 
-  dataEdited: boolean = false;
+  targetTypeChosen: boolean = false;
+  dataChosen: boolean = false;
   saveDisabled: boolean = false;
+  targetEditable: boolean = true;
+  dataEdited: boolean = false;
 
-  selectedPriority: DropdownValue;
+  selectedTargetType: DropdownValue = loadingDropdown;
+  selectableTargetTypes: DropdownValue[];
+
+  selectedTarget: DropdownValue = loadingDropdown;
+  availTargets: ServiceRequestTarget[];
+  selectedType: DropdownValue = loadingDropdown;
+  selectedPriority: DropdownValue = loadingDropdown;
   description: string;
-  selectedDate: string = now.toISOString();
+  selectedDate: string = (new Date()).toISOString();
   date: NgbDateStruct;
+
   availFeedback: FeedbackData[];
+  checkedFeedback: FeedbackData[];
   selectedFeedback: FeedbackData[];
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
               private dateParser: DateParserService,
               private toastService: ToastService,
-              private stringFormatter: StringFormatterService) {
-  }
+              private stringFormatter: StringFormatterService) { }
 
-  initData(): void {
-    if (this.data != null) {
-      this.selectedPriority = new DropdownValue(this.data.priority, this.stringFormatter.priorityToLabel(this.data.priority));
-      if (this.data.serviceRequestDescription.length != 0) {
-        this.description = this.data.serviceRequestDescription[0].text;
-      }
-      this.selectedDate = this.data.dueDate;
-      this.date = this.dateParser.convertDateToNgbDateStruct(new Date(this.selectedDate));
-      this.selectedFeedback = [];
-      for (let feedback of this.data.feedbacks) {
-        this.selectedFeedback.push(feedback);
-      }
-    }
-  }
-
-  confirm(): void {
-    if (!this.dataEdited) {
-      this.getFeedbackForTarget();
+  ngOnInit(): void {
+    this.selectableTargetTypes = this.targetItems();
+    // if service request should be edited, use current data of service request as default data;
+    if(this.dataEdited) {
+      this.setPreviousData();
     } else {
-      this.editServiceRequest();
+      this.setInitialData();
     }
   }
 
-  getFeedbackForTarget(): void {
-    if (this.data.target.identifiableType === "vehicle") {
-      this.http.getVehicleFeedback(this.data.target.id).subscribe(data => {
-        this.availFeedback = data;
-        this.dataEdited = true;
-      }, err => console.log('Could not load feedback for vehicle.'));
-    } else if (this.data.target.identifiableType === "stop") {
-      this.http.getStopFeedback(this.data.target.id).subscribe(data => {
-        this.availFeedback = data;
-        this.dataEdited = true;
-      }, err => console.log('Could not load feedback for vehicle.'));
+  setPreviousData(): void {
+    this.selected = this.data[0];
+    this.title = "Edit service request " + this.selected.id;
+    const value = this.selected.target.identifiableType === "vehicle";
+
+    this.selectedTargetType =  new DropdownValue(value,
+      this.selected.target.identifiableType.charAt(0).toUpperCase() + this.selected.target.identifiableType.slice(1).toLowerCase());
+    this.getTargetOfSelectedTargetType();
+    if(this.selectedTargetType.value){
+      this.selectedTarget = toDropdownItem(this.selected.target, item => item.id);
     } else {
-      console.log('No Target for service request ' + this.data.id);
-      this.availFeedback = [];
-      this.dataEdited = true;
+      this.selectedTarget = toDropdownItem(this.selected.target,
+          item =>this.stringFormatter.toStopId(<StopData> item));
+    }
+    this.selectedType = new DropdownValue(this.selected.serviceType,
+      this.stringFormatter.toFirstUpperRestLower(this.selected.serviceType));
+    this.selectedPriority = new DropdownValue(this.selected.priority,
+      this.stringFormatter.priorityToLabel(this.selected.priority));
+
+    this.date = this.dateParser.convertDateToNgbDateStruct(new Date(this.selected.dueDate));
+    this.updateDate();
+    if (this.selected.serviceRequestDescription.length != 0) {
+      this.description = this.selected.serviceRequestDescription[0].text;
+    }
+    this.checkedFeedback = [];
+    this.selectedFeedback = [];
+    this.selected.feedbacks.forEach(feedback => {
+      this.selectedFeedback.push(Object.assign(new FeedbackData(), feedback));
+      this.checkedFeedback.push(Object.assign(new FeedbackData(), feedback));
+    });
+  }
+
+  setInitialData(): void {
+    this.title = "Add new service request";
+    this.selected = new ServiceRequestData();
+    this.selected.feedbacks = [];
+    // set selectable values
+    if(this.targetEditable) {
+      this.selectedTargetType = selectDropdown;
+    }
+    this.selectedType = selectDropdown;
+    this.selectedPriority = selectDropdown;
+    this.description = "";
+
+    this.date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
+    this.updateDate();
+    this.checkedFeedback = [];
+    this.selectedFeedback = [];
+  }
+
+  /**
+   * Creates DropdownValue for each possible target-type
+   * @returns {DropdownValue[]}
+   */
+  targetItems(): DropdownValue[] {
+    if(this.targetEditable){
+      // TODO: Get data from meta data controller, do not set manually ?
+      let targetItems: DropdownValue[] = [];
+      targetItems.push(new DropdownValue(true, 'Vehicle'));
+      targetItems.push(new DropdownValue(false, 'Stop'));
+      return targetItems;
+    }
+    return [this.selectedTargetType];
+  }
+
+  /**
+   * Executes next step in Add-process
+   * (first choose target type,
+   * then select target, priority, date and add description,
+   * finally choose feedback and send new object to backend)
+   */
+  confirm(): void{
+    if(!this.targetTypeChosen){
+      this.getTargetOfSelectedTargetType();
+    } else if(!this.dataChosen) {
+      this.getFeedbackForSelectedTarget();
+    } else {
+      this.addServiceRequest();
     }
   }
 
-  editServiceRequest(): void {
+  /**
+   * Target type (stop or vehicle) has been selected
+   * Now get all possible targets of that type from backend
+   */
+  getTargetOfSelectedTargetType() {
+    // if type of selected target corresponds to selected target type,
+    // getting possible targets from backend is not necessary because we already have them
+    if(!this.hasValidType()){
+      // get all vehicle targets
+      if(this.selectedTargetType.value) {
+        this.http.getVehicles().subscribe(data => {
+            this.targetTypeChosen = true;
+            this.setTargetData(data);
+          },
+          err => {
+            this.toastService.showErrorToast('Failed to load vehicle targets');
+            console.log(JSON.stringify(err));
+          });
+        //get all stop targets
+      } else if (!this.selectedTargetType.value) {
+          this.http.getStops().subscribe(data => {
+              this.targetTypeChosen = true;
+              this.setTargetData(data);
+            },
+            err => {
+              this.toastService.showErrorToast('Failed to load stop targets');
+              console.log(JSON.stringify(err));
+            });
+      }
+      // if we don't need to get new data from backend, just set targetTypeChosen to true
+    } else {
+      this.targetTypeChosen = true;
+    }
+  }
+
+  setTargetData(data: ServiceRequestTarget[]): void {
+    this.availTargets = data;
+    if(!this.hasValidType()) {
+      this.selectedTarget = selectDropdown;
+      if (this.dataEdited) {
+        this.selectedFeedback = [];
+        this.checkedFeedback = [];
+      }
+    }
+    this.targetTypeChosen = true;
+  }
+
+  /**
+   * Target has been chosen
+   * now get all feedback for that target so that feedback can be added to service request
+   */
+  getFeedbackForSelectedTarget() {
+    if(this.selectedTargetType.value){
+      this.http.getVehicleFeedback(this.selectedTarget.value.id).subscribe( data => {
+        this.availFeedback = data;
+        this.dataChosen = true;
+      }, err => console.log('Could not load feedback for vehicle.'));
+    } else if(!this.selectedTargetType.value) {
+      this.http.getStopFeedback(this.selectedTarget.value.id).subscribe( data => {
+        this.availFeedback = data;
+        this.dataChosen = true;
+      }, err => console.log('Could not load feedback for vehicle.'));
+    }
+  }
+
+  /**
+   * adds service request with selected data
+   */
+  addServiceRequest() {
     this.saveDisabled = true;
-    this.data.priority = this.selectedPriority.value;
-    this.data.dueDate = this.selectedDate;
-    this.data.serviceRequestDescription = [{"id": "", "text": this.description, "objectId": this.data.serviceRequestDescription[0].objectId}];
-    this.data.feedbacks = this.selectedFeedback;
-    console.log(this.data);
+    this.selected.target = this.selectedTarget.value;
+    this.selected.serviceType = this.selectedType.value;
+    this.selected.priority = this.selectedPriority.value;
+    this.selected.dueDate = this.selectedDate;
+    this.selected.feedbacks = this.selectedFeedback;
+    if(this.dataEdited) {
+      this.sendEditRequest();
+    } else {
+      this.sendAddRequest();
+    }
+  }
 
-    this.http.editServiceRequest(this.data).subscribe(
+  sendAddRequest(): void {
+    this.selected.serviceRequestDescription = [{"id": "", "text": this.description, "objectId": ""}];
+    this.http.addServiceRequest(this.selected).subscribe(
       data => {
-        console.log('Edited service request.');
+        console.log('Added service request.');
+        this.callback(data);
+        this.toastService.showSuccessToast('Added service request ' + data.id);
         this.activeModal.close('Close click');
-        this.toastService.showSuccessToast('Edited service request ' + data.id);
       },
       err => {
-        console.log('Could not edit service request.');
+        this.toastService.showErrorToast('Failed to add service request');
+        this.saveDisabled = false;
+        console.log('Could not add service request.');
+      }
+    );
+  }
+
+  sendEditRequest(): void {
+    this.selected.name = null;
+    this.selected.serviceRequestDescription[0].text = this.description;
+    // get rid of all feedback that belongs to other targets
+    debugger;
+    this.selected.feedbacks.filter(feedback => {
+      debugger;
+      return feedback.objective.id !== this.selected.target.id;
+    });
+    debugger;
+    this.http.editServiceRequest(this.selected).subscribe(
+      data => {
+        this.callback(data);
+        console.log('Edited service request.');
+        this.toastService.showSuccessToast('Edited service request ' + data.id);
         this.activeModal.close('Close click');
-        this.toastService.showErrorToast('Failed to edit service request ' + this.data.id);
-      });
+      },
+      err => {
+        this.toastService.showErrorToast('Failed to edit service request');
+        console.log('Could not edit service request.');
+      }
+    );
   }
 
-  isChecked(feedback: FeedbackData): boolean {
-    return this.selectedFeedback.filter(filteredFeedback => filteredFeedback.id === feedback.id).length === 1;
+  toDropdownItemsTarget(items: ServiceRequestTarget[]): DropdownValue[] {
+    if(this.selectedTargetType.value){
+      return toDropdownItems(items, item => item.id);
+    } else {
+      return toDropdownItems(items, item => this.stringFormatter.toStopId(<StopData>item));
+    }
   }
 
-  includeFeedback(feedback: FeedbackData, included: boolean): void {
+  typeItems(): DropdownValue[] {
+    // TODO: Get data from meta data controller, do not set manually
+    let typeItems: DropdownValue[] = [];
+    typeItems.push(new DropdownValue('CLEANING', 'Cleaning'));
+    typeItems.push(new DropdownValue('MAINTENANCE', 'Maintenance'));
+    return typeItems;
+  }
+
+  priorityItems(): DropdownValue[] {
+    return priorityDropdownItems();
+  }
+
+  updateDate(): void {
+    if(this.dateParser.isBeforeDate(new Date(), this.date)) {
+      this.selectedDate = this.dateParser.parseDate(
+        this.selectedDate,
+        this.date
+      );
+    } else {
+      this.date = this.dateParser.convertDateToNgbDateStruct(new Date(this.selectedDate));
+    }
+  }
+
+  isChecked(feedback: FeedbackData) {
+    return this.checkedFeedback.filter(feedback => feedback.id === feedback.id).length === 1;
+  }
+
+  includeFeedback(feedback: FeedbackData, included: boolean) {
     if (included) {
       this.selectedFeedback.push(feedback);
     } else {
@@ -112,24 +312,67 @@ export class ServiceRequestEditComponent {
     console.log(JSON.stringify(this.selectedFeedback));
   }
 
-  /**
-   * Only use selected date if it is not passed already
-   */
-  updateDate(): void {
-    if (this.dateParser.isBeforeDate(new Date(), this.date)) {
-      this.selectedDate = this.dateParser.parseDate(this.selectedDate, this.date);
-    } else {
-      this.date = this.dateParser.convertDateToNgbDateStruct(new Date(this.selectedDate));
-    }
-  }
-
-  priorityItems(): DropdownValue[] {
-    return priorityDropdownItems();
-  }
-
   stepBack() {
-    if (this.dataEdited) {
-      this.dataEdited = false;
+   if(this.dataChosen){
+      this.dataChosen = false;
+    } else if(this.targetTypeChosen) {
+      this.targetTypeChosen = false;
     }
+  }
+
+  private callback: (param: ServiceRequestData) => void = () => {
+  };
+
+  public onAdd(callback: (param: ServiceRequestData) => void) {
+    this.callback = callback;
+  }
+
+  public skipSteps(isVehicleTarget: boolean, target: ServiceRequestTarget): void {
+    // set target type
+    if(isVehicleTarget){
+      this.selectedTargetType = new DropdownValue(true, 'Vehicle');
+      this.selectedTarget =  toDropdownItem(target, item => item.id);
+    } else {
+      this.selectedTargetType = new DropdownValue(false, 'Stop');
+      this.selectedTarget =  toDropdownItem(target, item => this.stringFormatter.toStopId(<StopData> item));
+    }
+    // set target
+    this.availTargets = [target];
+    // set state of add-window
+    this.targetTypeChosen = true;
+    this.targetEditable = false;
+  }
+
+  public editData(): void {
+    this.dataEdited = true;
+  }
+
+  public disableNext(): boolean {
+    if(!this.targetTypeChosen
+      && (this.selectedTargetType !== selectDropdown)
+      && (this.selectedTargetType !== loadingDropdown)){
+      return false;
+    } else if (this.targetTypeChosen
+      && !this.dataChosen
+      && (this.selectedTarget !== selectDropdown)
+      && (this.selectedTarget !== loadingDropdown)
+      && (this.selectedType !== selectDropdown)
+      && (this.selectedType !== loadingDropdown)
+      && (this.selectedPriority !== selectDropdown)
+      && (this.selectedPriority !== loadingDropdown)){
+      return false;
+    } else if (this.dataChosen && !this.saveDisabled){
+      return false;
+    }
+    return true;
+  }
+
+  hasValidType(): boolean {
+    if(this.selectedTarget.value !== null) {
+      if(this.selectedTarget.value.identifiableType === this.selectedTargetType.label.toLowerCase()) {
+        return true;
+      }
+    }
+    return false;
   }
 }

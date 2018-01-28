@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import { ServiceRequestData } from '../../data/service-request-data';
-import {ServiceRequestAddComponent} from '../../../view/service-request-views/service-request-add/service-request-add.component';
+import {ServiceRequestEditComponent} from '../../../view/service-request-views/service-request-edit/service-request-edit.component';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {ServiceRequestTarget} from '../../data/service-request-target';
 
@@ -31,7 +31,7 @@ export class EmbeddedServiceRequestComponent{
   }
 
   addServiceRequest(): void {
-    const modal = this.modalService.open(ServiceRequestAddComponent);
+    const modal = this.modalService.open(ServiceRequestEditComponent);
     modal.componentInstance.data = this.serviceRequests;
     modal.componentInstance.skipSteps(this.target.identifiableType === "vehicle", this.target);
     modal.componentInstance.onAdd(item => {

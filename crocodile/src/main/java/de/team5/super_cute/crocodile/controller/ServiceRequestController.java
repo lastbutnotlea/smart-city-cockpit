@@ -191,12 +191,12 @@ public class ServiceRequestController {
       feedbackGroupData.addObject(fbg);
     }
     for (Feedback f : fbg.getFeedbacks()) {
-      f.setProcessed(false);
+      feedbackData.processFeedback(f.getId(), false);
     }
     fbg.getFeedbacks().clear();
     for (Feedback f : sr.getFeedbacks()) {
       fbg.addFeedback(f);
-      f.setProcessed(true);
+      feedbackData.processFeedback(f.getId(), true);
     }
     sr.setReferencedFeedback(fbg.getId());
 

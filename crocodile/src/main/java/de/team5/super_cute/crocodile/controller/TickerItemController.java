@@ -3,7 +3,7 @@ package de.team5.super_cute.crocodile.controller;
 import static de.team5.super_cute.crocodile.config.TickerConfig.ITEM_COUNT;
 
 import de.team5.super_cute.crocodile.config.AppConfiguration;
-import de.team5.super_cute.crocodile.data.BaseData;
+import de.team5.super_cute.crocodile.generator.TickerItemGenerator;
 import de.team5.super_cute.crocodile.model.TickerItem;
 import de.team5.super_cute.crocodile.util.Helpers;
 import java.util.List;
@@ -19,19 +19,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping(AppConfiguration.API_PREFIX + "/ticker")
-public class TickerItemController extends BaseController<TickerItem> {
+public class TickerItemController{
 
   private Logger logger = LoggerFactory.getLogger(this.getClass());
 
   @Autowired
-  public TickerItemController(BaseData<TickerItem> tickerItemBaseData) {
-    data = tickerItemBaseData;
-  }
+  private TickerItemGenerator tickerItemGenerator;
 
   @GetMapping
   public List<TickerItem> getTickerItems() {
     logger.info("Got Request to return tickerItems");
-    List<TickerItem> list = data.getData();
+    List<TickerItem> list = tickerItemGenerator.getTickerItems();
     return list.stream()
         .sorted((t, u) -> Integer.compare(u.getItem().getItemPriority(), t.getItem().getItemPriority()))
         .collect(Collectors.toList()).subList(0, Integer.min(ITEM_COUNT, list.size()));
@@ -40,6 +38,7 @@ public class TickerItemController extends BaseController<TickerItem> {
   @DeleteMapping("/{id}")
   public String deleteTickerItem(@PathVariable String id) {
     logger.info("Got Request to delete the tickerItem with id " + id);
-    return Helpers.makeIdToJSON(deleteObject(id));
+    tickerItemGenerator.deleteTickerItem(id);
+    return Helpers.makeIdToJSON(id);
   }
 }
