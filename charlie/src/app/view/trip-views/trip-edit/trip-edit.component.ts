@@ -3,7 +3,10 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {StopData} from '../../../shared/data/stop-data';
 import {
-  DropdownValue, toDropdownItem,
+  DropdownValue,
+  loadingDropdown,
+  selectDropdown,
+  toDropdownItem,
   toDropdownItems
 } from '../../../shared/components/dropdown/dropdown.component';
 import {TripData} from "../../../shared/data/trip-data";
@@ -19,18 +22,14 @@ import {ToastService} from "../../../services/toast.service";
 })
 
 export class TripEditComponent implements OnInit {
-  private static readonly loadingDropdown: DropdownValue = new DropdownValue(null, "loading...");
-  private static readonly selectDropdown: DropdownValue = new DropdownValue(null, "please select");
-  private static readonly noVehiclesAvailDropdown: DropdownValue = new DropdownValue(null, "no vehicles available");
-
   model: TripData = null;
 
   availableLines: DropdownValue[] = [];
   availableVehicles: DropdownValue[] = [];
 
-  selectedLine: DropdownValue = TripEditComponent.loadingDropdown;
-  selectedDirection: DropdownValue = TripEditComponent.selectDropdown;
-  selectedVehicle: DropdownValue = TripEditComponent.loadingDropdown;
+  selectedLine: DropdownValue = loadingDropdown;
+  selectedDirection: DropdownValue = selectDropdown;
+  selectedVehicle: DropdownValue = loadingDropdown;
   selectedStops: Map<StopData, boolean> = new Map();
   selectedDate: Date = new Date();
 
@@ -68,7 +67,7 @@ export class TripEditComponent implements OnInit {
       data => {
         this.availableLines = toDropdownItems(data, line => line.name);
         // only if not already set to something meaningful
-        if (!this.model) this.selectedLine = TripEditComponent.selectDropdown;
+        if (!this.model) this.selectedLine = selectDropdown;
       },
       err => {
         console.log("Err: " + JSON.stringify(err));
@@ -89,7 +88,7 @@ export class TripEditComponent implements OnInit {
   }
 
   selectedLineChanged(): void {
-    this.selectedDirection = TripEditComponent.selectDropdown;
+    this.selectedDirection = selectDropdown;
   }
 
   selectedDirectionChanged(): void {
@@ -125,7 +124,7 @@ export class TripEditComponent implements OnInit {
   refreshVehicles(): void {
     this.availableVehicles = [];
     let selected = this.selectedVehicle;
-    this.selectedVehicle = TripEditComponent.loadingDropdown;
+    this.selectedVehicle = loadingDropdown;
     let date = this.dateParser.cutTimezoneInformation(this.selectedDate);
     this.http.getVehiclesByTimeAndType(date, this.selectedLine.value.type, this.model).subscribe(
       data => {
@@ -136,9 +135,9 @@ export class TripEditComponent implements OnInit {
         if (isSelectedValid) {
           this.selectedVehicle = selected;
         } else if (this.availableVehicles.length == 0) {
-          this.selectedVehicle = TripEditComponent.noVehiclesAvailDropdown;
+          this.selectedVehicle = new DropdownValue(null, "no vehicles available");
         } else {
-          this.selectedVehicle = TripEditComponent.selectDropdown;
+          this.selectedVehicle = selectDropdown;
         }
       },
       err => {
