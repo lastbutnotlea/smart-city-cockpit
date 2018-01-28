@@ -361,7 +361,7 @@ public class Vehicle extends IdentifiableObject implements Serializable, Stateab
     Vehicle vehicle = (Vehicle) o;
 
     return new EqualsBuilder()
-        .append(isShutDown, vehicle.isShutDown)
+        .appendSuper(super.equals(o))
         .append(getCapacity(), vehicle.getCapacity())
         .append(getType(), vehicle.getType())
         .isEquals();
@@ -370,9 +370,9 @@ public class Vehicle extends IdentifiableObject implements Serializable, Stateab
   @Override
   public int hashCode() {
     return new HashCodeBuilder(17, 37)
+        .appendSuper(super.hashCode())
         .append(getCapacity())
         .append(getType())
-        .append(isShutDown)
         .toHashCode();
   }
 }
