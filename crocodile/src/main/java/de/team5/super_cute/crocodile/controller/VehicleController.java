@@ -74,7 +74,9 @@ public class VehicleController extends BaseController<Vehicle> {
   @PostMapping
   public String addVehicle(@RequestBody Vehicle input) {
     logger.info("Got Request to add the vehicle " + input);
-    input.setId();
+    if (input.getId() == null) {
+      input.setId();
+    }
     input.setLoad(0);
     input.setTemperature(TEMPERATURE_INITIAL);
     input.setIsShutDown(false);
@@ -128,7 +130,7 @@ public class VehicleController extends BaseController<Vehicle> {
     List<Vehicle> vehicles = data.getData().stream()
         .filter(v -> v.getType().equals(EVehicleType.valueOf(type)))
         .peek(tripData::setFreeFrom)
-        .filter(v -> v.getFreeFrom().isBefore(LocalDateTime.parse(timeString)))
+        .filter(v -> !LocalDateTime.parse(timeString).isBefore(v.getFreeFrom()))
         .collect(Collectors.toList());
     if (!ignoreTripId.equals("")) {
       vehicles.add(tripData.getObjectForId(ignoreTripId).getVehicle());

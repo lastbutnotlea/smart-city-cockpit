@@ -1,9 +1,14 @@
-<a class="color-inherit" href="serviceRequests">
-  <h4 class="text-lg-left">
+<h4 class="text-lg-left">
+  <a class="color-inherit" href="serviceRequests">
     <i class="fa fa-cogs fa-2x float-left padding-left-5 text-primary"></i>
-    <label class="padding-emb-box-headline">Service requests</label>
-  </h4>
-</a>
+    <label class="padding-emb-box-headline">
+      Service requests
+    </label>
+  </a>
+  <div class="float-right margin-bottom-30">
+    <button class="btn btn-outline-primary no-float" (click)="addServiceRequest()">Add</button>
+  </div>
+</h4>
 
 <div *ngIf="serviceRequests.length === 0">
   <p>No Service Requests available</p>
@@ -21,7 +26,7 @@
       </p>
       <p>
         <label class="text-secondary">Due on {{serviceRequest.dueDate
-          | date:'MM/dd/yyyy HH:mm'}}</label>
+          | date:'MM/dd/yyyy'}}</label>
       </p>
     </div>
   </div>
@@ -38,7 +43,7 @@
       </p>
       <p>
         <label class="text-secondary">Completed on {{serviceRequest.completionDate |
-          date:'MM/dd/yyyy HH:mm'}}</label>
+          date:'MM/dd/yyyy'}}</label>
       </p>
     </div>
   </div>

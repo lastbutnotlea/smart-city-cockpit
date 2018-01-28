@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 import org.hibernate.annotations.Proxy;
 
@@ -18,7 +18,7 @@ import org.hibernate.annotations.Proxy;
 @Proxy(lazy = false)
 public class FeedbackGroup extends IdentifiableObject {
 
-  @OneToMany(fetch = FetchType.LAZY)
+  @ManyToMany(fetch = FetchType.LAZY)
   private Set<Feedback> feedbacks;
 
   public FeedbackGroup() {
