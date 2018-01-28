@@ -1,9 +1,8 @@
 package de.team5.super_cute.crocodile.controller;
 
-import static de.team5.super_cute.crocodile.util.Helpers.makeIdToJSON;
-
 import de.team5.super_cute.crocodile.config.AppConfiguration;
 import de.team5.super_cute.crocodile.data.BaseData;
+import de.team5.super_cute.crocodile.data.FeedbackData;
 import de.team5.super_cute.crocodile.model.EFeedbackType;
 import de.team5.super_cute.crocodile.model.Feedback;
 import de.team5.super_cute.crocodile.model.IdentifiableObject;
@@ -36,7 +35,7 @@ public class FeedbackController extends BaseController<Feedback> {
   @GetMapping
   public List<Feedback> getAllFeedbacks() {
     logger.info("Got Request to return all feedbacks");
-    return data.getData().stream().peek(this::setProcessed).collect(Collectors.toList());
+    return data.getData();
   }
 
   @GetMapping("/vehicle/{vehicleId}")
@@ -45,7 +44,6 @@ public class FeedbackController extends BaseController<Feedback> {
     return data.getData().stream()
         .filter(f -> f.getFeedbackType() == EFeedbackType.VEHICLE_FEEDBACK)
         .filter(f -> ((IdentifiableObject) f.getObjective()).getId().equals(vehicleId))
-        .peek(this::setProcessed)
         .collect(Collectors.toList());
   }
 
@@ -55,40 +53,18 @@ public class FeedbackController extends BaseController<Feedback> {
     return data.getData().stream()
         .filter(f -> f.getFeedbackType() == EFeedbackType.STOP_FEEDBACK)
         .filter(f -> ((IdentifiableObject) f.getObjective()).getId().equals(stopId))
-        .peek(this::setProcessed)
         .collect(Collectors.toList());
   }
 
   @PutMapping("/{feedbackId}/process")
   public String processFeedback(@PathVariable String feedbackId) {
     logger.info("Got Request to process feedback with id " + feedbackId);
-    return processFeedback(feedbackId, true);
+    return ((FeedbackData) data).processFeedback(feedbackId, true);
   }
 
   @PutMapping("/{feedbackId}/unprocess")
   public String unprocessFeedback(@PathVariable String feedbackId) {
     logger.info("Got Request to UNprocess feedback with id " + feedbackId);
-    return processFeedback(feedbackId, false);
-  }
-
-  private String processFeedback(String feedbackId, boolean processed) {
-    Feedback feedback = new Feedback(getObjectForId(feedbackId));
-    feedback.setProcessed(processed);
-    if (processed) {
-      processedFeedback.add(feedbackId);
-    } else {
-      if (processedFeedback.contains(feedbackId)) {
-        processedFeedback.remove(feedbackId);
-      }
-    }
-    return makeIdToJSON(feedbackId);
-  }
-
-  private void setProcessed(Feedback feedback) {
-    if (processedFeedback.contains(feedback.getId())) {
-      feedback.setProcessed(true);
-    } else {
-      feedback.setProcessed(false);
-    }
+    return ((FeedbackData) data).processFeedback(feedbackId, false);
   }
 }
