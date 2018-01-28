@@ -8,6 +8,10 @@
   overflow-y: auto;
 }
 
+.overflow {
+  overflow-y: auto;
+}
+
 .no-float {
   clear: both;
 }
@@ -195,6 +199,6 @@ h4 {
   flex-shrink: 0;
 }
 
-.width-300 {
-  width: 300px;
+.filter-width {
+  max-width: 225px;
 }
