@@ -5,9 +5,7 @@
   </h3>
 
   <div class="d-flex flex-row fit-screen">
-    <div class="fit-screen">
-      <app-filter-group-view></app-filter-group-view>
-    </div>
+      <app-filter-group-view class="flex-1 overflow filter-width"></app-filter-group-view>
 
     <div *ngIf="loaded && filterGroup.searchVehicle(filterGroup.getFiltered(vehicles)).length > 0"
          class="d-flex flex-grow-1 fit-screen">
