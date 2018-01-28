@@ -24,7 +24,7 @@ export class EventDetailComponent implements OnInit {
               private route: ActivatedRoute,
               private location: Location,
               private modalService: NgbModal,
-              private stringFormatter: StringFormatterService,
+              public stringFormatter: StringFormatterService,
               private toastService: ToastService) {
   }
 

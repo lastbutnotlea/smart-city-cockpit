@@ -51,7 +51,7 @@ export class EventEditComponent implements OnInit {
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
               public dateParser: DateParserService,
-              private stringFormatter: StringFormatterService,
+              public stringFormatter: StringFormatterService,
               private toastService: ToastService) {
   }
 
