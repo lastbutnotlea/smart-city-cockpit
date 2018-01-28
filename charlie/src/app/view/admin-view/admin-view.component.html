@@ -2,49 +2,67 @@
   Admin Area
 </h3>
 
-<div *ngIf="loaded">
+<div *ngIf="loaded" class="fit-screen d-flex flex-column">
 
-  <h3 class="text-center">
-    Advanced Live Data Configuration
-  </h3>
-  <div>
-    <label>Defect Chance: </label>
-    <input class="float-right" type="number" [(ngModel)]="currentConfiguration.defectChance" (change)="changeConfigurations('')">
-  </div>
-  <div>
-    <label>Defect Remove Chance: </label>
-    <input class="float-right" type="number" [(ngModel)]="currentConfiguration.defectRemoveChance" (change)="changeConfigurations('')">
-  </div>
-  <div>
-    <label>Feedback Chance: </label>
-    <input class="float-right" type="number" [(ngModel)]="currentConfiguration.feedbackChance" (change)="changeConfigurations('')">
-  </div>
+  <div class="margin-bottom-30">
+    <div class="d-flex flex-1 flex-row margin-bottom-30">
+      <div class="bounding-box">
+        <h3 class="text-center">
+          Advanced Live Data Configuration
+        </h3>
+        <div>
+          <label>Defect Chance: </label>
+          <input class="float-right" type="number" min="{{minCapacity}}" max="{{maxCapacity}}" step="1"
+                 [(ngModel)]="selectedConfiguration.defectChance"
+                 (change)="changeConfigurations('')"
+                 (keypress)="validate($event, selectedConfiguration.defectChance)">
+        </div>
+        <div>
+          <label>Defect Remove Chance: </label>
+          <input type="number" min="{{minCapacity}}" max="{{maxCapacity}}" step="1"
+                 [(ngModel)]="selectedConfiguration.defectRemoveChance"
+                 (change)="changeConfigurations('')"
+                 (keypress)="validate($event, selectedConfiguration.defectRemoveChance)">
+        </div>
+        <div>
+          <label>Feedback Chance: </label>
+          <input class="float-right" type="number" min="{{minCapacity}}" max="{{maxCapacity}}" step="1"
+                 [(ngModel)]="selectedConfiguration.feedbackChance"
+                 (change)="changeConfigurations('')"
+                 (keypress)="validate($event, selectedConfiguration.feedbackChance)">
+        </div>
+      </div>
 
-  <h3 class="text-center">
-    Standard Live Data Configuration
-  </h3>
-  <div>
-    <button type="button" class="btn {{usingGood? 'active' : ''}}" (click)="changeConfigurations('good')">
-      Good
+      <div class="float-right bounding-box">
+        <h3 class="text-center">
+          Standard Live Data Configuration
+        </h3>
+        <div class="no-float m-3 no-margin-left">
+          <button type="button" class="btn {{usingGood? 'active' : ''}}" (click)="changeConfigurations('good')">
+            Good
+          </button>
+          <button type="button" class="btn {{usingMedium? 'active' : ''}}" (click)="changeConfigurations('medium')">
+            Medium
+          </button>
+          <button type="button" class="btn {{usingBad? 'active' : ''}}" (click)="changeConfigurations('bad')">
+            Bad
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <button type="button" class="btn btn-outline-primary margin-bottom-30" (click)="updateConfigurations()">
+      Update System Configurations
     </button>
-    <button type="button" class="btn {{usingMedium? 'active' : ''}}" (click)="changeConfigurations('medium')">
-      Medium
-    </button>
-    <button type="button" class="btn {{usingBad? 'active' : ''}}" (click)="changeConfigurations('bad')">
-      Bad
-    </button>
   </div>
 
-  <button type="button" class="btn btn-outline-primary" (click)="updateConfigurations()">
-    Update System Configurations
-  </button>
+  <div>
+    <button type="button" class="btn btn-outline-primary" (click)="exportVehicles()">
+      Export Vehicles
+    </button>
 
+    <button type="button" class="btn btn-outline-primary" (click)="exportAnnouncements()">
+      Export Announcements
+    </button>
+  </div>
 </div>
-
-<button type="button" class="btn btn-outline-primary" (click)="exportVehicles()">
-  Export Vehicles
-</button>
-
-<button type="button" class="btn btn-outline-primary" (click)="exportAnnouncements()">
-  Export Announcements
-</button>

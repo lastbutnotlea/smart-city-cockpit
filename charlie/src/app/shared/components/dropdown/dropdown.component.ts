@@ -50,3 +50,6 @@ export function priorityDropdownItems(): DropdownValue[] {
   prioItems.push(new DropdownValue('CRITICAL', 'High'));
   return prioItems;
 }
+
+export const loadingDropdown: DropdownValue = new DropdownValue(null, "loading...");
+export const selectDropdown: DropdownValue = new DropdownValue(null, "please select");
