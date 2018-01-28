@@ -25,16 +25,12 @@ public class CsvExportController {
 
   @GetMapping("/vehicles")
   public String exportVehicles() throws IOException, SQLException {
-    return makeCSVToJson(exportTable("vehicle"));
+    return exportTable("vehicle");
   }
 
   @GetMapping("/announcements")
   public String exportAnnouncements() throws IOException, SQLException {
-    return makeCSVToJson(exportTable("announcement"));
-  }
-
-  private String makeCSVToJson(String csv) {
-    return "{\"csv\":\"" + csv + "\"}";
+    return exportTable("announcement");
   }
 
   private String exportTable(String tablename) throws IOException, SQLException {
