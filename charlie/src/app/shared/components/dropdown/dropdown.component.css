@@ -1,6 +1,25 @@
-.scrollable-dropdown
-{
+:host {
+  min-width: 0;
+}
+
+.scrollable-dropdown {
   max-height: 300px;
   overflow: auto;
 }
 
+.text-ellipsis {
+  overflow: hidden;
+  -ms-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.button-dropdown {
+  display: inline-flex;
+}
+
+.dropdown-toggle::after {
+  margin-top: 0.5em;
+}

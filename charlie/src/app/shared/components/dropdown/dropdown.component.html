@@ -1,8 +1,12 @@
-<div ngbDropdown class="d-inline-block w-100">
-  <button class="btn btn-outline-primary w-100" ngbDropdownToggle>{{selected.label}}</button>
+<div ngbDropdown class="d-inline-flex w-100">
+  <button class="btn btn-outline-primary button-dropdown d-inline-flex w-100" ngbDropdownToggle>
+    <span class="text-ellipsis">{{selected.label}}</span>
+  </button>
   <div ngbDropdownMenu class="scrollable-dropdown" aria-labelledby="dropdownBasic1">
     <ng-container *ngFor="let value of values">
-      <button class="dropdown-item" (click)="select(value);">{{value.label}}</button>
+      <button class="dropdown-item button-dropdown" (click)="select(value);">
+        <span class="text-ellipsis flex-grow-1">{{value.label}}</span>
+      </button>
     </ng-container>
   </div>
 </div>
