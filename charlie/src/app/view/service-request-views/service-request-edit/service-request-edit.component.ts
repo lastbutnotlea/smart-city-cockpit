@@ -200,12 +200,18 @@ export class ServiceRequestEditComponent implements OnInit {
       this.http.getVehicleFeedback(this.selectedTarget.value.id).subscribe( data => {
         this.availFeedback = data;
         this.dataChosen = true;
-      }, err => console.log('Could not load feedback for vehicle.'));
+      }, err => {
+        this.toastService.showErrorToast('Failed to load feedback for selected vehicle target');
+        console.log(JSON.stringify(err));
+      });
     } else if(!this.selectedTargetType.value) {
       this.http.getStopFeedback(this.selectedTarget.value.id).subscribe( data => {
         this.availFeedback = data;
         this.dataChosen = true;
-      }, err => console.log('Could not load feedback for vehicle.'));
+      }, err => {
+        this.toastService.showErrorToast('Failed to load feedback for selected stop target');
+        console.log(JSON.stringify(err));
+      });
     }
   }
 
@@ -262,7 +268,7 @@ export class ServiceRequestEditComponent implements OnInit {
       },
       err => {
         this.toastService.showErrorToast('Failed to edit service request');
-        console.log('Could not edit service request.');
+        console.log(JSON.stringify(err));
       }
     );
   }
