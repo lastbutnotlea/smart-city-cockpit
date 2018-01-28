@@ -21,7 +21,7 @@ export class VehicleAddComponent implements OnInit {
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
-              private stringFormatter: StringFormatterService,
+              public stringFormatter: StringFormatterService,
               private dateParser: DateParserService,
               private toastService: ToastService) {
   }

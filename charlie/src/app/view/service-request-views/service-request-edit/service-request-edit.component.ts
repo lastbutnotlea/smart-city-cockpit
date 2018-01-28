@@ -32,7 +32,7 @@ export class ServiceRequestEditComponent {
               private http: HttpRoutingService,
               private dateParser: DateParserService,
               private toastService: ToastService,
-              private stringFormatter: StringFormatterService) {
+              public stringFormatter: StringFormatterService) {
   }
 
   initData(): void {
