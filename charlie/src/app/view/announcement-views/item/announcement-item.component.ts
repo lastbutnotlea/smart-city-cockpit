@@ -6,6 +6,7 @@ import {AnnouncementEditComponent} from "../edit/announcement-edit.component";
 import {ConfirmDeletionComponent} from '../../../shared/components/confirm-popup/confirm-deletion.component';
 import {ActivatedRoute, Params} from "@angular/router";
 import {ToastService} from '../../../services/toast.service';
+import {StopData} from "../../../shared/data/stop-data";
 
 @Component({
   selector: 'app-announcement-item',
@@ -25,6 +26,7 @@ export class AnnouncementItemComponent implements OnInit {
   data: AnnouncementData;
 
   deleted: boolean = false;
+  showStops: boolean = false;
 
   constructor(private http: HttpRoutingService,
               private modalService: NgbModal,
@@ -57,7 +59,8 @@ export class AnnouncementItemComponent implements OnInit {
     const modal = this.modalService.open(ConfirmDeletionComponent);
     modal.componentInstance.objectToDelete = this.data.id;
     modal.componentInstance.deletionEvent.subscribe(($event) => {
-      this.deleteItem(modal);});
+      this.deleteItem(modal);
+    });
   }
 
   scrollAnnouncement(to: string) {
@@ -65,6 +68,10 @@ export class AnnouncementItemComponent implements OnInit {
     if (x) {
       x.scrollIntoView(true);
     }
+  }
+
+  getSortedStops(): StopData[] {
+    return this.data.stops.sort((a, b) => a.commonName.localeCompare(b.commonName))
   }
 
 }

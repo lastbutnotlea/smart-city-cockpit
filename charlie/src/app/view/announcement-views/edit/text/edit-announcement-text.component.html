@@ -1,4 +1,4 @@
 <div class="form-group m-2">
   <label for="comment">Announcement text:</label>
-  <textarea class="form-control" rows="5" id="comment" [(ngModel)]="text" (change)="textChange.emit(text)"></textarea>
+  <textarea class="form-control" rows="5" id="comment" [(ngModel)]="text" (keyup)="textChange.emit(text)"></textarea>
 </div>
