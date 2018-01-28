@@ -88,9 +88,9 @@ public class TripControllerTest {
   public void testTripAdding() throws Exception {
     initTestObjects();
     Map<String, LocalDateTime> stops = new HashMap<>();
-    stops.put(s2.getId(), Helpers.DUMMY_TIME);
+    stops.put(s2.getId(), null);
     stops.put(s1.getId(), ldt1);
-    stops.put(s4.getId(), Helpers.DUMMY_TIME);
+    stops.put(s4.getId(), null);
     Trip testTrip = new Trip(v2, l1, stops, true);
     tripControllerTestHelper.testAdd(testTrip);
     Trip tripAfterAdding = tripControllerTestHelper.getObjects().stream()

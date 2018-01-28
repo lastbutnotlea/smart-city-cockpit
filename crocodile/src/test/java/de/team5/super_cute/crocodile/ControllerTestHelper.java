@@ -33,7 +33,7 @@ class ControllerTestHelper<T extends IdentifiableObject> {
 
     assert(getObjects().contains(object));
 
-    this.mockMvc.perform(delete(baseUri + "/" + object.getId())).andExpect(content().string(object.getId()));
+    this.mockMvc.perform(delete(baseUri + "/" + object.getId()));
 
     assert(!getObjects().contains(object));
   }
@@ -44,7 +44,7 @@ class ControllerTestHelper<T extends IdentifiableObject> {
   }
 
   void testAdd(T object) throws Exception {
-    this.mockMvc.perform(post(baseUri).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(object))).andExpect(content().string(object.getId()));
+    this.mockMvc.perform(post(baseUri).contentType(MediaType.APPLICATION_JSON).content(mapper.writeValueAsString(object)));
   }
 
 }
