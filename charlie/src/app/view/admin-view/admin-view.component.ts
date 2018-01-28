@@ -16,7 +16,7 @@ export class AdminViewComponent implements OnInit{
   usingGood: boolean = false;
   usingMedium: boolean = false;
   usingBad: boolean = false;
-  loaded: boolean = false
+  loaded: boolean = false;
 
   constructor(
     private http: HttpRoutingService) {
@@ -54,19 +54,13 @@ export class AdminViewComponent implements OnInit{
     var nameOfFileToDownload = "VehicleExport.csv";
     this.http.getVehiclesExport().subscribe(
       data => {
-        var blob = new Blob([data], { type: 'text/csv' });
 
-        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-          window.navigator.msSaveOrOpenBlob(blob, nameOfFileToDownload);
-        } else {
-          var a = document.createElement('a');
-          a.href = URL.createObjectURL(blob);
-          a.download = nameOfFileToDownload;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-        }
       }, err => {
+        debugger;
+        // we want to export a csv-file here
+        // if we get the text from backend as csv, parsing doesn't work here
+        // instead of changing the file before and after sending, we just get the sent text from the error message
+        this.exportCsv(err.error.text, nameOfFileToDownload);
         console.log(err);
       });
   }
@@ -75,21 +69,31 @@ export class AdminViewComponent implements OnInit{
     var nameOfFileToDownload = "AnnouncementsExport.csv";
     this.http.getAnnouncementsExport().subscribe(
       data => {
-        var blob = new Blob([data], { type: 'text/csv' });
 
-        if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-          window.navigator.msSaveOrOpenBlob(blob, nameOfFileToDownload);
-        } else {
-          var a = document.createElement('a');
-          a.href = URL.createObjectURL(blob);
-          a.download = nameOfFileToDownload;
-          document.body.appendChild(a);
-          a.click();
-          document.body.removeChild(a);
-        }
       }, err => {
+        debugger;
+        // we want to export a csv-file here
+        // if we get the text from backend as csv, parsing doesn't work here
+        // instead of changing the file before and after sending, we just get the sent text from the error message
+        this.exportCsv(err.error.text, nameOfFileToDownload);
         console.log(err);
       });
+  }
+
+  exportCsv(message: string, nameOfFile: string) {
+
+    var blob = new Blob([message], { type: 'text/csv' });
+
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveOrOpenBlob(blob, nameOfFile);
+    } else {
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = nameOfFile;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
   }
 
   changeConfigurations(value: string){
