@@ -65,7 +65,7 @@
     Next
   </button>
   <button *ngIf="state >= 2" type="button"
-          class="btn btn-outline-primary" (click)="next(true)" [disabled]="!isNextEnabled()">
+          class="btn btn-outline-primary" (click)="next(true)" [disabled]="!isNextEnabled(true)">
     Save
   </button>
 </div>

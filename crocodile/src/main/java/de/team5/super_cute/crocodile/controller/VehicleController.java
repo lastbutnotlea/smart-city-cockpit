@@ -128,7 +128,7 @@ public class VehicleController extends BaseController<Vehicle> {
     List<Vehicle> vehicles = data.getData().stream()
         .filter(v -> v.getType().equals(EVehicleType.valueOf(type)))
         .peek(tripData::setFreeFrom)
-        .filter(v -> v.getFreeFrom().isBefore(LocalDateTime.parse(timeString)))
+        .filter(v -> !LocalDateTime.parse(timeString).isBefore(v.getFreeFrom()))
         .collect(Collectors.toList());
     if (!ignoreTripId.equals("")) {
       vehicles.add(tripData.getObjectForId(ignoreTripId).getVehicle());
