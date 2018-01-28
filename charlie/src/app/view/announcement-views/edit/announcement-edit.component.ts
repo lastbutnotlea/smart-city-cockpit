@@ -15,7 +15,6 @@ import {ToastService} from '../../../services/toast.service';
 export class AnnouncementEditComponent implements OnInit {
   state: number = 0;
   saveDisabled: boolean = false;
-  waitForBackend: boolean = false;
   title: string = "Create new announcement";
 
   text: string = "";
@@ -33,28 +32,31 @@ export class AnnouncementEditComponent implements OnInit {
   private callback: (param: AnnouncementData) => void = () => {
   };
 
-  constructor(public activeModal: NgbActiveModal,
-              public http: HttpRoutingService,
+  constructor(private activeModal: NgbActiveModal,
+              private http: HttpRoutingService,
               private toastService: ToastService) {
   }
 
   ngOnInit() {
-    this.http.getStops().subscribe(data => {
-      data.sort((a, b) => a.commonName.localeCompare(b.commonName));
-      this.availableStops = data;
-    }, err => {
-      console.log(err);
-    });
+    this.http.getStops().subscribe(
+      data => {
+        data.sort((a, b) => a.commonName.localeCompare(b.commonName));
+        this.availableStops = data;
+      }, err => {
+        this.toastService.showErrorToast("Could not load stop data");
+        console.log("An error occurred: " + JSON.stringify(err));
+      });
     this.http.getLines().subscribe(
       data => this.availableLines = data,
       err => {
-        console.log(err);
+        this.toastService.showErrorToast("Could not load stop data");
+        console.log("An error occurred: " + JSON.stringify(err));
       });
   }
 
   public setModel(data: AnnouncementData): void {
     this.data = data;
-    this.title = data.id? "Edit " + data.id : "Create new announcement";
+    this.title = data.id ? "Edit " + data.id : "Create new announcement";
     this.text = data.text ? data.text : '';
     this.validFrom = data.validFrom ? new Date(data.validFrom) : new Date();
     this.validTo = data.validTo ? new Date(data.validTo) : new Date();
@@ -75,7 +77,6 @@ export class AnnouncementEditComponent implements OnInit {
 
   confirm(): void {
     this.saveDisabled = true;
-    this.waitForBackend = true;
     this.data.text = this.text;
     this.data.stops = Array.from(this.selectedStops);
     this.data.validFrom = this.validFrom;
@@ -84,13 +85,13 @@ export class AnnouncementEditComponent implements OnInit {
       this.http.addAnnouncement(this.data).subscribe(
         data => {
           this.activeModal.close('Close click');
-          this.data.id = data.id;
           this.toastService.showSuccessToast('Added ' + data.id);
+          this.data.id = data.id;
           this.callback(this.data);
         },
         err => {
           this.toastService.showErrorToast('Failed to add announcement');
-          this.waitForBackend = false;
+          console.log("An error occurred: " + JSON.stringify(err));
           this.saveDisabled = false;
         });
     } else {
@@ -103,17 +104,16 @@ export class AnnouncementEditComponent implements OnInit {
         },
         err => {
           this.toastService.showErrorToast('Failed to edit ' + this.data.id);
-          this.waitForBackend = false;
+          console.log("An error occurred: " + JSON.stringify(err));
           this.saveDisabled = false;
         });
     }
   }
 
   isNextEnabled(): boolean {
-    if (this.waitForBackend) return false;
+    if (this.saveDisabled) return false;
     switch (this.state) {
       case 0:
-        console.log(this.text);
         return this.text !== '';
       case 2:
         return this.selectedStops.length > 0;
@@ -136,7 +136,7 @@ export class AnnouncementEditComponent implements OnInit {
   }
 
   isBackEnabled(): boolean {
-    if (this.waitForBackend) return false;
+    if (this.saveDisabled) return false;
     return this.state > 0;
   }
 
