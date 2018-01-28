@@ -10,7 +10,6 @@
   <div class="{{isOpen? 'd-flex' : 'd-none'}} flex-column dropdown-container bg-white"
        [style]="getPositionStyle()"
        aria-labelledby="dropdownBasic1">
-    <div [style]="getWidthStyle()" class="d-flex flex-column button-border">
       <ng-container *ngFor="let value of values">
         <button
           class="btn btn-dropdown d-inline-flex no-flex-shrink justify-content-center"
@@ -18,6 +17,5 @@
           <span class="text-ellipsis flex-grow-1">{{value.label}}</span>
         </button>
       </ng-container>
-    </div>
   </div>
 </div>

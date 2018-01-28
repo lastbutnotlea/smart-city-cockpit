@@ -59,7 +59,7 @@ export class DropdownComponent {
   }
 
   getPositionStyle(): SafeStyle {
-    return this.domSanitizer.bypassSecurityTrustStyle('top: ' + this.getOffsetTop());
+    return this.domSanitizer.bypassSecurityTrustStyle('top: ' + this.getOffsetTop() + '; width: ' + this.width + 'px');
   }
 
   getWidthStyle(): SafeStyle {

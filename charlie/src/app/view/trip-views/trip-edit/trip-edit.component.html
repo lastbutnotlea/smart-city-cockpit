@@ -38,7 +38,7 @@
 
   <ng-container *ngIf="state == 3">
     <div *ngFor="let stop of getStops()"
-         class="d-flex justify-content-between align-items-center {{selectedStops.get(stop)? '': 'text-secondary'}}">
+         class="d-flex no-flex-shrink justify-content-between align-items-center {{selectedStops.get(stop)? '': 'text-secondary'}}">
       {{stop.commonName}}
       <button
         class="btn {{selectedStops.get(stop)? 'btn-outline-primary' : 'btn-outline-secondary'}} icon-button"

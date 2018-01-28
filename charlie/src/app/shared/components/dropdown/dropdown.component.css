@@ -4,11 +4,13 @@
 
 .dropdown-container {
   position: fixed;
-  margin-top: 14px;
-  max-height: 300px;
   overflow-y: auto;
   overflow-x: hidden;
   border-radius: 0.25em;
+  border: 1px solid #007bff;
+  margin-top: 14px;
+  max-height: 300px;
+  min-height: 20px;
   z-index: 1;
 }
 
@@ -23,17 +25,9 @@
 
 .btn-dropdown {
   background-color: white;
-  z-index: 10;
+  z-index: 1;
 }
 
 .btn-dropdown:hover {
   background-color: #007bff;
-}
-
-.dropdown-toggle::after {
-  margin-top: 0.5em;
-}
-
-.button-border {
-  border-radius: 0.25em;
 }
