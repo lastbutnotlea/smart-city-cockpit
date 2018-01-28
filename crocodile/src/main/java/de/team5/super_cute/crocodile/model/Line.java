@@ -175,9 +175,17 @@ public class Line extends IdentifiableObject implements Serializable, Stateable,
     return "Line " + getName() + " is currently not serviced.";
   }
 
+  public void setItemDescription(String s) {
+    // do nothing, fool the json mapper!
+  }
+
   @Override
   public String getItemHeader() {
     return "Line not serviced.";
+  }
+
+  public void setItemHeader(String s) {
+    // do nothing, fool the json mapper!
   }
 
   @Override
@@ -185,8 +193,16 @@ public class Line extends IdentifiableObject implements Serializable, Stateable,
     return EState.CRITICAL;
   }
 
+  public void setItemState(EState s) {
+    // do nothing, fool the json mapper!
+  }
+
   @Override
   public int getItemPriority() {
     return TickerConfig.EMPTY_LINE_PRIORITY;
+  }
+
+  public void setItemPriority(int i) {
+    // do nothing, fool the json mapper!
   }
 }
