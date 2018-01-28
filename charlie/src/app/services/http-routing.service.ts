@@ -4,11 +4,11 @@ import {UrlBuilderService} from './url-builder.service';
 import {TripData} from '../shared/data/trip-data';
 import {VehicleData} from '../shared/data/vehicle-data';
 import {Injectable} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {StopData} from '../shared/data/stop-data';
 import 'rxjs/add/operator/map';
-import { ServiceRequestData } from '../shared/data/service-request-data';
-import { LinePositionData } from '../shared/data/line-position-data';
+import {ServiceRequestData} from '../shared/data/service-request-data';
+import {LinePositionData} from '../shared/data/line-position-data';
 import {FeedbackData} from '../shared/data/feedback-data';
 import {TickerData} from '../shared/data/ticker-data';
 import {AnnouncementData} from '../shared/data/announcement-data';
@@ -18,6 +18,7 @@ import {PartyData} from '../shared/data/party-data';
 import {LineForStopData} from "../shared/data/line-for-stop-data";
 import {LiveDataConfigurationCollection} from '../shared/data/live-data-configuration-collection';
 import {LiveDataConfiguration} from '../shared/data/live-data-configuration';
+import {isNullOrUndefined} from "util";
 
 @Injectable()
 export class HttpRoutingService {
@@ -274,5 +275,12 @@ export class HttpRoutingService {
 
   public editConfiguration(configuration: LiveDataConfiguration): Observable<any> {
     return this.http.post<any>(this.urlBuilder.getConfigurationUrl(), configuration);
+  }
+
+  getVehiclesByTimeAndType(date: string, type: string, ignoredTrip: TripData) {
+    let param = new HttpParams();
+    if (!isNullOrUndefined(ignoredTrip)) param = param.append('ignoreTripId', ignoredTrip.id);
+    return this.http.get<VehicleData[]>(
+      this.urlBuilder.getVehiclesForTimeAndTypeUrl(date, type), {params: param});
   }
 }

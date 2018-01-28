@@ -6,7 +6,6 @@ import {ActivatedRoute} from '@angular/router';
 import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {StopSortService} from '../../../services/stop-sort.service';
 import {TripEditComponent} from '../trip-edit/trip-edit.component';
-import {TripEditDepartureComponent} from '../trip-edit-departure/trip-edit-departure.component';
 import {ConfirmDeletionComponent} from '../../../shared/components/confirm-popup/confirm-deletion.component';
 import {Location} from '@angular/common';
 import {ToastsManager} from 'ng2-toastr';
@@ -53,15 +52,9 @@ export class TripDetailComponent extends LiveDataComponent implements OnInit {
     this.location.back();
   }
 
-  editStops(): void {
+  edit(): void {
     const modal = this.modalService.open(TripEditComponent);
-    modal.componentInstance.data = this.trip;
-    modal.componentInstance.initData();
-  }
-
-  editDepartureTime(): void {
-    const modal = this.modalService.open(TripEditDepartureComponent);
-    modal.componentInstance.data = this.trip;
+    modal.componentInstance.setModel(this.trip);
     modal.componentInstance.initData();
   }
 
@@ -81,24 +74,21 @@ export class TripDetailComponent extends LiveDataComponent implements OnInit {
         modal.close('Close click');
         this.location.back();
       },
-    err => {
-      // Currently, when deleting a trip, we get a http-response with http-code 200 (ok)
-      // This means deleting the trip was successful
-      // http-response is interpreted as error, therefore the message must be checked here, not in data
-      // TODO: http-response should not always be considered an error / backend should return different value?
-      if (err.status === 200) {
-        this.toastService.showSuccessToast('Deleted ' + this.trip.id);
-        modal.close('Close click');
-        this.location.back();
-      } else {
-        this.toastService.showErrorToast('Failed to delete trip ' + this.trip.id);
-        modal.componentInstance.deleteDisabled = false;
-        this.refreshData();
-      }
-    }
-
-  )
-    ;
+      err => {
+        // Currently, when deleting a trip, we get a http-response with http-code 200 (ok)
+        // This means deleting the trip was successful
+        // http-response is interpreted as error, therefore the message must be checked here, not in data
+        // TODO: http-response should not always be considered an error / backend should return different value?
+        if (err.status === 200) {
+          this.toastService.showSuccessToast('Deleted ' + this.trip.id);
+          modal.close('Close click');
+          this.location.back();
+        } else {
+          this.toastService.showErrorToast('Failed to delete trip ' + this.trip.id);
+          modal.componentInstance.deleteDisabled = false;
+          this.refreshData();
+        }
+      });
   }
 
   // update trip data

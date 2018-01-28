@@ -30,12 +30,10 @@ import {TripComponent} from './view/trip-views/trip/trip.component';
 import {StateIconComponent} from './shared/components/state-icon/state-icon.component';
 import {MenuComponent} from './menu/menu.component';
 import {TripDetailComponent} from './view/trip-views/trip-detail/trip-detail.component';
-import {TripEditComponent} from './view/trip-views/trip-edit/trip-edit.component';
-import {TripEditDepartureComponent} from './view/trip-views/trip-edit-departure/trip-edit-departure.component';
 import {MapComponent} from './view/network-views/map/map.component';
 import {LineDetailComponent} from './view/line-views/line-detail/line-detail.component';
 import {StopDetailComponent} from './view/stop-views/stop-detail/stop-detail.component';
-import {TripAddComponent} from './view/trip-views/trip-add/trip-add.component';
+import {TripEditComponent} from './view/trip-views/trip-edit/trip-edit.component';
 import {VehiclesComponent} from './view/vehicle-views/vehicles/vehicles.component';
 import {VehicleAddComponent} from './view/vehicle-views/vehicle-add/vehicle-add.component';
 import {VehicleDetailComponent} from './view/vehicle-views/vehicle-detail/vehicle-detail.component';
@@ -72,8 +70,6 @@ import {AdminViewComponent} from './view/admin-view/admin-view.component';
     TripComponent,
     MenuComponent,
     TripDetailComponent,
-    TripEditComponent,
-    TripEditDepartureComponent,
     FilterComponent,
     FilterGroupComponent,
     MapComponent,
@@ -86,7 +82,7 @@ import {AdminViewComponent} from './view/admin-view/admin-view.component';
     ConfirmDeletionComponent,
     TickerComponent,
     TickerItemComponent,
-    TripAddComponent,
+    TripEditComponent,
     VehiclesComponent,
     VehicleDetailComponent,
     VehicleAddComponent,
@@ -140,11 +136,9 @@ import {AdminViewComponent} from './view/admin-view/admin-view.component';
   bootstrap: [AppComponent],
   // modal dialogs:
   entryComponents: [
-    TripEditComponent,
     VehicleAddComponent,
-    TripEditDepartureComponent,
     ConfirmDeletionComponent,
-    TripAddComponent,
+    TripEditComponent,
     ServiceRequestAddComponent,
     ServiceRequestEditComponent,
     SkipStopComponent,

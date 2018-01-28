@@ -7,6 +7,7 @@ import de.team5.super_cute.crocodile.data.BaseData;
 import de.team5.super_cute.crocodile.data.LineData;
 import de.team5.super_cute.crocodile.data.TripData;
 import de.team5.super_cute.crocodile.model.EState;
+import de.team5.super_cute.crocodile.model.EVehicleType;
 import de.team5.super_cute.crocodile.model.Trip;
 import de.team5.super_cute.crocodile.model.Vehicle;
 import de.team5.super_cute.crocodile.util.Helpers;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -114,7 +116,30 @@ public class VehicleController extends BaseController<Vehicle> {
     return StateCalculator.getState((int) data.getData().stream().mapToInt(Vehicle::getSeverity).average().getAsDouble());
   }
 
+  /**
+   * @return all vehicles with the type
+   * @param type free for the time
+   * @param timeString .
+   */
+  @GetMapping("/type/{type}/free-from/{timeString}")
+  public List<Vehicle> getVehiclesFreeFrom(@PathVariable String type, @PathVariable String timeString, @RequestParam(defaultValue = "")
+      String ignoreTripId) {
+    logger.info("Got Request to return all Vehicles of Type " + type + " free from " + timeString);
+    List<Vehicle> vehicles = data.getData().stream()
+        .filter(v -> v.getType().equals(EVehicleType.valueOf(type)))
+        .peek(tripData::setFreeFrom)
+        .filter(v -> v.getFreeFrom().isBefore(LocalDateTime.parse(timeString)))
+        .collect(Collectors.toList());
+    if (!ignoreTripId.equals("")) {
+      vehicles.add(tripData.getObjectForId(ignoreTripId).getVehicle());
+    }
+    return vehicles;
+  }
+
   private void setCurrentTrip(Vehicle vehicle) {
+    if (vehicle == null) {
+      return;
+    }
     if (vehicle.getOutdateCurrentTrip().isBefore(LocalDateTime.now())) {
       Trip current = tripData.getCurrentTripOfVehicle(vehicle, LocalDateTime.now());
       if (current != null) {
