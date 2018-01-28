@@ -196,7 +196,7 @@ export class TripEditComponent implements OnInit {
     this.http.addTrip(this.model).subscribe(
       data => {
         this.activeModal.close('Close click');
-        this.toastService.showInfoToast(data.id + ' created.');
+        this.toastService.showSuccessToast(data.id + ' created.');
       },
       err => {
         console.log("An error occurred: " + JSON.stringify(err));
@@ -210,7 +210,7 @@ export class TripEditComponent implements OnInit {
     this.http.editTrip(this.model).subscribe(
       data => {
         this.activeModal.close('Close click');
-        this.toastService.showInfoToast('Edited ' + this.model.id + '.');
+        this.toastService.showSuccessToast('Edited ' + this.model.id + '.');
       },
       err => {
         console.log("An error occurred: " + JSON.stringify(err));
