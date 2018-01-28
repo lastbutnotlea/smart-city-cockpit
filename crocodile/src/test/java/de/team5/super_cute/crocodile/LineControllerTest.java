@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import com.fasterxml.jackson.core.type.TypeReference;
 import de.team5.super_cute.crocodile.model.Line;
 import java.util.List;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class LineControllerTest {
   @Test
   public void testLineController() throws Exception {
     mockMvc.perform(get("/test"));
-    assert(!(new ControllerTestHelper<Line>(mockMvc, "/api/lines", new TypeReference<List<Line>>() {})).getObjects().isEmpty());
+    Assert.assertTrue(!(new ControllerTestHelper<Line>(mockMvc, "/api/lines", new TypeReference<List<Line>>() {})).getObjects().isEmpty());
   }
 
 }
