@@ -1,7 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {AnnouncementData} from "../../../shared/data/announcement-data";
 import {HttpRoutingService} from "../../../services/http-routing.service";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal, NgbModalRef} from "@ng-bootstrap/ng-bootstrap";
 import {AnnouncementEditComponent} from "../edit/announcement-edit.component";
 import {ConfirmDeletionComponent} from '../../../shared/components/confirm-popup/confirm-deletion.component';
 import {ActivatedRoute, Params} from "@angular/router";
@@ -37,15 +37,18 @@ export class AnnouncementItemComponent implements OnInit {
     modal.componentInstance.setModel(this.data);
   }
 
-  deleteItem(): void {
+  deleteItem(modal: NgbModalRef): void {
     this.http.deleteAnnouncement(this.data).subscribe(
       data => {
         this.deleted = true;
         this.toastService.showSuccessToast('Deleted ' + this.data.id);
+        modal.close('Close click');
       },
       err => {
         this.toastService.showErrorToast('Failed to delete ' + this.data.id);
+        modal.componentInstance.deleteDisabled = false;
         console.log(JSON.stringify(err));
+
       }
     );
   }
@@ -54,9 +57,9 @@ export class AnnouncementItemComponent implements OnInit {
     const modal = this.modalService.open(ConfirmDeletionComponent);
     modal.componentInstance.objectToDelete = this.data.id;
     modal.componentInstance.deletionEvent.subscribe(($event) => {
-      this.deleteItem();});
+      this.deleteItem(modal);});
   }
-  
+
   scrollAnnouncement(to: string) {
     let x = document.querySelector('#' + to);
     if (x) {
