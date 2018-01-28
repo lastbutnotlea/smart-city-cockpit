@@ -38,6 +38,7 @@ export class FilterGroupComponent {
       || v.type.toLowerCase().includes(this.text.toLowerCase())
       || v.state.toLowerCase().includes(this.text.toLowerCase())
       || v.freeFrom.toLowerCase().includes(this.text.toLowerCase())
+      //if vehicle is on line check line name or id
       || ((v.currentLine === null)
       ? false
       : (v.currentLine.name.toLowerCase().includes(this.text.toLowerCase())
@@ -48,10 +49,12 @@ export class FilterGroupComponent {
     return list.filter(v =>
       v.id.toLowerCase().includes(this.text.toLowerCase())
       || ((v.vehicle === null) ? false : v.vehicle.id.toLowerCase().includes(this.text.toLowerCase()))
+      //if line is set check line name or id
       || ((v.line === null)
       ? false
       : (v.line.name.toLowerCase().includes(this.text.toLowerCase())
         || v.line.id.toLowerCase().includes(this.text.toLowerCase())))
+      //check if at least one stop name matches the search text
       || ((v.stops === null)
       ? false
       : v.stops.some(s => s.id.toLowerCase().includes(this.text.toLowerCase())
@@ -66,6 +69,7 @@ export class FilterGroupComponent {
       || v.statusCode.toLowerCase().includes(this.text.toLowerCase())
       || v.dueDate.toLowerCase().includes(this.text.toLowerCase())
       || v.completionDate.toLowerCase().includes(this.text.toLowerCase())
+      //check if at least one description matches the search text
       || v.serviceRequestDescription.some(c => c.text.toLowerCase().includes(this.text.toLowerCase()))
       || v.priority.toLowerCase().includes(this.text.toLowerCase()));
   }
@@ -87,6 +91,7 @@ export class FilterGroupComponent {
       || v.priority.toLowerCase().includes(this.text.toLowerCase())
       || v.startTime.toLowerCase().includes(this.text.toLowerCase())
       || v.endTime.toLowerCase().includes(this.text.toLowerCase())
+      //check if at least one note or party matches the search text
       || v.appointmentInvolvedParties.some(c => c.partyName.toLowerCase().includes(this.text.toLowerCase()))
       || v.appointmentNotes.some(c => c.text.toLowerCase().includes(this.text.toLowerCase())));
 
