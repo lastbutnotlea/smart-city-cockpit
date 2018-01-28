@@ -8,6 +8,7 @@ import static de.team5.super_cute.crocodile.config.LiveDataConfig.VEHICLE_ENGINE
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.VEHICLE_WINDOW_BROKEN;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import de.team5.super_cute.crocodile.config.AppConfiguration;
 import de.team5.super_cute.crocodile.data.LineData;
 import de.team5.super_cute.crocodile.data.StopData;
 import de.team5.super_cute.crocodile.data.TripData;
@@ -26,6 +27,7 @@ import java.time.Month;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +74,7 @@ public class TripControllerTest {
         .addVehicles(v1, v2)
         .build();
 
-    tripControllerTestHelper = new ControllerTestHelper<>(mockMvc, "/api/trips",
+    tripControllerTestHelper = new ControllerTestHelper<>(mockMvc, AppConfiguration.API_PREFIX + "/trips",
         new TypeReference<List<Trip>>() {
         });
   }
@@ -95,13 +97,13 @@ public class TripControllerTest {
     tripControllerTestHelper.testAdd(testTrip);
     Trip tripAfterAdding = tripControllerTestHelper.getObjects().stream()
         .filter(t -> t.getId().equals(testTrip.getId())).findAny().orElse(null);
-    assert(tripAfterAdding != null);
+    Assert.assertTrue(tripAfterAdding != null);
     int diffMinutesS1ToS4 = testTrip.getLine().getTravelTimeInbound().get(s4.getId()) - testTrip.getLine().getTravelTimeInbound().get(s1.getId());
     LocalDateTime correctTimeS4 = ldt1.plusMinutes(diffMinutesS1ToS4);
-    assert(tripAfterAdding.getStops().get(s4.getId()).equals(correctTimeS4));
+    Assert.assertTrue(tripAfterAdding.getStops().get(s4.getId()).equals(correctTimeS4));
     int diffMinutesS1ToS2 = testTrip.getLine().getTravelTimeInbound().get(s2.getId()) - testTrip.getLine().getTravelTimeInbound().get(s1.getId());
     LocalDateTime correctTimeS2 = ldt1.plusMinutes(diffMinutesS1ToS2);
-    assert(tripAfterAdding.getStops().get(s2.getId()).equals(correctTimeS2));
+    Assert.assertTrue(tripAfterAdding.getStops().get(s2.getId()).equals(correctTimeS2));
   }
 
 }

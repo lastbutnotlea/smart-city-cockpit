@@ -1,4 +1,5 @@
 import {Injectable} from '@angular/core';
+import {StopData} from '../shared/data/stop-data';
 
 @Injectable()
 export class StringFormatterService {
@@ -17,5 +18,9 @@ export class StringFormatterService {
     } else {
       return "";
     }
+  }
+
+  public toStopId(stop: StopData): string {
+    return stop.commonName + ' (' + stop.id + ')';
   }
 }

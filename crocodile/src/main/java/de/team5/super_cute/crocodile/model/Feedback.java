@@ -5,6 +5,10 @@ import static de.team5.super_cute.crocodile.config.TickerConfig.FEEDBACK_CRITICA
 import static de.team5.super_cute.crocodile.config.TickerConfig.FEEDBACK_FINE_PRIORITY;
 import static de.team5.super_cute.crocodile.config.TickerConfig.FEEDBACK_PROBLEMATIC_PRIORITY;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import de.team5.super_cute.crocodile.util.DateDeserializer;
+import de.team5.super_cute.crocodile.util.DateSerializer;
 import de.team5.super_cute.crocodile.util.FeedbackableAttributeConverter;
 import de.team5.super_cute.crocodile.util.LocalDateTimeAttributeConverter;
 import java.io.Serializable;
@@ -26,6 +30,8 @@ public class Feedback extends IdentifiableObject implements Serializable, Ticker
 
   @Column
   @Convert(converter = LocalDateTimeAttributeConverter.class)
+  @JsonSerialize(using = DateSerializer.class)
+  @JsonDeserialize(using = DateDeserializer.class)
   private LocalDateTime timestamp;
 
   @Column
