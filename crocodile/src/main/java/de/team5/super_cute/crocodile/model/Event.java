@@ -262,7 +262,7 @@ public class Event extends C4CEntity implements TickerItemable {
 
   @Override
   public String getItemHeader() {
-    return "Upcomming event";
+    return this.subject;
   }
 
   public void setItemHeader(String s) {

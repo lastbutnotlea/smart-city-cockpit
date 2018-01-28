@@ -5,7 +5,7 @@
     <div class="fit-screen width-300">
       <app-filter-group-view></app-filter-group-view>
     </div>
-    <div *ngIf="loaded && filterGroup.getFiltered(trips).length > 0" class="d-flex fit-screen">
+    <div *ngIf="loaded && filterGroup.searchTrip(filterGroup.getFiltered(trips)).length > 0" class="d-flex flex-grow-1 width-70 fit-screen">
       <table class="table fit-screen d-flex flex-column">
         <thead>
         <tr class="d-flex">
@@ -19,7 +19,7 @@
         </tr>
         </thead>
         <tbody class="d-flex flex-column flex-grow-1 fit-screen">
-        <tr *ngFor="let trip of filterGroup.getFiltered(trips)">
+        <tr *ngFor="let trip of filterGroup.searchTrip(filterGroup.getFiltered(trips))">
           <div (click)="goToLink(trip.id)" class="d-flex highlight">
           <td>{{ trip.id }}</td>
           <td>{{ trip.vehicle.id }}</td>
@@ -36,7 +36,7 @@
             {{trip.stops[trip.stops.length-1].name}}
           </td>
           <td>
-            <app-state-icon [size]="'fa-2x'" [state]="trip.vehicle.state"></app-state-icon>
+            <app-state-icon [size]="'fa-2x'" [state]="trip.vehicle.state" [paddingr]="'padding-right-20'"></app-state-icon>
           </td>
           </div>
         </tr>
@@ -46,7 +46,7 @@
     <div *ngIf="!loaded">
       <h3>Loading...</h3>
     </div>
-    <div *ngIf="loaded && filterGroup.getFiltered(trips).length == 0">
+    <div *ngIf="loaded && filterGroup.searchTrip(filterGroup.getFiltered(trips)).length == 0">
       <h3>No trips available</h3>
     </div>
   </div>

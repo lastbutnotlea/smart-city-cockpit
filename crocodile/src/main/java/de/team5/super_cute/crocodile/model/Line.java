@@ -3,6 +3,7 @@ package de.team5.super_cute.crocodile.model;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSetter;
+import de.team5.super_cute.crocodile.config.TickerConfig;
 import de.team5.super_cute.crocodile.util.ColorConverter;
 import java.awt.Color;
 import java.io.Serializable;
@@ -25,7 +26,7 @@ import org.hibernate.annotations.Proxy;
 @Entity
 @Table(name = "line")
 @Proxy(lazy = false)
-public class Line extends IdentifiableObject implements Serializable, Stateable {
+public class Line extends IdentifiableObject implements Serializable, Stateable, TickerItemable {
 
   @Column
   private String name;
@@ -167,5 +168,41 @@ public class Line extends IdentifiableObject implements Serializable, Stateable 
 
   public void setState(EState state) {
     this.state = state;
+  }
+
+  @Override
+  public String getItemDescription() {
+    return "Line " + getName() + " is currently not serviced.";
+  }
+
+  public void setItemDescription(String s) {
+    // do nothing, fool the json mapper!
+  }
+
+  @Override
+  public String getItemHeader() {
+    return "Line not serviced.";
+  }
+
+  public void setItemHeader(String s) {
+    // do nothing, fool the json mapper!
+  }
+
+  @Override
+  public EState getItemState() {
+    return EState.CRITICAL;
+  }
+
+  public void setItemState(EState s) {
+    // do nothing, fool the json mapper!
+  }
+
+  @Override
+  public int getItemPriority() {
+    return TickerConfig.EMPTY_LINE_PRIORITY;
+  }
+
+  public void setItemPriority(int i) {
+    // do nothing, fool the json mapper!
   }
 }

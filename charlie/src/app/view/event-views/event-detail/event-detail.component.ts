@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {EventData} from '../../../shared/data/event-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {ConfirmDeletionComponent} from '../../../shared/components/confirm-popup/confirm-deletion.component';
@@ -24,7 +24,7 @@ export class EventDetailComponent implements OnInit {
               private route: ActivatedRoute,
               private location: Location,
               private modalService: NgbModal,
-              private stringFormatter: StringFormatterService,
+              public stringFormatter: StringFormatterService,
               private toastService: ToastService) {
   }
 
@@ -57,18 +57,20 @@ export class EventDetailComponent implements OnInit {
     const modal = this.modalService.open(ConfirmDeletionComponent);
     modal.componentInstance.objectToDelete = 'event ' + this.event.id;
     modal.componentInstance.deletionEvent.subscribe(($event) => {
-      this.deleteEvent($event);
+      this.deleteEvent(modal);
     });
   }
 
-  deleteEvent(event): void {
+  deleteEvent(modal: NgbModalRef): void {
     this.http.deleteEvent(this.event.id).subscribe(
       data => {
         this.toastService.showSuccessToast('Deleted event ' + this.event.id);
+        modal.close('Close click');
         this.location.back();
       },
       err => {
         this.toastService.showErrorToast('Failed to delete event ' + this.event.id);
+        modal.componentInstance.deleteDisabled = false;
       }
     );
   }

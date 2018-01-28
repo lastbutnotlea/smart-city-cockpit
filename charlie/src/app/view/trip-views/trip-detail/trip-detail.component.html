@@ -5,11 +5,11 @@
 <div *ngIf="loaded" class="fit-screen d-flex flex-column">
 
   <h3 class="text-center">
-    <app-state-icon class="float-right" [size]="'fa-3x'" [state]="trip.vehicle.state"></app-state-icon>
+    <app-state-icon class="float-right" [size]="'fa-3x'" [state]="trip.vehicle.state" [paddingr]="'padding-right-20'"></app-state-icon>
     Details <label class="text-primary"> {{trip.id}} </label>
   </h3>
 
-  <div class="no-float margin-bottom-30">
+  <div class="no-float">
     <button class="btn btn-outline-dark" (click)="goBack()">Back</button>
     <button class="btn btn-outline-primary" (click)="editStops()">Edit Stops or Vehicle</button>
     <button class="btn btn-outline-primary" (click)="editDepartureTime()">Edit Departure Time
@@ -31,7 +31,7 @@
         <a href="network/stop/{{stop.id}}">
           {{stop.name}}
         </a>
-        <app-state-icon class="float-right" [size]="'fa-2x'" [state]="stop.state"></app-state-icon>
+        <app-state-icon class="float-right" [size]="'fa-2x'" [state]="stop.state" [paddingr]="'padding-right-20'"></app-state-icon>
       </p>
     </div>
 

@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {now} from '../../../shared/data/dates';
 import {StopData} from '../../../shared/data/stop-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {LineData} from '../../../shared/data/line-data';
@@ -15,13 +14,14 @@ import {ToastService} from '../../../services/toast.service';
 })
 export class AnnouncementEditComponent implements OnInit {
   state: number = 0;
+  saveDisabled: boolean = false;
   waitForBackend: boolean = false;
   title: string = "Create new announcement";
 
   text: string = "";
 
-  validFrom: Date = new Date(now);
-  validTo: Date = new Date(now);
+  validFrom: Date = new Date();
+  validTo: Date = new Date();
 
   availableLines: LineData[] = [];
   availableStops: StopData[] = [];
@@ -74,6 +74,7 @@ export class AnnouncementEditComponent implements OnInit {
   }
 
   confirm(): void {
+    this.saveDisabled = true;
     this.waitForBackend = true;
     this.data.text = this.text;
     this.data.stops = Array.from(this.selectedStops);
@@ -90,6 +91,7 @@ export class AnnouncementEditComponent implements OnInit {
         err => {
           this.toastService.showErrorToast('Failed to add announcement');
           this.waitForBackend = false;
+          this.saveDisabled = false;
         });
     } else {
       this.http.editAnnouncement(this.data).subscribe(
@@ -102,6 +104,7 @@ export class AnnouncementEditComponent implements OnInit {
         err => {
           this.toastService.showErrorToast('Failed to edit ' + this.data.id);
           this.waitForBackend = false;
+          this.saveDisabled = false;
         });
     }
   }
