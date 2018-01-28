@@ -8,6 +8,7 @@ import static de.team5.super_cute.crocodile.config.LiveDataConfig.VEHICLE_ENGINE
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.VEHICLE_WINDOW_BROKEN;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import de.team5.super_cute.crocodile.config.AppConfiguration;
 import de.team5.super_cute.crocodile.data.LineData;
 import de.team5.super_cute.crocodile.data.StopData;
 import de.team5.super_cute.crocodile.data.TripData;
@@ -72,7 +73,7 @@ public class TripControllerTest {
         .addVehicles(v1, v2)
         .build();
 
-    tripControllerTestHelper = new ControllerTestHelper<>(mockMvc, "/api/trips",
+    tripControllerTestHelper = new ControllerTestHelper<>(mockMvc, AppConfiguration.API_PREFIX + "/trips",
         new TypeReference<List<Trip>>() {
         });
   }

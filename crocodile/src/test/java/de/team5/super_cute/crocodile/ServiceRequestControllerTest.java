@@ -1,6 +1,7 @@
 package de.team5.super_cute.crocodile;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import de.team5.super_cute.crocodile.config.AppConfiguration;
 import de.team5.super_cute.crocodile.model.EServiceType;
 import de.team5.super_cute.crocodile.model.EState;
 import de.team5.super_cute.crocodile.model.ServiceRequest;
@@ -9,7 +10,6 @@ import de.team5.super_cute.crocodile.model.c4c.EC4CNotesTypeCode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,9 +24,9 @@ public class ServiceRequestControllerTest {
   private MockMvc mockMvc;
 
   @Test
-  @Ignore
   public void testServiceRequestController() throws Exception {
-    ControllerTestHelper<ServiceRequest> serviceRequestControllerTestHelper = new ControllerTestHelper<>(mockMvc, "/servicerequests",
+    ControllerTestHelper<ServiceRequest> serviceRequestControllerTestHelper = new ControllerTestHelper<>(mockMvc,
+        AppConfiguration.API_PREFIX + "/servicerequests",
         new TypeReference<List<ServiceRequest>>() {
         });
     List<C4CNotes> notes = new ArrayList<C4CNotes>() {{
