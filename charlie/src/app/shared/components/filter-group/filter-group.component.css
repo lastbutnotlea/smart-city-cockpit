@@ -5,3 +5,20 @@
 .no-margin-bottom {
   margin-bottom: 0px;
 }
+
+.margin-right-40 {
+  margin-right: 40px;
+}
+
+input[type=text] {
+  padding: 1px;
+  border: 2px solid #007bff;
+  border-radius: 5px;
+  width: 100%;
+  background-position: 10px 10px;
+  margin-bottom: .5rem !important;
+}
+
+input[type=text]:focus {
+
+}
