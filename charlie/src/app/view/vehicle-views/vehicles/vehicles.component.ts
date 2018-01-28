@@ -28,7 +28,7 @@ export class VehiclesComponent extends LiveDataComponent implements OnInit {
 
   constructor(private http: HttpRoutingService,
               private modalService: NgbModal,
-              private stringFormatter: StringFormatterService,
+              public stringFormatter: StringFormatterService,
               private router: Router,
               private toastService: ToastService) {
     super();

@@ -26,7 +26,7 @@ export class ServiceRequestsComponent implements OnInit {
   constructor(private http: HttpRoutingService,
               private modalService: NgbModal,
               private router: Router,
-              private stringFormatter: StringFormatterService) {
+              public stringFormatter: StringFormatterService) {
   }
 
   public ngOnInit(): void {
