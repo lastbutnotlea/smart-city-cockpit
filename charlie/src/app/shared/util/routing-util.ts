@@ -10,8 +10,10 @@ export function getUrlForId(id: string): string {
     return '/vehicles/' + id;
   } else if (id.startsWith('Feedback_')) {
     return '/feedback';
+  } else if (id.length >= 10) {
+      return '/network/stop/' + id;
   } else {
-    console.debug('No target for \'' + id + '\' found, assuming it is a stop');
-    return '/network/stop/' + id;
+    //console.debug('No target for \'' + id + '\' found, assuming it is a stop');
+    return '/events/detail/' + id;
   }
 }

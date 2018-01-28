@@ -20,6 +20,5 @@ export class ConfirmDeletionComponent implements OnInit {
   confirm(): void {
     this.deleteDisabled = true;
     this.deletionEvent.emit(true);
-    this.activeModal.close('Close click');
   }
 }

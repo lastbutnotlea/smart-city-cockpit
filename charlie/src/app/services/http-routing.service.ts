@@ -16,6 +16,8 @@ import {SkipData} from "../shared/data/skip-data";
 import {EventData} from '../shared/data/event-data';
 import {PartyData} from '../shared/data/party-data';
 import {LineForStopData} from "../shared/data/line-for-stop-data";
+import {LiveDataConfigurationCollection} from '../shared/data/live-data-configuration-collection';
+import {LiveDataConfiguration} from '../shared/data/live-data-configuration';
 import {isNullOrUndefined} from "util";
 
 @Injectable()
@@ -58,6 +60,7 @@ export class HttpRoutingService {
 
   /**
    * Gets data for stop with line
+   * @param {string} lineId
    * @param {string} stopId
    * @returns {Observable<StopData>}
    */
@@ -252,6 +255,26 @@ export class HttpRoutingService {
 
   public getStopServiceRequests(stopId: string): Observable<ServiceRequestData[]> {
     return this.http.get<ServiceRequestData[]>(this.urlBuilder.getStopServiceRequestsUrl(stopId));
+  }
+
+  public getVehiclesExport(): Observable<any> {
+    return this.http.get<any>(this.urlBuilder.getExportVehiclesUrl());
+  }
+
+  public getAnnouncementsExport(): Observable<any> {
+    return this.http.get<any>(this.urlBuilder.getExportAnnouncementsUrl());
+  }
+
+  public getConfigurationCollection(): Observable<LiveDataConfigurationCollection> {
+    return this.http.get<LiveDataConfigurationCollection>(this.urlBuilder.getConfigurationCollectionUrl());
+  }
+
+  public getCurrentConfiguration(): Observable<LiveDataConfiguration> {
+    return this.http.get<LiveDataConfiguration>(this.urlBuilder.getCurrentConfigurationUrl());
+  }
+
+  public editConfiguration(configuration: LiveDataConfiguration): Observable<any> {
+    return this.http.post<any>(this.urlBuilder.getConfigurationUrl(), configuration);
   }
 
   getVehiclesByTimeAndType(date: string, type: string, ignoredTrip: TripData) {
