@@ -27,6 +27,7 @@ import java.time.Month;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,13 +97,13 @@ public class TripControllerTest {
     tripControllerTestHelper.testAdd(testTrip);
     Trip tripAfterAdding = tripControllerTestHelper.getObjects().stream()
         .filter(t -> t.getId().equals(testTrip.getId())).findAny().orElse(null);
-    assert(tripAfterAdding != null);
+    Assert.assertTrue(tripAfterAdding != null);
     int diffMinutesS1ToS4 = testTrip.getLine().getTravelTimeInbound().get(s4.getId()) - testTrip.getLine().getTravelTimeInbound().get(s1.getId());
     LocalDateTime correctTimeS4 = ldt1.plusMinutes(diffMinutesS1ToS4);
-    assert(tripAfterAdding.getStops().get(s4.getId()).equals(correctTimeS4));
+    Assert.assertTrue(tripAfterAdding.getStops().get(s4.getId()).equals(correctTimeS4));
     int diffMinutesS1ToS2 = testTrip.getLine().getTravelTimeInbound().get(s2.getId()) - testTrip.getLine().getTravelTimeInbound().get(s1.getId());
     LocalDateTime correctTimeS2 = ldt1.plusMinutes(diffMinutesS1ToS2);
-    assert(tripAfterAdding.getStops().get(s2.getId()).equals(correctTimeS2));
+    Assert.assertTrue(tripAfterAdding.getStops().get(s2.getId()).equals(correctTimeS2));
   }
 
 }

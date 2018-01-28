@@ -41,8 +41,8 @@ public class InitialDataGeneratorTest {
   @Test
   @Ignore // sadly this repeatedly breaks our tests, because the tfl api does not answer reliably
   public void testLineExist() {
-    assert(lineData.exists("10"));
-    assert(lineData.exists("Bakerloo"));
-    assert(!lineData.exists("noline"));
+    Assert.assertTrue(lineData.exists("10"));
+    Assert.assertTrue(lineData.exists("Bakerloo"));
+    Assert.assertTrue(!lineData.exists("noline"));
   }
 }

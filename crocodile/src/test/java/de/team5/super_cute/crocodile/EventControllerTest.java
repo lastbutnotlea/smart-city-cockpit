@@ -38,7 +38,7 @@ public class EventControllerTest {
       add(new C4CNotes("There are gonna be many many people", EC4CNotesTypeCode.APPOINTMENT_NOTES));
     }};
     Event event = new Event("Fussballspiel", EState.FINE, LocalDateTime.now(), LocalDateTime.now().plusHours(1),
-            "Fussballarena", aip, notes);
+        "Uni Augsburg Gruppe 02 / Universitätsstraße 02 / 86159 Augsburg / DE", aip, notes);
     eventControllerTestHelper.testAddAndDelete(event);
   }
 

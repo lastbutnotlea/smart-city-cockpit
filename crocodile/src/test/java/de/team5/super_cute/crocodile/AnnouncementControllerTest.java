@@ -24,7 +24,7 @@ public class AnnouncementControllerTest {
   @Test
   public void testAnnouncementController() throws Exception {
     ControllerTestHelper<Announcement> announcementControllerTestHelper = new ControllerTestHelper<>(mockMvc,
-        API_PREFIX + "/announcemnt",
+        API_PREFIX + "/announcement",
         new TypeReference<List<Announcement>>() {});
     ControllerTestHelper<Stop> stopControllerTestHelper = new ControllerTestHelper<>(mockMvc,
         API_PREFIX + "/stops",

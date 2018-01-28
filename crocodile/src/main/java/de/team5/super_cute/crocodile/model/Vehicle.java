@@ -41,6 +41,8 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Table;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.hibernate.annotations.Proxy;
 
 @Entity
@@ -344,5 +346,33 @@ public class Vehicle extends IdentifiableObject implements Serializable, Stateab
 
   public void setItemPriority(int i) {
     // do nothing, fool the json mapper!
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+
+    if (!(o instanceof Vehicle)) {
+      return false;
+    }
+
+    Vehicle vehicle = (Vehicle) o;
+
+    return new EqualsBuilder()
+        .append(isShutDown, vehicle.isShutDown)
+        .append(getCapacity(), vehicle.getCapacity())
+        .append(getType(), vehicle.getType())
+        .isEquals();
+  }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder(17, 37)
+        .append(getCapacity())
+        .append(getType())
+        .append(isShutDown)
+        .toHashCode();
   }
 }

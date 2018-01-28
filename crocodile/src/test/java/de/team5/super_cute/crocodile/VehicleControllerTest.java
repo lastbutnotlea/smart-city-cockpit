@@ -31,6 +31,7 @@ public class VehicleControllerTest {
         new TypeReference<List<Vehicle>>() {
         });
     Vehicle testVehicle = new Vehicle(300, 100, 0, 28, EVehicleType.SUBWAY, VEHICLE_ENGINE_FAILURE);
+    testVehicle.setId("TEST_ID");
     vehicleControllerTestHelper.testAddAndDelete(testVehicle);
   }
 

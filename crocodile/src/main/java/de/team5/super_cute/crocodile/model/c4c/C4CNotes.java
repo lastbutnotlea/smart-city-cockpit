@@ -75,7 +75,6 @@ public class C4CNotes extends C4CEntity {
 
     return new EqualsBuilder()
         .append(text, c4CNotes.text)
-        .append(typeCode, c4CNotes.typeCode)
         .isEquals();
   }
 
@@ -83,7 +82,6 @@ public class C4CNotes extends C4CEntity {
   public int hashCode() {
     return new HashCodeBuilder(17, 37)
         .append(text)
-        .append(typeCode)
         .toHashCode();
   }
 
@@ -91,7 +89,6 @@ public class C4CNotes extends C4CEntity {
   public String toString() {
     return new ToStringBuilder(this)
         .append("text", text)
-        .append("typeCode", typeCode)
         .toString();
   }
 }
