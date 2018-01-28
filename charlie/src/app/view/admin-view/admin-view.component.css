@@ -1,18 +1,18 @@
-.btn {
+.my-btn {
   color: #007bff;
   background-color: #ffffff;
   border-color: #007bff;
   outline: none !important;
 }
 
-.btn.active {
-   color: #fff;
-   background-color: #007bff;
-   border-color: #007bff;
-   outline: none !important;
- }
+.my-btn.active {
+  color: #fff;
+  background-color: #007bff;
+  border-color: #007bff;
+  outline: none !important;
+}
 
-.btn input[type=checkbox] {
+.my-btn input[type=checkbox] {
   position: absolute;
   clip: rect(0,0,0,0);
   pointer-events: none;
@@ -22,7 +22,19 @@ input[type=number] {
   padding: 1px;
   border: 2px solid #007bff;
   border-radius: 5px;
-  width: 100%;
+  width: 15%;
   background-position: 10px 10px;
   margin-bottom: .5rem !important;
+  text-align: right;
 }
+
+.text-style {
+  margin-bottom: 0;
+  margin-top: 4px;
+  margin-left: 5px;
+}
+
+.excl-style {
+  margin-left: 10px;
+}
+
