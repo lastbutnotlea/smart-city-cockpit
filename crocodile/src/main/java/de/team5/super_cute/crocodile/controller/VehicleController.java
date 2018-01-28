@@ -72,7 +72,9 @@ public class VehicleController extends BaseController<Vehicle> {
   @PostMapping
   public String addVehicle(@RequestBody Vehicle input) {
     logger.info("Got Request to add the vehicle " + input);
-    input.setId();
+    if (input.getId() == null) {
+      input.setId();
+    }
     input.setLoad(0);
     input.setTemperature(TEMPERATURE_INITIAL);
     input.setIsShutDown(false);
