@@ -12,14 +12,14 @@
     <div class="d-flex justify-content-between align-items-center m-3">
       <label class="m-0">Line: </label>
       <app-dropdown [values]="availableLines" [(selected)]="selectedLine"
-                    (selectedChange)="selectedLineChanged()"></app-dropdown>
+                    (selectedChange)="selectedLineChanged()" [width]="300"></app-dropdown>
     </div>
     <div *ngIf="selectedLine.value !== null"
          class="d-flex justify-content-between align-items-center m-3">
       <label class="m-0">Direction: </label>
       <app-dropdown [values]="getDirectionDropdownItems()"
                     [(selected)]="selectedDirection"
-                    (selectedChange)="selectedDirectionChanged()"></app-dropdown>
+                    (selectedChange)="selectedDirectionChanged()" [width]="300"></app-dropdown>
     </div>
   </ng-container>
 
