@@ -52,10 +52,12 @@ export class VehicleAddComponent implements OnInit {
       }).subscribe(
         data => {
           this.toastService.showSuccessToast('Added ' + data.id);
+          debugger;
           this.activeModal.close('Close click');
         },
         err => {
           this.toastService.showErrorToast('Failed to add vehicle');
+          this.saveDisabled = false;
         }
       );
     }

@@ -8,7 +8,7 @@ import {ServiceRequestData} from '../../../shared/data/service-request-data';
 import {TripData} from '../../../shared/data/trip-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {ConfirmDeletionComponent} from '../../../shared/components/confirm-popup/confirm-deletion.component';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {ToastService} from '../../../services/toast.service';
 import {StopSortService} from '../../../services/stop-sort.service';
 
@@ -79,14 +79,16 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
     this.location.back();
   }
 
-  delete(): void {
+  delete(modal: NgbModalRef): void {
     this.http.deleteVehicle(this.vehicle.id).subscribe(
       () => {
         this.toastService.showSuccessToast('Deleted ' + this.vehicle.id);
+        modal.close('Close click');
         this.goBack();
       },
       () => {
         this.toastService.showErrorToast('Failed to delete ' + this.vehicle.id);
+        modal.componentInstance.deleteDisabled = false;
       }
     );
   }
@@ -95,7 +97,7 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
     const modal = this.modalService.open(ConfirmDeletionComponent);
     modal.componentInstance.objectToDelete = this.vehicle.id;
     modal.componentInstance.deletionEvent.subscribe(($event) => {
-      this.delete();
+      this.delete(modal);
     });
   }
 

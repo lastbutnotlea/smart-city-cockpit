@@ -148,6 +148,7 @@ export class ServiceRequestAddComponent implements OnInit {
       },
       err => {
         this.toastService.showErrorToast('Failed to add service request');
+        this.saveDisabled = false;
         console.log('Could not add service request.');
       }
     );

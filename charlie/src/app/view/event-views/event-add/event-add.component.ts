@@ -107,7 +107,10 @@ export class EventAddComponent implements OnInit {
         this.data.push(data);
         this.activeModal.close('Close click');
       },
-      err => this.toastService.showErrorToast('Failed to add event')
+      err => {
+        this.toastService.showErrorToast('Failed to add event');
+        this.saveDisabled = false;
+      }
     );
   }
 }

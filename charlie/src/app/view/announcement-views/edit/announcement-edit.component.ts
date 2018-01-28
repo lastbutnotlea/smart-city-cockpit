@@ -83,7 +83,10 @@ export class AnnouncementEditComponent implements OnInit {
           this.toastService.showSuccessToast('Added ' + data.id);
           this.callback(this.data);
         },
-        err => this.toastService.showErrorToast('Failed to add announcement')
+        err => {
+          this.toastService.showErrorToast('Failed to add announcement');
+          this.saveDisabled = false;
+        }
         );
     } else {
       this.http.editAnnouncement(this.data).subscribe(
@@ -93,7 +96,10 @@ export class AnnouncementEditComponent implements OnInit {
           this.toastService.showSuccessToast('Edited ' + data.id);
           this.callback(this.data);
         },
-        err => this.toastService.showErrorToast('Failed to edit ' + this.data.id)
+        err => {
+          this.toastService.showErrorToast('Failed to edit ' + this.data.id);
+          this.saveDisabled = false;
+        }
       );
     }
   }

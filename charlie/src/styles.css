@@ -24,6 +24,12 @@ p {
   margin-bottom: 0.5rem;
 }
 
+.center-center {
+  position: absolute;
+  top: 36%;
+  left: 42%;
+}
+
 
 /* MARGIN AND PADDING */
 
@@ -89,6 +95,10 @@ p {
 
 .background-critical {
   background-color: #dd3645;
+}
+
+.greyed-out {
+  opacity: 0.3;
 }
 
 /* STYLING EMBEDDED COMPONENTS */
@@ -172,4 +182,15 @@ h4 {
 
 .toast-info {
   background-color: lightgray;
+}
+
+/* STYLING MODALS */
+
+.modal-body {
+  max-height: 66vh;
+  overflow: auto;
+}
+
+.no-flex-shrink {
+  flex-shrink: 0;
 }

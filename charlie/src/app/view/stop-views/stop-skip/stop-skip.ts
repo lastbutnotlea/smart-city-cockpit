@@ -114,6 +114,7 @@ export class SkipStopComponent implements OnInit {
       },
       err => {
         this.toastService.showErrorToast('Failed to skip stop ' + this.data.commonName);
+        this.saveDisabled = false;
       }
     );
   }
