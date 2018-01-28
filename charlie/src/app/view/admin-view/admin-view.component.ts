@@ -2,6 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {HttpRoutingService} from '../../services/http-routing.service';
 import {LiveDataConfiguration} from '../../shared/data/live-data-configuration';
 import {LiveDataConfigurationCollection} from '../../shared/data/live-data-configuration-collection';
+import {ToastService} from '../../services/toast.service';
 
 @Component({
   selector: 'app-admin-view',
@@ -18,8 +19,8 @@ export class AdminViewComponent implements OnInit{
   usingBad: boolean = false;
   loaded: boolean = false;
 
-  constructor(
-    private http: HttpRoutingService) {
+  constructor(private http: HttpRoutingService,
+              private toastService: ToastService) {
   }
 
   ngOnInit(): void {
@@ -32,20 +33,24 @@ export class AdminViewComponent implements OnInit{
             this.currentConfiguration = data;
             this.loaded = true;
           }, err => {
-            console.log(err);
+            this.toastService.showErrorToast('Failed to load current live data configuration');
+            console.log(JSON.stringify(err));
           }
         );
       }, err => {
-        console.log(err);
+        this.toastService.showErrorToast('Failed to load default live data configurations');
+        console.log(JSON.stringify(err));
       });
   }
 
   updateConfigurations(): void {
     this.http.editConfiguration(this.currentConfiguration).subscribe(
       data => {
-        console.log('Succes');
+        this.toastService.showSuccessToast('Updated live data configuration');
+        console.log('Updated live data configurations');
       }, err => {
-        console.log('Failure');
+        this.toastService.showErrorToast('Failed to update live data configuration');
+        console.log(JSON.stringify(err));
       }
     )
   }
@@ -56,12 +61,15 @@ export class AdminViewComponent implements OnInit{
       data => {
 
       }, err => {
-        debugger;
-        // we want to export a csv-file here
-        // if we get the text from backend as csv, parsing doesn't work here
-        // instead of changing the file before and after sending, we just get the sent text from the error message
-        this.exportCsv(err.error.text, nameOfFileToDownload);
-        console.log(err);
+        if(err.status === 200) {
+          // we want to export a csv-file here
+          // if we get the text from backend as csv, parsing doesn't work here
+          // instead of changing the file before and after sending, we just get the sent text from the error message
+          this.exportCsv(err.error.text, nameOfFileToDownload);
+        } else {
+          this.toastService.showErrorToast('Failed to export vehicles');
+          console.log(JSON.stringify(err));
+        }
       });
   }
 
@@ -71,12 +79,15 @@ export class AdminViewComponent implements OnInit{
       data => {
 
       }, err => {
-        debugger;
-        // we want to export a csv-file here
-        // if we get the text from backend as csv, parsing doesn't work here
-        // instead of changing the file before and after sending, we just get the sent text from the error message
-        this.exportCsv(err.error.text, nameOfFileToDownload);
-        console.log(err);
+        if(err.status === 200){
+          // we want to export a csv-file here
+          // if we get the text from backend as csv, parsing doesn't work here
+          // instead of changing the file before and after sending, we just get the sent text from the error message
+          this.exportCsv(err.error.text, nameOfFileToDownload);
+        } else {
+          this.toastService.showErrorToast('Failed to export announcements');
+          console.log(JSON.stringify(err));
+        }
       });
   }
 
