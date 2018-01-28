@@ -5,6 +5,8 @@ import java.util.Map;
 
 public class C4CConfig {
 
+  public static final String EVENT_TEST_LOCATION_NAME = "Fussballarena";
+
   public static final Map<String, String> PARTY_NAME_TO_ID = new HashMap<String, String>() {{
     put("Chelsea Football Club", "4000570");
     put("Arsenal Football Club", "4000571");
