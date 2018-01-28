@@ -190,4 +190,8 @@ export class UrlBuilderService {
   public getConfigurationUrl(): string {
     return this.configurationBaseUrl;
   }
+
+  public getVehiclesForTimeAndTypeUrl(date: string, type: string) {
+    return this.vehicleBaseUrl + '/type/' + type + '/free-from/' + date;
+  }
 }

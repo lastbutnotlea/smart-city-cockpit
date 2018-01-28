@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {TripAddComponent} from '../trip-add/trip-add.component';
 import {Router} from "@angular/router";
+import {TripEditComponent} from '../trip-edit/trip-edit.component';
 import {LiveDataComponent} from '../../../shared/components/live-data/live-data.component';
 import {TripData} from '../../../shared/data/trip-data';
 import {FilterGroupComponent} from "../../../shared/components/filter-group/filter-group.component";
@@ -51,12 +51,12 @@ export class TripComponent extends LiveDataComponent implements OnInit {
         this.trips.forEach(trip => trip.stops = this.stopSortService.sortStops(trip.stops));
         // This starts periodical calls for live-data after first data was received
         },
-      err => console.log('Could not fetch trips.')
+      err => console.log('Could not fetch trips: ' + JSON.stringify(err))
     );
   }
 
   addTrip(): void {
-    const modal = this.modalService.open(TripAddComponent);
+    const modal = this.modalService.open(TripEditComponent);
     modal.componentInstance.initData();
   }
 
