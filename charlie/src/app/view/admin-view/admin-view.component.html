@@ -12,15 +12,24 @@
         </h3>
         <div>
           <label>Defect Chance: </label>
-          <input class="float-right" type="number" [(ngModel)]="currentConfiguration.defectChance" (change)="changeConfigurations('')">
+          <input class="float-right" type="number" min="{{minCapacity}}" max="{{maxCapacity}}" step="1"
+                 [(ngModel)]="selectedConfiguration.defectChance"
+                 (change)="changeConfigurations('')"
+                 (keypress)="validate($event, selectedConfiguration.defectChance)">
         </div>
         <div>
           <label>Defect Remove Chance: </label>
-          <input class="float-right" type="number" [(ngModel)]="currentConfiguration.defectRemoveChance" (change)="changeConfigurations('')">
+          <input type="number" min="{{minCapacity}}" max="{{maxCapacity}}" step="1"
+                 [(ngModel)]="selectedConfiguration.defectRemoveChance"
+                 (change)="changeConfigurations('')"
+                 (keypress)="validate($event, selectedConfiguration.defectRemoveChance)">
         </div>
         <div>
           <label>Feedback Chance: </label>
-          <input class="float-right" type="number" [(ngModel)]="currentConfiguration.feedbackChance" (change)="changeConfigurations('')">
+          <input class="float-right" type="number" min="{{minCapacity}}" max="{{maxCapacity}}" step="1"
+                 [(ngModel)]="selectedConfiguration.feedbackChance"
+                 (change)="changeConfigurations('')"
+                 (keypress)="validate($event, selectedConfiguration.feedbackChance)">
         </div>
       </div>
 

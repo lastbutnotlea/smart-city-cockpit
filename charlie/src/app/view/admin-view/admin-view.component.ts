@@ -18,6 +18,9 @@ export class AdminViewComponent implements OnInit{
   usingMedium: boolean = false;
   usingBad: boolean = false;
   loaded: boolean = false;
+  selectedConfiguration: LiveDataConfiguration = new LiveDataConfiguration();
+  minCapacity = 0;
+  maxCapacity = 100;
 
   constructor(private http: HttpRoutingService,
               private toastService: ToastService) {
@@ -31,6 +34,7 @@ export class AdminViewComponent implements OnInit{
         this.http.getCurrentConfiguration().subscribe(
           data => {
             this.currentConfiguration = data;
+            this.setValues(this.currentConfiguration);
             this.loaded = true;
           }, err => {
             this.toastService.showErrorToast('Failed to load current live data configuration');
@@ -44,7 +48,7 @@ export class AdminViewComponent implements OnInit{
   }
 
   updateConfigurations(): void {
-    this.http.editConfiguration(this.currentConfiguration).subscribe(
+    this.http.editConfiguration(this.selectedConfiguration).subscribe(
       data => {
         this.toastService.showSuccessToast('Updated live data configuration');
         console.log('Updated live data configurations');
@@ -110,19 +114,19 @@ export class AdminViewComponent implements OnInit{
   changeConfigurations(value: string){
     switch (value) {
       case "good":
-        this.currentConfiguration = this.configurationCollection.good;
+        this.setValues(this.configurationCollection.good);
         this.usingGood = true;
         this.usingMedium = false;
         this.usingBad = false;
         break;
       case "medium":
-        this.currentConfiguration = this.configurationCollection.medium;
+        this.setValues(this.configurationCollection.medium);
         this.usingGood = false;
         this.usingMedium = true;
         this.usingBad = false;
         break;
       case "bad":
-        this.currentConfiguration = this.configurationCollection.bad;
+        this.setValues(this.configurationCollection.bad);
         this.usingGood = false;
         this.usingMedium = false;
         this.usingBad = true;
@@ -131,6 +135,21 @@ export class AdminViewComponent implements OnInit{
         this.usingGood = false;
         this.usingMedium = false;
         this.usingBad = false;
+    }
+  }
+
+  setValues(config: LiveDataConfiguration): void {
+    this.selectedConfiguration.defectChance = config.defectChance;
+    this.selectedConfiguration.defectRemoveChance = config.defectRemoveChance;
+    this.selectedConfiguration.feedbackChance = config.feedbackChance;
+  }
+
+  validate(event, value) {
+    var input = value.toString();
+    var position = event.location;
+    var output = parseInt([input.slice(0, position), event.key, input.slice(position)].join(''));
+    if(isNaN(parseInt(event.key)) || output < this.minCapacity || output > this.maxCapacity) {
+      event.preventDefault();
     }
   }
 }

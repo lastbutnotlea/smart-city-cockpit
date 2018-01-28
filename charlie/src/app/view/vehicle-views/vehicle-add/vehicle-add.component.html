@@ -15,12 +15,14 @@
       </div>
       <div class="w-100"></div>
       <div class="col bg-light p-2 m-1"><label>Capacity</label></div>
-      <div class="col bg-light p-2 m-1"><input type="number" [(ngModel)]="capacity"></div>
+      <div class="col bg-light p-2 m-1">
+        <input type="number" min="{{minCapacity}}" max="{{maxCapacity}}" step="1" [(ngModel)]="capacity" (keypress)="validate($event)">
+      </div>
     </div>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cancel</button>
-    <button type="button" class="btn btn-outline-primary" (click)="confirm()" [disabled]="saveDisabled">
+    <button type="button" class="btn btn-outline-primary" (click)="confirm()" [disabled]="nextDisabled()">
       Save
     </button>
   </div>
