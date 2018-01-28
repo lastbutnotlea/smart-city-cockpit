@@ -1,0 +1,50 @@
+<h3 class="text-center">
+  Admin Area
+</h3>
+
+<div *ngIf="loaded">
+
+  <h3 class="text-center">
+    Advanced Live Data Configuration
+  </h3>
+  <div>
+    <label>Defect Chance: </label>
+    <input class="float-right" type="number" [(ngModel)]="currentConfiguration.defectChance" (change)="changeConfigurations('')">
+  </div>
+  <div>
+    <label>Defect Remove Chance: </label>
+    <input class="float-right" type="number" [(ngModel)]="currentConfiguration.defectRemoveChance" (change)="changeConfigurations('')">
+  </div>
+  <div>
+    <label>Feedback Chance: </label>
+    <input class="float-right" type="number" [(ngModel)]="currentConfiguration.feedbackChance" (change)="changeConfigurations('')">
+  </div>
+
+  <h3 class="text-center">
+    Standard Live Data Configuration
+  </h3>
+  <div>
+    <button type="button" class="btn {{usingGood? 'active' : ''}}" (click)="changeConfigurations('good')">
+      Good
+    </button>
+    <button type="button" class="btn {{usingMedium? 'active' : ''}}" (click)="changeConfigurations('medium')">
+      Medium
+    </button>
+    <button type="button" class="btn {{usingBad? 'active' : ''}}" (click)="changeConfigurations('bad')">
+      Bad
+    </button>
+  </div>
+
+  <button type="button" class="btn btn-outline-primary" (click)="updateConfigurations()">
+    Update System Configurations
+  </button>
+
+</div>
+
+<button type="button" class="btn btn-outline-primary" (click)="exportVehicles()">
+  Export Vehicles
+</button>
+
+<button type="button" class="btn btn-outline-primary" (click)="exportAnnouncements()">
+  Export Announcements
+</button>

@@ -1,5 +1,7 @@
 package de.team5.super_cute.crocodile;
 
+import static de.team5.super_cute.crocodile.config.C4CConfig.EVENT_TEST_LOCATION_NAME;
+
 import de.team5.super_cute.crocodile.config.C4CConfig;
 import de.team5.super_cute.crocodile.external.SAPC4CConnector;
 import de.team5.super_cute.crocodile.model.EServiceType;
@@ -43,7 +45,7 @@ public class C4CTest {
     }};
     testC4CEntity(
         new Event("Fussballspiel", EState.FINE, LocalDateTime.now(), LocalDateTime.now().plusHours(1),
-            "Fussballarena", aip, notes));
+            EVENT_TEST_LOCATION_NAME, aip, notes));
   }
 
   @Test
