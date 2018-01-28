@@ -62,6 +62,7 @@ import {CharliesRouterReuseStrategy} from "./services/router-reuse-strategy";
 import {ToastModule} from 'ng2-toastr';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {ToastService} from './services/toast.service';
+import {AdminViewComponent} from './view/admin-view/admin-view.component';
 
 @NgModule({
   declarations: [
@@ -112,6 +113,7 @@ import {ToastService} from './services/toast.service';
     EmbeddedTripComponent,
     EmbeddedServiceRequestComponent,
     StateIconComponent,
+    AdminViewComponent,
   ],
   imports: [
     BrowserModule,
@@ -121,7 +123,7 @@ import {ToastService} from './services/toast.service';
     Angular2FontawesomeModule,
     ToastModule.forRoot(),
     BrowserAnimationsModule,
-    NgbModule.forRoot(),
+    NgbModule.forRoot()
   ],
   providers: [
     UrlBuilderService,
