@@ -1,4 +1,4 @@
-<div class="bounding-box w-100" *ngIf="!deleted">
+<div class="bounding-box w-100 d-flex flex-column" *ngIf="!deleted">
   <h4 class="text-lg-left">
     <i class="fa fa-bullhorn fa-2x float-left padding-left-5 text-primary"></i>
     <label class="padding-emb-box-headline">{{data.text}}</label>
@@ -6,7 +6,7 @@
 
   <p class="text-primary"><label class="text-secondary">ID: </label>
     <a href="announcements/?id={{data.id}}">
-    {{data.id}}
+      {{data.id}}
     </a>
   </p>
   <p>
@@ -16,7 +16,20 @@
     {{data.validTo | date:'MM/dd/yyyy HH:mm'}}
   </p>
 
-  <button class="btn btn-outline-dark" (click)="editItem()">Edit</button>
-  <button class="btn btn-outline-dark" (click)="showConfirmModal()">Delete</button>
+  <div *ngIf="showStops" class="d-flex flex-column mb-3">
+    <div class="text-secondary">Shown at the following stops</div>
+    <ng-container *ngFor="let stop of getSortedStops()">
+      <div class="ml-3">{{stop.commonName}} ({{stop.id}})</div>
+    </ng-container>
+  </div>
+
+  <div class="d-flex no-flex-shrink">
+    <button class="btn btn-outline-dark mr-1" (click)="editItem()">Edit</button>
+    <button class="btn btn-outline-dark mx-1" (click)="showConfirmModal()">Delete</button>
+    <button class="btn btn-outline-dark mx-1 no-flex-shrink w-fit-content"
+            (click)="showStops = !showStops">
+      {{showStops? 'Hide stops' : 'Show stops'}}
+    </button>
+  </div>
 </div>
 
