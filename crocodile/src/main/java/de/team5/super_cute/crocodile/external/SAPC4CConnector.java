@@ -67,7 +67,7 @@ public class SAPC4CConnector {
   private static final String METADATA = "$metadata";
   private static final String AUTHORIZATION_HEADER = "Authorization";
   private static final String AUTHORIZATION =
-      "Basic VW5pQXVnc2J1cmcwMjpBdWdzYnVyZzEyM238bmNoZW4=";
+      "Basic VW5pQXVnc2J1cmcwMjpBdWdzYnVyZzMyMW38bmNoZW4=";
   private static final String CSRF_TOKEN_HEADER = "x-csrf-token";
   private static final String FETCH = "fetch";
   private static final String CONTENT_TYPE = "application/json";
