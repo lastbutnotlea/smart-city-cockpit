@@ -1,7 +1,7 @@
 <div class="d-flex" [style]="getWidthStyle()" #element>
   <button
     class="btn btn-outline-primary button-dropdown d-flex w-100 justify-content-between"
-    #dropdownButton
+    #dropdownButton [disabled]="isDisabled"
     (click)="isOpen = !isOpen">
     <span></span>
     <span class="text-ellipsis flex-grow-1">{{selected.label}}</span>
@@ -10,12 +10,12 @@
   <div class="{{isOpen? 'd-flex' : 'd-none'}} flex-column dropdown-container bg-white"
        [style]="getPositionStyle()"
        aria-labelledby="dropdownBasic1">
-      <ng-container *ngFor="let value of values">
-        <button
-          class="btn btn-dropdown d-inline-flex no-flex-shrink justify-content-center"
-          (click)="select(value);">
-          <span class="text-ellipsis flex-grow-1">{{value.label}}</span>
-        </button>
-      </ng-container>
+    <ng-container *ngFor="let value of values">
+      <button
+        class="btn btn-dropdown d-inline-flex no-flex-shrink justify-content-center"
+        (click)="select(value);">
+        <span class="text-ellipsis flex-grow-1">{{value.label}}</span>
+      </button>
+    </ng-container>
   </div>
 </div>

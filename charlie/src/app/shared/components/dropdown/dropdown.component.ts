@@ -28,7 +28,7 @@ export class DropdownComponent {
 
   @Input()
   width: number = 200;
-  
+
   @Input()
   isDisabled: boolean = false;
 
