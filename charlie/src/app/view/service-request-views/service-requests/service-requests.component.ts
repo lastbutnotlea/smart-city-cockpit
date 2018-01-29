@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {ServiceRequestAddComponent} from '../service-request-add/service-request-add.component';
+import {ServiceRequestEditComponent} from '../service-request-edit/service-request-edit.component';
 import {StringFormatterService} from '../../../services/string-formatter.service';
 import {ServiceRequestData} from '../../../shared/data/service-request-data';
 import {FilterGroupComponent} from '../../../shared/components/filter-group/filter-group.component';
@@ -71,7 +71,7 @@ export class ServiceRequestsComponent implements OnInit {
   }
 
   addServiceRequest(): void {
-    const modal = this.modalService.open(ServiceRequestAddComponent);
+    const modal = this.modalService.open(ServiceRequestEditComponent);
     modal.componentInstance.data = this.serviceRequests;
     modal.componentInstance.onAdd(item => {
       this.serviceRequests.push(item);

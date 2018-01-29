@@ -29,6 +29,9 @@ export class DropdownComponent {
   @Input()
   width: number = 200;
 
+  @Input()
+  isDisabled: boolean = false;
+
   @Output()
   selectedChange: EventEmitter<DropdownValue> = new EventEmitter<DropdownValue>();
 

@@ -41,10 +41,9 @@ import {FeedbackComponent} from './view/feedback-views/feedback/feedback.compone
 import {FeedbackItemComponent} from './view/feedback-views/feedback-item/feedback-item.component';
 import {ServiceRequestsComponent} from './view/service-request-views/service-requests/service-requests.component';
 import {ServiceRequestDetailComponent} from './view/service-request-views/service-request-detail/service-request-detail.component';
-import {ServiceRequestAddComponent} from './view/service-request-views/service-request-add/service-request-add.component';
+import {ServiceRequestEditComponent} from './view/service-request-views/service-request-edit/service-request-edit.component';
 import {SkipStopComponent} from './view/stop-views/stop-skip/stop-skip';
 import {EmbeddedStopComponent} from './shared/components/embedded-stop/embedded-stop.component';
-import {ServiceRequestEditComponent} from './view/service-request-views/service-request-edit/service-request-edit.component';
 import {AnnouncementMainComponent} from './view/announcement-views/main/announcement-main.component';
 import {AnnouncementEditComponent} from './view/announcement-views/edit/announcement-edit.component';
 import {AnnouncementItemComponent} from './view/announcement-views/item/announcement-item.component';
@@ -90,10 +89,9 @@ import {AdminViewComponent} from './view/admin-view/admin-view.component';
     FeedbackItemComponent,
     ServiceRequestsComponent,
     ServiceRequestDetailComponent,
-    ServiceRequestAddComponent,
+    ServiceRequestEditComponent,
     SkipStopComponent,
     EmbeddedStopComponent,
-    ServiceRequestEditComponent,
     AnnouncementMainComponent,
     AnnouncementEditComponent,
     AnnouncementItemComponent,
@@ -139,7 +137,6 @@ import {AdminViewComponent} from './view/admin-view/admin-view.component';
     VehicleAddComponent,
     ConfirmDeletionComponent,
     TripEditComponent,
-    ServiceRequestAddComponent,
     ServiceRequestEditComponent,
     SkipStopComponent,
     AnnouncementEditComponent,
