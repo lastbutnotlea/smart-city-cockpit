@@ -17,7 +17,7 @@ import {DateParserService} from "../../../services/date-parser.service";
   styleUrls: ['./event-add.component.css']
 })
 export class EventAddComponent implements OnInit {
-  data: EventData[];
+  callback: (EventData) => void = e => {};
 
   subject: string = "";
 
@@ -49,6 +49,10 @@ export class EventAddComponent implements OnInit {
       });
   }
 
+  public onAddCallback(callback: (EventData) => void) {
+    this.callback = callback;
+  }
+
   confirm(): void {
     this.saveDisabled = true;
     let event: EventData = new EventData();
@@ -66,7 +70,7 @@ export class EventAddComponent implements OnInit {
       data => {
         console.log('Added event: ' + JSON.stringify(event));
         this.toastService.showSuccessToast('Added event ' + data.id);
-        this.data.push(data);
+        this.callback(data);
         this.activeModal.close('Close click');
       },
       err => {
