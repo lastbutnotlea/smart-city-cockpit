@@ -31,3 +31,12 @@
 .btn-dropdown:hover {
   background-color: #007bff;
 }
+
+input[type=text] {
+  margin: 2px;
+  padding: 1px 3px;
+  border: 2px solid #007bff;
+  border-radius: 5px;
+  width: auto !important;
+  background-position: 10px 10px;
+}

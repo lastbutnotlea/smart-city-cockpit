@@ -1,5 +1,10 @@
 import {
-  Component, ElementRef, EventEmitter, HostListener, Input, Output,
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  Input,
+  Output,
   ViewChild
 } from '@angular/core';
 import {DomSanitizer, SafeStyle} from "@angular/platform-browser";
@@ -38,8 +43,13 @@ export class DropdownComponent {
   @ViewChild('element') component: ElementRef;
   @ViewChild('dropdownButton') button: ElementRef;
   isOpen: boolean = false;
+  searchText: string = "";
 
   constructor(private domSanitizer: DomSanitizer) {
+  }
+
+  searchValues(): DropdownValue[] {
+    return this.values.filter(v => v.label.toLowerCase().includes(this.searchText.toLowerCase()));
   }
 
   @HostListener('document:click', ['$event.target'])
