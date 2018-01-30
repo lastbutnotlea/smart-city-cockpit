@@ -59,7 +59,7 @@ export class MapComponent {
 
   private addLineEvents(): void {
     // get all lines from the svg
-    const mapLines = d3.selectAll('.lines').selectAll('path');
+    const mapLines = d3.selectAll('.lines').selectAll('path').style("cursor", "pointer");
     //increas stroke-width of lines
     mapLines.each(line => {
       const lineSvg =  d3.select('path#' + line.name);
