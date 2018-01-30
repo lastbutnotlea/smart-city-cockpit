@@ -1,6 +1,33 @@
-.scrollable-dropdown
-{
-  max-height: 300px;
-  overflow: auto;
+:host {
+  min-width: 0;
 }
 
+.dropdown-container {
+  position: fixed;
+  overflow-y: auto;
+  overflow-x: hidden;
+  border-radius: 0.25em;
+  border: 1px solid #007bff;
+  margin-top: 14px;
+  max-height: 300px;
+  min-height: 20px;
+  z-index: 1;
+}
+
+.text-ellipsis {
+  overflow: hidden;
+  -ms-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+  min-width: 0;
+}
+
+.btn-dropdown {
+  background-color: white;
+  z-index: 1;
+}
+
+.btn-dropdown:hover {
+  background-color: #007bff;
+}

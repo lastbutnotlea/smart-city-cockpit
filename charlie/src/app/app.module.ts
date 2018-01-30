@@ -30,12 +30,10 @@ import {TripComponent} from './view/trip-views/trip/trip.component';
 import {StateIconComponent} from './shared/components/state-icon/state-icon.component';
 import {MenuComponent} from './menu/menu.component';
 import {TripDetailComponent} from './view/trip-views/trip-detail/trip-detail.component';
-import {TripEditComponent} from './view/trip-views/trip-edit/trip-edit.component';
-import {TripEditDepartureComponent} from './view/trip-views/trip-edit-departure/trip-edit-departure.component';
 import {MapComponent} from './view/network-views/map/map.component';
 import {LineDetailComponent} from './view/line-views/line-detail/line-detail.component';
 import {StopDetailComponent} from './view/stop-views/stop-detail/stop-detail.component';
-import {TripAddComponent} from './view/trip-views/trip-add/trip-add.component';
+import {TripEditComponent} from './view/trip-views/trip-edit/trip-edit.component';
 import {VehiclesComponent} from './view/vehicle-views/vehicles/vehicles.component';
 import {VehicleAddComponent} from './view/vehicle-views/vehicle-add/vehicle-add.component';
 import {VehicleDetailComponent} from './view/vehicle-views/vehicle-detail/vehicle-detail.component';
@@ -43,10 +41,9 @@ import {FeedbackComponent} from './view/feedback-views/feedback/feedback.compone
 import {FeedbackItemComponent} from './view/feedback-views/feedback-item/feedback-item.component';
 import {ServiceRequestsComponent} from './view/service-request-views/service-requests/service-requests.component';
 import {ServiceRequestDetailComponent} from './view/service-request-views/service-request-detail/service-request-detail.component';
-import {ServiceRequestAddComponent} from './view/service-request-views/service-request-add/service-request-add.component';
+import {ServiceRequestEditComponent} from './view/service-request-views/service-request-edit/service-request-edit.component';
 import {SkipStopComponent} from './view/stop-views/stop-skip/stop-skip';
 import {EmbeddedStopComponent} from './shared/components/embedded-stop/embedded-stop.component';
-import {ServiceRequestEditComponent} from './view/service-request-views/service-request-edit/service-request-edit.component';
 import {AnnouncementMainComponent} from './view/announcement-views/main/announcement-main.component';
 import {AnnouncementEditComponent} from './view/announcement-views/edit/announcement-edit.component';
 import {AnnouncementItemComponent} from './view/announcement-views/item/announcement-item.component';
@@ -72,8 +69,6 @@ import {AdminViewComponent} from './view/admin-view/admin-view.component';
     TripComponent,
     MenuComponent,
     TripDetailComponent,
-    TripEditComponent,
-    TripEditDepartureComponent,
     FilterComponent,
     FilterGroupComponent,
     MapComponent,
@@ -86,7 +81,7 @@ import {AdminViewComponent} from './view/admin-view/admin-view.component';
     ConfirmDeletionComponent,
     TickerComponent,
     TickerItemComponent,
-    TripAddComponent,
+    TripEditComponent,
     VehiclesComponent,
     VehicleDetailComponent,
     VehicleAddComponent,
@@ -94,10 +89,9 @@ import {AdminViewComponent} from './view/admin-view/admin-view.component';
     FeedbackItemComponent,
     ServiceRequestsComponent,
     ServiceRequestDetailComponent,
-    ServiceRequestAddComponent,
+    ServiceRequestEditComponent,
     SkipStopComponent,
     EmbeddedStopComponent,
-    ServiceRequestEditComponent,
     AnnouncementMainComponent,
     AnnouncementEditComponent,
     AnnouncementItemComponent,
@@ -140,12 +134,11 @@ import {AdminViewComponent} from './view/admin-view/admin-view.component';
   bootstrap: [AppComponent],
   // modal dialogs:
   entryComponents: [
-    TripEditComponent,
     VehicleAddComponent,
-    TripEditDepartureComponent,
     ConfirmDeletionComponent,
-    TripAddComponent,
+    TripEditComponent,
     ServiceRequestAddComponent,
+    TripAddComponent,
     ServiceRequestEditComponent,
     SkipStopComponent,
     AnnouncementEditComponent,

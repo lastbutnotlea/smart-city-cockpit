@@ -1,103 +1,236 @@
-import {Component, Input, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
-import {TripData} from '../../../shared/data/trip-data';
-import {DropdownValue} from '../../../shared/components/dropdown/dropdown.component';
-import {LineData} from '../../../shared/data/line-data';
-import {VehicleData} from '../../../shared/data/vehicle-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
-import {StopSortService} from '../../../services/stop-sort.service';
 import {StopData} from '../../../shared/data/stop-data';
-import {TripStopData} from '../../../shared/data/trip-stop-data';
-import {dummyDate} from '../../../shared/data/dates';
+import {
+  DropdownValue,
+  loadingDropdown,
+  selectDropdown,
+  toDropdownItem,
+  toDropdownItems
+} from '../../../shared/components/dropdown/dropdown.component';
+import {TripData} from "../../../shared/data/trip-data";
+import {TripStopData} from "../../../shared/data/trip-stop-data";
+import {DateParserService} from "../../../services/date-parser.service";
+import {isNullOrUndefined} from "util";
+import {ToastService} from "../../../services/toast.service";
 
 @Component({
-  selector: 'app-trip-edit',
+  selector: 'app-trip-add',
   templateUrl: './trip-edit.component.html',
   styleUrls: ['./trip-edit.component.css']
 })
 
 export class TripEditComponent implements OnInit {
-  @Input() @Output() data: TripData;
-  selected: TripData;
+  model: TripData = null;
 
-  selectedVehicle: DropdownValue;
+  availableLines: DropdownValue[] = [];
+  availableVehicles: DropdownValue[] = [];
 
-  availLines: LineData[] = [];
-  availVehicles: VehicleData[] = [];
+  selectedLine: DropdownValue = loadingDropdown;
+  selectedDirection: DropdownValue = selectDropdown;
+  selectedVehicle: DropdownValue = loadingDropdown;
+  selectedStops: Map<StopData, boolean> = new Map();
+  selectedDate: Date = new Date();
+
+  state: number = 0;
+
+  title: string = "Add new trip";
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
-              private stopSortService: StopSortService) { }
-
-  ngOnInit(): void {
-    this.http.getLines().subscribe(
-      data => this.availLines = data,
-        err => console.log('Err'));
-
-    this.http.getVehiclesWithCurrentTrip().subscribe(
-      data => this.availVehicles = data,
-      err => console.log('Err'));
+              private dateParser: DateParserService,
+              private toastService: ToastService) {
   }
 
-  initData(): void {
-    if (this.data != null) {
-      this.selected = new TripData;
-      this.selected.line = Object.assign(new LineData(), this.data.line);
-      this.selected.vehicle = Object.assign(new VehicleData(), this.data.vehicle);
-      this.selected.stops = [];
-      for (const stop of this.data.stops) {
-        this.selected.stops.push(stop);
-      }
+  public setModel(data: TripData): void {
+    this.model = data;
+  }
 
-      this.selectedVehicle = this.toDropdownItem(this.selected.vehicle);
+  public initData(): void {
+    if (this.model) {
+      this.selectedLine = toDropdownItem(this.model.line, line => line.name);
+      this.selectedDirection = new DropdownValue(this.model.isInbound, this.getDirectionString(this.getStops(this.model.isInbound)));
+      this.selectedVehicle = toDropdownItem(this.model.vehicle, vehicle => vehicle.id);
+      this.getStops().forEach(stop => {
+        this.selectedStops.set(stop, this.model.stops.filter(s => {
+          return s.id === stop.id;
+        }).length !== 0);
+      });
+      this.selectedDate = new Date(this.model.stops[0].departureTime);
+      this.title = "Edit " + this.model.id;
     }
   }
 
-  confirm(): void {
-    this.data.vehicle = this.selectedVehicle.value;
-    this.data.stops = this.selected.stops;
-    this.http.editTrip(this.data).subscribe(
+  ngOnInit(): void {
+    let selected = this.selectedLine;
+    this.selectedLine = loadingDropdown;
+    this.http.getLines().subscribe(
       data => {
-        // get trips to refresh the trip detail data in trip detail view
-        this.http.getTripDetails(this.data.id).subscribe(
-          trip => {
-            // copy new data into data object
-            this.data.line = Object.assign(new LineData(), trip.line);
-            this.data.vehicle = Object.assign(new VehicleData, trip.vehicle);
-            this.data.stops = [];
-            for(const stop of trip.stops) {
-              this.data.stops.push(stop);
-            }
-            this.data.stops = this.stopSortService.sortStops(this.data.stops);
-            this.activeModal.close('Close click');
-          },
-          err => console.log('Could not fetch trip data!')
-        );
+        this.availableLines = toDropdownItems(data, line => line.name);
+        let isSelectedValid = selected.value && this.availableLines.some(l => {
+          return l.value.id === selected.value.id;
+        });
+        if (isSelectedValid) {
+          this.selectedLine = selected;
+        } else {
+          this.selectedLine = selectDropdown;
+        }
       },
-      err => console.log('Could not edit trip.')
+      err => {
+        console.log("Err: " + JSON.stringify(err));
+        this.toastService.showErrorToast("Could not load lines.");
+      }
     );
   }
 
-  isChecked(stop: StopData): boolean {
-    // returns true if selected.stops contains one object with the id of stop
-    return this.selected.stops.filter(tripStop => tripStop.id === stop.id).length === 1;
-  }
-
-  includeStop(stop: StopData, included: boolean): void {
-    if (included) {
-      this.selected.stops.push(new TripStopData(stop.id, dummyDate, stop.commonName, stop.state));
+  getDirectionDropdownItems(): DropdownValue[] {
+    if (this.selectedLine.value !== null) {
+      return [
+        new DropdownValue(true, this.getDirectionString(this.getStops(true))),
+        new DropdownValue(false, this.getDirectionString(this.getStops(false))),
+      ];
     } else {
-      this.selected.stops = this.selected.stops.filter(filteredStop => filteredStop.id !== stop.id);
-      this.selected.stops = this.stopSortService.sortStops(this.selected.stops);
+      return [];
     }
-    console.log(JSON.stringify(this.selected.stops));
   }
 
-  toDropdownItem(item: VehicleData): DropdownValue {
-    return new DropdownValue(item, item.id);
+  selectedLineChanged(): void {
+    this.selectedDirection = selectDropdown;
   }
 
-  toDropdownItems(items: VehicleData[]): DropdownValue[] {
-    return items.map(item => this.toDropdownItem(item));
+  selectedDirectionChanged(): void {
+    this.selectedStops = new Map();
+    this.getStops().forEach(stop => this.selectedStops.set(stop, true));
+  }
+
+  getStops(inbound?: boolean): StopData[] {
+    if (isNullOrUndefined(inbound)) {
+      inbound = this.selectedDirection.value;
+    }
+    if (this.selectedLine.value === null || inbound === null) {
+      return [];
+    } else if (inbound) {
+      return this.selectedLine.value.stopsInbound;
+    } else {
+      return this.selectedLine.value.stopsOutbound;
+    }
+  }
+
+  stopSelectionChanged(stop: StopData): void {
+    this.selectedStops.set(stop, !this.selectedStops.get(stop));
+  }
+
+  isValidDeparture(date: Date): boolean {
+    return date > new Date();
+  }
+
+  getDirectionString(stops: StopData[]): string {
+    return stops[0].commonName + ' -> ' + stops[stops.length - 1].commonName;
+  }
+
+  refreshVehicles(): void {
+    this.availableVehicles = [];
+    let selected = this.selectedVehicle;
+    this.selectedVehicle = loadingDropdown;
+    let date = this.dateParser.cutTimezoneInformation(this.selectedDate);
+    this.http.getVehiclesByTimeAndType(date, this.selectedLine.value.type, this.model).subscribe(
+      data => {
+        this.availableVehicles = toDropdownItems(data, v => v.id);
+        let isSelectedValid = selected.value && this.availableVehicles.some(v => {
+          return v.value.id === selected.value.id;
+        });
+        if (isSelectedValid) {
+          this.selectedVehicle = selected;
+        } else if (this.availableVehicles.length == 0) {
+          this.selectedVehicle = new DropdownValue(null, "no vehicles available");
+        } else {
+          this.selectedVehicle = selectDropdown;
+        }
+      },
+      err => {
+        console.log("Error: " + JSON.stringify(err));
+        this.toastService.showErrorToast("Could not get available vehicles.");
+      }
+    );
+  }
+
+  isNextEnabled(save: boolean = false): boolean {
+    if (save && this.state < 2) return false;
+    if ((save && this.state == 2) || this.state == 3) {
+      if (!this.getStops().some(stop => this.selectedStops.get(stop))) {
+        return false;
+      }
+    }
+    switch (this.state) {
+      case 0:
+        return this.selectedLine.value !== null && this.selectedDirection.value !== null;
+      case 2:
+        return this.selectedVehicle.value !== null;
+      default:
+        return true;
+    }
+  }
+
+  next(save: boolean = false): void {
+    if (!this.isNextEnabled(save)) return;
+    if (this.state < 3 && !save) {
+      this.state++;
+      if (this.state == 2) {
+        this.refreshVehicles();
+      }
+    } else if (this.model) {
+      this.confirmEditTrip();
+    } else {
+      this.confirmAddTrip();
+    }
+  }
+
+  isBackEnabled(): boolean {
+    return this.state > 0;
+  }
+
+  back(): void {
+    if (!this.isBackEnabled()) return;
+    this.state--;
+  }
+
+  private confirmAddTrip(): void {
+    this.model = new TripData();
+    this.setDataInModel();
+    this.http.addTrip(this.model).subscribe(
+      data => {
+        this.activeModal.close('Close click');
+        this.toastService.showSuccessToast(data.id + ' created.');
+      },
+      err => {
+        console.log("An error occurred: " + JSON.stringify(err));
+        this.toastService.showErrorToast('An error occurred.')
+      }
+    );
+  }
+
+  private confirmEditTrip(): void {
+    this.setDataInModel();
+    this.http.editTrip(this.model).subscribe(
+      data => {
+        this.activeModal.close('Close click');
+        this.toastService.showSuccessToast('Edited ' + this.model.id + '.');
+      },
+      err => {
+        console.log("An error occurred: " + JSON.stringify(err));
+        this.toastService.showErrorToast('An error occurred: ' + JSON.stringify(err));
+      }
+    );
+  }
+
+  private setDataInModel(): void {
+    this.model.line = this.selectedLine.value;
+    this.model.vehicle = this.selectedVehicle.value;
+    this.model.isInbound = this.selectedDirection.value;
+    this.model.stops = this.getStops().filter(stop => {
+      return this.selectedStops.get(stop);
+    }).map(stop => new TripStopData(stop.id, null, null, null));
+    this.model.stops[0].departureTime = this.dateParser.cutTimezoneInformation(this.selectedDate);
   }
 }

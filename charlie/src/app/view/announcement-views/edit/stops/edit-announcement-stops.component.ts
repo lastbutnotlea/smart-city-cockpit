@@ -1,10 +1,12 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {
-  DropdownValue,
+  DropdownValue, selectDropdown,
   toDropdownItems
 } from "../../../../shared/components/dropdown/dropdown.component";
 import {StopData} from "../../../../shared/data/stop-data";
 import {LineData} from "../../../../shared/data/line-data";
+import {isNullOrUndefined} from "util";
+import {StringFormatterService} from '../../../../services/string-formatter.service';
 
 @Component({
   selector: 'app-edit-announcement-stops',
@@ -12,19 +14,23 @@ import {LineData} from "../../../../shared/data/line-data";
   styleUrls: ['./edit-announcement-stops.component.css']
 })
 export class EditAnnouncementStopsComponent {
-  availableStops: DropdownValue[];
-  selectedStop: DropdownValue = new DropdownValue(null, 'Select a stop');
+  availableStops: DropdownValue[] = [];
+  selectedStop: DropdownValue = selectDropdown;
 
-  availableLines: DropdownValue[];
-  selectedLine: DropdownValue = new DropdownValue(null, 'Select a line');
+  availableLines: DropdownValue[] = [];
+  selectedLine: DropdownValue = selectDropdown;
+  availableDirections: DropdownValue[] = [];
+  selectedDirection: DropdownValue = selectDropdown;
 
   selectedStopMap: Map<string, StopData> = new Map();
 
-  toStopId: (StopData) => string = (s: StopData) => s.commonName + ' (' + s.id + ')';
+  constructor(private stringFormatter: StringFormatterService){
+
+  }
 
   @Input()
   set stops(stops: StopData[]) {
-    this.availableStops = toDropdownItems(stops, this.toStopId);
+    this.availableStops = toDropdownItems(stops, item => this.stringFormatter.toStopId(item));
   }
 
   @Input()
@@ -55,15 +61,11 @@ export class EditAnnouncementStopsComponent {
   }
 
   addSelecedLine(): void {
-    this.addFromSelectedLine(line => line.stopsInbound.concat(line.stopsOutbound));
-  }
-
-  addSelecedLineInbound(): void {
-    this.addFromSelectedLine(line => line.stopsInbound);
-  }
-
-  addSelecedLineOutbound(): void {
-    this.addFromSelectedLine(line => line.stopsOutbound);
+    if (this.selectedDirection.value) {
+      this.addFromSelectedLine(line => line.stopsInbound);
+    } else {
+      this.addFromSelectedLine(line => line.stopsOutbound);
+    }
   }
 
   private addFromSelectedLine(getStops: (LineData) => StopData[]): void {
@@ -86,4 +88,30 @@ export class EditAnnouncementStopsComponent {
     return Array.from(this.selectedStopMap.values());
   }
 
+  getEndOfSelectedLine(): string {
+    if (isNullOrUndefined(this.selectedDirection.value)) {
+      return "?";
+    } else {
+      let stops = this.getStopsFromSelectedLine(this.selectedDirection.value);
+      return stops[stops.length - 1].commonName;
+    }
+  }
+
+  lineChanged(line: DropdownValue): void {
+    this.selectedLine = line;
+    this.availableDirections = [
+      new DropdownValue(true, this.getStopsFromSelectedLine(true)[0].commonName),
+      new DropdownValue(false, this.getStopsFromSelectedLine(false)[0].commonName)
+    ];
+    this.selectedDirection = selectDropdown;
+  }
+
+  getStopsFromSelectedLine(inbound: boolean): StopData[] {
+    return (inbound) ? this.selectedLine.value.stopsInbound : this.selectedLine.value.stopsOutbound;
+  }
+
+  removeAllStops() {
+    this.selectedStopMap.clear();
+    this.emitChanged();
+  }
 }

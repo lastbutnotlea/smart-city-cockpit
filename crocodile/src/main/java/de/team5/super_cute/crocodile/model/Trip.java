@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -100,7 +101,7 @@ public class Trip extends IdentifiableObject implements Serializable {
     if (stops == null) {
       return LocalDateTime.MIN;
     }
-    return stops.values().stream().max(LocalDateTime::compareTo).orElse(LocalDateTime.MIN);
+    return stops.values().stream().filter(Objects::nonNull).max(LocalDateTime::compareTo).orElse(LocalDateTime.MIN);
   }
 
   @JsonIgnore
@@ -130,7 +131,7 @@ public class Trip extends IdentifiableObject implements Serializable {
     return stops.entrySet().stream().map(entry -> {
       StopDepartureData data = new StopDepartureData();
       data.id = entry.getKey();
-      data.departureTime = entry.getValue().toString();
+      data.departureTime = entry.getValue() == null? null : entry.getValue().toString();
       Stop stop = getTripStopForId(entry.getKey());
       data.name = stop.getCommonName();
       data.state = stop.getState();
@@ -142,7 +143,8 @@ public class Trip extends IdentifiableObject implements Serializable {
   public void setStopsAsList(List<StopDepartureData> list) {
     try {
       stops = new HashMap<>(list.size());
-      list.forEach(data -> stops.put(data.id, LocalDateTime.parse(data.departureTime)));
+      list.forEach(data -> stops.put(data.id,
+          data.departureTime != null ? LocalDateTime.parse(data.departureTime) : null));
     } catch (Exception e) {
       e.printStackTrace();
       throw e;

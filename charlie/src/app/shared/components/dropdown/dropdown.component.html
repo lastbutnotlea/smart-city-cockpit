@@ -1,8 +1,21 @@
-<div ngbDropdown class="d-inline-block w-100">
-  <button class="btn btn-outline-primary w-100" ngbDropdownToggle>{{selected.label}}</button>
-  <div ngbDropdownMenu class="scrollable-dropdown" aria-labelledby="dropdownBasic1">
-    <ng-container *ngFor="let value of values">
-      <button class="dropdown-item" (click)="select(value);">{{value.label}}</button>
-    </ng-container>
+<div class="d-flex" [style]="getWidthStyle()" #element>
+  <button
+    class="btn btn-outline-primary button-dropdown d-flex w-100 justify-content-between"
+    #dropdownButton
+    (click)="isOpen = !isOpen">
+    <span></span>
+    <span class="text-ellipsis flex-grow-1">{{selected.label}}</span>
+    <span><i class="fa fa-angle-down"></i></span>
+  </button>
+  <div class="{{isOpen? 'd-flex' : 'd-none'}} flex-column dropdown-container bg-white"
+       [style]="getPositionStyle()"
+       aria-labelledby="dropdownBasic1">
+      <ng-container *ngFor="let value of values">
+        <button
+          class="btn btn-dropdown d-inline-flex no-flex-shrink justify-content-center"
+          (click)="select(value);">
+          <span class="text-ellipsis flex-grow-1">{{value.label}}</span>
+        </button>
+      </ng-container>
   </div>
 </div>

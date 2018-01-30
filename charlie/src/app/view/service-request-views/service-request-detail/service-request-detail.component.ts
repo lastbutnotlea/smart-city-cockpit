@@ -54,8 +54,11 @@ export class ServiceRequestDetailComponent implements OnInit {
 
   editServiceRequest(): void {
     const modal = this.modalService.open(ServiceRequestEditComponent);
-    modal.componentInstance.data = this.serviceRequest;
-    modal.componentInstance.initData();
+    modal.componentInstance.data = [this.serviceRequest];
+    modal.componentInstance.editData();
+    modal.componentInstance.onAdd(item => {
+      this.serviceRequest = item;
+    });
   }
 
   showConfirmModal(): void {
