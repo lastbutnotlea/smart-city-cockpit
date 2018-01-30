@@ -2,49 +2,70 @@
   Admin Area
 </h3>
 
-<div *ngIf="loaded">
+<div *ngIf="loaded" class="fit-screen d-flex flex-column">
 
-  <h3 class="text-center">
-    Advanced Live Data Configuration
-  </h3>
   <div>
-    <label>Defect Chance: </label>
-    <input class="float-right" type="number" [(ngModel)]="currentConfiguration.defectChance" (change)="changeConfigurations('')">
-  </div>
-  <div>
-    <label>Defect Remove Chance: </label>
-    <input class="float-right" type="number" [(ngModel)]="currentConfiguration.defectRemoveChance" (change)="changeConfigurations('')">
-  </div>
-  <div>
-    <label>Feedback Chance: </label>
-    <input class="float-right" type="number" [(ngModel)]="currentConfiguration.feedbackChance" (change)="changeConfigurations('')">
-  </div>
+    <div class="d-flex flex-1 flex-row margin-bottom-30">
+      <div class="bounding-box flex-1 d-flex flex-column">
+        <h3 class="text-center">
+          Advanced Live Data Configuration
+        </h3>
+        <div class="my-2">
+          <label>Defect Chance: </label>
+          <input class="float-right" type="number" min="{{minCapacity}}" max="{{maxCapacity}}" step="1"
+                 [(ngModel)]="selectedConfiguration.defectChance"
+                 (change)="changeConfigurations('')"
+                 (keypress)="validate($event, selectedConfiguration.defectChance)">
+        </div>
+        <div class="my-2">
+          <label class="float-left">Defect Remove Chance: </label>
+          <input class="float-right" type="number" min="{{minCapacity}}" max="{{maxCapacity}}" step="1"
+                 [(ngModel)]="selectedConfiguration.defectRemoveChance"
+                 (change)="changeConfigurations('')"
+                 (keypress)="validate($event, selectedConfiguration.defectRemoveChance)">
+        </div>
+        <div class="my-2">
+          <label>Feedback Chance: </label>
+          <input class="float-right" type="number" min="{{minCapacity}}" max="{{maxCapacity}}" step="1"
+                 [(ngModel)]="selectedConfiguration.feedbackChance"
+                 (change)="changeConfigurations('')"
+                 (keypress)="validate($event, selectedConfiguration.feedbackChance)">
+        </div>
+      </div>
 
-  <h3 class="text-center">
-    Standard Live Data Configuration
-  </h3>
-  <div>
-    <button type="button" class="btn {{usingGood? 'active' : ''}}" (click)="changeConfigurations('good')">
-      Good
+      <div class="float-right bounding-box flex-1">
+        <h3 class="text-center">
+          Standard Live Data Configuration
+        </h3>
+        <div class="d-flex flex-column">
+          <button type="button" class="my-btn btn {{usingGood? 'active' : ''}} my-1" (click)="changeConfigurations('good')">
+            <span class="fa fa-exclamation-circle fa-2x excl-style color-fine" aria-hidden="true"></span>
+            <span class="text-style text-center">Good&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          </button>
+          <button type="button" class="my-btn btn {{usingMedium? 'active' : ''}} my-1" (click)="changeConfigurations('medium')">
+            <span class="fa fa-exclamation-circle fa-2x excl-style color-problematic" aria-hidden="true"></span>
+            <span class="text-style text-center">Medium</span>
+          </button>
+          <button type="button" class="my-btn btn {{usingBad? 'active' : ''}} my-1" (click)="changeConfigurations('bad')">
+            <span class="fa fa-exclamation-circle fa-2x excl-style color-critical" aria-hidden="true"></span>
+            <span class="text-style text-center">Bad&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <button type="button" class="btn btn-outline-primary margin-bottom-30" (click)="updateConfigurations()" [disabled]="isDisabled()">
+      Update System Configurations
     </button>
-    <button type="button" class="btn {{usingMedium? 'active' : ''}}" (click)="changeConfigurations('medium')">
-      Medium
-    </button>
-    <button type="button" class="btn {{usingBad? 'active' : ''}}" (click)="changeConfigurations('bad')">
-      Bad
-    </button>
   </div>
 
-  <button type="button" class="btn btn-outline-primary" (click)="updateConfigurations()">
-    Update System Configurations
-  </button>
+  <div>
+    <button type="button" class="btn btn-outline-primary" (click)="exportVehicles()">
+      Export Vehicles
+    </button>
 
+    <button type="button" class="btn btn-outline-primary" (click)="exportAnnouncements()">
+      Export Announcements
+    </button>
+  </div>
 </div>
-
-<button type="button" class="btn btn-outline-primary" (click)="exportVehicles()">
-  Export Vehicles
-</button>
-
-<button type="button" class="btn btn-outline-primary" (click)="exportAnnouncements()">
-  Export Announcements
-</button>
