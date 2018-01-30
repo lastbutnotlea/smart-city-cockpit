@@ -1,11 +1,11 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 
 @Component({
-  selector: 'app-edit-announcement-datetime',
-  templateUrl: './edit-announcement-datetime.component.html',
-  styleUrls: ['./edit-announcement-datetime.component.css']
+  selector: 'app-timespan-picker',
+  templateUrl: './timespan-picker.component.html',
+  styleUrls: ['./timespan-picker.component.css']
 })
-export class EditAnnouncementDatetimeComponent {
+export class TimespanPickerComponent {
   @Input()
   from: Date;
   @Output()

@@ -3,7 +3,8 @@
     <h4 class="modal-title">
       Create new event
     </h4>
-    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <button type="button" class="close" aria-label="Close"
+            (click)="activeModal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -16,23 +17,11 @@
 
     <div class="d-flex flex-nowrap m-2 no-flex-shrink">
       <label>Priority: </label>
-      <app-dropdown class="col" [values]="availablePriorities" [(selected)]="priority"></app-dropdown>
+      <app-dropdown class="col" [values]="availablePriorities"
+                    [(selected)]="priority"></app-dropdown>
     </div>
 
-    <div>
-      <label class="m-2">Valid from: {{from | date:'MM/dd/yyyy HH:mm'}}</label>
-      <ngb-datepicker [(ngModel)]="fromDate" (select)="updateFromDate()"
-                      class="float-left datepicker m-2">
-
-      </ngb-datepicker>
-      <ngb-timepicker [(ngModel)]="fromTime" (click)="updateFromTime()" (change)="updateFromTime()"></ngb-timepicker>
-    </div>
-
-    <div>
-      <label class="m-2">Valid until: {{to | date:'MM/dd/yyyy HH:mm'}}</label>
-      <ngb-datepicker [(ngModel)]="toDate" (select)="updateToDate()" class="float-left datepicker m-2"></ngb-datepicker>
-      <ngb-timepicker [(ngModel)]="toTime" (click)="updateToTime()" (change)="updateToTime()"></ngb-timepicker>
-    </div>
+    <app-timespan-picker [(from)]="fromDate" [(to)]="toDate"></app-timespan-picker>
 
     <div class="d-flex flex-nowrap m-2 no-flex-shrink">
       <label>Involved Party: </label>
@@ -46,8 +35,11 @@
   </div>
 
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cancel</button>
-    <button type="button" class="btn btn-outline-primary" (click)="confirm()" [disabled]="saveDisabled">
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">
+      Cancel
+    </button>
+    <button type="button" class="btn btn-outline-primary" (click)="confirm()"
+            [disabled]="saveDisabled">
       Save
     </button>
   </div>

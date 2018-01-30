@@ -2,7 +2,7 @@
   <button
     class="btn btn-outline-primary button-dropdown d-flex w-100 justify-content-between"
     #dropdownButton [disabled]="isDisabled"
-    (click)="isOpen = !isOpen">
+    (click)="changeOpen()">
     <span></span>
     <span class="text-ellipsis flex-grow-1">{{selected.label}}</span>
     <span><i class="fa fa-angle-down"></i></span>

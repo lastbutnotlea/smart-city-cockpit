@@ -1,15 +1,15 @@
 import {Component, OnInit} from '@angular/core';
-import {NgbActiveModal, NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
-import {DateParserService} from '../../../services/date-parser.service';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {
-  DropdownValue, priorityDropdownItems, toDropdownItem,
+  DropdownValue, loadingDropdown, priorityDropdownItems, selectDropdown, toDropdownItem,
   toDropdownItems
 } from '../../../shared/components/dropdown/dropdown.component';
 import {EventData} from '../../../shared/data/event-data';
 import {PartyData} from '../../../shared/data/party-data';
 import {C4CNotes} from '../../../shared/data/c4c-notes';
 import {ToastService} from '../../../services/toast.service';
+import {DateParserService} from "../../../services/date-parser.service";
 
 @Component({
   selector: 'app-event-add',
@@ -21,69 +21,32 @@ export class EventAddComponent implements OnInit {
 
   subject: string = "";
 
-  availablePriorities: Array<DropdownValue> = [];
-  priority: DropdownValue = new DropdownValue('FINE', 'Low');
+  availablePriorities: Array<DropdownValue> = priorityDropdownItems();
+  priority: DropdownValue = this.availablePriorities[0];
 
-  from: string = (new Date()).toISOString();
-  to: string = (new Date()).toISOString();
-
-  fromTime: NgbTimeStruct = {
-    hour: (new Date()).getHours(),
-    minute: (new Date()).getMinutes(),
-    second: (new Date()).getSeconds()
-  };
-  fromDate: NgbDateStruct = {
-    year: (new Date()).getFullYear(),
-    month: (new Date()).getMonth() + 1,
-    day: (new Date()).getDate()
-  };
-  toTime: NgbTimeStruct = {
-    hour: (new Date()).getHours(),
-    minute: (new Date()).getMinutes(),
-    second: (new Date()).getSeconds()
-  };
-  toDate: NgbDateStruct = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
+  fromDate: Date = new Date();
+  toDate: Date = new Date();
 
   availableParties: Array<DropdownValue> = [];
-  party: DropdownValue = new DropdownValue(null, 'loading');
+  party: DropdownValue = loadingDropdown;
 
   notes: string = "";
   saveDisabled: boolean = false;
 
   constructor(public activeModal: NgbActiveModal,
-              public dateParser: DateParserService,
               public http: HttpRoutingService,
               private toastService: ToastService) {
   }
 
   ngOnInit() {
-    this.http.getInvolvedParties().subscribe(data => {
-      this.party = toDropdownItem(data[0], party => party);
-      this.availableParties = toDropdownItems(data, party => party)
-    }, err => console.log(err));
-
-    this.availablePriorities = priorityDropdownItems();
-
-    this.updateFromDate();
-    this.updateFromTime();
-    this.updateToDate();
-    this.updateToTime();
-  }
-
-  updateFromTime(): void {
-    this.from = this.dateParser.parseTime(this.from, this.fromTime);
-  }
-
-  updateFromDate(): void {
-    this.from = this.dateParser.parseDate(this.from, this.fromDate);
-  }
-
-  updateToTime(): void {
-    this.to = this.dateParser.parseTime(this.to, this.toTime);
-  }
-
-  updateToDate(): void {
-    this.to = this.dateParser.parseDate(this.to, this.toDate);
+    this.http.getInvolvedParties().subscribe(
+      data => {
+        this.party = selectDropdown;
+        this.availableParties = toDropdownItems(data, party => party)
+      }, err => {
+        console.log("Could not load available parties: " + JSON.stringify(err));
+        this.toastService.showErrorToast("Could not load available parties.");
+      });
   }
 
   confirm(): void {
@@ -92,25 +55,24 @@ export class EventAddComponent implements OnInit {
     event.id = '';
     event.subject = this.subject;
     event.priority = this.priority.value;
-    event.startTime = this.from;
-    event.endTime = this.to;
+    event.startTime = DateParserService.cutTimezoneInformation(this.fromDate);
+    event.endTime = DateParserService.cutTimezoneInformation(this.toDate);
     event.appointmentInvolvedParties = new Array(new PartyData('', this.party.value, ''));
     let notesC4C: C4CNotes = new C4CNotes;
     notesC4C.id = '';
     notesC4C.text = this.notes;
     event.appointmentNotes = new Array(notesC4C);
-    console.log(event);
     this.http.addEvent(event).subscribe(
       data => {
-        console.log('Added event.');
+        console.log('Added event: ' + JSON.stringify(event));
         this.toastService.showSuccessToast('Added event ' + data.id);
         this.data.push(data);
         this.activeModal.close('Close click');
       },
       err => {
         this.toastService.showErrorToast('Failed to add event');
+        console.log("Could not create event: \nError: " + JSON.stringify(err) + "\nFor event: " + JSON.stringify(event));
         this.saveDisabled = false;
-      }
-    );
+      });
   }
 }
