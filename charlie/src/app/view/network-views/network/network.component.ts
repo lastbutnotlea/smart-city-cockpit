@@ -64,15 +64,18 @@ export class NetworkComponent extends LiveDataComponent implements OnInit {
             this.networkMap.getMap(stationsData, linesData, connectionsData);
           },
           err => {
-            this.toastService.showLastingErrorToast('Failed to load connections of map data. Please reload the page');
+            this.toastService.showLastingErrorToast(
+              'Failed to load connections of map data. Please try reloading the page');
             console.log(JSON.stringify(err));
           });
         }, err => {
-          this.toastService.showLastingErrorToast('Failed to load lines of map data. Please reload the page');
+          this.toastService.showLastingErrorToast(
+            'Failed to load lines of map data. Please try reloading the page');
           console.log(JSON.stringify(err));
         });
       }, err => {
-      this.toastService.showLastingErrorToast('Failed to load stations of map data. Please reload the page');
+      this.toastService.showLastingErrorToast(
+        'Failed to load stations of map data. Please try reloading the page');
       console.log(JSON.stringify(err));
     });
   }

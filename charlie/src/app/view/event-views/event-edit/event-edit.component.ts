@@ -90,7 +90,8 @@ export class EventEditComponent implements OnInit {
       console.log(data);
       this.availableParties = toDropdownItems(data, party => party)
     }, err => {
-      this.toastService.showLastingErrorToast('Failed to load involved parties. Please reload the page');
+      this.toastService.showLastingErrorToast(
+        'Failed to load involved parties. Please try reloading the page');
       console.log(JSON.stringify(err));
     });
     this.availablePriorities = priorityDropdownItems();

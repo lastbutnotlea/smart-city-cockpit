@@ -27,7 +27,8 @@ export class FeedbackComponent implements OnInit {
       this.feedback = data;
       this.loaded = true;
     }, err => {
-      this.toastService.showLastingErrorToast('Failed to load feedback. Please reload the page');
+      this.toastService.showLastingErrorToast(
+        'Failed to load feedback. Please try reloading the page');
       console.log(JSON.stringify(err));
     });
     let ratingFilter: FilterComponent = new FilterComponent();

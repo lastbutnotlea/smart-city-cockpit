@@ -37,12 +37,14 @@ export class AdminViewComponent implements OnInit{
             this.setValues(this.currentConfiguration);
             this.loaded = true;
           }, err => {
-            this.toastService.showLastingErrorToast('Failed to load current live data configuration. Please reload the page');
+            this.toastService.showLastingErrorToast(
+              'Failed to load current live data configuration. Please try reloading the page');
             console.log(JSON.stringify(err));
           }
         );
       }, err => {
-        this.toastService.showLastingErrorToast('Failed to load current live data configuration. Please reload the page');
+        this.toastService.showLastingErrorToast(
+          'Failed to load current live data configuration. Please try reloading the page');
         console.log(JSON.stringify(err));
       });
   }

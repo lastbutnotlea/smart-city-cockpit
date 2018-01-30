@@ -41,7 +41,7 @@ export class EventDetailComponent implements OnInit {
       },
       err => {
         this.toastService.showLastingErrorToast(
-          'Failed to load event details of event ' + eventId + '. Please reload the page');
+          'Failed to load event details of event ' + eventId + '. Please try reloading the page');
         console.log(JSON.stringify(err));
       });
   }

@@ -48,7 +48,8 @@ export class ServiceRequestsComponent implements OnInit {
         this.loaded = true;
         },
       err => {
-        this.toastService.showLastingErrorToast('Failed to load service requests. Please reload the page');
+        this.toastService.showLastingErrorToast(
+          'Failed to load service requests. Please try reloading the page');
         console.log(JSON.stringify(err))
       });
   }

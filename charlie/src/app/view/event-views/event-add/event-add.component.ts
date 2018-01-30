@@ -61,7 +61,8 @@ export class EventAddComponent implements OnInit {
       this.party = toDropdownItem(data[0], party => party);
       this.availableParties = toDropdownItems(data, party => party)
     }, err => {
-      this.toastService.showLastingErrorToast('Failed to load involved parties. Please reload the page');
+      this.toastService.showLastingErrorToast(
+        'Failed to load involved parties. Please try reloading the page');
       console.log(JSON.stringify(err));
     });
 

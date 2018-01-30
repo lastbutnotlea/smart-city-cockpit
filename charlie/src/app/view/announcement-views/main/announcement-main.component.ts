@@ -28,7 +28,8 @@ export class AnnouncementMainComponent implements OnInit {
         this.loaded = true;
       },
     err => {
-      this.toastService.showLastingErrorToast('Failed to load announcements. Please reload the page');
+      this.toastService.showLastingErrorToast(
+        'Failed to load announcements. Please try reloading the page');
       console.log(JSON.stringify(err));
       });
   }

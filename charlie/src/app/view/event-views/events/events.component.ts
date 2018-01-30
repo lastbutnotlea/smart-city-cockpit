@@ -38,7 +38,8 @@ export class EventsComponent implements OnInit {
       this.events = data;
       this.loaded = true;
     }, err => {
-      this.toastService.showLastingErrorToast('Failed to load events. Please reload the page');
+      this.toastService.showLastingErrorToast(
+        'Failed to load events. Please try reloading the page');
       console.log(JSON.stringify(err));
     });
   }
