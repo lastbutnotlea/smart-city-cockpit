@@ -25,7 +25,6 @@ export class VehicleAddComponent implements OnInit {
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
               public stringFormatter: StringFormatterService,
-              private dateParser: DateParserService,
               private toastService: ToastService) {
   }
 
@@ -55,7 +54,7 @@ export class VehicleAddComponent implements OnInit {
       type: this.selected.value,
       state: 'FINE',
       identifiableType: "vehicle",
-      freeFrom: this.dateParser.cutTimezoneInformation(new Date()),
+      freeFrom: DateParserService.cutTimezoneInformation(new Date()),
       isShutDown: false,
       currentLine: null
     }).subscribe(

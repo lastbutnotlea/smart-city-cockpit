@@ -46,7 +46,8 @@ export class DropdownComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    document.addEventListener('scroll', (e)=>this.updateOffset(), true);
+    document.addEventListener('scroll', (e) => this.updateOffset(), true);
+  }
 
   searchValues(): DropdownValue[] {
     return this.values.filter(v => v.label.toLowerCase().includes(this.searchText.toLowerCase()));
