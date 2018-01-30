@@ -39,7 +39,7 @@
       Cancel
     </button>
     <button type="button" class="btn btn-outline-primary" (click)="confirm()"
-            [disabled]="saveDisabled">
+            [disabled]="!isConfirmEnabled()">
       Save
     </button>
   </div>

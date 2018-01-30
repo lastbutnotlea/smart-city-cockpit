@@ -53,6 +53,14 @@ export class EventAddComponent implements OnInit {
     this.callback = callback;
   }
 
+  isConfirmEnabled(): boolean {
+    return !this.saveDisabled
+      && this.subject !== ''
+      && this.priority.value !== null
+      && this.party.value !== null
+      && this.notes !== '';
+  }
+
   confirm(): void {
     this.saveDisabled = true;
     let event: EventData = new EventData();

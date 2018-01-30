@@ -11,8 +11,8 @@
   <div class="modal-body container d-flex flex-column">
     <div class="form-group m-2">
       <label for="subject">Subject:</label>
-      <textarea class="form-control" rows="5" id="subject" [(ngModel)]="this.selected.subject">
-        {{selected.subject}}
+      <textarea class="form-control" rows="5" id="subject" [(ngModel)]="subject">
+        {{subject}}
       </textarea>
     </div>
 
@@ -21,36 +21,24 @@
       <app-dropdown class="col" [values]="availablePriorities" [(selected)]="priority"></app-dropdown>
     </div>
 
-    <div>
-      <label class="m-2">Valid from: {{selected.startTime | date:'MM/dd/yyyy HH:mm'}}</label>
-      <ngb-datepicker [(ngModel)]="fromDate" (select)="updateFromDate()" class="float-left datepicker m-2">
-
-      </ngb-datepicker>
-      <ngb-timepicker [(ngModel)]="fromTime" (click)="updateFromTime()" (change)="updateFromTime()"></ngb-timepicker>
-    </div>
-
-    <div>
-      <label class="m-2">Valid until: {{selected.endTime | date:'MM/dd/yyyy HH:mm'}}</label>
-      <ngb-datepicker [(ngModel)]="toDate" (select)="updateToDate()" class="float-left datepicker m-2"></ngb-datepicker>
-      <ngb-timepicker [(ngModel)]="toTime" (click)="updateToTime()" (change)="updateToTime()"></ngb-timepicker>
-    </div>
+    <app-timespan-picker [(from)]="startTime" [(to)]="endTime"></app-timespan-picker>
 
     <div class="d-flex flex-nowrap m-2 no-flex-shrink">
       <label>Involved Party: </label>
-      <app-dropdown class="col" [values]="availableParties" [(selected)]="this.party"></app-dropdown>
+      <app-dropdown class="col" [values]="availableParties" [(selected)]="party"></app-dropdown>
     </div>
 
     <div class="form-group m-2">
       <label for="notes">Notes:</label>
-      <textarea class="form-control" rows="5" id="notes" [(ngModel)]="this.selected.appointmentNotes[0].text">
-        {{selected.appointmentNotes[0].text}}
+      <textarea class="form-control" rows="5" id="notes" [(ngModel)]="appointmentNotes[0].text">
+        {{appointmentNotes[0].text}}
       </textarea>
     </div>
   </div>
 
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cancel</button>
-    <button type="button" class="btn btn-outline-primary" (click)="confirm()" [disabled]="saveDisabled">
+    <button type="button" class="btn btn-outline-primary" (click)="confirm()" [disabled]="!isConfirmEnabled()">
       Save
     </button>
   </div>
