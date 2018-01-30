@@ -15,23 +15,24 @@
       <textarea class="form-control" rows="5" id="subject" [(ngModel)]="subject"></textarea>
     </div>
 
-    <div class="d-flex flex-nowrap m-2 no-flex-shrink">
-      <label>Priority: </label>
-      <app-dropdown class="col" [values]="availablePriorities"
-                    [(selected)]="priority"></app-dropdown>
+    <div class="form-group m-2">
+      <label for="notes">Notes:</label>
+      <textarea class="form-control" rows="5" id="notes"
+                [(ngModel)]="notes"></textarea>
+    </div>
+
+    <div class="d-flex flex-nowrap m-2 no-flex-shrink align-items-center justify-content-between">
+      <label class="m-0">Priority: </label>
+      <app-dropdown [values]="availablePriorities" [(selected)]="priority"
+                    [width]="300"></app-dropdown>
+    </div>
+
+    <div class="d-flex flex-nowrap m-2 no-flex-shrink align-items-center justify-content-between">
+      <label class="m-0">Involved Party: </label>
+      <app-dropdown [values]="availableParties" [(selected)]="party" [width]="300"></app-dropdown>
     </div>
 
     <app-timespan-picker [(from)]="fromDate" [(to)]="toDate"></app-timespan-picker>
-
-    <div class="d-flex flex-nowrap m-2 no-flex-shrink">
-      <label>Involved Party: </label>
-      <app-dropdown class="col" [values]="availableParties" [(selected)]="party"></app-dropdown>
-    </div>
-
-    <div class="form-group m-2">
-      <label for="notes">Notes:</label>
-      <textarea class="form-control" rows="5" id="notes" [(ngModel)]="notes"></textarea>
-    </div>
   </div>
 
   <div class="modal-footer">
