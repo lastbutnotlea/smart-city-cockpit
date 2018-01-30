@@ -382,7 +382,7 @@ export class ServiceRequestEditComponent implements OnInit {
     return false;
   }
 
-  isValidDate(date: Date): boolean{
-    return true;
+  isValidDueDate(date: Date): boolean{
+    return date > new Date();
   }
 }

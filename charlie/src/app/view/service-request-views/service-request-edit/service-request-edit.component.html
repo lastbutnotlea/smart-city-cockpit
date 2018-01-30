@@ -3,7 +3,8 @@
     <h4 class="modal-title">
       {{title}}
     </h4>
-    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <button type="button" class="close" aria-label="Close"
+            (click)="activeModal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -11,35 +12,41 @@
 
     <div *ngIf="!targetTypeChosen" class="d-flex justify-content-between align-items-center m-3">
       <label>Target Type: </label>
-    <app-dropdown [values]="selectableTargetTypes" [(selected)]="selectedTargetType" [isDisabled]="!targetEditable"></app-dropdown>
+      <app-dropdown [values]="selectableTargetTypes" [(selected)]="selectedTargetType"
+                    [isDisabled]="!targetEditable"></app-dropdown>
     </div>
 
     <div *ngIf="targetTypeChosen && !dataChosen">
 
-      <div class="d-flex justify-content-between align-items-center m-3">
-        <label class="m-0">Target: </label>
-        <app-dropdown [values]="toDropdownItemsTarget(availTargets)" [(selected)]="selectedTarget" [isDisabled]="!targetEditable"></app-dropdown>
-      </div>
+        <div class="d-flex justify-content-between align-items-center m-3">
+          <label class="m-0">Target: </label>
+          <app-dropdown [values]="toDropdownItemsTarget(availTargets)" [(selected)]="selectedTarget"
+                        [isDisabled]="!targetEditable"></app-dropdown>
+        </div>
 
-      <div class="d-flex justify-content-between align-items-center m-3">
-        <label class="m-0">Type: </label>
-        <app-dropdown [values]="typeItems()" [(selected)]="selectedType"></app-dropdown>
-      </div>
+        <div class="d-flex justify-content-between align-items-center m-3">
+          <label class="m-0">Type: </label>
+          <app-dropdown [values]="typeItems()" [(selected)]="selectedType"></app-dropdown>
+        </div>
 
-      <div class="d-flex justify-content-between align-items-center m-3">
-        <label class="m-0">Priority: </label>
-        <app-dropdown [values]="priorityItems()" [(selected)]="selectedPriority"></app-dropdown>
-      </div>
+        <div class="d-flex justify-content-between align-items-center m-3">
+          <label class="m-0">Priority: </label>
+          <app-dropdown [values]="priorityItems()" [(selected)]="selectedPriority"></app-dropdown>
+        </div>
 
-      <div for="description" class="form-group m-2">
-        <label class="padding-right-10">Description: </label>
-        <textarea class="form-control" rows="5" id="description" [(ngModel)]="description"></textarea>
-      </div>
+        <div class="form-group m-2">
+          <label for="description">Description: </label>
+          <textarea class="form-control" rows="5" id="description"
+                    [(ngModel)]="description"></textarea>
+        </div>
 
-      <div>
-        <label class="m-2 float-left">Due Date: {{(selectedDate) | date:'MM/dd/yyyy'}}</label>
-        <ngb-datepicker [(ngModel)]="date" (select)="updateDate()" class="no-float datepicker m-2"></ngb-datepicker>
-      </div>
+     <!-- <app-datetime-picker
+        [text]="'Due Date'"
+        (modelChanged)="selectedDate=$event"
+        [(model)]="selectedDate"
+        [isValid]="isValidDueDate">
+      </app-datetime-picker>-->
+
     </div>
 
     <div *ngIf="dataChosen" class="d-block">
@@ -60,10 +67,17 @@
   </div>
 
   <div class="modal-footer">
-    <button *ngIf="targetTypeChosen" type="button" class="btn btn-outline-dark" (click)="stepBack()" [disabled]="saveDisabled">Back</button>
-    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')" [disabled]="saveDisabled">Cancel</button>
-    <button *ngIf="!dataChosen" type="button" class="btn btn-outline-primary" (click)="confirm()" [disabled]="disableNext()">Next</button>
-    <button *ngIf="dataChosen" type="button" class="btn btn-outline-primary" (click)="confirm()" [disabled]="disableNext()">
+    <button *ngIf="targetTypeChosen" type="button" class="btn btn-outline-dark" (click)="stepBack()"
+            [disabled]="saveDisabled">Back
+    </button>
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')"
+            [disabled]="saveDisabled">Cancel
+    </button>
+    <button *ngIf="!dataChosen" type="button" class="btn btn-outline-primary" (click)="confirm()"
+            [disabled]="disableNext()">Next
+    </button>
+    <button *ngIf="dataChosen" type="button" class="btn btn-outline-primary" (click)="confirm()"
+            [disabled]="disableNext()">
       Save
     </button>
   </div>
