@@ -10,7 +10,8 @@
   <div class="{{isOpen? 'd-flex' : 'd-none'}} flex-column dropdown-container bg-white"
        [style]="getPositionStyle()"
        aria-labelledby="dropdownBasic1">
-    <ng-container *ngFor="let value of values">
+    <input *ngIf="values.length > 7" type="text" placeholder="Search.." #elem (input)="searchText=elem.value">
+    <ng-container *ngFor="let value of searchValues()">
       <button
         class="btn btn-dropdown d-inline-flex no-flex-shrink justify-content-center"
         (click)="select(value);">
