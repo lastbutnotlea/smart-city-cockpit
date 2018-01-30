@@ -7,33 +7,33 @@
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <div class="modal-body">
+  <div class="modal-body d-flex flex-column">
 
-    <div *ngIf="!targetTypeChosen" class="margin-bottom">
+    <div *ngIf="!targetTypeChosen" class="d-flex justify-content-between align-items-center m-3">
       <label>Target Type: </label>
     <app-dropdown [values]="selectableTargetTypes" [(selected)]="selectedTargetType" [isDisabled]="!targetEditable"></app-dropdown>
     </div>
 
     <div *ngIf="targetTypeChosen && !dataChosen">
 
-      <div class="d-flex flex-nowrap m-2 no-flex-shrink">
-        <label>Target: </label>
-        <app-dropdown class="col" [values]="toDropdownItemsTarget(availTargets)" [(selected)]="selectedTarget" [isDisabled]="!targetEditable"></app-dropdown>
+      <div class="d-flex justify-content-between align-items-center m-3">
+        <label class="m-0">Target: </label>
+        <app-dropdown [values]="toDropdownItemsTarget(availTargets)" [(selected)]="selectedTarget" [isDisabled]="!targetEditable"></app-dropdown>
       </div>
 
-      <div class="d-flex flex-nowrap m-2 no-flex-shrink">
-        <label>Type: </label>
-        <app-dropdown class="col" [values]="typeItems()" [(selected)]="selectedType"></app-dropdown>
+      <div class="d-flex justify-content-between align-items-center m-3">
+        <label class="m-0">Type: </label>
+        <app-dropdown [values]="typeItems()" [(selected)]="selectedType"></app-dropdown>
       </div>
 
-      <div class="d-flex flex-nowrap m-2 no-flex-shrink">
-        <label>Priority: </label>
-        <app-dropdown class="col" [values]="priorityItems()" [(selected)]="selectedPriority"></app-dropdown>
+      <div class="d-flex justify-content-between align-items-center m-3">
+        <label class="m-0">Priority: </label>
+        <app-dropdown [values]="priorityItems()" [(selected)]="selectedPriority"></app-dropdown>
       </div>
 
-      <div class="d-flex flex-nowrap m-2 no-flex-shrink">
+      <div for="description" class="form-group m-2">
         <label class="padding-right-10">Description: </label>
-        <textarea class="form-control col" rows="5" [(ngModel)]="description"></textarea>
+        <textarea class="form-control" rows="5" id="description" [(ngModel)]="description"></textarea>
       </div>
 
       <div>

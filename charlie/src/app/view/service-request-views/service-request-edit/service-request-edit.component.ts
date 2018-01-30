@@ -381,4 +381,8 @@ export class ServiceRequestEditComponent implements OnInit {
     }
     return false;
   }
+
+  isValidDate(date: Date): boolean{
+    return true;
+  }
 }
