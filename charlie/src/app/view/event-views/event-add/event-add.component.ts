@@ -60,7 +60,11 @@ export class EventAddComponent implements OnInit {
     this.http.getInvolvedParties().subscribe(data => {
       this.party = toDropdownItem(data[0], party => party);
       this.availableParties = toDropdownItems(data, party => party)
-    }, err => console.log(err));
+    }, err => {
+      this.toastService.showLastingErrorToast('Failed to load involved parties. Please reload the page');
+      console.log(JSON.stringify(err));
+    });
+
 
     this.availablePriorities = priorityDropdownItems();
 
@@ -109,6 +113,7 @@ export class EventAddComponent implements OnInit {
       },
       err => {
         this.toastService.showErrorToast('Failed to add event');
+        console.log(JSON.stringify(err));
         this.saveDisabled = false;
       }
     );

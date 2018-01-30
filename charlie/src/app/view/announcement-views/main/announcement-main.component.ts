@@ -3,6 +3,7 @@ import {HttpRoutingService} from '../../../services/http-routing.service';
 import {AnnouncementData} from '../../../shared/data/announcement-data';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {AnnouncementEditComponent} from '../edit/announcement-edit.component';
+import {ToastService} from '../../../services/toast.service';
 
 @Component({
   selector: 'app-announcement',
@@ -15,7 +16,9 @@ export class AnnouncementMainComponent implements OnInit {
   title: string = 'Announcements';
   loaded: boolean = false;
 
-  constructor(private http: HttpRoutingService, private modalService: NgbModal) {
+  constructor(private http: HttpRoutingService,
+              private modalService: NgbModal,
+              private toastService: ToastService) {
   }
 
   ngOnInit() {
@@ -24,7 +27,10 @@ export class AnnouncementMainComponent implements OnInit {
         this.data = data;
         this.loaded = true;
       },
-    err => console.log('Could not fetch data'));
+    err => {
+      this.toastService.showLastingErrorToast('Failed to load announcements. Please reload the page');
+      console.log(JSON.stringify(err));
+      });
   }
 
   add(): void {

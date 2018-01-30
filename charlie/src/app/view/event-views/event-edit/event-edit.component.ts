@@ -89,7 +89,10 @@ export class EventEditComponent implements OnInit {
     this.http.getInvolvedParties().subscribe(data => {
       console.log(data);
       this.availableParties = toDropdownItems(data, party => party)
-    }, err => console.log(err));
+    }, err => {
+      this.toastService.showLastingErrorToast('Failed to load involved parties. Please reload the page');
+      console.log(JSON.stringify(err));
+    });
     this.availablePriorities = priorityDropdownItems();
 
     console.log(this.fromTime);
@@ -131,6 +134,7 @@ export class EventEditComponent implements OnInit {
       },
       err => {
         this.toastService.showErrorToast('Failed to edit event ' + this.data.id);
+        console.log(JSON.stringify(err));
         this.saveDisabled = false;
       }
     );

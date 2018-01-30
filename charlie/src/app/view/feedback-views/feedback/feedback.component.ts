@@ -3,6 +3,7 @@ import {FeedbackData} from '../../../shared/data/feedback-data';
 import {FilterGroupComponent} from '../../../shared/components/filter-group/filter-group.component';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {FilterComponent} from '../../../shared/components/filter/filter.component';
+import {ToastService} from '../../../services/toast.service';
 
 @Component({
   selector: 'app-feedback',
@@ -17,13 +18,17 @@ export class FeedbackComponent implements OnInit {
   @ViewChild(FilterGroupComponent)
   filterGroup: FilterGroupComponent;
 
-  constructor(private http: HttpRoutingService) {
+  constructor(private http: HttpRoutingService,
+              private toastService: ToastService) {
   }
 
   ngOnInit() {
     this.http.getFeedback().subscribe(data => {
       this.feedback = data;
       this.loaded = true;
+    }, err => {
+      this.toastService.showLastingErrorToast('Failed to load feedback. Please reload the page');
+      console.log(JSON.stringify(err));
     });
     let ratingFilter: FilterComponent = new FilterComponent();
     ratingFilter.addFilter("Fine", feedback => feedback.rating === "FINE");

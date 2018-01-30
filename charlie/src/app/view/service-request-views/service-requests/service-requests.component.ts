@@ -8,6 +8,7 @@ import {HttpRoutingService} from '../../../services/http-routing.service';
 import {FilterComponent} from '../../../shared/components/filter/filter.component';
 import {Router} from "@angular/router";
 import {dummyDate} from '../../../shared/data/dates';
+import {ToastService} from '../../../services/toast.service';
 
 @Component({
   selector: 'app-service-requests-view',
@@ -26,7 +27,8 @@ export class ServiceRequestsComponent implements OnInit {
   constructor(private http: HttpRoutingService,
               private modalService: NgbModal,
               private router: Router,
-              public stringFormatter: StringFormatterService) {
+              public stringFormatter: StringFormatterService,
+              private toastService: ToastService) {
   }
 
   public ngOnInit(): void {
@@ -45,29 +47,23 @@ export class ServiceRequestsComponent implements OnInit {
         }
         this.loaded = true;
         },
-      err => console.log('Could not fetch trips.')
-    );
+      err => {
+        this.toastService.showLastingErrorToast('Failed to load service requests. Please reload the page');
+        console.log(JSON.stringify(err))
+      });
   }
 
   private addFilter(): void {
-    this.http.getFilterData().subscribe(
-      data => {
-        // TODO: change this if needed data can be requested from backend
-        let stateFilter = new FilterComponent();
-        stateFilter.addFilter('Low', serviceRequest => serviceRequest.priority === 'FINE');
-        stateFilter.addFilter('Medium', serviceRequest => serviceRequest.priority === 'PROBLEMATIC');
-        stateFilter.addFilter('High', serviceRequest => serviceRequest.priority === 'CRITICAL');
-        this.filterGroup.addFilterComponent(stateFilter);
+    let stateFilter = new FilterComponent();
+    stateFilter.addFilter('Low', serviceRequest => serviceRequest.priority === 'FINE');
+    stateFilter.addFilter('Medium', serviceRequest => serviceRequest.priority === 'PROBLEMATIC');
+    stateFilter.addFilter('High', serviceRequest => serviceRequest.priority === 'CRITICAL');
+    this.filterGroup.addFilterComponent(stateFilter);
 
-        let serviceTypeFilter = new FilterComponent();
-        serviceTypeFilter.addFilter('Cleaning', serviceRequest => serviceRequest.serviceType === 'CLEANING');
-        serviceTypeFilter.addFilter('Maintenance', serviceRequest => serviceRequest.serviceType === 'MAINTENANCE');
-        this.filterGroup.addFilterComponent(serviceTypeFilter);
-      },
-      err => {
-        console.log('Could not fetch filter data!');
-      }
-    )
+    let serviceTypeFilter = new FilterComponent();
+    serviceTypeFilter.addFilter('Cleaning', serviceRequest => serviceRequest.serviceType === 'CLEANING');
+    serviceTypeFilter.addFilter('Maintenance', serviceRequest => serviceRequest.serviceType === 'MAINTENANCE');
+    this.filterGroup.addFilterComponent(serviceTypeFilter);
   }
 
   addServiceRequest(): void {

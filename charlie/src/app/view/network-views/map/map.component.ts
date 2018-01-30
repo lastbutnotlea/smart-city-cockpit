@@ -25,6 +25,7 @@ export class MapComponent {
     this.drawTubeMap(this.mapCreator.createMap(stationMapData, lineMapData, connectionMapData));
     this.addLineEvents();
     this.setZoom();
+    this.noChangeOfCursorOnInterchanges();
   }
 
   private drawTubeMap(jsonData: any) {
@@ -74,6 +75,10 @@ export class MapComponent {
       const lineSvg =  d3.select('path#' + line.name);
       lineSvg.attr('stroke-width', lineSvg.attr('stroke-width') / 1.5);
     });
+  }
+
+  private noChangeOfCursorOnInterchanges(): void {
+    d3.selectAll('.interchanges').selectAll('path').style("cursor", "context-menu");
   }
 
   setZoom() {

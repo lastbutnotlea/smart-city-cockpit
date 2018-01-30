@@ -3,6 +3,7 @@ import {FeedbackData} from "../../../shared/data/feedback-data";
 import {HttpRoutingService} from "../../../services/http-routing.service";
 import {ActivatedRoute, Params} from "@angular/router";
 import {NgbRatingConfig} from '@ng-bootstrap/ng-bootstrap';
+import {ToastService} from '../../../services/toast.service';
 
 @Component({
   selector: 'app-feedback-item',
@@ -19,7 +20,8 @@ export class FeedbackItemComponent implements OnInit {
 
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
-              private ngbRatingConfig: NgbRatingConfig) {
+              private ngbRatingConfig: NgbRatingConfig,
+              private toastService: ToastService) {
     ngbRatingConfig.max = 3;
     ngbRatingConfig.readonly = true;
   }
@@ -44,16 +46,20 @@ export class FeedbackItemComponent implements OnInit {
         data => {
           console.log('Unprocessed Feedback ' + data);
         },
-        err => console.log('Could not unprocess feedback.')
-      );
+        err => {
+          this.toastService.showLastingErrorToast('Failed to unprocess feedback');
+          console.log(JSON.stringify(err));
+        });
     } else {
       this.item.processed = true;
       this.http.processFeedback(this.item.id).subscribe(
         data => {
           console.log('Processed Feedback ' + data);
         },
-        err => console.log('Could not process feedback.')
-      );
+        err => {
+          this.toastService.showLastingErrorToast('Failed to process feedback');
+          console.log(JSON.stringify(err));
+        });
     }
   }
 

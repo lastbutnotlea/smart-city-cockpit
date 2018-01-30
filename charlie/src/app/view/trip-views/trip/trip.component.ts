@@ -9,8 +9,8 @@ import {StringFormatterService} from '../../../services/string-formatter.service
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {StopSortService} from '../../../services/stop-sort.service';
 import {FilterComponent} from '../../../shared/components/filter/filter.component';
-import {ToastsManager} from 'ng2-toastr';
 import {getUrlForId} from "../../../shared/util/routing-util";
+import {ToastService} from '../../../services/toast.service';
 
 
 @Component({
@@ -31,14 +31,14 @@ export class TripComponent extends LiveDataComponent implements OnInit {
               private modalService: NgbModal,
               private router: Router,
               private stopSortService: StopSortService,
-              public stringFormatter: StringFormatterService) {
+              public stringFormatter: StringFormatterService,
+              private toastService: ToastService) {
     super();
   }
 
   public ngOnInit(): void {
     this.title = 'Trip View';
     this.addFilter();
-    this.getTrips();
     super.subscribeToData();
   }
 
@@ -51,8 +51,10 @@ export class TripComponent extends LiveDataComponent implements OnInit {
         this.trips.forEach(trip => trip.stops = this.stopSortService.sortStops(trip.stops));
         // This starts periodical calls for live-data after first data was received
         },
-      err => console.log('Could not fetch trips: ' + JSON.stringify(err))
-    );
+      err => {
+        this.toastService.showLastingErrorToast('Failed to load trips');
+        console.log(JSON.stringify(err));
+      });
   }
 
   addTrip(): void {
@@ -77,7 +79,7 @@ export class TripComponent extends LiveDataComponent implements OnInit {
           lineFilter.addFilter(name, trip => trip.line.name === name);
         }
         this.filterGroup.addFilterComponent(lineFilter);
-        // TODO: change this if needed data can be requested from backend
+
         let stateFilter = new FilterComponent();
         stateFilter.addFilter('Fine', trip => trip.vehicle.state === 'FINE');
         stateFilter.addFilter('Problematic', trip => trip.vehicle.state === 'PROBLEMATIC');
@@ -85,7 +87,8 @@ export class TripComponent extends LiveDataComponent implements OnInit {
         this.filterGroup.addFilterComponent(stateFilter);
       },
       err => {
-        console.log('Could not fetch filter data!');
+        this.toastService.showLastingErrorToast('Failed to load filter data');
+        console.log(JSON.stringify(err));
       }
     )
   }

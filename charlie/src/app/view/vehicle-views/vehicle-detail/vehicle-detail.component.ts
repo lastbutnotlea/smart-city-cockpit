@@ -35,7 +35,6 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
   }
 
   ngOnInit(): void {
-    this.getVehicleData();
     super.subscribeToData();
   }
 
@@ -47,32 +46,36 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
         this.vehicle = vehicle;
         this.loaded = true;
       },
-      err => console.log('Could not fetch vehicle data!')
-    );
+      err => {
+        this.toastService.showLastingErrorToast('Failed to load details of ' + id);
+        console.log(JSON.stringify(err));
+      });
     // trips for vehicle
     this.http.getTripsForVehicle(id).subscribe(
       trips => {
         this.trips = trips;
         this.trips.forEach(trip => trip.stops = this.stopSortService.sortStops(trip.stops));
       },
-      err => console.log('Could not fetch trip data, sorry!')
-    );
+      err => {
+        this.toastService.showLastingErrorToast('Failed to load trips for ' + id);
+        console.log(JSON.stringify(err));
+      });
     // feedback for vehicle
     this.http.getVehicleFeedback(id).subscribe(
       data => {
         this.feedback = data;
       }, err => {
+        this.toastService.showLastingErrorToast('Failed to load feedback for ' + id);
         console.log(JSON.stringify(err));
-      }
-    );
+      });
     // service requests for vehicle
     this.http.getVehicleServiceRequests(id).subscribe(
       data => {
         this.serviceRequests = data;
       }, err => {
-        console.log('Could not get Service Requests for Stop')
-      }
-    );
+        this.toastService.showLastingErrorToast('Failed to load service requests for ' + id);
+        console.log(JSON.stringify(err));
+      });
   }
 
   goBack(): void {

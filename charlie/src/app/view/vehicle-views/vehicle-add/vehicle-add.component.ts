@@ -34,7 +34,7 @@ export class VehicleAddComponent implements OnInit {
       this.selected = selectDropdown;
       this.vehicleTypes = types;
     },err => {
-      this.toastService.showErrorToast("Failed to load vehicle types");
+      this.toastService.showErrorToast("Failed to load vehicle types. Please reload the page");
       console.log(JSON.stringify(err));
     });
   }
