@@ -36,6 +36,7 @@ export class TripEditComponent implements OnInit {
   state: number = 0;
 
   title: string = "Add new trip";
+  confirmed: boolean = false;
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
@@ -196,30 +197,36 @@ export class TripEditComponent implements OnInit {
   }
 
   private confirmAddTrip(): void {
+    this.confirmed = true;
     this.model = new TripData();
     this.setDataInModel();
     this.http.addTrip(this.model).subscribe(
       data => {
         this.activeModal.close('Close click');
+        this.confirmed = false;
         this.toastService.showSuccessToast(data.id + ' created.');
       },
       err => {
         console.log("An error occurred: " + JSON.stringify(err));
-        this.toastService.showErrorToast('An error occurred.')
+        this.toastService.showErrorToast('An error occurred.');
+        this.confirmed = false;
       }
     );
   }
 
   private confirmEditTrip(): void {
+    this.confirmed = true;
     this.setDataInModel();
     this.http.editTrip(this.model).subscribe(
       () => {
         this.activeModal.close('Close click');
+        this.confirmed = false;
         this.toastService.showSuccessToast('Edited ' + this.model.id + '.');
       },
       err => {
         console.log("An error occurred: " + JSON.stringify(err));
         this.toastService.showErrorToast('An error occurred: ' + JSON.stringify(err));
+        this.confirmed = false;
       }
     );
   }
