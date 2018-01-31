@@ -139,13 +139,6 @@ export class MapCreatorService {
       };
       // Insert node into the final array
       nodes.push(currentStationNode);
-      // Just important for the end parts, insert points to elongate
-      const currentStationPositionNode = {
-        'coords': [
-          nextCoords[0] - currentStationNode['shiftCoords'][1],
-          nextCoords[1] -  currentStationNode['shiftCoords'][0]
-        ]};
-      //nodes.push(currentStationPositionNode);
     }
     return nodes;
   }

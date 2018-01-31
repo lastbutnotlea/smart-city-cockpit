@@ -3,6 +3,7 @@ import {HttpRoutingService} from '../../../services/http-routing.service';
 import {TickerData} from '../../../shared/data/ticker-data';
 import {Router} from "@angular/router";
 import {getUrlForId} from "../../../shared/util/routing-util";
+import {ToastService} from '../../../services/toast.service';
 
 @Component({
   selector: 'app-ticker-item',
@@ -17,7 +18,9 @@ export class TickerItemComponent {
 
   hoverOnCross: boolean = false;
 
-  constructor(private http: HttpRoutingService, private router: Router) {
+  constructor(private http: HttpRoutingService,
+              private router: Router,
+              private toastService: ToastService) {
   }
 
   innerHover(flag: boolean): void {
@@ -26,8 +29,11 @@ export class TickerItemComponent {
 
   deleteItem(): void {
     this.http.deleteTickerItem(this.data).subscribe(
-      data => this.onDelete.emit(this.data),
-      err => console.log(JSON.stringify(err)));
+      () => this.onDelete.emit(this.data),
+      err => {
+        this.toastService.showErrorToast('Failed to delete ticker item ' + this.data.id);
+        console.log(JSON.stringify(err));
+        });
   }
 
   goToLink(): void {

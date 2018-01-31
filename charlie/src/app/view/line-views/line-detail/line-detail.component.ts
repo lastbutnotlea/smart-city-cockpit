@@ -5,6 +5,7 @@ import {LiveDataComponent} from '../../../shared/components/live-data/live-data.
 import {LinePositionData} from '../../../shared/data/line-position-data';
 import {LineData} from '../../../shared/data/line-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
+import {ToastService} from '../../../services/toast.service';
 
 @Component({
   selector: 'app-line-detail-view',
@@ -21,12 +22,12 @@ export class LineDetailComponent extends LiveDataComponent implements OnInit {
 
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
-              private location: Location) {
+              private location: Location,
+              private toastService: ToastService) {
     super();
   }
 
   ngOnInit(): void {
-    this.getLine();
     super.subscribeToData()
   }
 
@@ -38,7 +39,8 @@ export class LineDetailComponent extends LiveDataComponent implements OnInit {
         this.loaded = true;
       },
           err => {
-        console.log('Could not fetch line data!')
+        this.toastService.showLastingErrorToast('Failed to load details of line ' + lineId);
+        console.log(JSON.stringify(err));
       });
     this.getPositionData(lineId);
   }
@@ -52,14 +54,16 @@ export class LineDetailComponent extends LiveDataComponent implements OnInit {
       data => {
         this.inboundPositionData = data;
       }, err => {
-        console.log('Could not get inbound vehicle position data.');
+        this.toastService.showLastingErrorToast('Failed to load inbound vehicle positions');
+        console.log(JSON.stringify(err));
       }
     );
     this.http.getVehiclePositionOutboundData(id).subscribe(
       data => {
         this.outboundPositionData = data;
       }, err => {
-        console.log('Could not get outbound vehicle position data.');
+        this.toastService.showLastingErrorToast('Failed to load outbound vehicle positions');
+        console.log(JSON.stringify(err));
       }
     )
   }

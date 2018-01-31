@@ -213,7 +213,7 @@ export class TripEditComponent implements OnInit {
   private confirmEditTrip(): void {
     this.setDataInModel();
     this.http.editTrip(this.model).subscribe(
-      data => {
+      () => {
         this.activeModal.close('Close click');
         this.toastService.showSuccessToast('Edited ' + this.model.id + '.');
       },

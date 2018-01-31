@@ -3,6 +3,7 @@ import {LiveDataComponent} from '../../../shared/components/live-data/live-data.
 import {LineData} from '../../../shared/data/line-data';
 import {MapComponent} from '../map/map.component';
 import {HttpRoutingService} from '../../../services/http-routing.service';
+import {ToastService} from '../../../services/toast.service';
 
 @Component({
   selector: 'app-network-view',
@@ -20,14 +21,13 @@ export class NetworkComponent extends LiveDataComponent implements OnInit {
   @ViewChild(MapComponent)
   networkMap: MapComponent;
 
-  constructor(private http: HttpRoutingService) {
+  constructor(private http: HttpRoutingService,
+              private toastService: ToastService) {
     super();
   }
 
   ngOnInit(): void {
     this.title = 'Network';
-    // get line data
-    this.getNetworkData();
     super.subscribeToData();
   }
 
@@ -40,7 +40,8 @@ export class NetworkComponent extends LiveDataComponent implements OnInit {
         }
       },
       err => {
-        console.log('Could not fetch lines.');
+        this.toastService.showLastingErrorToast('Failed to load lines');
+        console.log(JSON.stringify(err));
       }
     );
     this.http.getNetworkState().subscribe(
@@ -48,7 +49,8 @@ export class NetworkComponent extends LiveDataComponent implements OnInit {
         this.state = data;
       },
       err => {
-        console.log(err);
+        this.toastService.showLastingErrorToast('Failed to load state of network');
+        console.log(JSON.stringify(err));
       }
     );
   }
@@ -62,13 +64,19 @@ export class NetworkComponent extends LiveDataComponent implements OnInit {
             this.networkMap.getMap(stationsData, linesData, connectionsData);
           },
           err => {
-            console.log('Could not fetch Map-Data for connections');
+            this.toastService.showLastingErrorToast(
+              'Failed to load connections of map data. Please try reloading the page');
+            console.log(JSON.stringify(err));
           });
         }, err => {
-          console.log('Could not fetch Map-Data for lines');
+          this.toastService.showLastingErrorToast(
+            'Failed to load lines of map data. Please try reloading the page');
+          console.log(JSON.stringify(err));
         });
       }, err => {
-      console.log('Could not fetch Map-Data for stations.');
+      this.toastService.showLastingErrorToast(
+        'Failed to load stations of map data. Please try reloading the page');
+      console.log(JSON.stringify(err));
     });
   }
 

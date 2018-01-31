@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {VehicleData} from '../../data/vehicle-data';
 import {StringFormatterService} from '../../../services/string-formatter.service';
 

@@ -13,7 +13,6 @@ export function getUrlForId(id: string): string {
   } else if (id.length >= 10) {
       return '/network/stop/' + id;
   } else {
-    //console.debug('No target for \'' + id + '\' found, assuming it is a stop');
     return '/events/detail/' + id;
   }
 }

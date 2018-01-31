@@ -39,8 +39,11 @@ export class EventDetailComponent implements OnInit {
       event => {
         this.event = event;
       },
-      err => console.log('Could not fetch event data!')
-    );
+      err => {
+        this.toastService.showLastingErrorToast(
+          'Failed to load event details of event ' + eventId + '. Please try reloading the page');
+        console.log(JSON.stringify(err));
+      });
   }
 
   goBack(): void {
@@ -63,13 +66,14 @@ export class EventDetailComponent implements OnInit {
 
   deleteEvent(modal: NgbModalRef): void {
     this.http.deleteEvent(this.event.id).subscribe(
-      data => {
+      () => {
         this.toastService.showSuccessToast('Deleted event ' + this.event.id);
         modal.close('Close click');
         this.location.back();
       },
       err => {
         this.toastService.showErrorToast('Failed to delete event ' + this.event.id);
+        console.log(JSON.stringify(err));
         modal.componentInstance.deleteDisabled = false;
       }
     );

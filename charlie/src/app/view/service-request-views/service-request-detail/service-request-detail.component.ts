@@ -43,6 +43,7 @@ export class ServiceRequestDetailComponent implements OnInit {
         this.loaded = true;
       },
       err => {
+        this.toastService.showLastingErrorToast('Failed to load service request details');
         console.log(JSON.stringify(err));
       }
     );
@@ -70,7 +71,7 @@ export class ServiceRequestDetailComponent implements OnInit {
 
   deleteServiceRequest(modal: NgbModalRef) : void {
     this.http.deleteServiceRequest(this.serviceRequest.id).subscribe(
-      data => {
+      () => {
         this.location.back();
         modal.close('Close click');
         this.toastService.showSuccessToast('Deleted service request ' + this.serviceRequest.id);
@@ -79,7 +80,7 @@ export class ServiceRequestDetailComponent implements OnInit {
       err => {
         this.toastService.showErrorToast('Failed to delete service request ' + this.serviceRequest.id);
         modal.componentInstance.deleteDisabled = false;
-        console.log('Could not delete trip!');
+        console.log(JSON.stringify(err));
       }
     );
   }

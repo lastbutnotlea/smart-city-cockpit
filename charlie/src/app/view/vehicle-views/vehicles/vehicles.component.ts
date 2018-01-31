@@ -35,7 +35,6 @@ export class VehiclesComponent extends LiveDataComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getVehicles();
     this.http.getVehicleTypes().subscribe(types => {
       let typeFilter: FilterComponent = new FilterComponent();
       types.forEach(type =>
@@ -49,6 +48,9 @@ export class VehiclesComponent extends LiveDataComponent implements OnInit {
       stateFilter.addFilter('Problematic', vehicle => vehicle.state === 'PROBLEMATIC');
       stateFilter.addFilter('Critical', vehicle => vehicle.state === 'CRITICAL');
       this.filterGroup.addFilterComponent(stateFilter);
+    }, err => {
+      this.toastService.showLastingErrorToast('Failed to filter data');
+      console.log(JSON.stringify(err));
     });
     super.subscribeToData();
   }
@@ -58,17 +60,19 @@ export class VehiclesComponent extends LiveDataComponent implements OnInit {
       this.vehicles = data;
       this.loaded = true;
     }, err => {
-      console.log(err);
+      this.toastService.showLastingErrorToast('Failed to load vehicles');
+      console.log(JSON.stringify(err));
     });
     this.http.getVehiclesState().subscribe(data => {
       this.state = data;
     }, err => {
-      console.log(err);
+      this.toastService.showLastingErrorToast('Failed to load state of vehicles');
+      console.log(JSON.stringify(err));
     })
   }
 
   add(): void {
-    const modal = this.modalService.open(VehicleAddComponent);
+    this.modalService.open(VehicleAddComponent);
   }
 
   // update vehicles
