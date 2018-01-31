@@ -10,6 +10,7 @@ import {DateParserService} from '../../../services/date-parser.service';
 import {PartyData} from '../../../shared/data/party-data';
 import {StringFormatterService} from '../../../services/string-formatter.service';
 import {ToastService} from '../../../services/toast.service';
+import {C4CNotes} from '../../../shared/data/c4c-notes';
 
 
 @Component({
@@ -77,7 +78,7 @@ export class EventEditComponent implements OnInit {
 
       this.selected.appointmentNotes = [];
       for (const note of this.data.appointmentNotes) {
-        this.selected.appointmentNotes.push(note);
+        this.selected.appointmentNotes.push(Object.assign(new C4CNotes(), note));
       }
 
       this.party = toDropdownItem(this.selected.appointmentInvolvedParties[0], party => party.partyName);
