@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {TickerData} from '../../../shared/data/ticker-data';
 import {LiveDataComponent} from '../../../shared/components/live-data/live-data.component';
+import {ToastService} from '../../../services/toast.service';
 
 @Component({
   selector: 'app-ticker',
@@ -11,20 +12,23 @@ import {LiveDataComponent} from '../../../shared/components/live-data/live-data.
 export class TickerComponent extends LiveDataComponent implements OnInit {
   items: TickerData[] = [];
 
-  constructor(private http: HttpRoutingService) {
+  constructor(private http: HttpRoutingService,
+              private toastService: ToastService) {
     super();
   }
 
   ngOnInit() {
-    super.subscribeToData();;
+    super.subscribeToData();
   }
 
   refreshData(): void {
     this.http.getTickerItems().subscribe(data => {
         this.items = data;
       },
-      err => console.log(JSON.stringify(err))
-    );
+      err => {
+        this.toastService.showLastingErrorToast('Failed to load ticker items');
+        console.log(JSON.stringify(err));
+    });
   }
 
   removeItem(item: TickerData): void {

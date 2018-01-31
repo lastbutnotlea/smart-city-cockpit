@@ -43,13 +43,13 @@ export class AnnouncementEditComponent implements OnInit {
         data.sort((a, b) => a.commonName.localeCompare(b.commonName));
         this.availableStops = data;
       }, err => {
-        this.toastService.showErrorToast("Could not load stop data");
+        this.toastService.showLastingErrorToast("Could not load stop data");
         console.log("An error occurred: " + JSON.stringify(err));
       });
     this.http.getLines().subscribe(
       data => this.availableLines = data,
       err => {
-        this.toastService.showErrorToast("Could not load stop data");
+        this.toastService.showLastingErrorToast("Could not load stop data");
         console.log("An error occurred: " + JSON.stringify(err));
       });
   }

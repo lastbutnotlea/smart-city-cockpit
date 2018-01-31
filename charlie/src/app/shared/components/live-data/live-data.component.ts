@@ -16,7 +16,9 @@ export abstract class LiveDataComponent {
   }
 
   protected subscribeToData(): void {
-    this.timerSubscription = Observable.timer(0, this.interval).subscribe(() => this.refreshData());
+    this.timerSubscription = Observable.timer(0, this.interval).subscribe(() => {
+      this.refreshData();
+    });
   }
 
   abstract refreshData(): void;

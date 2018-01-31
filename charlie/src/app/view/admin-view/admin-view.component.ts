@@ -37,19 +37,21 @@ export class AdminViewComponent implements OnInit{
             this.setValues(this.currentConfiguration);
             this.loaded = true;
           }, err => {
-            this.toastService.showErrorToast('Failed to load current live data configuration');
+            this.toastService.showLastingErrorToast(
+              'Failed to load current live data configuration. Please try reloading the page');
             console.log(JSON.stringify(err));
           }
         );
       }, err => {
-        this.toastService.showErrorToast('Failed to load default live data configurations');
+        this.toastService.showLastingErrorToast(
+          'Failed to load current live data configuration. Please try reloading the page');
         console.log(JSON.stringify(err));
       });
   }
 
   updateConfigurations(): void {
     this.http.editConfiguration(this.selectedConfiguration).subscribe(
-      data => {
+      () => {
         this.toastService.showSuccessToast('Updated live data configuration');
         console.log('Updated live data configurations');
       }, err => {
@@ -62,7 +64,7 @@ export class AdminViewComponent implements OnInit{
   exportVehicles() {
     var nameOfFileToDownload = "VehicleExport.csv";
     this.http.getVehiclesExport().subscribe(
-      data => {
+      () => {
 
       }, err => {
         if(err.status === 200) {
@@ -80,7 +82,7 @@ export class AdminViewComponent implements OnInit{
   exportAnnouncements() {
     var nameOfFileToDownload = "AnnouncementsExport.csv";
     this.http.getAnnouncementsExport().subscribe(
-      data => {
+      () => {
 
       }, err => {
         if(err.status === 200){
