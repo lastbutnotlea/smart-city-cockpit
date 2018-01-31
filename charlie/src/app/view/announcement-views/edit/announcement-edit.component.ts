@@ -6,6 +6,7 @@ import {LineData} from '../../../shared/data/line-data';
 import {AnnouncementData} from '../../../shared/data/announcement-data';
 import {isNullOrUndefined} from "util";
 import {ToastService} from '../../../services/toast.service';
+import {DateParserService} from "../../../services/date-parser.service";
 
 @Component({
   selector: 'app-announcement-edit',
@@ -32,7 +33,7 @@ export class AnnouncementEditComponent implements OnInit {
   private callback: (param: AnnouncementData) => void = () => {
   };
 
-  constructor(private activeModal: NgbActiveModal,
+  constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
               private toastService: ToastService) {
   }
@@ -79,8 +80,8 @@ export class AnnouncementEditComponent implements OnInit {
     this.saveDisabled = true;
     this.data.text = this.text;
     this.data.stops = Array.from(this.selectedStops);
-    this.data.validFrom = this.validFrom;
-    this.data.validTo = this.validTo;
+    this.data.validFrom = DateParserService.cutTimezoneInformation(this.validFrom);
+    this.data.validTo = DateParserService.cutTimezoneInformation(this.validTo);
     if (isNullOrUndefined(this.data.id)) {
       this.http.addAnnouncement(this.data).subscribe(
         data => {

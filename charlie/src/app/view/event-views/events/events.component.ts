@@ -46,7 +46,7 @@ export class EventsComponent implements OnInit {
 
   addEvent(): void {
     const modal = this.modalService.open(EventAddComponent);
-    modal.componentInstance.data = this.events;
+    modal.componentInstance.onAddCallback(e => this.events.push(e));
   }
 
   goToLink(id: string): void {

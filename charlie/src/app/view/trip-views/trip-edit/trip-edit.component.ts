@@ -133,7 +133,7 @@ export class TripEditComponent implements OnInit {
     this.availableVehicles = [];
     let selected = this.selectedVehicle;
     this.selectedVehicle = loadingDropdown;
-    let date = this.dateParser.cutTimezoneInformation(this.selectedDate);
+    let date = DateParserService.cutTimezoneInformation(this.selectedDate);
     this.http.getVehiclesByTimeAndType(date, this.selectedLine.value.type, this.model).subscribe(
       data => {
         this.availableVehicles = toDropdownItems(data, v => v.id);
@@ -231,6 +231,6 @@ export class TripEditComponent implements OnInit {
     this.model.stops = this.getStops().filter(stop => {
       return this.selectedStops.get(stop);
     }).map(stop => new TripStopData(stop.id, null, null, null));
-    this.model.stops[0].departureTime = this.dateParser.cutTimezoneInformation(this.selectedDate);
+    this.model.stops[0].departureTime = DateParserService.cutTimezoneInformation(this.selectedDate);
   }
 }
