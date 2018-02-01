@@ -12,7 +12,7 @@ export class DateParserService {
     let currentDate = this.parseNativeDate(new Date(dateString), dateStruct);
     // a bit of magic - necessary to solve timezone paradox
     currentDate.setUTCHours(currentDate.getUTCHours() + 1);
-    return this.cutTimezoneInformation(currentDate);
+    return DateParserService.cutTimezoneInformation(currentDate);
   }
 
   /**
@@ -63,7 +63,7 @@ export class DateParserService {
     let currentDate = this.parseNativeTime(new Date(timeString), timeStruct);
     // a bit of magic - necessary to solve timezone paradox
     currentDate.setUTCHours(currentDate.getUTCHours() + 1);
-    return this.cutTimezoneInformation(currentDate);
+    return DateParserService.cutTimezoneInformation(currentDate);
   }
 
   /**
@@ -78,7 +78,7 @@ export class DateParserService {
     return current;
   }
 
-  public cutTimezoneInformation(input: Date): string {
+  public static cutTimezoneInformation(input: Date): string {
     let date = input.toISOString();
     // cuts the last character 'Z' to obtain the right date format
     return date.substr(0, date.length - 2);

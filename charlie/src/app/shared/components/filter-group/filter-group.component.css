@@ -11,14 +11,10 @@
 }
 
 input[type=text] {
-  padding: 1px;
+  padding: 1px 3px;
   border: 2px solid #007bff;
   border-radius: 5px;
   width: 100%;
   background-position: 10px 10px;
   margin-bottom: .5rem !important;
-}
-
-input[type=text]:focus {
-
 }

@@ -2,6 +2,7 @@ import {Component, OnInit} from "@angular/core";
 import {HttpRoutingService} from '../../services/http-routing.service';
 import {LiveDataConfiguration} from '../../shared/data/live-data-configuration';
 import {LiveDataConfigurationCollection} from '../../shared/data/live-data-configuration-collection';
+import {ToastService} from '../../services/toast.service';
 
 @Component({
   selector: 'app-admin-view',
@@ -17,9 +18,12 @@ export class AdminViewComponent implements OnInit{
   usingMedium: boolean = false;
   usingBad: boolean = false;
   loaded: boolean = false;
+  selectedConfiguration: LiveDataConfiguration = new LiveDataConfiguration();
+  minCapacity = 0;
+  maxCapacity = 100;
 
-  constructor(
-    private http: HttpRoutingService) {
+  constructor(private http: HttpRoutingService,
+              private toastService: ToastService) {
   }
 
   ngOnInit(): void {
@@ -30,22 +34,29 @@ export class AdminViewComponent implements OnInit{
         this.http.getCurrentConfiguration().subscribe(
           data => {
             this.currentConfiguration = data;
+            this.setValues(this.currentConfiguration);
             this.loaded = true;
           }, err => {
-            console.log(err);
+            this.toastService.showLastingErrorToast(
+              'Failed to load current live data configuration. Please try reloading the page');
+            console.log(JSON.stringify(err));
           }
         );
       }, err => {
-        console.log(err);
+        this.toastService.showLastingErrorToast(
+          'Failed to load current live data configuration. Please try reloading the page');
+        console.log(JSON.stringify(err));
       });
   }
 
   updateConfigurations(): void {
-    this.http.editConfiguration(this.currentConfiguration).subscribe(
-      data => {
-        console.log('Succes');
+    this.http.editConfiguration(this.selectedConfiguration).subscribe(
+      () => {
+        this.toastService.showSuccessToast('Updated live data configuration');
+        console.log('Updated live data configurations');
       }, err => {
-        console.log('Failure');
+        this.toastService.showErrorToast('Failed to update live data configuration');
+        console.log(JSON.stringify(err));
       }
     )
   }
@@ -53,30 +64,36 @@ export class AdminViewComponent implements OnInit{
   exportVehicles() {
     var nameOfFileToDownload = "VehicleExport.csv";
     this.http.getVehiclesExport().subscribe(
-      data => {
+      () => {
 
       }, err => {
-        debugger;
-        // we want to export a csv-file here
-        // if we get the text from backend as csv, parsing doesn't work here
-        // instead of changing the file before and after sending, we just get the sent text from the error message
-        this.exportCsv(err.error.text, nameOfFileToDownload);
-        console.log(err);
+        if(err.status === 200) {
+          // we want to export a csv-file here
+          // if we get the text from backend as csv, parsing doesn't work here
+          // instead of changing the file before and after sending, we just get the sent text from the error message
+          this.exportCsv(err.error.text, nameOfFileToDownload);
+        } else {
+          this.toastService.showErrorToast('Failed to export vehicles');
+          console.log(JSON.stringify(err));
+        }
       });
   }
 
   exportAnnouncements() {
     var nameOfFileToDownload = "AnnouncementsExport.csv";
     this.http.getAnnouncementsExport().subscribe(
-      data => {
+      () => {
 
       }, err => {
-        debugger;
-        // we want to export a csv-file here
-        // if we get the text from backend as csv, parsing doesn't work here
-        // instead of changing the file before and after sending, we just get the sent text from the error message
-        this.exportCsv(err.error.text, nameOfFileToDownload);
-        console.log(err);
+        if(err.status === 200){
+          // we want to export a csv-file here
+          // if we get the text from backend as csv, parsing doesn't work here
+          // instead of changing the file before and after sending, we just get the sent text from the error message
+          this.exportCsv(err.error.text, nameOfFileToDownload);
+        } else {
+          this.toastService.showErrorToast('Failed to export announcements');
+          console.log(JSON.stringify(err));
+        }
       });
   }
 
@@ -99,19 +116,19 @@ export class AdminViewComponent implements OnInit{
   changeConfigurations(value: string){
     switch (value) {
       case "good":
-        this.currentConfiguration = this.configurationCollection.good;
+        this.setValues(this.configurationCollection.good);
         this.usingGood = true;
         this.usingMedium = false;
         this.usingBad = false;
         break;
       case "medium":
-        this.currentConfiguration = this.configurationCollection.medium;
+        this.setValues(this.configurationCollection.medium);
         this.usingGood = false;
         this.usingMedium = true;
         this.usingBad = false;
         break;
       case "bad":
-        this.currentConfiguration = this.configurationCollection.bad;
+        this.setValues(this.configurationCollection.bad);
         this.usingGood = false;
         this.usingMedium = false;
         this.usingBad = true;
@@ -121,5 +138,26 @@ export class AdminViewComponent implements OnInit{
         this.usingMedium = false;
         this.usingBad = false;
     }
+  }
+
+  setValues(config: LiveDataConfiguration): void {
+    this.selectedConfiguration.defectChance = config.defectChance;
+    this.selectedConfiguration.defectRemoveChance = config.defectRemoveChance;
+    this.selectedConfiguration.feedbackChance = config.feedbackChance;
+  }
+
+  validate(event, value) {
+    var input = value.toString();
+    var position = event.location;
+    var output = parseInt([input.slice(0, position), event.key, input.slice(position)].join(''));
+    if(isNaN(parseInt(event.key)) || output < this.minCapacity || output > this.maxCapacity) {
+      event.preventDefault();
+    }
+  }
+
+  isDisabled() {
+    return this.selectedConfiguration.defectChance === null
+      || this.selectedConfiguration.defectRemoveChance === null
+      || this.selectedConfiguration.feedbackChance === null;
   }
 }

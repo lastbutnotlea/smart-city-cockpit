@@ -1,5 +1,5 @@
 import {
-  Component, ElementRef, EventEmitter, HostListener, Input, Output,
+  Component, ElementRef, EventEmitter, HostListener, Input, OnInit, Output,
   ViewChild
 } from '@angular/core';
 import {DomSanitizer, SafeStyle} from "@angular/platform-browser";
@@ -19,7 +19,7 @@ export class DropdownValue {
   templateUrl: './dropdown.component.html',
   styleUrls: ['./dropdown.component.css']
 })
-export class DropdownComponent {
+export class DropdownComponent implements OnInit {
   @Input()
   values: DropdownValue[];
 
@@ -28,7 +28,7 @@ export class DropdownComponent {
 
   @Input()
   width: number = 200;
-  
+
   @Input()
   isDisabled: boolean = false;
 
@@ -38,8 +38,19 @@ export class DropdownComponent {
   @ViewChild('element') component: ElementRef;
   @ViewChild('dropdownButton') button: ElementRef;
   isOpen: boolean = false;
+  searchText: string = "";
+
+  dropoutPosY: string;
 
   constructor(private domSanitizer: DomSanitizer) {
+  }
+
+  ngOnInit(): void {
+    document.addEventListener('scroll', (e) => this.updateOffset(), true);
+  }
+
+  searchValues(): DropdownValue[] {
+    return this.values.filter(v => v.label.toLowerCase().includes(this.searchText.toLowerCase()));
   }
 
   @HostListener('document:click', ['$event.target'])
@@ -51,18 +62,23 @@ export class DropdownComponent {
     }
   }
 
-  getOffsetTop(): string {
-    return this.calculateOffsetTop(this.button.nativeElement) + 'px';
+  changeOpen(): void {
+    this.isOpen = !this.isOpen;
+    this.updateOffset();
+  }
+
+  updateOffset(): void {
+    if (this.isOpen)this.dropoutPosY = this.calculateOffsetTop(this.button.nativeElement) + 'px';
   }
 
   calculateOffsetTop(el: any): number {
     // because of the necessary absolute positioning we need to calculate the position
-    let offset = el.offsetTop;
+    let offset = el.offsetTop - el.scrollTop;
     return el.offsetParent ? offset + this.calculateOffsetTop(el.offsetParent) : offset;
   }
 
   getPositionStyle(): SafeStyle {
-    return this.domSanitizer.bypassSecurityTrustStyle('top: ' + this.getOffsetTop() + '; width: ' + this.width + 'px');
+    return this.domSanitizer.bypassSecurityTrustStyle('top: ' + this.dropoutPosY + '; width: ' + this.width + 'px');
   }
 
   getWidthStyle(): SafeStyle {

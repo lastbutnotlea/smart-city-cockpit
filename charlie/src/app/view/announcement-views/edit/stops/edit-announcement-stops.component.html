@@ -8,7 +8,7 @@
                   class="my-1 mx-2"></app-dropdown>
     <div>to {{getEndOfSelectedLine()}}</div>
     <button type="button" class="btn btn-outline-primary my-1 mx-2" (click)="addSelecedLine()">
-      Ok
+      Add
     </button>
   </div>
   <div class="d-flex flex-wrap align-items-center m-2">
@@ -16,7 +16,7 @@
     <app-dropdown class="my-1 mx-2" [values]="availableStops"
                   [(selected)]="selectedStop" [width]="300"></app-dropdown>
     <button type="button" class="btn btn-outline-primary my-1 mx-2" (click)="addSelectedStop()">
-      Ok
+      Add
     </button>
   </div>
   <div class="d-flex flex-wrap align-items-center m-2">
