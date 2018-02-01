@@ -159,7 +159,8 @@ export class ServiceRequestEditComponent implements OnInit {
             this.setTargetData(data);
           },
           err => {
-            this.toastService.showErrorToast('Failed to load vehicle targets');
+            this.toastService.showLastingErrorToast(
+              'Failed to load vehicle targets. Please try reloading the page');
             console.log(JSON.stringify(err));
           });
         //get all stop targets
@@ -169,7 +170,8 @@ export class ServiceRequestEditComponent implements OnInit {
               this.setTargetData(data);
             },
             err => {
-              this.toastService.showErrorToast('Failed to load stop targets');
+              this.toastService.showLastingErrorToast(
+                'Failed to load stop targets. Please try reloading the page');
               console.log(JSON.stringify(err));
             });
       }
@@ -201,7 +203,8 @@ export class ServiceRequestEditComponent implements OnInit {
         this.availFeedback = data;
         this.dataChosen = true;
       }, err => {
-        this.toastService.showErrorToast('Failed to load feedback for selected vehicle target');
+        this.toastService.showLastingErrorToast(
+          'Failed to load feedback for selected vehicle target. Please try reloading the page');
         console.log(JSON.stringify(err));
       });
     } else if(!this.selectedTargetType.value) {
@@ -209,7 +212,8 @@ export class ServiceRequestEditComponent implements OnInit {
         this.availFeedback = data;
         this.dataChosen = true;
       }, err => {
-        this.toastService.showErrorToast('Failed to load feedback for selected stop target');
+        this.toastService.showLastingErrorToast(
+          'Failed to load feedback for selected stop target. Please try reloading the page');
         console.log(JSON.stringify(err));
       });
     }
@@ -243,8 +247,8 @@ export class ServiceRequestEditComponent implements OnInit {
       },
       err => {
         this.toastService.showErrorToast('Failed to add service request');
+        console.log(JSON.stringify(err));
         this.saveDisabled = false;
-        console.log('Could not add service request.');
       }
     );
   }
@@ -253,12 +257,9 @@ export class ServiceRequestEditComponent implements OnInit {
     this.selected.name = null;
     this.selected.serviceRequestDescription[0].text = this.description;
     // get rid of all feedback that belongs to other targets
-    debugger;
     this.selected.feedbacks.filter(feedback => {
-      debugger;
       return feedback.objective.id !== this.selected.target.id;
     });
-    debugger;
     this.http.editServiceRequest(this.selected).subscribe(
       data => {
         this.callback(data);

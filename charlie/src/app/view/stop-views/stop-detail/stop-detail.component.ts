@@ -41,7 +41,6 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getStop();
     super.subscribeToData();
   }
 
@@ -66,16 +65,17 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
   }
 
   getData(stopId: string): void {
-    // TODO: add live data once live data generator from backend works
     this.http.getStopDetails(stopId).subscribe(
       stop => {
         this.stop = stop;
-        this.getLines();
-        this.getAdditionalData();
-        this.getTripsForStop(stopId);
       },
-      err => console.log('Could not fetch stop data!')
-    );
+      err => {
+        this.toastService.showLastingErrorToast('Failed to load details of stop ' + stopId);
+        console.log(JSON.stringify(err));
+      });
+    this.getLines(stopId);
+    this.getAdditionalData(stopId);
+    this.getTripsForStop(stopId);
   }
 
   getTripsForStop(stopId: string): void {
@@ -86,7 +86,7 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
         // search for every trip the 'right' stop, i.e. the stop that matches the stopId
         this.trips.forEach(
           trip => {
-            let rightStopInTrip: TripStopData;
+            let rightStopInTrip: TripStopData = null;
             trip.stops.forEach(
               stop => {
                 if (stop.id === stopId) {
@@ -100,42 +100,49 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
           }
         );
       },
-      err => console.log('Could not fetch trip data, sorry!')
-    );
+      err => {
+        this.toastService.showLastingErrorToast('Failed to load trips for stop ' + stopId);
+        console.log(JSON.stringify(err));
+      });
   }
 
-  getLines(): void {
-    this.http.getLineForStop(this.stop.id).subscribe(
+  getLines(stopId: string): void {
+    this.http.getLineForStop(stopId).subscribe(
       data => {
         this.lineForStopDataInbound = data.filter(line => line.isInbound);
         this.lineForStopDataOutbound = data.filter(line => !line.isInbound);
         this.loaded = true;
         // This starts periodical calls for live-data after first data was received
       },
-      err => console.log('Could not fetch stop data!')
-    );
+      err => {
+        this.toastService.showLastingErrorToast('Failed to load lines for stop ' + stopId);
+        console.log(JSON.stringify(err));
+      });
   }
 
-  getAdditionalData(): void {
-    this.http.getStopFeedback(this.stop.id).subscribe(
+  getAdditionalData(stopId: string): void {
+    this.http.getStopFeedback(stopId).subscribe(
       data => {
         this.feedback = data;
       }, err => {
+        this.toastService.showLastingErrorToast('Failed to load feedback for stop ' + stopId);
         console.log(JSON.stringify(err));
       }
     );
-    this.http.getStopAnnouncements(this.stop.id).subscribe(
+    this.http.getStopAnnouncements(stopId).subscribe(
       data => {
         this.announcements = data;
       }, err => {
+        this.toastService.showLastingErrorToast('Failed to load announcements for stop ' + stopId);
         console.log(JSON.stringify(err));
       }
     );
-    this.http.getStopServiceRequests(this.stop.id).subscribe(
+    this.http.getStopServiceRequests(stopId).subscribe(
       data => {
         this.serviceRequests = data;
       }, err => {
-        console.log('Could not get Service Requests for Stop')
+        this.toastService.showLastingErrorToast('Failed to load serviceRequests for stop ' + stopId);
+        console.log(JSON.stringify(err));
       }
     );
   }

@@ -29,4 +29,9 @@ export class ToastService {
     this.toastr.setRootViewContainerRef(this.viewContainerReference);
     this.toastr.info(info);
   }
+
+  public showLastingErrorToast(errorMessage: string ) {
+    this.toastr.setRootViewContainerRef(this.viewContainerReference);
+    this.toastr.error(errorMessage, 'Error!', {dismiss: 'click', toastLife: 15000});
+  }
 }

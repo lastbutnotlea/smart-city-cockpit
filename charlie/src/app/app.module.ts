@@ -52,7 +52,7 @@ import {EventDetailComponent} from './view/event-views/event-detail/event-detail
 import {EventAddComponent} from './view/event-views/event-add/event-add.component';
 import {EventEditComponent} from './view/event-views/event-edit/event-edit.component';
 import {EditAnnounementTextComponent} from './view/announcement-views/edit/text/edit-announcement-text.component';
-import {EditAnnouncementDatetimeComponent} from './view/announcement-views/edit/datetime/edit-announcement-datetime.component';
+import {TimespanPickerComponent} from './shared/components/timespan-picker/timespan-picker.component';
 import {EditAnnouncementStopsComponent} from './view/announcement-views/edit/stops/edit-announcement-stops.component';
 import {RouteReuseStrategy} from "@angular/router";
 import {StringFormatterService} from './services/string-formatter.service';
@@ -102,7 +102,7 @@ import {AdminViewComponent} from './view/admin-view/admin-view.component';
     EmbeddedFeedbackComponent,
     EmbeddedServiceRequestComponent,
     EditAnnounementTextComponent,
-    EditAnnouncementDatetimeComponent,
+    TimespanPickerComponent,
     EditAnnouncementStopsComponent,
     DatetimePickerComponent,
     EmbeddedAnnouncementsComponent,
