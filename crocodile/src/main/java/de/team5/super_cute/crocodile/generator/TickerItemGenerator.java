@@ -122,7 +122,7 @@ public class TickerItemGenerator {
     data.limit(count).forEach(ti -> newTickerItems.add(new TickerItem(ti)));
   }
 
-  private class SeverityComparator implements Comparator<Stateable> {
+  private static class SeverityComparator implements Comparator<Stateable> {
 
     /**
      * returns objects desc by severity

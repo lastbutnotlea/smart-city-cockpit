@@ -30,7 +30,6 @@ public class MapController {
   private LineData lineData;
   private StopData stopData;
   private VehicleData vehicleData;
-  private boolean gotDataFromTpConnector = false;
   private ObjectMapper mapper;
 
   @Autowired

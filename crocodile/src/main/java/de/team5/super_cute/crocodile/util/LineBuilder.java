@@ -52,7 +52,7 @@ public class LineBuilder {
    */
   public LineBuilder travelTime(Integer... travelTime) {
     if (line.getStopsInbound().isEmpty()) {
-      throw new RuntimeException("Please add stops before travel time!");
+      throw new IllegalArgumentException("Please add stops before travel time!");
     }
     Integer max = travelTime[travelTime.length - 1];
     int numStops = line.getStopsInbound().size();

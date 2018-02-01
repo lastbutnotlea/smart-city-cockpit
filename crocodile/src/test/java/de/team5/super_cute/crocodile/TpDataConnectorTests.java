@@ -39,23 +39,23 @@ public class TpDataConnectorTests {
   public void testGetlines_test() {
 
     assertEquals("10 LINES expected", 10, LINES.size());
-    for (int i = 0; i < LINES.size(); i++) {
-      assertEquals("Error in line " + LINES.get(i).getName()
+    for (Line LINE : LINES) {
+      assertEquals("Error in line " + LINE.getName()
               + " TravelTimeInbound and StopsInbound not equals",
-          LINES.get(i).getTravelTimeInbound().size(), LINES.get(i).getStopsInbound().size());
-      assertEquals("Error in line " + LINES.get(i).getName()
+          LINE.getTravelTimeInbound().size(), LINE.getStopsInbound().size());
+      assertEquals("Error in line " + LINE.getName()
               + " TravelTimeOutbound and StopsOutbound not equals",
-          LINES.get(i).getTravelTimeOutbound().size(), LINES.get(i).getStopsOutbound().size());
-      for (int x = 0; x < LINES.get(i).getStopsInbound().size(); x++) {
-        assertNotNull("Error in line " + LINES.get(i).getName()
+          LINE.getTravelTimeOutbound().size(), LINE.getStopsOutbound().size());
+      for (int x = 0; x < LINE.getStopsInbound().size(); x++) {
+        assertNotNull("Error in line " + LINE.getName()
                 + " TravelTimeInbound for specific stop not found",
-            LINES.get(i).getTravelTimeInbound().get(LINES.get(i).getStopsInbound().get(x).getId()));
+            LINE.getTravelTimeInbound().get(LINE.getStopsInbound().get(x).getId()));
       }
-      for (int x = 0; x < LINES.get(i).getStopsOutbound().size(); x++) {
-        assertNotNull("Error in line " + LINES.get(i).getName()
+      for (int x = 0; x < LINE.getStopsOutbound().size(); x++) {
+        assertNotNull("Error in line " + LINE.getName()
                 + " TravelTimeOutbound for specific stop not found",
-            LINES.get(i).getTravelTimeOutbound()
-                .get(LINES.get(i).getStopsOutbound().get(x).getId()));
+            LINE.getTravelTimeOutbound()
+                .get(LINE.getStopsOutbound().get(x).getId()));
       }
     }
     assert (0 == LINES.get(0).getTravelTimeInbound().get("490014553J"));

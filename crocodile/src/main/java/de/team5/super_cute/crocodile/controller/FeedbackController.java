@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class FeedbackController extends BaseController<Feedback> {
 
   private static final Logger logger = LoggerFactory.getLogger(FeedbackController.class);
-  
+
   @Autowired
   public FeedbackController(FeedbackData feedbackBaseData) {
     data = feedbackBaseData;

@@ -1,7 +1,6 @@
 package de.team5.super_cute.crocodile.util;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
@@ -31,7 +30,7 @@ public class IdentifiableObjectDeserializer extends StdDeserializer<Identifiable
 
   @Override
   public IdentifiableObject deserialize(JsonParser jp, DeserializationContext ctxt)
-      throws IOException, JsonProcessingException {
+      throws IOException {
     String id = "";
 
     JsonToken currentToken = null;

@@ -2,8 +2,8 @@ package de.team5.super_cute.crocodile.controller;
 
 import static de.team5.super_cute.crocodile.config.AppConfiguration.API_PREFIX;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import de.team5.super_cute.crocodile.data.LineData;
+import de.team5.super_cute.crocodile.jsonclasses.FilterData;
 import de.team5.super_cute.crocodile.model.EFeedbackType;
 import de.team5.super_cute.crocodile.model.EServiceType;
 import de.team5.super_cute.crocodile.model.EState;
@@ -72,19 +72,9 @@ public class MetadataController {
   public FilterData getFilterData() {
     logger.info("Got Request for Filter Metadata.");
     FilterData fd = new FilterData();
-    fd.lines = getAllLines();
-    fd.vehicleTypes = getAllVehicleTypes();
+    fd.lineNames = getAllLines();
+    fd.types = getAllVehicleTypes();
     fd.states = getAllStates();
     return fd;
-  }
-
-  private class FilterData {
-
-    @JsonProperty
-    List<String> lines;
-    @JsonProperty
-    List<String> vehicleTypes;
-    @JsonProperty
-    List<String> states;
   }
 }

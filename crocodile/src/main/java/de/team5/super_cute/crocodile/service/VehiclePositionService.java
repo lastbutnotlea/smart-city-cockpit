@@ -111,7 +111,8 @@ public class VehiclePositionService {
         .map(Entry::getKey).findAny().orElse(null);
 
     boolean finalIsAtStop = isAtStop;
-    Entry<String, Boolean> entry = new Entry<String, Boolean>() {
+
+    return new Entry<String, Boolean>() {
       @Override
       public String getKey() {
         return stopId;
@@ -127,8 +128,6 @@ public class VehiclePositionService {
         return null;
       }
     };
-
-    return entry;
   }
 
   private void addPositionAtStop(Trip trip, List<PositionStopData> positionStopDatas,

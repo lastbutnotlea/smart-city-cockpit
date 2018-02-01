@@ -1,7 +1,6 @@
 package de.team5.super_cute.crocodile.util;
 
 import de.team5.super_cute.crocodile.data.FeedbackData;
-import de.team5.super_cute.crocodile.data.LineData;
 import de.team5.super_cute.crocodile.data.StopData;
 import de.team5.super_cute.crocodile.data.VehicleData;
 import de.team5.super_cute.crocodile.model.Event;
