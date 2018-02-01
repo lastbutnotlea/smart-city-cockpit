@@ -63,7 +63,7 @@ public class Trip extends IdentifiableObject implements Serializable {
     initializeTrip();
   }
 
-  public void initializeTrip() {
+  public void  initializeTrip() {
     if (isActive(LocalDateTime.now())) {
       vehicle.setCurrentTrip(this);
     }
