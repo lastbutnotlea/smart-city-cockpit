@@ -19,7 +19,9 @@
   <div *ngIf="showStops" class="d-flex flex-column mb-3">
     <div class="text-secondary">Shown at the following stops</div>
     <ng-container *ngFor="let stop of getSortedStops()">
-      <div class="ml-3">{{stop.commonName}} ({{stop.id}})</div>
+      <a href="network/stop/{{stop.id}}">
+        <div class="ml-3">{{stop.commonName}} ({{stop.id}})</div>
+      </a>
     </ng-container>
   </div>
 
