@@ -3,8 +3,12 @@ package de.team5.super_cute.crocodile.data;
 import de.team5.super_cute.crocodile.model.Trip;
 import de.team5.super_cute.crocodile.model.Vehicle;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.orm.hibernate5.HibernateTemplate;
@@ -33,17 +37,42 @@ public class TripData extends BaseData<Trip> {
     return list;
   }
 
-  public void skipStopsInTimeFrameForAllTrips(String stopId, LocalDateTime from,
+  public Set<String> skipStopsInTimeFrameForAllTrips(String stopId, LocalDateTime from,
       LocalDateTime to) {
-    getData().forEach(t -> skipStopInTimeFrame(t, stopId, from, to));
+    Set<String> skippedStopTripIds = new HashSet<>();
+    for(Trip t : getData()) {
+      boolean skippedStop = skipStopInTimeFrame(t, stopId, from, to);
+      if (skippedStop) {
+        skippedStopTripIds.add(t.getId());
+      }
+    }
+    return skippedStopTripIds;
   }
 
-  private void skipStopInTimeFrame(Trip trip, String stopId, LocalDateTime from,
+  public void unskipStop(Set<String> tripIds, String stopId) {
+    tripIds.stream()
+        .map(this::getObjectForId)
+        .peek(trip -> trip.getStops().put(stopId, null))
+        .peek(this::insertCorrectTimesForTrip)
+        .forEach(this::editObject);
+  }
+
+  /**
+   * @param trip in which to skip
+   * @param stopId of the stop to skip
+   * @param from start of the skip time frame
+   * @param to end of the skip time frame
+   * @return true when a stop was skipped within the given trip
+   */
+  private boolean skipStopInTimeFrame(Trip trip, String stopId, LocalDateTime from,
       LocalDateTime to) {
     LocalDateTime stopTime = trip.getStops().get(stopId);
     if (stopTime != null && stopTime.isAfter(from) && stopTime.isBefore(to)) {
       trip.getStops().remove(stopId);
+      editObject(trip);
+      return true;
     }
+    return false;
   }
 
   public List<Trip> getActiveTrips() {
@@ -97,6 +126,41 @@ public class TripData extends BaseData<Trip> {
       vehicle.setFreeFrom(lastStopTime.get());
     } else {
       vehicle.setFreeFrom(null);
+    }
+  }
+
+  /**
+   * Sets the correct times for each stop that has the dummy time associated. At least one Stop has
+   * to have a useful time!
+   *
+   * @param tripInput Trip with some dummy values, these are replaced with correct ones
+   */
+  public void insertCorrectTimesForTrip(Trip tripInput) {
+    // Filter out Stops with dummy value + find stop in the trip with a specified time
+    String firstStopIdOfTrip = tripInput.getStops().entrySet().stream()
+        .filter(e -> e.getValue() != null)
+        //.filter(e -> !e.getValue().equals(Helpers.DUMMY_TIME))
+        .map(Entry::getKey).findAny()
+        .orElseThrow(() -> new IllegalArgumentException(
+            "No Stop in trip that has something else than a dummy time"));
+    LocalDateTime departureAtFirstStopOfTrip = tripInput.getStops().get(firstStopIdOfTrip);
+
+    // Find offset from first stop to line start
+    Map<String, Integer> travelTime =
+        tripInput.getIsInbound() ? tripInput.getLine().getTravelTimeInbound()
+            : tripInput.getLine().getTravelTimeOutbound();
+
+    int tripToLineOffset = travelTime.get(firstStopIdOfTrip);
+    List<String> stopIdsThatNeedCorrectTime = tripInput.getStops().entrySet().stream()
+        .filter(e -> e.getValue() == null)
+        .map(Entry::getKey)
+        .collect(Collectors.toList());
+
+    for (String stopId : stopIdsThatNeedCorrectTime) {
+      int travelTimeFromStartToStop = travelTime.get(stopId);
+      LocalDateTime correctTime = departureAtFirstStopOfTrip.minusMinutes(tripToLineOffset)
+          .plusMinutes(travelTimeFromStartToStop);
+      tripInput.getStops().put(stopId, correctTime);
     }
   }
 }

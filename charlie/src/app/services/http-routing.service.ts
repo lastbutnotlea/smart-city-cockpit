@@ -169,6 +169,10 @@ export class HttpRoutingService {
     return this.http.post(this.urlBuilder.getStopSkipUrl(stopId), skipData);
   }
 
+  public unSkipStop(stopId: string, skipData: SkipData): Observable<any> {
+    return this.http.post(this.urlBuilder.getStopUnSkipUrl(stopId), skipData);
+  }
+
   public deleteServiceRequest(id: string): Observable<any> {
     return this.http.delete(this.urlBuilder.getServiceRequestUrl(id));
   }
