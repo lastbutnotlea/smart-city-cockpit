@@ -30,7 +30,7 @@ export class DropdownComponent implements OnInit {
   width: number = 200;
 
   @Input()
-  isDisabled: boolean = false;
+  disabled: boolean = false;
 
   @Output()
   selectedChange: EventEmitter<DropdownValue> = new EventEmitter<DropdownValue>();

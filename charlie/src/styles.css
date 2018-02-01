@@ -101,6 +101,10 @@ p {
   opacity: 0.3;
 }
 
+.btn:disabled {
+  opacity: 0.4 !important;
+}
+
 /* STYLING EMBEDDED COMPONENTS */
 
 .bounding-box {

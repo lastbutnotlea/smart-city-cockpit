@@ -2,12 +2,15 @@
   <div class="d-flex flex-wrap align-items-center m-2">
     <div>Add stops on</div>
     <app-dropdown [values]="availableLines" [selected]="selectedLine"
-                  (selectedChange)="lineChanged($event)" class="my-1 mx-2" [width]="150"></app-dropdown>
+                  (selectedChange)="lineChanged($event)" class="my-1 mx-2"
+                  [width]="150"></app-dropdown>
     <div>from</div>
     <app-dropdown [values]="availableDirections" [(selected)]="selectedDirection"
+                  [disabled]="selectedLine.value === null"
                   class="my-1 mx-2"></app-dropdown>
     <div>to {{getEndOfSelectedLine()}}</div>
-    <button type="button" class="btn btn-outline-primary my-1 mx-2" (click)="addSelecedLine()">
+    <button type="button" class="btn btn-outline-primary my-1 mx-2" (click)="addSelecedLine()"
+            [disabled]="selectedDirection.value === null">
       Add
     </button>
   </div>
@@ -15,7 +18,8 @@
     <div>Add</div>
     <app-dropdown class="my-1 mx-2" [values]="availableStops"
                   [(selected)]="selectedStop" [width]="300"></app-dropdown>
-    <button type="button" class="btn btn-outline-primary my-1 mx-2" (click)="addSelectedStop()">
+    <button type="button" class="btn btn-outline-primary my-1 mx-2" (click)="addSelectedStop()"
+            [disabled]="selectedStop.value === null">
       Add
     </button>
   </div>

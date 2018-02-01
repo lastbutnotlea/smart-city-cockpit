@@ -11,14 +11,14 @@
 
     <div *ngIf="!targetTypeChosen" class="margin-bottom">
       <label>Target Type: </label>
-    <app-dropdown [values]="selectableTargetTypes" [(selected)]="selectedTargetType" [isDisabled]="!targetEditable"></app-dropdown>
+    <app-dropdown [values]="selectableTargetTypes" [(selected)]="selectedTargetType" [disabled]="!targetEditable"></app-dropdown>
     </div>
 
     <div *ngIf="targetTypeChosen && !dataChosen">
 
       <div class="d-flex flex-nowrap m-2 no-flex-shrink">
         <label>Target: </label>
-        <app-dropdown class="col" [values]="toDropdownItemsTarget(availTargets)" [(selected)]="selectedTarget" [isDisabled]="!targetEditable"></app-dropdown>
+        <app-dropdown class="col" [values]="toDropdownItemsTarget(availTargets)" [(selected)]="selectedTarget" [disabled]="!targetEditable"></app-dropdown>
       </div>
 
       <div class="d-flex flex-nowrap m-2 no-flex-shrink">
