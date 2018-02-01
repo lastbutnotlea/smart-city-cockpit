@@ -8,16 +8,16 @@ import java.util.Map;
 
 public class LiveDataConfig {
 
-  public static int CREATE_STOP_DEFECT_PERCENTAGE = 5;
-  public static int CREATE_VEHICLE_DEFECT_PERCENTAGE = 5;
-  public static int REMOVE_STOP_DEFECT_PERCENTAGE = 10;
-  public static int REMOVE_VEHICLE_DEFECT_PERCENTAGE = 10;
+  public static int CREATE_STOP_DEFECT_PERCENTAGE = 2;
+  public static int CREATE_VEHICLE_DEFECT_PERCENTAGE = 2;
+  public static int REMOVE_STOP_DEFECT_PERCENTAGE = 50;
+  public static int REMOVE_VEHICLE_DEFECT_PERCENTAGE = 50;
   public static int DEFECT_FEEDBACK_PERCENTAGE = 5;
   public static int VALUE_FEEDBACK_PERCENTAGE = 1;
 
   /**
    * Sets the current system configuration according to the given
-   * @param configuration
+   * @param configuration .
    */
   public static void setLiveDataConfiguration(LiveDataConfiguration configuration) {
     CREATE_STOP_DEFECT_PERCENTAGE = configuration.defectChance;

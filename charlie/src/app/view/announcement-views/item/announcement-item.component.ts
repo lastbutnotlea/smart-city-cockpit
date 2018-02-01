@@ -41,7 +41,7 @@ export class AnnouncementItemComponent implements OnInit {
 
   deleteItem(modal: NgbModalRef): void {
     this.http.deleteAnnouncement(this.data).subscribe(
-      data => {
+      () => {
         this.deleted = true;
         this.toastService.showSuccessToast('Deleted ' + this.data.id);
         modal.close('Close click');

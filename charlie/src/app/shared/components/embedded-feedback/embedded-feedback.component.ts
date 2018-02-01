@@ -28,7 +28,6 @@ export class EmbeddedFeedbackComponent implements OnInit {
   }
 
   scrollFeedback(to: string) {
-
     let x = document.querySelector("#" + to);
     if (x) {
       x.scrollIntoView();

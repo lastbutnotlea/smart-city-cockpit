@@ -12,11 +12,11 @@
     <app-edit-announcement-text *ngIf="state === 0"
        	                        [(text)]="text"></app-edit-announcement-text>
     <!-- not sure why I cannot use [(...)] in the date-time - it doesn't work then. -->
-    <app-edit-announcement-datetime *ngIf="state === 1"
-	                            [from]="validFrom"
-	                            (fromChanged)="validFrom = $event"
-	                            [to]="validTo"
-	                            (toChanged)="validTo = $event"></app-edit-announcement-datetime>
+    <app-timespan-picker *ngIf="state === 1"
+                         [from]="validFrom"
+                         (fromChanged)="validFrom = $event"
+                         [to]="validTo"
+                         (toChanged)="validTo = $event"></app-timespan-picker>
     <app-edit-announcement-stops *ngIf="state === 2"
 	                         [lines]="availableLines"
 	                         [stops]="availableStops"
