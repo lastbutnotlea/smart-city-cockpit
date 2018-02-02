@@ -91,6 +91,8 @@ public class Vehicle extends IdentifiableObject implements Serializable, Stateab
   @JsonDeserialize(using = DateDeserializer.class)
   private LocalDateTime freeFrom = Helpers.DUMMY_TIME;
 
+  private Line currentLine;
+
   public Vehicle() {
     super();
   }
