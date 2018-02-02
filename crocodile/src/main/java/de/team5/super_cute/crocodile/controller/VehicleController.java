@@ -131,9 +131,7 @@ public class VehicleController extends BaseController<Vehicle> {
     LocalDateTime time = LocalDateTime.parse(timeString);
     EVehicleType vehicleType = EVehicleType.valueOf(type);
     List<Vehicle> vehicles = data.getData().stream()
-        .filter(this::matchVehicleTypeAndFreeFrom)
-        .peek(tripData::setFreeFrom)
-        .filter(v -> !time.isBefore(v.getFreeFrom()))
+        .filter(v -> matchVehicleTypeAndFreeFrom(v, vehicleType, time))
         .collect(Collectors.toList());
     if (!ignoreTripId.equals("")) {
       Trip tripToIgnore = tripData.getObjectForId(ignoreTripId);

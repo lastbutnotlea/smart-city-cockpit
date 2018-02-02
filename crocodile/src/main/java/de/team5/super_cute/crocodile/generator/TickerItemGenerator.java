@@ -21,6 +21,7 @@ import de.team5.super_cute.crocodile.model.TickerItemable;
 import de.team5.super_cute.crocodile.model.Trip;
 import de.team5.super_cute.crocodile.util.Helpers;
 import java.io.IOException;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -122,7 +123,7 @@ public class TickerItemGenerator {
     data.limit(count).forEach(ti -> newTickerItems.add(new TickerItem(ti)));
   }
 
-  private static class SeverityComparator implements Comparator<Stateable> {
+  private static class SeverityComparator implements Comparator<Stateable>, Serializable {
 
     /**
      * returns objects desc by severity

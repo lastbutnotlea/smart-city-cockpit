@@ -1,12 +1,6 @@
 package de.team5.super_cute.crocodile.util;
 
 import de.team5.super_cute.crocodile.external.C4CProperty;
-import de.team5.super_cute.crocodile.model.EServiceType;
-import de.team5.super_cute.crocodile.model.EState;
-import de.team5.super_cute.crocodile.model.IdentifiableObject;
-import de.team5.super_cute.crocodile.model.ServiceRequest;
-import de.team5.super_cute.crocodile.model.c4c.C4CNotes;
-import de.team5.super_cute.crocodile.model.c4c.EC4CNotesTypeCode;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -45,26 +39,6 @@ public class Helpers {
     }
 
     return result;
-  }
-
-
-
-  private static boolean createdServiceRequest = false;
-
-  public static ServiceRequest generateTestServiceRequest(IdentifiableObject target) {
-    if (createdServiceRequest)
-      return null;
-
-    List<C4CNotes> notes = new ArrayList<C4CNotes>() {{
-      add(new C4CNotes("Please clean this mess.", EC4CNotesTypeCode.SERVICE_REQUEST_DESCRIPTION));
-      add(new C4CNotes("Please clean this mess. I really really mean it", EC4CNotesTypeCode.SERVICE_REQUEST_DESCRIPTION));
-    }};
-    //vehicleData.addObject(new Vehicle())
-    ServiceRequest srr = new ServiceRequest("Reinigung des Fahrzeugs | " + Math.random(),
-        EState.FINE, LocalDateTime
-        .now().plusDays(5),
-        EServiceType.MAINTENANCE, notes, target.getId(), "Feedback_0");
-    return srr;
   }
 
   public static String makeIdToJSON(String id) {
