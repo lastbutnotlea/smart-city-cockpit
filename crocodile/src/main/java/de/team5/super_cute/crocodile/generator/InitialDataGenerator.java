@@ -4,8 +4,8 @@ package de.team5.super_cute.crocodile.generator;
 import static de.team5.super_cute.crocodile.config.InitialSetupConfig.INITIALIZE_FOR_MINUTES;
 import static de.team5.super_cute.crocodile.config.InitialSetupConfig.INITIALIZE_SINCE_MINUTES;
 import static de.team5.super_cute.crocodile.config.InitialSetupConfig.LINEIDS;
-import static de.team5.super_cute.crocodile.config.TfLApiConfig.app_id;
-import static de.team5.super_cute.crocodile.config.TfLApiConfig.app_key;
+import static de.team5.super_cute.crocodile.config.TfLApiConfig.APP_ID;
+import static de.team5.super_cute.crocodile.config.TfLApiConfig.APP_KEY;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import de.team5.super_cute.crocodile.data.LineData;
@@ -88,17 +88,17 @@ public class InitialDataGenerator {
         outboundPointer = 0;
         params.put("id", LINEIDS.get(x));
         params.put("fromStopPointId", lines.get(x).getStopsInbound().get(0).getId());
-        params.put("app_id", app_id);
-        params.put("app_key", app_key);
+        params.put("app_id", APP_ID);
+        params.put("app_key", APP_KEY);
         JsonNode node_inbound = rt
             .getForObject(
-                "https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}?app_id={app_id}&app_key={app_key}",
+                "https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}?APP_ID={APP_ID}&APP_KEY={APP_KEY}",
                 JsonNode.class,
                 params);
         params.put("fromStopPointId", lines.get(x).getStopsOutbound().get(0).getId());
         JsonNode node_outbound = rt
             .getForObject(
-                "https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}?app_id={app_id}&app_key={app_key}",
+                "https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}?APP_ID={APP_ID}&APP_KEY={APP_KEY}",
                 JsonNode.class,
                 params);
         inboundPointer = initializePointer(inboundPointer - 1, node_inbound, nextTripInbound, from);

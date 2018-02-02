@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(AppConfiguration.API_PREFIX + "/ticker")
 public class TickerItemController{
 
-  private Logger logger = LoggerFactory.getLogger(this.getClass());
+  private static final Logger logger = LoggerFactory.getLogger(TickerItemController.class);
 
   @Autowired
   private TickerItemGenerator tickerItemGenerator;

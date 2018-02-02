@@ -36,7 +36,7 @@ public class TpDataConnectorTests {
   }
 
   @Test
-  public void testGetlines_test() {
+  public void testGetLines() {
 
     assertEquals("10 LINES expected", 10, LINES.size());
     for (Line LINE : LINES) {

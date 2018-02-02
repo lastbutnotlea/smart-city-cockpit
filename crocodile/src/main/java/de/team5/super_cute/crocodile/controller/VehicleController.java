@@ -32,7 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(AppConfiguration.API_PREFIX + "/vehicles")
 public class VehicleController extends BaseController<Vehicle> {
 
-  private Logger logger = LoggerFactory.getLogger(this.getClass());
+  private static final Logger logger = LoggerFactory.getLogger(VehicleController.class);
 
   private TripData tripData;
   private LineData lineData;
@@ -115,6 +115,7 @@ public class VehicleController extends BaseController<Vehicle> {
 
   @GetMapping("/state")
   public EState getOverallVehiclesState() {
+    logger.info("Got Request return overall vehicle state");
     return StateCalculator.getState((int) data.getData().stream().mapToInt(Vehicle::getSeverity).average().getAsDouble());
   }
 
@@ -128,6 +129,7 @@ public class VehicleController extends BaseController<Vehicle> {
       String ignoreTripId) {
     logger.info("Got Request to return all Vehicles of Type " + type + " free from " + timeString);
     List<Vehicle> vehicles = data.getData().stream()
+        .filter(this::matchVehicleTypeAndFreeFrom)
         .filter(v -> v.getType().equals(EVehicleType.valueOf(type)))
         .peek(tripData::setFreeFrom)
         .filter(v -> !LocalDateTime.parse(timeString).isBefore(v.getFreeFrom()))
@@ -136,6 +138,14 @@ public class VehicleController extends BaseController<Vehicle> {
       vehicles.add(tripData.getObjectForId(ignoreTripId).getVehicle());
     }
     return vehicles;
+  }
+
+  private boolean matchVehicleTypeAndFreeFrom(Vehicle vehicle, EVehicleType type, LocalDateTime freeFrom) {
+    if (!vehicle.getType().equals(type)) {
+      return false;
+    }
+    tripData.setFreeFrom(vehicle);
+    return vehicle.getFreeFrom().isAfter(freeFrom);
   }
 
   private void setCurrentTrip(Vehicle vehicle) {

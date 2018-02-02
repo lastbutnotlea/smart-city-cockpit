@@ -1,7 +1,6 @@
 package de.team5.super_cute.crocodile.util;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import de.team5.super_cute.crocodile.data.StopData;
@@ -33,8 +32,7 @@ public class IdentifiableObjectDeserializer extends StdDeserializer<Identifiable
       throws IOException {
     String id = "";
 
-    JsonToken currentToken = null;
-    while ((currentToken = jp.nextValue()) != null) {
+    while (jp.nextValue() != null) {
       if (jp.getCurrentName().equals("id")) {
         id = jp.getValueAsString();
         break;

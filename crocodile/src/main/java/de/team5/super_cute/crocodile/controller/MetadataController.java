@@ -38,32 +38,38 @@ public class MetadataController {
 
   @GetMapping("/feedback-types")
   public List<String> getAllFeedbackTypes() {
+    logger.info("Got Request for all feedback types");
     return Arrays.stream(EFeedbackType.values()).map(Enum::toString).collect(Collectors.toList());
   }
 
   @GetMapping("/states")
   public List<String> getAllStates() {
+    logger.info("Got Request for all states");
     return Arrays.stream(EState.values()).map(Enum::toString).collect(Collectors.toList());
   }
 
   @GetMapping("/vehicle-types")
   public List<String> getAllVehicleTypes() {
+    logger.info("Got Request for all vehicle types");
     return Arrays.stream(EVehicleType.values()).map(Enum::toString).collect(Collectors.toList());
   }
 
   @GetMapping("/lines")
   public List<String> getAllLines() {
+    logger.info("Got Request for all lines");
     return lineData.getData().stream().map(Line::getName).collect(Collectors.toList());
   }
 
   @GetMapping("/status-codes")
   public List<String> getAllStatusCodes() {
+    logger.info("Got Request for all status codes");
     return Arrays.stream(EStatusCode.values()).map(EStatusCode::toString)
         .collect(Collectors.toList());
   }
 
   @GetMapping("/service-types")
   public List<String> getAllServiceTypes() {
+    logger.info("Got Request for all service request types");
     return Arrays.stream(EServiceType.values()).map(EServiceType::toString)
         .collect(Collectors.toList());
   }

@@ -1,6 +1,5 @@
 package de.team5.super_cute.crocodile.util;
 
-import de.team5.super_cute.crocodile.data.LineData;
 import de.team5.super_cute.crocodile.data.StopData;
 import de.team5.super_cute.crocodile.data.VehicleData;
 import de.team5.super_cute.crocodile.model.IdentifiableObject;
@@ -16,14 +15,8 @@ import org.springframework.stereotype.Component;
 public class FeedbackableAttributeConverter implements
     AttributeConverter<ServiceOrFeedbackTargetObject, String> {
 
-  private static LineData lineData;
   private static VehicleData vehicleData;
   private static StopData stopData;
-
-  @Autowired
-  public void setLineData(LineData lineData) {
-    FeedbackableAttributeConverter.lineData = lineData;
-  }
 
   @Autowired
   public void setVehicleData(VehicleData vehicleData) {
