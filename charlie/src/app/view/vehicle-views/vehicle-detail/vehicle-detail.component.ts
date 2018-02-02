@@ -84,12 +84,17 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
 
   delete(modal: NgbModalRef): void {
     this.http.deleteVehicle(this.vehicle.id).subscribe(
-      () => {
-        this.toastService.showSuccessToast('Deleted ' + this.vehicle.id);
-        modal.close('Close click');
-        this.goBack();
+      data => {
+        if (data.id === "Vehicle is in use!") {
+          this.toastService.showErrorToast('Failed to delete ' + this.vehicle.id + ' because it has future trips.');
+          modal.close('Close click');
+        } else {
+          this.toastService.showSuccessToast('Deleted ' + this.vehicle.id);
+          modal.close('Close click');
+          this.goBack();
+        }
       },
-      () => {
+      err => {
         this.toastService.showErrorToast('Failed to delete ' + this.vehicle.id);
         modal.componentInstance.deleteDisabled = false;
       }
