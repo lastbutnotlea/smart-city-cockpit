@@ -3,8 +3,8 @@ package de.team5.super_cute.crocodile.external;
 import static de.team5.super_cute.crocodile.config.ColorMapping.LINE_COLORS;
 import static de.team5.super_cute.crocodile.config.InitialSetupConfig.PEOPLE_WAITING_INITIAL_MAX;
 import static de.team5.super_cute.crocodile.config.InitialSetupConfig.PEOPLE_WAITING_INITIAL_MIN;
-import static de.team5.super_cute.crocodile.config.TfLApiConfig.APP_ID;
-import static de.team5.super_cute.crocodile.config.TfLApiConfig.APP_KEY;
+import static de.team5.super_cute.crocodile.config.TfLApiConfig.app_id;
+import static de.team5.super_cute.crocodile.config.TfLApiConfig.app_key;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import de.team5.super_cute.crocodile.model.EVehicleType;
@@ -27,11 +27,11 @@ public class TpDataConnector {
       try {
         Map<String, Object> params = new HashMap<>();
         params.put("id", id);
-        params.put("app_id", APP_ID);
-        params.put("app_key", APP_KEY);
+        params.put("app_id", app_id);
+        params.put("app_key", app_key);
         RestTemplate rt = new RestTemplate();
         JsonNode node = rt.getForObject(
-            "https://api.tfl.gov.uk/Line/{id}/Route/Sequence/all?APP_ID={APP_ID}&APP_KEY={APP_KEY}",
+            "https://api.tfl.gov.uk/Line/{id}/Route/Sequence/all?app_id={app_id}&app_key={app_key}",
             JsonNode.class,
             params);
         List<Stop> stopsInbound = new ArrayList<>();
@@ -61,10 +61,10 @@ public class TpDataConnector {
     Map<String, Object> params = new HashMap<>();
     params.put("id", node.get("lineId").asText());
     params.put("fromStopPointId", stops.get(0).getId());
-    params.put("app_id", APP_ID);
-    params.put("app_key", APP_KEY);
+    params.put("app_id", app_id);
+    params.put("app_key", app_key);
     JsonNode node_travelTime = rt.getForObject(
-        "https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}?APP_ID={APP_ID}&APP_KEY={APP_KEY}",
+        "https://api.tfl.gov.uk/Line/{id}/Timetable/{fromStopPointId}?app_id={app_id}&app_key={app_key}",
         JsonNode.class,
         params);
     Map<String, Integer> travelTime = new HashMap<>();
