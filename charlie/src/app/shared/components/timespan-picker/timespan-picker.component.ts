@@ -14,6 +14,10 @@ export class TimespanPickerComponent {
   to: Date;
   @Output()
   toChanged: EventEmitter<Date> = new EventEmitter<Date>();
+  @Input()
+  textFrom: string = "Valid from: ";
+  @Input()
+  textTo: string = "Valid until: ";
 
   isValidFrom: (Date) => boolean = (d: Date) => new Date() <= d;
   isValidTo: (Date) => boolean = (d: Date) => this.from <= d;

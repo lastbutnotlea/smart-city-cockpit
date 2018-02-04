@@ -12,7 +12,8 @@ import {HttpRoutingService} from '../../../services/http-routing.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {SkipStopComponent} from '../stop-skip/stop-skip';
 import {TripStopData} from '../../../shared/data/trip-stop-data';
-import {ToastService} from '../../../services/toast.service';
+import {SkipData} from "../../../shared/data/skip-data";
+import {ToastService} from "../../../services/toast.service";
 
 @Component({
   selector: 'app-stop-detail-view',
@@ -46,6 +47,15 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
   skipStop(): void {
     const modal = this.modalService.open(SkipStopComponent);
     modal.componentInstance.data = this.stop;
+  }
+
+  unSkipStop(skipData: SkipData): void {
+    this.http.unSkipStop(this.stop.id, skipData).subscribe(
+      skipStop => {
+        this.stop.skipData.filter(ss => ss.id !== skipStop.id);
+        this.toastService.showSuccessToast("Stop " + this.stop.id + " was sucessfully unskipped.")
+      }
+    )
   }
 
   getStop(): void {
