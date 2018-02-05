@@ -125,7 +125,7 @@ public class VehiclePositionService {
 
       @Override
       public Boolean setValue(Boolean value) {
-        return false;
+        throw new UnsupportedOperationException();
       }
     };
   }

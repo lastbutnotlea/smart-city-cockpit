@@ -125,17 +125,21 @@ public class LiveDataGenerator {
   }
 
   private String generateDefect(ServiceOrFeedbackTargetObject feedbackable, boolean forStop) {
-    Random r = new Random(System.currentTimeMillis());
-    String defect = null;
     if (maxDefectCountReached(feedbackable, forStop)) {
       return null;
     }
-    if (r.nextInt(100) + 1 <= (forStop ?
-        CREATE_STOP_DEFECT_PERCENTAGE
-        : CREATE_VEHICLE_DEFECT_PERCENTAGE)) {
-      defect = (forStop ?
-          STOP_DEFECTS.get(r.nextInt(STOP_DEFECTS.size()))
-          : VEHICLE_DEFECTS.get(r.nextInt(VEHICLE_DEFECTS.size())));
+    if (forStop) {
+      return generateStopDefect(feedbackable);
+    } else {
+      return generateVehicleDefect(feedbackable);
+    }
+  }
+
+  private String generateStopDefect(ServiceOrFeedbackTargetObject feedbackable) {
+    Random r = new Random(System.currentTimeMillis());
+    String defect = null;
+    if (r.nextInt(100) + 1 <= (CREATE_STOP_DEFECT_PERCENTAGE)) {
+      defect = (STOP_DEFECTS.get(r.nextInt(STOP_DEFECTS.size())));
 
       if (currentFeedbackCount > MAX_FEEDBACK_COUNT) {
         return defect;
@@ -143,16 +147,32 @@ public class LiveDataGenerator {
 
       if (r.nextInt(100) + 1 <= DEFECT_FEEDBACK_PERCENTAGE) {
         feedbackData.addObject(new Feedback((
-            forStop ?
-                STOP_DEFECT_FEEDBACK.get(defect)
-                    .get(r.nextInt(STOP_DEFECT_FEEDBACK.get(defect).size()))
-                : VEHICLE_DEFECT_FEEDBACK.get(defect)
-                    .get(r.nextInt(VEHICLE_DEFECT_FEEDBACK.get(defect).size()))),
-            LocalDateTime.now(), feedbackable,
-            forStop ? STOP_FEEDBACK : VEHICLE_FEEDBACK,
-            forStop ?
-                getState(STOP_DEFECTS_SEVERITY.get(defect))
-                : getState(VEHICLE_DEFECTS_SEVERITY.get(defect)), false));
+            STOP_DEFECT_FEEDBACK.get(defect)
+                .get(r.nextInt(STOP_DEFECT_FEEDBACK.get(defect).size()))),
+            LocalDateTime.now(), feedbackable, STOP_FEEDBACK,
+            getState(STOP_DEFECTS_SEVERITY.get(defect)), false));
+        currentFeedbackCount++;
+      }
+    }
+    return defect;
+  }
+
+  private String generateVehicleDefect(ServiceOrFeedbackTargetObject feedbackable) {
+    Random r = new Random(System.currentTimeMillis());
+    String defect = null;
+    if (r.nextInt(100) + 1 <= (CREATE_VEHICLE_DEFECT_PERCENTAGE)) {
+      defect = (VEHICLE_DEFECTS.get(r.nextInt(VEHICLE_DEFECTS.size())));
+
+      if (currentFeedbackCount > MAX_FEEDBACK_COUNT) {
+        return defect;
+      }
+
+      if (r.nextInt(100) + 1 <= DEFECT_FEEDBACK_PERCENTAGE) {
+        feedbackData.addObject(new Feedback((
+            VEHICLE_DEFECT_FEEDBACK.get(defect)
+                .get(r.nextInt(VEHICLE_DEFECT_FEEDBACK.get(defect).size()))),
+            LocalDateTime.now(), feedbackable, STOP_FEEDBACK,
+            getState(VEHICLE_DEFECTS_SEVERITY.get(defect)), false));
         currentFeedbackCount++;
       }
     }
