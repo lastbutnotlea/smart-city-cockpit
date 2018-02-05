@@ -40,6 +40,7 @@ import javax.persistence.Convert;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -76,7 +77,7 @@ public class Vehicle extends IdentifiableObject implements Serializable, Stateab
   @Column
   private boolean isShutDown;
 
-  @Column
+  @OneToOne
   @JsonIgnore
   private Trip currentTrip;
 
@@ -230,7 +231,7 @@ public class Vehicle extends IdentifiableObject implements Serializable, Stateab
 
   public void setCurrentTrip(Trip currentTrip) {
     if (currentTrip == null) {
-      outdateCurrentTrip = LocalDateTime.MIN;
+      outdateCurrentTrip = LocalDateTime.now();
     } else {
       outdateCurrentTrip = currentTrip.getLastStopTime();
     }

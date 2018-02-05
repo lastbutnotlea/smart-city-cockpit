@@ -6,6 +6,6 @@ input[type=text] {
   background-position: 10px 10px;
 }
 
-input[type=text]:focus {
-
+.dp {
+  width: fit-content;
 }

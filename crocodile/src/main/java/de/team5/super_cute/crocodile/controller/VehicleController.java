@@ -88,7 +88,7 @@ public class VehicleController extends BaseController<Vehicle> {
     logger.info("Got Request to delete the vehicle with id " + id);
     if (tripData.hasPresentOrFutureTrips(id)) {
       //there are planned or active trips for that vehicle
-      return "Vehicle is in use!";
+      return Helpers.makeIdToJSON("Vehicle is in use!");
     }
     //delete past trips for this vehicle
     return forceDeleteVehicle(id);
@@ -164,5 +164,6 @@ public class VehicleController extends BaseController<Vehicle> {
     if (vehicle.getFreeFrom().equals(Helpers.DUMMY_TIME)) {
       vehicle.setFreeFrom(LocalDateTime.now());
     }
+    data.editObject(vehicle);
   }
 }
