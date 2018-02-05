@@ -11,6 +11,11 @@ input[type=number] {
   border: 2px solid #007bff;
   border-radius: 5px;
   background-position: 10px 10px;
-  margin-bottom: .5rem !important;
   text-align: right;
+}
+
+.text-field {
+  padding: .375rem !important;
+  width: 100%;
+  max-width: 200px;
 }
