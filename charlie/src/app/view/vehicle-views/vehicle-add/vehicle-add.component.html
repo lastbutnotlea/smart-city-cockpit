@@ -8,20 +8,16 @@
     </button>
   </div>
 
-  <div class="modal-body">
+  <div class="modal-body d-flex flex-column">
 
-    <div>
-      <div class="d-flex flex-nowrap m-2 no-flex-shrink">
-        <label>Type</label>
-      </div>
+    <div class="d-flex justify-content-between align-items-center m-3">
+      <label class="m-0">Type</label>
       <app-dropdown [values]="toDropdown(vehicleTypes)" [(selected)]="selected"></app-dropdown>
     </div>
 
-    <div>
-      <div class="d-flex flex-nowrap m-2 no-flex-shrink">
-        <label>Capacity</label>
-      </div>
-      <input class="float-right" type="number" min="{{minCapacity}}" max="{{maxCapacity}}" step="1" [(ngModel)]="capacity" (keypress)="validate($event)">
+    <div class="d-flex justify-content-between align-items-center m-3">
+      <label class="m-0">Capacity</label>
+      <input class="float-right text-field" type="number" min="{{minCapacity}}" max="{{maxCapacity}}" step="1" [(ngModel)]="capacity" (keypress)="validate($event)">
     </div>
 
   </div>
