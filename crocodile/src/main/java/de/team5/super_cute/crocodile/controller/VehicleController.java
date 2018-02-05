@@ -157,5 +157,6 @@ public class VehicleController extends BaseController<Vehicle> {
     if (vehicle.getFreeFrom().equals(Helpers.DUMMY_TIME)) {
       vehicle.setFreeFrom(LocalDateTime.now());
     }
+    data.editObject(vehicle);
   }
 }
