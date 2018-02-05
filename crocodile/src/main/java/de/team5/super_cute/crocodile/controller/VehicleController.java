@@ -88,7 +88,7 @@ public class VehicleController extends BaseController<Vehicle> {
     logger.info("Got Request to delete the vehicle with id " + id);
     if (tripData.hasPresentOrFutureTrips(id)) {
       //there are planned or active trips for that vehicle
-      return "Vehicle is in use!";
+      return Helpers.makeIdToJSON("Vehicle is in use!");
     }
     //delete past trips for this vehicle
     return forceDeleteVehicle(id);
@@ -127,13 +127,18 @@ public class VehicleController extends BaseController<Vehicle> {
   public List<Vehicle> getVehiclesFreeFrom(@PathVariable String type, @PathVariable String timeString, @RequestParam(defaultValue = "")
       String ignoreTripId) {
     logger.info("Got Request to return all Vehicles of Type " + type + " free from " + timeString);
+    LocalDateTime time = LocalDateTime.parse(timeString);
+    EVehicleType vehicleType = EVehicleType.valueOf(type);
     List<Vehicle> vehicles = data.getData().stream()
-        .filter(v -> v.getType().equals(EVehicleType.valueOf(type)))
+        .filter(v -> v.getType().equals(vehicleType))
         .peek(tripData::setFreeFrom)
-        .filter(v -> !LocalDateTime.parse(timeString).isBefore(v.getFreeFrom()))
+        .filter(v -> !time.isBefore(v.getFreeFrom()))
         .collect(Collectors.toList());
     if (!ignoreTripId.equals("")) {
-      vehicles.add(tripData.getObjectForId(ignoreTripId).getVehicle());
+      Trip tripToIgnore = tripData.getObjectForId(ignoreTripId);
+      if (tripToIgnore != null) {
+        vehicles.add(tripToIgnore.getVehicle());
+      }
     }
     return vehicles;
   }

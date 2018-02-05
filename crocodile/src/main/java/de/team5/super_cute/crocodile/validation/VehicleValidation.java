@@ -27,8 +27,8 @@ public class VehicleValidation {
       return true;
     }
     //if there is a trip with start or end between this trips start and end then return false
-    return !trips.stream()
-        .anyMatch(t -> ((((t.getStops().values().stream()
+    return trips.stream()
+        .noneMatch(t -> ((((t.getStops().values().stream()
             .max(LocalDateTime::compareTo).orElse(null)
             .isAfter(trip.getStops().values().stream()
                 .min(LocalDateTime::compareTo).orElse(null))) &&
