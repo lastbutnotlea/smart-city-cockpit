@@ -7,7 +7,6 @@ import de.team5.super_cute.crocodile.data.TripData;
 import de.team5.super_cute.crocodile.data.VehicleData;
 import de.team5.super_cute.crocodile.model.Trip;
 import de.team5.super_cute.crocodile.util.Helpers;
-import de.team5.super_cute.crocodile.validation.VehicleValidation;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -32,15 +31,12 @@ public class TripController extends BaseController<Trip> {
   private static final Logger logger = LoggerFactory.getLogger(TripController.class);
 
   private LineData lineData;
-  private VehicleValidation vehicleValidation;
   private VehicleData vehicleData;
 
   @Autowired
-  public TripController(BaseData<Trip> tripData, LineData lineData,
-      VehicleValidation vehicleValidation, VehicleData vehicleData) {
+  public TripController(BaseData<Trip> tripData, LineData lineData, VehicleData vehicleData) {
     data = tripData;
     this.lineData = lineData;
-    this.vehicleValidation = vehicleValidation;
     this.vehicleData = vehicleData;
   }
 
@@ -87,11 +83,6 @@ public class TripController extends BaseController<Trip> {
   @PostMapping
   public ResponseEntity<String> addTrip(@RequestBody Trip tripInput) {
     logger.info("Got Request to add trip " + tripInput);
-    if (tripInput.getVehicle() != null) {
-      if (!vehicleValidation.checkVehicleAvailability(tripInput)) {
-        return ResponseEntity.badRequest().body("Vehicle not available!");
-      }
-    }
     handleTripFromFrontend(tripInput);
     return ResponseEntity.ok(Helpers.makeIdToJSON(addObject(tripInput)));
   }
