@@ -13,69 +13,81 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 @Entity
 @Table(name = "announcement")
 public class Announcement extends IdentifiableObject {
 
-    @Column
-    private String text;
+  @Column
+  private String text;
 
-    @Column
-    @Convert(converter = LocalDateTimeAttributeConverter.class)
-    @JsonSerialize(using = DateSerializer.class)
-    @JsonDeserialize(using = DateDeserializer.class)
-    private LocalDateTime validFrom;
+  @Column
+  @Convert(converter = LocalDateTimeAttributeConverter.class)
+  @JsonSerialize(using = DateSerializer.class)
+  @JsonDeserialize(using = DateDeserializer.class)
+  private LocalDateTime validFrom;
 
-    @Column
-    @Convert(converter = LocalDateTimeAttributeConverter.class)
-    @JsonSerialize(using = DateSerializer.class)
-    @JsonDeserialize(using = DateDeserializer.class)
-    private LocalDateTime validTo;
+  @Column
+  @Convert(converter = LocalDateTimeAttributeConverter.class)
+  @JsonSerialize(using = DateSerializer.class)
+  @JsonDeserialize(using = DateDeserializer.class)
+  private LocalDateTime validTo;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<Stop> stops;
+  @ManyToMany(fetch = FetchType.EAGER)
+  private List<Stop> stops;
 
-    public Announcement() {
-        super();
-    }
+  public Announcement() {
+    super();
+  }
 
-    public Announcement(String text, LocalDateTime validFrom, LocalDateTime validTo, List<Stop> stops) {
-        this.text = text;
-        this.validFrom = validFrom;
-        this.validTo = validTo;
-        this.stops = stops;
-    }
+  public Announcement(String text, LocalDateTime validFrom, LocalDateTime validTo,
+      List<Stop> stops) {
+    this.text = text;
+    this.validFrom = validFrom;
+    this.validTo = validTo;
+    this.stops = stops;
+  }
 
-    public String getText() {
-        return text;
-    }
+  public String getText() {
+    return text;
+  }
 
-    public void setText(String text) {
-        this.text = text;
-    }
+  public void setText(String text) {
+    this.text = text;
+  }
 
-    public LocalDateTime getValidFrom() {
-        return validFrom;
-    }
+  public LocalDateTime getValidFrom() {
+    return validFrom;
+  }
 
-    public void setValidFrom(LocalDateTime validFrom) {
-        this.validFrom = validFrom;
-    }
+  public void setValidFrom(LocalDateTime validFrom) {
+    this.validFrom = validFrom;
+  }
 
-    public LocalDateTime getValidTo() {
-        return validTo;
-    }
+  public LocalDateTime getValidTo() {
+    return validTo;
+  }
 
-    public void setValidTo(LocalDateTime validTo) {
-        this.validTo = validTo;
-    }
+  public void setValidTo(LocalDateTime validTo) {
+    this.validTo = validTo;
+  }
 
-    public List<Stop> getStops() {
-        return stops;
-    }
+  public List<Stop> getStops() {
+    return stops;
+  }
 
-    public void setStops(List<Stop> stops) {
-        this.stops = stops;
-    }
+  public void setStops(List<Stop> stops) {
+    this.stops = stops;
+  }
+
+  @Override
+  public String toString() {
+    return new ToStringBuilder(this)
+        .append("text", text)
+        .append("validFrom", validFrom)
+        .append("validTo", validTo)
+        .append("stops", stops)
+        .toString();
+  }
 }

@@ -23,7 +23,10 @@ public class FeedbackData extends BaseData<Feedback> {
 
   @Override
   public List<Feedback> getData() {
-    return super.getData().stream().peek(f -> getHibernateTemplate().evict(f)).peek(this::setProcessed).collect(Collectors.toList());
+    return super.getData().stream()
+        .peek(f -> getHibernateTemplate().evict(f))
+        .peek(this::setProcessed)
+        .collect(Collectors.toList());
   }
 
   public String processFeedback(String feedbackId, boolean processed) {

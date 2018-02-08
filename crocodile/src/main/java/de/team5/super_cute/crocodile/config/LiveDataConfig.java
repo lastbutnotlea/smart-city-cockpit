@@ -36,6 +36,7 @@ public class LiveDataConfig {
   }
 
   public static final int MAX_FEEDBACK_COUNT = 100;
+  public static final int MAX_DEFECT_COUNT = 3;
 
   public static final String STOP_DIRTY = "dirty";
   public static final String STOP_SHELTER_BROKEN = "shelter broken";
@@ -63,7 +64,7 @@ public class LiveDataConfig {
   public static final int TEMPERATURE_LOWER_LIMIT_PROBLEMATIC = 24;
   public static final int TEMPERATURE_UPPER_LIMIT_PROBLEMATIC = 31;
   public static final int TEMPERATURE_LOWER_LIMIT_CRITICAL = 14;
-  public static final int TEMPERATURE_UPPER_LIMIT_CRITICAl = 36;
+  public static final int TEMPERATURE_UPPER_LIMIT_CRITICAL = 36;
 
   public static final String PEOPLE_WAITING = "peopleWaiting";
   public static final int PEOPLE_WAITING_INITIAL = 10;

@@ -139,15 +139,15 @@ public class TripData extends BaseData<Trip> {
     // Filter out Stops with dummy value + find stop in the trip with a specified time
     String firstStopIdOfTrip = tripInput.getStops().entrySet().stream()
         .filter(e -> e.getValue() != null)
-        //.filter(e -> !e.getValue().equals(Helpers.DUMMY_TIME))
         .map(Entry::getKey).findAny()
         .orElseThrow(() -> new IllegalArgumentException(
-            "No Stop in trip that has something else than a dummy time"));
+            "No Stop in trip that has something else than null"));
     LocalDateTime departureAtFirstStopOfTrip = tripInput.getStops().get(firstStopIdOfTrip);
 
     // Find offset from first stop to line start
     Map<String, Integer> travelTime =
-        tripInput.getIsInbound() ? tripInput.getLine().getTravelTimeInbound()
+        tripInput.getIsInbound() ?
+            tripInput.getLine().getTravelTimeInbound()
             : tripInput.getLine().getTravelTimeOutbound();
 
     int tripToLineOffset = travelTime.get(firstStopIdOfTrip);

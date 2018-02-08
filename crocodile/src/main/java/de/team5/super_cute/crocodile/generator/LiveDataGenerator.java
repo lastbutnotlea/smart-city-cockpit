@@ -12,6 +12,7 @@ import static de.team5.super_cute.crocodile.config.LiveDataConfig.LOAD;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.LOAD_CHANGE_AMPLITUDE;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.LOAD_MAX_FACTOR;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.LOAD_MIN;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.MAX_DEFECT_COUNT;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.MAX_FEEDBACK_COUNT;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.PEOPLE_WAITING;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.PEOPLE_WAITING_CHANGE_AMPLITUDE;
@@ -39,14 +40,12 @@ import static org.apache.commons.lang3.math.NumberUtils.min;
 
 import de.team5.super_cute.crocodile.data.FeedbackData;
 import de.team5.super_cute.crocodile.data.StopData;
-import de.team5.super_cute.crocodile.data.TripData;
 import de.team5.super_cute.crocodile.data.VehicleData;
 import de.team5.super_cute.crocodile.model.EState;
 import de.team5.super_cute.crocodile.model.Feedback;
 import de.team5.super_cute.crocodile.model.ServiceOrFeedbackTargetObject;
 import de.team5.super_cute.crocodile.model.Stop;
 import de.team5.super_cute.crocodile.model.Vehicle;
-import de.team5.super_cute.crocodile.service.VehiclePositionService;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Random;
@@ -64,13 +63,12 @@ public class LiveDataGenerator {
   private VehicleData vehicleData;
   @Autowired
   private FeedbackData feedbackData;
-  @Autowired
-  private TripData tripData;
-  @Autowired
-  private VehiclePositionService vehiclePositionService;
 
   private int currentFeedbackCount;
 
+  /**
+   * Generate Live Data for the whole System, including new Values for vehicle + stop fields, new Defects and matching Feedback
+   */
   @Scheduled(fixedDelay = LIVEDATA_FREQUENCY)
   public void generateLiveData() {
     LoggerFactory.getLogger(getClass())
@@ -89,7 +87,6 @@ public class LiveDataGenerator {
   }
 
   private void generateLiveDataForStop(Stop stop) {
-    Random r = new Random(System.currentTimeMillis());
     // increase or decrease people waiting by 0-5%
     stop.setPeopleWaiting(
         getNewValue(stop.getPeopleWaiting(), PEOPLE_WAITING_CHANGE_AMPLITUDE, PEOPLE_WAITING_MIN,
@@ -104,7 +101,6 @@ public class LiveDataGenerator {
   }
 
   private void generateLiveDataForVehicle(Vehicle vehicle) {
-    Random r = new Random(System.currentTimeMillis());
     vehicle.setLoad(getNewValue(vehicle.getLoad(), LOAD_CHANGE_AMPLITUDE, LOAD_MIN,
         vehicle.getCapacity() * LOAD_MAX_FACTOR));
     generateValueFeedback(vehicle, LOAD);
@@ -129,41 +125,67 @@ public class LiveDataGenerator {
   }
 
   private String generateDefect(ServiceOrFeedbackTargetObject feedbackable, boolean forStop) {
+    if (maxDefectCountReached(feedbackable, forStop)) {
+      return null;
+    }
+    if (forStop) {
+      return generateStopDefect(feedbackable);
+    } else {
+      return generateVehicleDefect(feedbackable);
+    }
+  }
+
+  private String generateStopDefect(ServiceOrFeedbackTargetObject feedbackable) {
     Random r = new Random(System.currentTimeMillis());
     String defect = null;
-    // check whether there are already a lot of defects (we don't need more)
-    if (forStop) {
-      if (((Stop) feedbackable).getDefects().size() >= 3) {
-        return null;
-      }
-    } else {
-      if (((Vehicle) feedbackable).getDefects().size() >= 3) {
-        return null;
-      }
-    }
-    if (r.nextInt(100) + 1 <= (forStop ? CREATE_STOP_DEFECT_PERCENTAGE
-        : CREATE_VEHICLE_DEFECT_PERCENTAGE)) {
-      defect = (forStop ? STOP_DEFECTS.get(r.nextInt(STOP_DEFECTS.size()))
-          : VEHICLE_DEFECTS.get(r.nextInt(VEHICLE_DEFECTS.size())));
+    if (r.nextInt(100) + 1 <= (CREATE_STOP_DEFECT_PERCENTAGE)) {
+      defect = (STOP_DEFECTS.get(r.nextInt(STOP_DEFECTS.size())));
 
       if (currentFeedbackCount > MAX_FEEDBACK_COUNT) {
         return defect;
       }
+
       if (r.nextInt(100) + 1 <= DEFECT_FEEDBACK_PERCENTAGE) {
         feedbackData.addObject(new Feedback((
-            forStop ?
-                STOP_DEFECT_FEEDBACK.get(defect)
-                    .get(r.nextInt(STOP_DEFECT_FEEDBACK.get(defect).size())) :
-                VEHICLE_DEFECT_FEEDBACK.get(defect)
-                    .get(r.nextInt(VEHICLE_DEFECT_FEEDBACK.get(defect).size()))),
-            LocalDateTime.now(), feedbackable,
-            forStop ? STOP_FEEDBACK : VEHICLE_FEEDBACK,
-            forStop ? getState(STOP_DEFECTS_SEVERITY.get(defect))
-                : getState(VEHICLE_DEFECTS_SEVERITY.get(defect)), false));
+            STOP_DEFECT_FEEDBACK.get(defect)
+                .get(r.nextInt(STOP_DEFECT_FEEDBACK.get(defect).size()))),
+            LocalDateTime.now(), feedbackable, STOP_FEEDBACK,
+            getState(STOP_DEFECTS_SEVERITY.get(defect)), false));
         currentFeedbackCount++;
       }
     }
     return defect;
+  }
+
+  private String generateVehicleDefect(ServiceOrFeedbackTargetObject feedbackable) {
+    Random r = new Random(System.currentTimeMillis());
+    String defect = null;
+    if (r.nextInt(100) + 1 <= (CREATE_VEHICLE_DEFECT_PERCENTAGE)) {
+      defect = (VEHICLE_DEFECTS.get(r.nextInt(VEHICLE_DEFECTS.size())));
+
+      if (currentFeedbackCount > MAX_FEEDBACK_COUNT) {
+        return defect;
+      }
+
+      if (r.nextInt(100) + 1 <= DEFECT_FEEDBACK_PERCENTAGE) {
+        feedbackData.addObject(new Feedback((
+            VEHICLE_DEFECT_FEEDBACK.get(defect)
+                .get(r.nextInt(VEHICLE_DEFECT_FEEDBACK.get(defect).size()))),
+            LocalDateTime.now(), feedbackable, STOP_FEEDBACK,
+            getState(VEHICLE_DEFECTS_SEVERITY.get(defect)), false));
+        currentFeedbackCount++;
+      }
+    }
+    return defect;
+  }
+
+  private boolean maxDefectCountReached(ServiceOrFeedbackTargetObject feedbackable,
+      boolean forStop) {
+    if (forStop) {
+      return ((Stop) feedbackable).getDefects().size() >= MAX_DEFECT_COUNT;
+    } else {
+      return ((Vehicle) feedbackable).getDefects().size() >= MAX_DEFECT_COUNT;
+    }
   }
 
   private void removeDefect(ServiceOrFeedbackTargetObject feedbackable, boolean forStop) {
@@ -210,11 +232,13 @@ public class LiveDataGenerator {
     }
   }
 
-  private Feedback getValueFeedbackForField(ServiceOrFeedbackTargetObject objective, String fieldname, EState rating,
+  private Feedback getValueFeedbackForField(ServiceOrFeedbackTargetObject objective,
+      String fieldname, EState rating,
       Random random) {
     String message = VALUE_FEEDBACK.get(fieldname).get(rating.ordinal())
         .get(random.nextInt(VALUE_FEEDBACK.get(fieldname).get(rating.ordinal()).size()));
-    return new Feedback(message, LocalDateTime.now(), objective, fieldname.equals(PEOPLE_WAITING) ? STOP_FEEDBACK : VEHICLE_FEEDBACK, rating, false);
+    return new Feedback(message, LocalDateTime.now(), objective,
+        fieldname.equals(PEOPLE_WAITING) ? STOP_FEEDBACK : VEHICLE_FEEDBACK, rating, false);
   }
 }
 
