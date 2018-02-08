@@ -66,7 +66,8 @@ export class ServiceRequestDetailComponent implements OnInit {
     const modal = this.modalService.open(ConfirmDeletionComponent);
     modal.componentInstance.objectToDelete = 'service request ' + this.serviceRequest.id;
     modal.componentInstance.deletionEvent.subscribe(($event) => {
-      this.deleteServiceRequest(modal);});
+      this.deleteServiceRequest(modal);
+    });
   }
 
   deleteServiceRequest(modal: NgbModalRef) : void {

@@ -5,7 +5,7 @@
       <label class="text-primary">{{objectToDelete}}</label>
       ?
     </h4>
-    <button type="button" class="close" aria-label="Close" (click)="dismiss()">
+    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -13,7 +13,7 @@
 
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="close()">Cancel</button>
+    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cancel</button>
     <button type="button" class="btn btn-outline-primary" (click)="confirm()" [disabled]="deleteDisabled">
       Delete
     </button>

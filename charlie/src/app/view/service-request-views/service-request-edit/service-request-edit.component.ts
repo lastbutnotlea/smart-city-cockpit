@@ -311,7 +311,6 @@ export class ServiceRequestEditComponent implements OnInit {
     } else {
       this.selectedFeedback.push(feedback);
     }
-    console.log(JSON.stringify(this.selectedFeedback));
   }
 
   stepBack() {

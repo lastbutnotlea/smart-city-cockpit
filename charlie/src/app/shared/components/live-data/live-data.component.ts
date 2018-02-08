@@ -1,7 +1,8 @@
 import { Observable } from 'rxjs/Rx';
 import { AnonymousSubscription } from 'rxjs/Subscription';
+import {OnDestroy} from '@angular/core';
 
-export abstract class LiveDataComponent {
+export abstract class LiveDataComponent implements OnDestroy {
 
   protected timerSubscription: AnonymousSubscription;
   protected interval: number = 2000;

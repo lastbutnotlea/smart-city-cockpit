@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, Output} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -7,28 +7,20 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./confirm-deletion.component.css']
 })
 
-export class ConfirmDeletionComponent implements OnInit {
+export class ConfirmDeletionComponent implements OnDestroy {
   @Input() objectToDelete: String;
   @Output() deletionEvent = new EventEmitter<boolean>();
+  @Output() closeEvent = new EventEmitter<boolean>();
   deleteDisabled: boolean = false;
 
   constructor(public activeModal: NgbActiveModal) { }
 
-  ngOnInit(): void {
+  ngOnDestroy(): void {
+    this.closeEvent.emit(false);
   }
 
   confirm(): void {
     this.deleteDisabled = true;
     this.deletionEvent.emit(true);
-  }
-
-  dismiss(): void {
-    this.activeModal.dismiss('Cross click');
-    this.deletionEvent.emit(false);
-  }
-
-  close(): void {
-    this.activeModal.close('Close click');
-    this.deletionEvent.emit(false);
   }
 }

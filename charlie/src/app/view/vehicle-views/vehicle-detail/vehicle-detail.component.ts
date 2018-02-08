@@ -88,6 +88,7 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
         if (data.id === "Vehicle is in use!") {
           this.toastService.showErrorToast('Failed to delete ' + this.vehicle.id + ' because it has future trips.');
           modal.close('Close click');
+          this.subscribeToData();
         } else {
           this.toastService.showSuccessToast('Deleted ' + this.vehicle.id);
           modal.close('Close click');
@@ -97,16 +98,21 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
       err => {
         this.toastService.showErrorToast('Failed to delete ' + this.vehicle.id);
         modal.componentInstance.deleteDisabled = false;
+        this.subscribeToData();
       }
     );
   }
 
   showConfirmModal(): void {
+    super.unsubscribe();
     const modal = this.modalService.open(ConfirmDeletionComponent);
-    modal.componentInstance.objectToDelete = this.vehicle.id;
     modal.componentInstance.deletionEvent.subscribe(($event) => {
       this.delete(modal);
     });
+    modal.componentInstance.closeEvent.subscribe(() => {
+      // delete was not confirmed, request live-data again
+      super.subscribeToData();
+    })
   }
 
   // update trip data
