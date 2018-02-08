@@ -158,7 +158,7 @@ export class TripEditComponent implements OnInit {
   isNextEnabled(save: boolean = false): boolean {
     if (save && this.state < 2) return false;
     if ((save && this.state == 2) || this.state == 3) {
-      if (!this.getStops().some(stop => this.selectedStops.get(stop))) {
+      if (this.getStops().filter(stop => this.selectedStops.get(stop)).length < 2) {
         return false;
       }
     }
