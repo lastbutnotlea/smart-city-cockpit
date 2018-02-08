@@ -21,4 +21,14 @@ export class ConfirmDeletionComponent implements OnInit {
     this.deleteDisabled = true;
     this.deletionEvent.emit(true);
   }
+
+  dismiss(): void {
+    this.activeModal.dismiss('Cross click');
+    this.deletionEvent.emit(false);
+  }
+
+  close(): void {
+    this.activeModal.close('Close click');
+    this.deletionEvent.emit(false);
+  }
 }

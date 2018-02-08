@@ -59,25 +59,35 @@ export class TripDetailComponent extends LiveDataComponent implements OnInit {
   }
 
   showConfirmModal(): void {
+    super.unsubscribe();
     const modal = this.modalService.open(ConfirmDeletionComponent);
     modal.componentInstance.objectToDelete = this.trip.id;
     modal.componentInstance.deletionEvent.subscribe(($event) => {
-      this.deleteTrip(modal);
+      if($event) {
+        debugger;
+        this.deleteTrip(modal);
+      } else {
+        // delete was not confirmed, request live-data again
+        super.subscribeToData();
+      }
     });
   }
 
   deleteTrip(modal: NgbModalRef): void {
-    super.ngOnDestroy();
+    debugger;
+    super.unsubscribe();
     this.http.deleteTrip(this.trip.id).subscribe(
       () => {
+        debugger;
         this.toastService.showSuccessToast('Deleted ' + this.trip.id);
         modal.close('Close click');
         this.location.back();
       },
       err => {
+        debugger;
         this.toastService.showErrorToast('Failed to delete ' + this.trip.id);
         modal.componentInstance.deleteDisabled = false;
-        this.refreshData();
+        super.subscribeToData();
       });
   }
 
