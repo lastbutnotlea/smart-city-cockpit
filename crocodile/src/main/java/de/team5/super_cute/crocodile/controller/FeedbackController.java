@@ -1,12 +1,10 @@
 package de.team5.super_cute.crocodile.controller;
 
 import de.team5.super_cute.crocodile.config.AppConfiguration;
-import de.team5.super_cute.crocodile.data.BaseData;
 import de.team5.super_cute.crocodile.data.FeedbackData;
 import de.team5.super_cute.crocodile.model.EFeedbackType;
 import de.team5.super_cute.crocodile.model.Feedback;
 import de.team5.super_cute.crocodile.model.IdentifiableObject;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
@@ -24,12 +22,9 @@ public class FeedbackController extends BaseController<Feedback> {
 
   private static final Logger logger = LoggerFactory.getLogger(FeedbackController.class);
 
-  private ArrayList<String> processedFeedback;
-
   @Autowired
-  public FeedbackController(BaseData<Feedback> feedbackBaseData) {
+  public FeedbackController(FeedbackData feedbackBaseData) {
     data = feedbackBaseData;
-    processedFeedback = new ArrayList<>();
   }
 
   @GetMapping

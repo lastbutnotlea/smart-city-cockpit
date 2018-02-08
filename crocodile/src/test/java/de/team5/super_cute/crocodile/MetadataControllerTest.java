@@ -71,8 +71,8 @@ public class MetadataControllerTest {
 
     String filterJson = getJsonString("/filter");
     Assert.assertEquals(filterJson,
-        "{\"lines\":" + linesJson +
-            ",\"vehicleTypes\":" + vehicleTypesJson +
+        "{\"lineNames\":" + linesJson +
+            ",\"types\":" + vehicleTypesJson +
             ",\"states\":" + statesJson + "}");
   }
 

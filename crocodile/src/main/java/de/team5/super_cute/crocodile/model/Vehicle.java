@@ -12,7 +12,7 @@ import static de.team5.super_cute.crocodile.config.LiveDataConfig.LOAD_LIMIT_CRI
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.LOAD_LIMIT_PROBLEMATIC;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.TEMPERATURE_LOWER_LIMIT_CRITICAL;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.TEMPERATURE_LOWER_LIMIT_PROBLEMATIC;
-import static de.team5.super_cute.crocodile.config.LiveDataConfig.TEMPERATURE_UPPER_LIMIT_CRITICAl;
+import static de.team5.super_cute.crocodile.config.LiveDataConfig.TEMPERATURE_UPPER_LIMIT_CRITICAL;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.TEMPERATURE_UPPER_LIMIT_PROBLEMATIC;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.VEHICLE_DEFECTS_SEVERITY;
 import static de.team5.super_cute.crocodile.config.TickerConfig.SEVERITY_DIVISOR;
@@ -86,13 +86,13 @@ public class Vehicle extends IdentifiableObject implements Serializable, Stateab
   @Convert(converter = LocalDateTimeAttributeConverter.class)
   private LocalDateTime outdateCurrentTrip = LocalDateTime.now();
 
-  private Line currentLine;
-
   @Column
   @Convert(converter = LocalDateTimeAttributeConverter.class)
   @JsonSerialize(using = DateSerializer.class)
   @JsonDeserialize(using = DateDeserializer.class)
   private LocalDateTime freeFrom = Helpers.DUMMY_TIME;
+
+  private Line currentLine;
 
   public Vehicle() {
     super();
@@ -264,7 +264,7 @@ public class Vehicle extends IdentifiableObject implements Serializable, Stateab
       return LiveDataConfig.TEMPERATURE_SEVERITY[0];
     } else if ((getTemperature() <= TEMPERATURE_LOWER_LIMIT_PROBLEMATIC
         && getTemperature() > TEMPERATURE_LOWER_LIMIT_CRITICAL) || (
-        getTemperature() < TEMPERATURE_UPPER_LIMIT_CRITICAl
+        getTemperature() < TEMPERATURE_UPPER_LIMIT_CRITICAL
             && getTemperature() >= TEMPERATURE_UPPER_LIMIT_PROBLEMATIC)) {
       return LiveDataConfig.TEMPERATURE_SEVERITY[1];
     } else {
@@ -303,19 +303,19 @@ public class Vehicle extends IdentifiableObject implements Serializable, Stateab
 
   @Override
   public String getItemDescription() {
-    String description = this.getId() + ":<br />"
+    StringBuilder description = new StringBuilder(this.getId() + ":<br />"
         + "load(people): " + this.getLoad() + "/" + this.getCapacity() + "<br />"
         + "temperature(°C): " + this.getTemperature() + "<br />"
         + "delay(minutes): " + Math.round(this.getDelay() / 60) + "<br />"
-        + "defects: ";
+        + "defects: ");
     Iterator<String> defects = this.getDefects().iterator();
     for (int i = 0; i < this.getDefects().size(); i++) {
       if (i != 0) {
-        description += ", ";
+        description.append(", ");
       }
-      description += defects.next();
+      description.append(defects.next());
     }
-    return description;
+    return description.toString();
   }
 
   public void setItemDescription(String s) {

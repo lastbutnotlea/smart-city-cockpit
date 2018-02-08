@@ -38,7 +38,7 @@ public class Event extends C4CEntity implements TickerItemable {
 
   @C4CProperty(name = "TypeCode", maxLength = 15)
   @JsonIgnore
-  private String type = "12"; // keine Ahnung wieso 12, das ist bei den bisherigen so TODO soll das Frontend die sehen/einstellen können? (z.B. Veranstaltung, Fußball, Oper)
+  private String type = "12"; // keine Ahnung wieso 12, das ist bei den bisherigen so
 
   @C4CProperty(name = "PriorityCode", maxLength = 1)
   private EState priority = EState.FINE;
@@ -165,7 +165,7 @@ public class Event extends C4CEntity implements TickerItemable {
   }
 
   public void setLocationName(String locationName) {
-    locationName = locationName;
+    this.locationName = locationName;
   }
 
   public List<AppointmentInvolvedParties> getAppointmentInvolvedParties() {
@@ -206,9 +206,6 @@ public class Event extends C4CEntity implements TickerItemable {
         .append(getStatus(), event.getStatus())
         .append(getStartTime(), event.getStartTime())
         .append(getEndTime(), event.getEndTime())
-        //.append(getLocationName(), event.getLocationName())
-        // kriegen wir lokal nicht alle hin, ignorieren wir damit die Tests laufen :)
-        //.append(getAppointmentInvolvedParties(), event.getAppointmentInvolvedParties())
         .append(getAppointmentNotes(), event.getAppointmentNotes())
         .isEquals();
   }
@@ -224,8 +221,6 @@ public class Event extends C4CEntity implements TickerItemable {
         .append(getStatus())
         .append(getStartTime())
         .append(getEndTime())
-        //.append(getLocationName())
-        //.append(getAppointmentInvolvedParties())
         .append(getAppointmentNotes())
         .toHashCode();
   }

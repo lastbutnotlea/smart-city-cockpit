@@ -96,6 +96,7 @@ public class EventController {
 
   @GetMapping("/people")
   public List<String> getPeople() {
+    logger.info("Got Request to return all possible Appointment Involved Parties");
     return new ArrayList<>(C4CConfig.PARTY_NAME_TO_ID.keySet());
   }
 

@@ -1,8 +1,16 @@
 package de.team5.super_cute.crocodile.config;
 
-import de.team5.super_cute.crocodile.model.*;
-
+import de.team5.super_cute.crocodile.model.Announcement;
+import de.team5.super_cute.crocodile.model.Feedback;
+import de.team5.super_cute.crocodile.model.IdentifiableObject;
+import de.team5.super_cute.crocodile.model.Line;
+import de.team5.super_cute.crocodile.model.SkipStop;
+import de.team5.super_cute.crocodile.model.Stop;
+import de.team5.super_cute.crocodile.model.TickerItem;
+import de.team5.super_cute.crocodile.model.Trip;
+import de.team5.super_cute.crocodile.model.Vehicle;
 import de.team5.super_cute.crocodile.model.c4c.FeedbackGroup;
+import de.team5.super_cute.crocodile.util.Helpers;
 import java.net.URI;
 import java.net.URISyntaxException;
 import javax.sql.DataSource;
@@ -10,6 +18,8 @@ import javax.transaction.Transactional;
 import org.apache.commons.dbcp.BasicDataSource;
 import org.hibernate.FlushMode;
 import org.hibernate.SessionFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.orm.hibernate5.HibernateTemplate;
@@ -20,6 +30,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @Configuration
 @EnableTransactionManagement
 public class DatabaseConfig {
+
+  private static final Logger logger = LoggerFactory.getLogger(DatabaseConfig.class);
 
   @Bean
   @Transactional
@@ -50,7 +62,7 @@ public class DatabaseConfig {
     try {
       dbUri = new URI(System.getenv("DATABASE_URL"));
     } catch (URISyntaxException e) {
-      e.printStackTrace();
+      Helpers.logException(logger, e);
     } catch (NullPointerException e) {
       dataSource.setUrl("jdbc:postgresql://localhost/postgres");
       dataSource.setUsername("team5");

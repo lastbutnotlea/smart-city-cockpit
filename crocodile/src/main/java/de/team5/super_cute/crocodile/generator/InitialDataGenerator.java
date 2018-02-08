@@ -200,7 +200,7 @@ public class InitialDataGenerator {
     return pointer;
   }
 
-  private class MyLocalDateTime {
+  private static class MyLocalDateTime {
 
     private LocalDateTime localDateTime;
 

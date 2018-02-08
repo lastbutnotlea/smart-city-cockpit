@@ -1,6 +1,6 @@
 package de.team5.super_cute.crocodile.external;
 
-import static de.team5.super_cute.crocodile.config.ColorMapping.lineColors;
+import static de.team5.super_cute.crocodile.config.ColorMapping.LINE_COLORS;
 import static de.team5.super_cute.crocodile.config.InitialSetupConfig.PEOPLE_WAITING_INITIAL_MAX;
 import static de.team5.super_cute.crocodile.config.InitialSetupConfig.PEOPLE_WAITING_INITIAL_MIN;
 import static de.team5.super_cute.crocodile.config.TfLApiConfig.app_id;
@@ -43,7 +43,7 @@ public class TpDataConnector {
         EVehicleType type = id.matches("\\d+") ? EVehicleType.BUS : EVehicleType.SUBWAY;
         return new Line(node.get("lineName").asText(), stopsInbound,
             stopsOutbound, travelTimeInbound, travelTimeOutbound,
-            lineColors.get(node.get("lineName").asText()), type);
+            LINE_COLORS.get(node.get("lineName").asText()), type);
       } catch (RestClientException e) {
         LoggerFactory.getLogger(getClass())
             .error("Error while accessing Transport-API while creating lines: " + e.getMessage());

@@ -30,7 +30,6 @@ public class MapController {
   private LineData lineData;
   private StopData stopData;
   private VehicleData vehicleData;
-  private boolean gotDataFromTpConnector = false;
   private ObjectMapper mapper;
 
   @Autowired
@@ -99,6 +98,7 @@ public class MapController {
 
   @GetMapping("/state")
   public EState getMapState() {
+    logger.info("Got Request to return overall Network state");
     Double vehicleSeverity = vehicleData.getData().stream().mapToInt(Vehicle::getSeverity).average().getAsDouble();
     Double stopSeverity = stopData.getData().stream().mapToInt(Stop::getSeverity).average().getAsDouble();
     return StateCalculator.getState((int) ((vehicleSeverity + stopSeverity) / 2));

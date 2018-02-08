@@ -1,7 +1,6 @@
 package de.team5.super_cute.crocodile.util;
 
 import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import java.io.IOException;
@@ -20,7 +19,7 @@ public class DateSerializer extends StdSerializer<LocalDateTime> {
   @Override
   public void serialize(
       LocalDateTime value, JsonGenerator jgen, SerializerProvider provider)
-      throws IOException, JsonProcessingException {
+      throws IOException {
 
     jgen.writeString(value.toString());
   }
