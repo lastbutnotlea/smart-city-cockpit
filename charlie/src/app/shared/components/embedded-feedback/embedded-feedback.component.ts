@@ -20,17 +20,25 @@ export class EmbeddedFeedbackComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.feedback.forEach((feedback, i) => {
-    if (feedback.rating === 'FINE') this.ratingnumber[i] = 3;
-    else if (feedback.rating === 'PROBLEMATIC') this.ratingnumber[i] = 2;
-    else this.ratingnumber[i] = 1;
-    });
   }
 
   scrollFeedback(to: string) {
     let x = document.querySelector("#" + to);
     if (x) {
       x.scrollIntoView();
+    }
+  }
+
+  getRatingNumber(feedbackNr: number) : number{
+
+    if (this.feedback[feedbackNr].rating === 'FINE') {
+      return 3;
+    }
+    else if (this.feedback[feedbackNr].rating === 'PROBLEMATIC') {
+      return 2;
+    }
+    else {
+      return 1;
     }
   }
 }

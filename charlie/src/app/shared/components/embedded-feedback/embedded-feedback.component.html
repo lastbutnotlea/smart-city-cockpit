@@ -9,7 +9,7 @@
   <a href="feedback/?id={{data.id}}">
     {{data.message}}
   </a>
-  <ngb-rating [rate]="ratingnumber[i]" class="float-right text-primary">
+  <ngb-rating [rate]="getRatingNumber(i)" class="float-right text-primary">
     <ng-template let-fill="fill">
       <span class="star" [class.filled]="fill === 100">&#9733;</span>
     </ng-template>
