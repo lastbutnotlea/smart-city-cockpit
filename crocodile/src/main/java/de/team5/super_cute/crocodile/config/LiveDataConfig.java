@@ -159,7 +159,7 @@ public class LiveDataConfig {
       add("Elevator music not that good :/");
     }});
     put(STOP_ESCALATOR_NOT_WORKING, new ArrayList<String>() {{
-      add("Had to carry 10 beverage crates to the next station because the escalator was not working...");
+      add("Had to carry 10 beverage crates to the next station because the escalator was not working");
       add("The escalator escalated :D");
       add("Escalator was moving in the wrong direction!");
     }});
@@ -194,7 +194,7 @@ public class LiveDataConfig {
     put(VEHICLE_BRAKE_FAILURE, new ArrayList<String>() {{
       add("The vehicle full of people rushed into the final stop. I´m the only alive!");
       add("Vehicle is driving circles for 1 hour now!");
-      add("The operator just made an announcement that the brake aren´t working anymore. ARE WE GOING TO DIE NOW?");
+      add("The operator just made an announcement that the brakes aren´t working anymore.");
     }});
     put(VEHICLE_AIR_CONDITION_NOT_WORKING, new ArrayList<String>() {{
       add("The air is so stale :(");
@@ -245,7 +245,7 @@ public class LiveDataConfig {
       add(new ArrayList<String>() {{
         add("Had a nice drive!");
         add("Nice temperature, tho.");
-        add("I drove the public transport with my thermometer today. The most optimal temperature! :)");
+        add("I drove the public transport with my thermometer today. Nice temperature! :)");
       }});
       add(new ArrayList<String>() {{
         add("too hot -.-'");
