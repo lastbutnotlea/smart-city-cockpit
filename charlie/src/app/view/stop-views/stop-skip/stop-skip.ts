@@ -1,5 +1,5 @@
-import {Component, Input, OnInit, Output} from '@angular/core';
-import {NgbActiveModal, NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
+import {Component} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {StopData} from '../../../shared/data/stop-data';
 import {DateParserService} from '../../../services/date-parser.service';
 import {HttpRoutingService} from '../../../services/http-routing.service';
@@ -22,7 +22,7 @@ export class SkipStopComponent {
   from: Date = new Date();
   to: Date = new Date();
 
-  private callback: (param: StopData) => void;
+  private callback: (param: StopData) => void= () => {};
 
   constructor(public activeModal: NgbActiveModal,
               public dateParser: DateParserService,
@@ -41,6 +41,7 @@ export class SkipStopComponent {
         this.data.skipData.push(data);
         this.toastService.showSuccessToast('Skipped stop ' + this.data.commonName);
         this.activeModal.close('Close click');
+        this.callback(this.data);
       },
       err => {
         this.toastService.showErrorToast('Failed to skip stop ' + this.data.commonName);
@@ -52,5 +53,13 @@ export class SkipStopComponent {
 
   isSaveEnabled() {
     return this.text !== '' && !this.saveDisabled;
+  }
+
+  /**
+   * allows to do something on "confirm"
+   * @param {(param: StopData) => void} callback whatever you want to do
+   */
+  public onAdd(callback: (param: StopData) => void) {
+    this.callback = callback;
   }
 }
