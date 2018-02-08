@@ -13,8 +13,9 @@
       <label for="comment">Reason:</label>
       <textarea class="form-control" rows="5" id="comment" [(ngModel)]="text"></textarea>
     </div>
-    <app-timespan-picker class="m-2" [(from)]="from" [(to)]="to"
-                         [textFrom]="'Skip from '" [textTo]="'Skip until '"></app-timespan-picker>
+    <app-timespan-picker class="m-2" [from]="from" [to]="to" (fromChanged)="from = $event"
+                         (toChanged)="to = $event" [textFrom]="'Skip from '"
+                         [textTo]="'Skip until '"></app-timespan-picker>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline-secondary"
