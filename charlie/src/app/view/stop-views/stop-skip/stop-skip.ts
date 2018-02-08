@@ -1,7 +1,7 @@
 import {Component, Input, OnInit, Output} from '@angular/core';
 import {NgbActiveModal, NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 import {StopData} from '../../../shared/data/stop-data';
-import {DateParserService} from '../../../services/date-parser.service';
+import {DateUtil} from '../../../shared/util/date-util';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {SkipData} from '../../../shared/data/skip-data';
 import {ToastService} from '../../../services/toast.service';
@@ -25,7 +25,7 @@ export class SkipStopComponent {
   private callback: (param: StopData) => void;
 
   constructor(public activeModal: NgbActiveModal,
-              public dateParser: DateParserService,
+              public dateParser: DateUtil,
               public http: HttpRoutingService,
               private toastService: ToastService) {
   }
