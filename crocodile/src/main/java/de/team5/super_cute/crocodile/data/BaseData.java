@@ -11,7 +11,7 @@ import org.springframework.orm.hibernate5.HibernateTemplate;
 @Transactional
 public abstract class BaseData<T extends IdentifiableObject> {
 
-  private final HibernateTemplate hibernateTemplate;
+  protected final HibernateTemplate hibernateTemplate;
 
   public HibernateTemplate getHibernateTemplate() {
     return hibernateTemplate;
