@@ -12,7 +12,6 @@ import {NgbRatingConfig} from '@ng-bootstrap/ng-bootstrap';
 export class EmbeddedFeedbackComponent implements OnInit {
 
   @Input() feedback: FeedbackData[] = [];
-  ratingnumber: number[] = [];
 
   constructor(private ngbRatingConfig: NgbRatingConfig) {
     ngbRatingConfig.max = 3;
