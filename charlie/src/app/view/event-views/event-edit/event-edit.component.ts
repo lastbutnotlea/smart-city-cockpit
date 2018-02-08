@@ -94,7 +94,11 @@ export class EventEditComponent implements OnInit {
     this.data.priority = this.priority.value;
     this.data.startTime = DateUtil.cutTimezoneInformation(this.startTime);
     this.data.endTime = DateUtil.cutTimezoneInformation(this.endTime);
-    this.data.appointmentInvolvedParties = new Array(this.party.value);
+    debugger;
+    this.data.appointmentInvolvedParties = new Array(
+      new PartyData(this.appointmentInvolvedParties[0].id,
+        this.party.value,
+        this.appointmentInvolvedParties[0].objectId));
     this.data.appointmentNotes = this.appointmentNotes;
 
     this.http.editEvent(this.data).subscribe(
