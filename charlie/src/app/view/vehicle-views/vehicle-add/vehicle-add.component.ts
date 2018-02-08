@@ -15,8 +15,8 @@ import {ToastService} from '../../../services/toast.service';
 export class VehicleAddComponent implements OnInit {
 
   vehicleTypes: string[] = [];
-  selected: DropdownValue = new DropdownValue(null, "");
-  capacity: number;
+  selected: DropdownValue = loadingDropdown;
+  capacity: number = null;
   saveDisabled: boolean = false;
 
   minCapacity: number = 1;
@@ -76,7 +76,10 @@ export class VehicleAddComponent implements OnInit {
   }
 
   nextDisabled(){
-    return this.capacity === null || this.selected === selectDropdown || this.selected === loadingDropdown || this.saveDisabled;
+    return this.capacity === null
+      || this.selected === selectDropdown
+      || this.selected === loadingDropdown
+      || this.saveDisabled;
   }
 
   validate(event) {
