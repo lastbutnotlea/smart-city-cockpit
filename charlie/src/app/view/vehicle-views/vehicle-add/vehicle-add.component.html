@@ -3,7 +3,7 @@
     <h4 class="modal-title">
       Titel
     </h4>
-    <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <button type="button" class="close" aria-label="Close" (click)="onDismiss()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
@@ -23,7 +23,7 @@
   </div>
 
   <div class="modal-footer">
-    <button type="button" class="btn btn-outline-dark" (click)="activeModal.close('Close click')">Cancel</button>
+    <button type="button" class="btn btn-outline-dark" (click)="onClose()">Cancel</button>
     <button type="button" class="btn btn-outline-primary" (click)="confirm()" [disabled]="nextDisabled()">
       Save
     </button>

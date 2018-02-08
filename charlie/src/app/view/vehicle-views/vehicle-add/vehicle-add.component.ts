@@ -1,10 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {DropdownValue, loadingDropdown, selectDropdown} from '../../../shared/components/dropdown/dropdown.component';
 import {DateUtil} from "../../../shared/util/date-util";
 import {StringFormatterService} from '../../../services/string-formatter.service';
 import {ToastService} from '../../../services/toast.service';
+import {AnnouncementData} from '../../../shared/data/announcement-data';
+import {VehicleData} from '../../../shared/data/vehicle-data';
 
 @Component({
   selector: 'app-vehicle-add',
@@ -21,6 +23,9 @@ export class VehicleAddComponent implements OnInit {
 
   minCapacity: number = 1;
   maxCapacity: number = 999;
+  vehicle: VehicleData = new VehicleData();
+
+  @Output() addEvent = new EventEmitter<VehicleData>();
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
@@ -40,33 +45,23 @@ export class VehicleAddComponent implements OnInit {
   }
 
   confirm(): void {
-    if(this.capacity <= 0) {
-      this.toastService.showErrorToast('Enter positive capacity please');
-      return;
-    }
     this.saveDisabled = true;
-    this.http.addVehicle({
-      id: null,
-      capacity: this.capacity,
-      load: 0,
-      delay: 0,
-      temperature: null,
-      defects: [],
-      type: this.selected.value,
-      state: 'FINE',
-      identifiableType: "vehicle",
-      freeFrom: DateUtil.cutTimezoneInformation(new Date()),
-      isShutDown: false,
-      currentLine: null
-    }).subscribe(
+    this.vehicle.capacity = this.capacity;
+    this.vehicle.type = this.selected.value;
+    this.vehicle.state = "FINE";
+    this.vehicle.freeFrom = DateUtil.cutTimezoneInformation(new Date());
+
+    this.http.addVehicle(this.vehicle).subscribe(
       data => {
         this.toastService.showSuccessToast('Added ' + data.id);
         this.activeModal.close('Close click');
+        this.addEvent.emit(this.vehicle);
       },
       err => {
         this.saveDisabled = false;
         this.toastService.showErrorToast('Failed to add vehicle');
         console.log(JSON.stringify(err));
+        this.addEvent.emit(null);
       }
     );
   }
@@ -92,5 +87,15 @@ export class VehicleAddComponent implements OnInit {
     if(isNaN(parseInt(event.key)) || output < this.minCapacity || output > this.maxCapacity) {
       event.preventDefault();
     }
+  }
+
+  public onClose(): void {
+    this.activeModal.close('Close click');
+    this.addEvent.emit(null);
+  }
+
+  public onDismiss(): void {
+    this.activeModal.dismiss('Cross click');
+    this.addEvent.emit(null);
   }
 }
