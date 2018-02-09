@@ -5,6 +5,7 @@ import {HttpRoutingService} from '../../../services/http-routing.service';
 import {SkipData} from '../../../shared/data/skip-data';
 import {ToastService} from '../../../services/toast.service';
 import {DateUtil} from "../../../shared/util/date-util";
+import {AnnouncementData} from '../../../shared/data/announcement-data';
 
 @Component({
   selector: 'app-service-request-edit',
@@ -21,6 +22,8 @@ export class SkipStopComponent {
 
   from: Date = new Date();
   to: Date = new Date();
+
+  private callback: (param: StopData) => void = () => {};
 
   constructor(public activeModal: NgbActiveModal,
               public http: HttpRoutingService,
