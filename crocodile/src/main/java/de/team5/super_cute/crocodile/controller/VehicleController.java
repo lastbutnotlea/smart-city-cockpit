@@ -154,13 +154,16 @@ public class VehicleController extends BaseController<Vehicle> {
     if (vehicle == null) {
       return;
     }
+
     if (vehicle.getOutdateCurrentTrip().isBefore(LocalDateTime.now())) {
       Trip current = tripData.getCurrentTripOfVehicle(vehicle, LocalDateTime.now());
-      if (current != null) {
-        current.getLine().setState(lineData.calculateLineState(current.getLine()));
-      }
       vehicle.setCurrentTrip(current);
     }
+
+    if (vehicle.getCurrentTrip() != null) {
+      vehicle.getCurrentTrip().getLine().setState(lineData.calculateLineState(vehicle.getCurrentTrip().getLine()));
+    }
+
     if (vehicle.getFreeFrom().equals(Helpers.DUMMY_TIME)) {
       vehicle.setFreeFrom(LocalDateTime.now());
     }
