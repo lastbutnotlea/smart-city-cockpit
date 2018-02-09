@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {StopData} from '../../../shared/data/stop-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
@@ -13,7 +13,7 @@ import {DateUtil} from "../../../shared/util/date-util";
   templateUrl: './announcement-edit.component.html',
   styleUrls: ['./announcement-edit.component.css']
 })
-export class AnnouncementEditComponent implements OnInit {
+export class AnnouncementEditComponent implements OnInit, OnDestroy {
   state: number = 0;
   saveDisabled: boolean = false;
   title: string = "Create new announcement";
@@ -29,6 +29,7 @@ export class AnnouncementEditComponent implements OnInit {
 
   // this can hold the reference to an edit model, but is still updated only on "confirm"
   private data: AnnouncementData = new AnnouncementData();
+  @Output() closeEvent = new EventEmitter<boolean>();
 
   private callback: (param: AnnouncementData) => void = () => {
   };
@@ -53,6 +54,10 @@ export class AnnouncementEditComponent implements OnInit {
         this.toastService.showLastingErrorToast("Could not load stop data");
         console.log("An error occurred: " + JSON.stringify(err));
       });
+  }
+
+  ngOnDestroy() {
+    this.closeEvent.emit(true);
   }
 
   public setModel(data: AnnouncementData): void {

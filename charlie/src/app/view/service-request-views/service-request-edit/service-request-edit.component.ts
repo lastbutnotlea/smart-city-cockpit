@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import { NgbActiveModal, NgbDateStruct} from '@ng-bootstrap/ng-bootstrap';
 import {ServiceRequestData} from '../../../shared/data/service-request-data';
 import {ServiceRequestTarget} from '../../../shared/data/service-request-target';
@@ -19,7 +19,7 @@ import {StopData} from '../../../shared/data/stop-data';
   styleUrls: ['./service-request-edit.component.css']
 })
 
-export class ServiceRequestEditComponent implements OnInit {
+export class ServiceRequestEditComponent implements OnInit, OnDestroy {
   @Input() @Output()
   data: ServiceRequestData[];
   // stores data of the new service request
@@ -45,6 +45,7 @@ export class ServiceRequestEditComponent implements OnInit {
 
   availFeedback: FeedbackData[];
   selectedFeedback: FeedbackData[];
+  @Output() closeEvent = new EventEmitter<boolean>();
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
@@ -59,6 +60,10 @@ export class ServiceRequestEditComponent implements OnInit {
     } else {
       this.setInitialData();
     }
+  }
+
+  ngOnDestroy(): void {
+    this.closeEvent.emit(true);
   }
 
   setPreviousData(): void {

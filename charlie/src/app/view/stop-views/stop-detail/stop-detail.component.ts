@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {LiveDataComponent} from '../../../shared/components/live-data/live-data.component';
@@ -14,6 +14,8 @@ import {SkipStopComponent} from '../stop-skip/stop-skip';
 import {TripStopData} from '../../../shared/data/trip-stop-data';
 import {SkipData} from "../../../shared/data/skip-data";
 import {ToastService} from "../../../services/toast.service";
+import {MapComponent} from '../../network-views/map/map.component';
+import {EmbeddedAnnouncementsComponent} from '../../../shared/components/embedded-announcements/embedded-announcements.component';
 
 @Component({
   selector: 'app-stop-detail-view',
@@ -32,6 +34,9 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
   announcements: AnnouncementData[] = [];
   serviceRequests: ServiceRequestData[] = [];
 
+  // Used to check if a window has been opened or closed
+  openEvent = new EventEmitter<boolean>();
+
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
               private location: Location,
@@ -42,11 +47,29 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
 
   ngOnInit(): void {
     super.subscribeToData();
+    this.subscribeToEmbeddedChanges();
+  }
+
+  subscribeToEmbeddedChanges(): void {
+    this.openEvent.subscribe(($event) => {
+      debugger;
+      if($event){
+        super.unsubscribe();
+      } else {
+        super.subscribeToData();
+      }
+    });
   }
 
   skipStop(): void {
+    //stop requesting new live-data
+    super.unsubscribe();
     const modal = this.modalService.open(SkipStopComponent);
     modal.componentInstance.data = this.stop;
+    modal.componentInstance.closeEvent.subscribe(() => {
+      // start requesting live-data again
+      super.subscribeToData();
+    })
   }
 
   unSkipStop(skipData: SkipData): void {
