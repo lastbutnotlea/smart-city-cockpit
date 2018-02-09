@@ -26,7 +26,7 @@
       {{skipData.to | date:'MM/dd/yyyy HH:mm'}}
       <label class="text-secondary"> because of </label>
       {{skipData.reason}}
-      <button class="btn btn-outline-primary float-right" (click)="unSkipStop(skipData)">Undo</button>
+      <button class="btn btn-outline-primary float-right" (click)="showConfirmModal(skipData)">Undo</button>
     </p>
   </div>
 

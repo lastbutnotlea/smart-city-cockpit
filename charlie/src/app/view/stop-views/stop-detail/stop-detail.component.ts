@@ -9,13 +9,12 @@ import {FeedbackData} from '../../../shared/data/feedback-data';
 import {AnnouncementData} from '../../../shared/data/announcement-data';
 import {ServiceRequestData} from '../../../shared/data/service-request-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 import {SkipStopComponent} from '../stop-skip/stop-skip';
 import {TripStopData} from '../../../shared/data/trip-stop-data';
 import {SkipData} from "../../../shared/data/skip-data";
 import {ToastService} from "../../../services/toast.service";
-import {MapComponent} from '../../network-views/map/map.component';
-import {EmbeddedAnnouncementsComponent} from '../../../shared/components/embedded-announcements/embedded-announcements.component';
+import {ConfirmDeletionComponent} from '../../../shared/components/confirm-popup/confirm-deletion.component';
 
 @Component({
   selector: 'app-stop-detail-view',
@@ -66,19 +65,36 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
     super.unsubscribe();
     const modal = this.modalService.open(SkipStopComponent);
     modal.componentInstance.data = this.stop;
+    modal.componentInstance.onAdd(item => {
+      this.stop = item;
+    });
     modal.componentInstance.closeEvent.subscribe(() => {
       // start requesting live-data again
       super.subscribeToData();
     })
   }
 
-  unSkipStop(skipData: SkipData): void {
+  unSkipStop(modal: NgbModalRef, skipData: SkipData): void {
     this.http.unSkipStop(this.stop.id, skipData).subscribe(
-      skipStop => {
-        this.stop.skipData.filter(ss => ss.id !== skipStop.id);
+      () => {
+        this.stop.skipData = this.stop.skipData.filter(ss => ss.id !== skipData.id);
         this.toastService.showSuccessToast("Stop " + this.stop.id + " was sucessfully unskipped.")
+        modal.close('Close click');
+      },
+      err => {
+        this.toastService.showErrorToast('Failed to unskip ' + this.stop.id);
+        modal.componentInstance.deleteDisabled = false;
+        console.log(JSON.stringify(err));
       }
-    )
+    );
+  }
+
+  showConfirmModal(skipData: SkipData): void {
+    const modal = this.modalService.open(ConfirmDeletionComponent);
+    modal.componentInstance.objectToDelete = skipData.id;
+    modal.componentInstance.deletionEvent.subscribe(($event) => {
+      this.unSkipStop(modal, skipData);
+    });
   }
 
   getStop(): void {
