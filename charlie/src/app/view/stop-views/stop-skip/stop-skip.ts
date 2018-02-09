@@ -38,6 +38,7 @@ export class SkipStopComponent {
         this.data.skipData.push(data);
         this.toastService.showSuccessToast('Skipped stop ' + this.data.commonName);
         this.activeModal.close('Close click');
+        this.callback(this.data);
       },
       err => {
         this.toastService.showErrorToast('Failed to skip stop ' + this.data.commonName);
@@ -49,5 +50,13 @@ export class SkipStopComponent {
 
   isSaveEnabled() {
     return this.text !== '' && !this.saveDisabled;
+  }
+
+  /**
+   * allows to do something on "confirm"
+   * @param {(param: StopData) => void} callback whatever you want to do
+   */
+  public onAdd(callback: (param: StopData) => void) {
+    this.callback = callback;
   }
 }
