@@ -1,10 +1,10 @@
-import {Component, Input, OnInit, Output} from '@angular/core';
-import {NgbActiveModal, NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
+import {Component} from '@angular/core';
+import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {StopData} from '../../../shared/data/stop-data';
-import {DateParserService} from '../../../services/date-parser.service';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {SkipData} from '../../../shared/data/skip-data';
 import {ToastService} from '../../../services/toast.service';
+import {DateUtil} from "../../../shared/util/date-util";
 
 @Component({
   selector: 'app-service-request-edit',
@@ -22,10 +22,7 @@ export class SkipStopComponent {
   from: Date = new Date();
   to: Date = new Date();
 
-  private callback: (param: StopData) => void;
-
   constructor(public activeModal: NgbActiveModal,
-              public dateParser: DateParserService,
               public http: HttpRoutingService,
               private toastService: ToastService) {
   }
@@ -34,8 +31,8 @@ export class SkipStopComponent {
     this.saveDisabled = true;
     let skipData: SkipData = new SkipData();
     skipData.reason = this.text;
-    skipData.from = this.from;
-    skipData.to = this.to;
+    skipData.from = DateUtil.cutTimezoneInformation(this.from);
+    skipData.to = DateUtil.cutTimezoneInformation(this.to);
     this.http.skipStop(this.data.id, skipData).subscribe(
       data => {
         this.data.skipData.push(data);

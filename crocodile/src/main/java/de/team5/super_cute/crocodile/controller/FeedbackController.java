@@ -2,11 +2,8 @@ package de.team5.super_cute.crocodile.controller;
 
 import de.team5.super_cute.crocodile.config.AppConfiguration;
 import de.team5.super_cute.crocodile.data.FeedbackData;
-import de.team5.super_cute.crocodile.model.EFeedbackType;
 import de.team5.super_cute.crocodile.model.Feedback;
-import de.team5.super_cute.crocodile.model.IdentifiableObject;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,19 +33,13 @@ public class FeedbackController extends BaseController<Feedback> {
   @GetMapping("/vehicle/{vehicleId}")
   public List<Feedback> getVehicleFeedbacks(@PathVariable String vehicleId) {
     logger.info("Got Request to return all feedbacks for vehicle with id " + vehicleId);
-    return data.getData().stream()
-        .filter(f -> f.getFeedbackType() == EFeedbackType.VEHICLE_FEEDBACK)
-        .filter(f -> ((IdentifiableObject) f.getObjective()).getId().equals(vehicleId))
-        .collect(Collectors.toList());
+    return ((FeedbackData) data).getFeedbackForObjectiveId(vehicleId);
   }
 
   @GetMapping("/stop/{stopId}")
   public List<Feedback> getStopFeedbacks(@PathVariable String stopId) {
     logger.info("Got Request to return all feedbacks for stop with id " + stopId);
-    return data.getData().stream()
-        .filter(f -> f.getFeedbackType() == EFeedbackType.STOP_FEEDBACK)
-        .filter(f -> ((IdentifiableObject) f.getObjective()).getId().equals(stopId))
-        .collect(Collectors.toList());
+    return ((FeedbackData) data).getFeedbackForObjectiveId(stopId);
   }
 
   @PutMapping("/{feedbackId}/process")

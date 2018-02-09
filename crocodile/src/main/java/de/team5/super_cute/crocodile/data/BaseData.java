@@ -3,6 +3,7 @@ package de.team5.super_cute.crocodile.data;
 import de.team5.super_cute.crocodile.model.IdentifiableObject;
 import java.util.List;
 import javax.transaction.Transactional;
+import org.hibernate.Session;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 
 /**
@@ -28,12 +29,11 @@ public abstract class BaseData<T extends IdentifiableObject> {
    * @return all Objects of Type T currently in the system
    */
   public List<T> getData() {
-    return (List<T>) hibernateTemplate.getSessionFactory().getCurrentSession()
-        .createQuery("from " + clazz.getName()).list();
+    return (List<T>) getCurrentSession().createQuery("from " + clazz.getName()).list();
   }
 
   public T getObjectForId(String id) {
-    List<T> objects = (List<T>) hibernateTemplate.getSessionFactory().getCurrentSession()
+    List<T> objects = (List<T>) getCurrentSession()
         .createQuery("from " + clazz.getName() + " C where C.id = '" + id + "'").list();
     return objects.size() == 0 ? null : objects.get(0);
   }
@@ -56,4 +56,7 @@ public abstract class BaseData<T extends IdentifiableObject> {
     return true;
   }
 
+  protected Session getCurrentSession() {
+    return hibernateTemplate.getSessionFactory().getCurrentSession();
+  }
 }
