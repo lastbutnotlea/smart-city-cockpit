@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
 import {LiveDataComponent} from '../../../shared/components/live-data/live-data.component';
@@ -25,6 +25,9 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
   serviceRequests: ServiceRequestData[] = [];
   trips: TripData[] = [];
 
+  // Used to check if a window has been opened or closed by an embedded component
+  openEvent = new EventEmitter<boolean>();
+
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
               private location: Location,
@@ -36,6 +39,13 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
 
   ngOnInit(): void {
     super.subscribeToData();
+    this.openEvent.subscribe(($event) => {
+      if($event){
+        super.unsubscribe();
+      } else {
+        super.subscribeToData();
+      }
+    })
   }
 
   getVehicleData(): void {
@@ -106,6 +116,7 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
   showConfirmModal(): void {
     super.unsubscribe();
     const modal = this.modalService.open(ConfirmDeletionComponent);
+    modal.componentInstance.objectToDelete = this.vehicle.id;
     modal.componentInstance.deletionEvent.subscribe(($event) => {
       this.delete(modal);
     });

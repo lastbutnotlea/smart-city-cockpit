@@ -31,7 +31,7 @@ export class ServiceRequestDetailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.title = "Service Request Detail View"
+    this.title = "Service Request Detail View";
     this.getServiceRequest();
   }
 
