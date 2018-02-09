@@ -18,8 +18,9 @@ public class VehicleData extends BaseData<Vehicle> {
   }
 
   public List<Vehicle> getVehiclesWithTypeFreeFrom(EVehicleType type, LocalDateTime time) {
-    String timestamp = new LocalDateTimeAttributeConverter().convertToDatabaseColumn(time).toString();
-    return (List<Vehicle>) hibernateTemplate.getSessionFactory().getCurrentSession()
+    String timestamp = new LocalDateTimeAttributeConverter().convertToDatabaseColumn(time)
+        .toString();
+    return (List<Vehicle>) getCurrentSession()
         .createQuery("from " + Vehicle.class.getName() + " where type = " + type.ordinal()
             + " and isshutdown = FALSE and freefrom < '" + timestamp + "'").list();
   }

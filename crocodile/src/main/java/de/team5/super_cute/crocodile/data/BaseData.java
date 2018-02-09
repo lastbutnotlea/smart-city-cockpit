@@ -12,7 +12,7 @@ import org.springframework.orm.hibernate5.HibernateTemplate;
 @Transactional
 public abstract class BaseData<T extends IdentifiableObject> {
 
-  protected final HibernateTemplate hibernateTemplate;
+  private final HibernateTemplate hibernateTemplate;
 
   public HibernateTemplate getHibernateTemplate() {
     return hibernateTemplate;

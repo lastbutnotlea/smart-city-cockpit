@@ -122,7 +122,7 @@ public class TripData extends BaseData<Trip> {
 
   public boolean hasPresentOrFutureTrips(String vehicleId) {
     return
-        getCurrentSession().createSQLQuery(activeTripsWithDelayQuery + " and v.id = " + vehicleId)
+        getCurrentSession().createSQLQuery(activeTripsWithDelayQuery + " and v.id = '" + vehicleId + "'")
             .addEntity(Trip.class).list().size() > 0;
   }
 
