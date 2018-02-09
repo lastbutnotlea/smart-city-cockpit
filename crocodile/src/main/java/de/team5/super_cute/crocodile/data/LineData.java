@@ -2,14 +2,13 @@ package de.team5.super_cute.crocodile.data;
 
 import de.team5.super_cute.crocodile.model.EState;
 import de.team5.super_cute.crocodile.model.Line;
-import java.util.List;
-import java.util.stream.Collectors;
-
 import de.team5.super_cute.crocodile.model.Stop;
 import de.team5.super_cute.crocodile.model.Trip;
 import de.team5.super_cute.crocodile.util.StateCalculator;
-import org.springframework.cache.annotation.Cacheable;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +40,12 @@ public class LineData extends BaseData<Line> {
 
   public boolean exists(String lineName) {
     return super.getData().stream().anyMatch(l -> l.getName().equals(lineName));
+  }
+
+  public List<Line> getLineWithStop(String stopid, boolean inbound) {
+    return (List<Line>) getCurrentSession().createSQLQuery("select line.*\n"
+        + "from line join line_stops_"+ (inbound ? "inb" : "outb") + " stops on line.id = stops.line_id\n"
+        + "where stops.stop_id = '"+stopid+"'").addEntity(Line.class).list();
   }
 
   @Cacheable("lineState")

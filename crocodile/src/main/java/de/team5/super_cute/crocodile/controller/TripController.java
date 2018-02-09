@@ -8,13 +8,11 @@ import de.team5.super_cute.crocodile.data.VehicleData;
 import de.team5.super_cute.crocodile.model.Trip;
 import de.team5.super_cute.crocodile.util.Helpers;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,24 +41,23 @@ public class TripController extends BaseController<Trip> {
   @GetMapping
   public List<Trip> getAllTrips() {
     logger.info("Got Request to return all trips");
-    return getTripsWithPredicate(t -> true);
+    return data.getData().stream()
+        .peek(this::prepareTripForFrontend)
+        .collect(Collectors.toList());
   }
 
   @GetMapping("/vehicle/{vehicleId}")
   public List<Trip> getAllTripsForVehicle(@PathVariable String vehicleId) {
     logger.info("Got Request to return all trips for vehicle with id " + vehicleId);
-    return getTripsWithPredicate(t -> StringUtils.isEmpty(vehicleId) || t.getVehicle().getId().equals(vehicleId));
+    return ((TripData) data).getAllTripsOfVehicle(vehicleId).stream()
+        .peek(this::prepareTripForFrontend)
+        .collect(Collectors.toList());
   }
 
   @GetMapping("/stop/{stopId}")
   public List<Trip> getAllTripsForStop(@PathVariable String stopId) {
     logger.info("Got Request to return all trips for stop with id " + stopId);
-    return getTripsWithPredicate(t -> StringUtils.isEmpty(stopId) || t.getStops().get(stopId) != null);
-  }
-
-  private List<Trip> getTripsWithPredicate(Predicate<Trip> predicate) {
-    return data.getData().stream()
-        .filter(predicate)
+    return ((TripData) data).getAllTripsOfStop(stopId).stream()
         .peek(this::prepareTripForFrontend)
         .collect(Collectors.toList());
   }

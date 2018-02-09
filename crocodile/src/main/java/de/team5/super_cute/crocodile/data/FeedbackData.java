@@ -29,6 +29,12 @@ public class FeedbackData extends BaseData<Feedback> {
         .collect(Collectors.toList());
   }
 
+  public List<Feedback> getFeedbackForObjectiveId(String objectiveId) {
+    return (List<Feedback>) getCurrentSession()
+        .createSQLQuery("select * from Feedback where objective = '" + objectiveId + "'")
+        .addEntity(Feedback.class).list();
+  }
+
   public String processFeedback(String feedbackId, boolean processed) {
     Feedback feedback = new Feedback(getObjectForId(feedbackId));
     feedback.setProcessed(processed);

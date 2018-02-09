@@ -6,6 +6,7 @@ import de.team5.super_cute.crocodile.config.AppConfiguration;
 import de.team5.super_cute.crocodile.data.BaseData;
 import de.team5.super_cute.crocodile.data.LineData;
 import de.team5.super_cute.crocodile.data.TripData;
+import de.team5.super_cute.crocodile.data.VehicleData;
 import de.team5.super_cute.crocodile.model.EState;
 import de.team5.super_cute.crocodile.model.EVehicleType;
 import de.team5.super_cute.crocodile.model.Trip;
@@ -104,7 +105,7 @@ public class VehicleController extends BaseController<Vehicle> {
     }
     Vehicle v = getObjectForId(id);
     v.setIsShutDown(true);
-      return Helpers.makeIdToJSON(deleteObject(id));
+    return Helpers.makeIdToJSON(editObject(v));
   }
 
   @PutMapping
@@ -130,9 +131,7 @@ public class VehicleController extends BaseController<Vehicle> {
     logger.info("Got Request to return all Vehicles of Type " + type + " free from " + timeString);
     LocalDateTime time = LocalDateTime.parse(timeString);
     EVehicleType vehicleType = EVehicleType.valueOf(type);
-    List<Vehicle> vehicles = data.getData().stream()
-        .filter(v -> matchVehicleTypeAndFreeFrom(v, vehicleType, time))
-        .collect(Collectors.toList());
+    List<Vehicle> vehicles = ((VehicleData) data).getVehiclesWithTypeFreeFrom(vehicleType, time);
     if (!ignoreTripId.equals("")) {
       Trip tripToIgnore = tripData.getObjectForId(ignoreTripId);
       if (tripToIgnore != null) {
@@ -140,14 +139,6 @@ public class VehicleController extends BaseController<Vehicle> {
       }
     }
     return vehicles;
-  }
-
-  private boolean matchVehicleTypeAndFreeFrom(Vehicle vehicle, EVehicleType type, LocalDateTime freeFrom) {
-    if (!vehicle.getType().equals(type)) {
-      return false;
-    }
-    tripData.setFreeFrom(vehicle);
-    return vehicle.getFreeFrom().isAfter(freeFrom);
   }
 
   private void setCurrentTrip(Vehicle vehicle) {
