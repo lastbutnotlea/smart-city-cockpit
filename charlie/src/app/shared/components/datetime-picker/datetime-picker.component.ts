@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {NgbDateStruct, NgbTimeStruct} from "@ng-bootstrap/ng-bootstrap";
-import {DateParserService} from "../../../services/date-parser.service";
+import {DateUtil} from "../../util/date-util";
 
 @Component({
   selector: 'app-datetime-picker',
@@ -16,8 +16,8 @@ export class DatetimePickerComponent {
     if (this.isValid(model)) {
       this._model = model;
     }
-    this.time = this.converter.convertDateToNgbTimeStruct(this._model);
-    this.date = this.converter.convertDateToNgbDateStruct(this._model);
+    this.time = DateUtil.convertDateToNgbTimeStruct(this._model);
+    this.date = DateUtil.convertDateToNgbDateStruct(this._model);
     this.modelChanged.emit(this._model);
   }
 
@@ -35,15 +35,12 @@ export class DatetimePickerComponent {
   time: NgbTimeStruct;
   date: NgbDateStruct;
 
-  constructor(private converter: DateParserService) {
-  }
-
   updateDate(): void {
-    this.model = this.converter.parseNativeDate(this.model, this.date);
+    this.model = DateUtil.parseNativeDate(this.model, this.date);
   }
 
   updateTime(): void {
-    this.model = this.converter.parseNativeTime(this.model, this.time);
+    this.model = DateUtil.parseNativeTime(this.model, this.time);
   }
 
 }

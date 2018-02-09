@@ -8,7 +8,7 @@ import {
 } from '../../../shared/components/dropdown/dropdown.component';
 import {FeedbackData} from '../../../shared/data/feedback-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
-import {DateParserService} from '../../../services/date-parser.service';
+import {DateUtil} from '../../../shared/util/date-util';
 import {ToastService} from '../../../services/toast.service';
 import {StringFormatterService} from '../../../services/string-formatter.service';
 import {StopData} from '../../../shared/data/stop-data';
@@ -40,7 +40,7 @@ export class ServiceRequestEditComponent implements OnInit {
   selectedType: DropdownValue = loadingDropdown;
   selectedPriority: DropdownValue = loadingDropdown;
   description: string;
-  selectedDate: string = (new Date()).toISOString();
+  selectedDate: string;
   date: NgbDateStruct;
 
   availFeedback: FeedbackData[];
@@ -48,7 +48,6 @@ export class ServiceRequestEditComponent implements OnInit {
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
-              private dateParser: DateParserService,
               private toastService: ToastService,
               private stringFormatter: StringFormatterService) { }
 
@@ -81,7 +80,7 @@ export class ServiceRequestEditComponent implements OnInit {
     this.selectedPriority = new DropdownValue(this.selected.priority,
       this.stringFormatter.priorityToLabel(this.selected.priority));
 
-    this.date = this.dateParser.convertDateToNgbDateStruct(new Date(this.selected.dueDate));
+    this.date = DateUtil.convertDateToNgbDateStruct(new Date(this.selected.dueDate));
     this.updateDate();
     if (this.selected.serviceRequestDescription.length != 0) {
       this.description = this.selected.serviceRequestDescription[0].text;
@@ -104,6 +103,7 @@ export class ServiceRequestEditComponent implements OnInit {
     this.selectedPriority = selectDropdown;
     this.description = "";
 
+    this.selectedDate = DateUtil.cutTimezoneInformation(new Date());
     this.date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
     this.updateDate();
     this.selectedFeedback = [];
@@ -291,13 +291,13 @@ export class ServiceRequestEditComponent implements OnInit {
   }
 
   updateDate(): void {
-    if(this.dateParser.isBeforeDate(new Date(), this.date)) {
-      this.selectedDate = this.dateParser.parseDate(
+    if(DateUtil.isBeforeDate(new Date(), this.date)) {
+      this.selectedDate = DateUtil.parseDate(
         this.selectedDate,
         this.date
       );
     } else {
-      this.date = this.dateParser.convertDateToNgbDateStruct(new Date(this.selectedDate));
+      this.date = DateUtil.convertDateToNgbDateStruct(new Date(this.selectedDate));
     }
   }
 

@@ -11,7 +11,7 @@ import {
 } from '../../../shared/components/dropdown/dropdown.component';
 import {TripData} from "../../../shared/data/trip-data";
 import {TripStopData} from "../../../shared/data/trip-stop-data";
-import {DateParserService} from "../../../services/date-parser.service";
+import {DateUtil} from "../../../shared/util/date-util";
 import {isNullOrUndefined} from "util";
 import {ToastService} from "../../../services/toast.service";
 
@@ -39,7 +39,6 @@ export class TripEditComponent implements OnInit {
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
-              private dateParser: DateParserService,
               private toastService: ToastService) {
   }
 
@@ -133,7 +132,7 @@ export class TripEditComponent implements OnInit {
     this.availableVehicles = [];
     let selected = this.selectedVehicle;
     this.selectedVehicle = loadingDropdown;
-    let date = DateParserService.cutTimezoneInformation(this.selectedDate);
+    let date = DateUtil.cutTimezoneInformation(this.selectedDate);
     this.http.getVehiclesByTimeAndType(date, this.selectedLine.value.type, this.model).subscribe(
       data => {
         this.availableVehicles = toDropdownItems(data, v => v.id);
@@ -158,7 +157,7 @@ export class TripEditComponent implements OnInit {
   isNextEnabled(save: boolean = false): boolean {
     if (save && this.state < 2) return false;
     if ((save && this.state == 2) || this.state == 3) {
-      if (!this.getStops().some(stop => this.selectedStops.get(stop))) {
+      if (this.getStops().filter(stop => this.selectedStops.get(stop)).length < 2) {
         return false;
       }
     }
@@ -231,6 +230,6 @@ export class TripEditComponent implements OnInit {
     this.model.stops = this.getStops().filter(stop => {
       return this.selectedStops.get(stop);
     }).map(stop => new TripStopData(stop.id, null, null, null));
-    this.model.stops[0].departureTime = DateParserService.cutTimezoneInformation(this.selectedDate);
+    this.model.stops[0].departureTime = DateUtil.cutTimezoneInformation(this.selectedDate);
   }
 }

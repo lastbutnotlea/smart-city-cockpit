@@ -10,7 +10,7 @@ import {PartyData} from '../../../shared/data/party-data';
 import {StringFormatterService} from '../../../services/string-formatter.service';
 import {ToastService} from '../../../services/toast.service';
 import {C4CNotes} from "../../../shared/data/c4c-notes";
-import {DateParserService} from "../../../services/date-parser.service";
+import {DateUtil} from "../../../shared/util/date-util";
 
 @Component({
   selector: 'app-event-edit',
@@ -92,9 +92,13 @@ export class EventEditComponent implements OnInit {
     this.saveDisabled = true;
     this.data.subject = this.subject;
     this.data.priority = this.priority.value;
-    this.data.startTime = DateParserService.cutTimezoneInformation(this.startTime);
-    this.data.endTime = DateParserService.cutTimezoneInformation(this.endTime);
-    this.data.appointmentInvolvedParties = new Array(this.party.value);
+    this.data.startTime = DateUtil.cutTimezoneInformation(this.startTime);
+    this.data.endTime = DateUtil.cutTimezoneInformation(this.endTime);
+    debugger;
+    this.data.appointmentInvolvedParties = new Array(
+      new PartyData(this.appointmentInvolvedParties[0].id,
+        this.party.value,
+        this.appointmentInvolvedParties[0].objectId));
     this.data.appointmentNotes = this.appointmentNotes;
 
     this.http.editEvent(this.data).subscribe(
