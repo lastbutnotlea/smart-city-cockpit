@@ -24,8 +24,8 @@ export class VehicleAddComponent implements OnInit, OnDestroy {
   maxCapacity: number = 999;
   vehicle: VehicleData = new VehicleData();
 
-  @Output() addEvent = new EventEmitter<VehicleData>();
-  @Output() closeEvent = new EventEmitter<boolean>();
+  addEvent = new EventEmitter<VehicleData>();
+  closeEvent = new EventEmitter<boolean>();
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,

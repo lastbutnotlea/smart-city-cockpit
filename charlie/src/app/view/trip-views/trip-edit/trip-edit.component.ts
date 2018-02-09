@@ -14,7 +14,6 @@ import {TripStopData} from "../../../shared/data/trip-stop-data";
 import {DateUtil} from "../../../shared/util/date-util";
 import {isNullOrUndefined} from "util";
 import {ToastService} from "../../../services/toast.service";
-import {VehicleData} from '../../../shared/data/vehicle-data';
 
 @Component({
   selector: 'app-trip-add',
@@ -24,8 +23,8 @@ import {VehicleData} from '../../../shared/data/vehicle-data';
 
 export class TripEditComponent implements OnInit, OnDestroy {
   model: TripData = null;
-  @Output() addEvent = new EventEmitter<TripData>();
-  @Output() closeEvent = new EventEmitter<boolean>();
+  addEvent = new EventEmitter<TripData>();
+  closeEvent = new EventEmitter<boolean>();
 
   availableLines: DropdownValue[] = [];
   availableVehicles: DropdownValue[] = [];

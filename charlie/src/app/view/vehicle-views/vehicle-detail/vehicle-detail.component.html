@@ -37,7 +37,8 @@
         <app-embedded-feedback [feedback]="feedback"></app-embedded-feedback>
       </div>
       <div class="bounding-box">
-        <app-embedded-service-requests [serviceRequests]="serviceRequests" [target]="vehicle" [openEvent]="openEvent">
+        <app-embedded-service-requests [serviceRequests]="serviceRequests" [target]="vehicle"
+                                       (notify)="onChangeInEmbeddedComponents($event)">
         </app-embedded-service-requests>
       </div>
     </div>

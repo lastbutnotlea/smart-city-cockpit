@@ -39,13 +39,15 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
 
   ngOnInit(): void {
     super.subscribeToData();
-    this.openEvent.subscribe(($event) => {
-      if($event){
-        super.unsubscribe();
-      } else {
-        super.subscribeToData();
-      }
-    })
+  }
+
+  // pause requests for live data if embedded components open any window
+  onChangeInEmbeddedComponents(windowOpened: boolean){
+    if(windowOpened){
+      super.unsubscribe();
+    } else {
+      super.subscribeToData();
+    }
   }
 
   getVehicleData(): void {

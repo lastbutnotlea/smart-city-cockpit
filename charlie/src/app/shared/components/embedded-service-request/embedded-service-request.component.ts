@@ -14,8 +14,7 @@ export class EmbeddedServiceRequestComponent {
 
   @Input() serviceRequests: ServiceRequestData[] = [];
   @Input() target: ServiceRequestTarget;
-
-  @Input() @Output() openEvent = new EventEmitter<boolean>();
+  @Output() notify: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private modalService: NgbModal,) {
   }
@@ -33,7 +32,7 @@ export class EmbeddedServiceRequestComponent {
   }
 
   addServiceRequest(): void {
-    this.openEvent.emit(true);
+    this.notify.emit(true);
     const modal = this.modalService.open(ServiceRequestEditComponent);
     modal.componentInstance.data = this.serviceRequests;
     modal.componentInstance.skipSteps(this.target.identifiableType === "vehicle", this.target);
@@ -42,7 +41,7 @@ export class EmbeddedServiceRequestComponent {
     });
     //Notify listeners once add-window has been closed
     modal.componentInstance.closeEvent.subscribe(() => {
-      this.openEvent.emit(false);
+      this.notify.emit(false);
     });
   }
 }

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Location} from '@angular/common';
 import {LiveDataComponent} from '../../../shared/components/live-data/live-data.component';
@@ -19,7 +19,7 @@ import {ConfirmDeletionComponent} from '../../../shared/components/confirm-popup
 @Component({
   selector: 'app-stop-detail-view',
   templateUrl: './stop-detail.component.html',
-  styleUrls: ['./stop-detail.component.css']
+  styleUrls: ['./stop-detail.component.css'],
 })
 
 export class StopDetailComponent extends LiveDataComponent implements OnInit {
@@ -33,9 +33,6 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
   announcements: AnnouncementData[] = [];
   serviceRequests: ServiceRequestData[] = [];
 
-  // Used to check if a window has been opened or closed
-  openEvent = new EventEmitter<boolean>();
-
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
               private location: Location,
@@ -46,21 +43,19 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
 
   ngOnInit(): void {
     super.subscribeToData();
-    this.subscribeToEmbeddedChanges();
   }
 
-  subscribeToEmbeddedChanges(): void {
-    this.openEvent.subscribe(($event) => {
-      if($event){
-        super.unsubscribe();
-      } else {
-        super.subscribeToData();
-      }
-    });
+  // pause requests for live data if embedded components open any window
+  onChangeInEmbeddedComponents(windowOpened: boolean){
+    if(windowOpened){
+      super.unsubscribe();
+    } else {
+      super.subscribeToData();
+    }
   }
 
   skipStop(): void {
-    //stop requesting new live-data
+    // pause request for live-data
     super.unsubscribe();
     const modal = this.modalService.open(SkipStopComponent);
     modal.componentInstance.data = this.stop;
@@ -68,7 +63,7 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
       this.stop = item;
     });
     modal.componentInstance.closeEvent.subscribe(() => {
-      // start requesting live-data again
+      // restart requesting live-data again
       super.subscribeToData();
     })
   }
@@ -89,11 +84,15 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
   }
 
   showConfirmModal(skipData: SkipData): void {
+    super.unsubscribe()
     const modal = this.modalService.open(ConfirmDeletionComponent);
     modal.componentInstance.objectToDelete = skipData.id;
     modal.componentInstance.deletionEvent.subscribe(($event) => {
       this.unSkipStop(modal, skipData);
     });
+    modal.componentInstance.closeEvent.subscribe(() => {
+      super.subscribeToData();
+    })
   }
 
   getStop(): void {

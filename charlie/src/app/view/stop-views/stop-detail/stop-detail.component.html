@@ -46,12 +46,13 @@
         <app-embedded-feedback [feedback]="feedback"></app-embedded-feedback>
       </div>
       <div class="bounding-box">
-        <app-embedded-announcements [announcements]="announcements" [stops]="[stop]" [openEvent]="openEvent">
-
+        <app-embedded-announcements [announcements]="announcements" [stops]="[stop]"
+                                    (notify)="onChangeInEmbeddedComponents($event)">
         </app-embedded-announcements>
       </div>
       <div class="bounding-box">
-        <app-embedded-service-requests [serviceRequests]="serviceRequests" [target]="stop" [openEvent]="openEvent">
+        <app-embedded-service-requests [serviceRequests]="serviceRequests" [target]="stop"
+                                       (notify)="onChangeInEmbeddedComponents($event)">
         </app-embedded-service-requests>
       </div>
     </div>

@@ -13,20 +13,20 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 export class EmbeddedAnnouncementsComponent {
   @Input() announcements: AnnouncementData[] = [];
   @Input() stops: StopData[] = [];
-
-  @Input() @Output() openEvent = new EventEmitter<boolean>();
+  @Output() notify: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private modalService: NgbModal) {}
 
   add(): void {
-    this.openEvent.emit(true);
+    // notify listeners that add-window has been opened
+    this.notify.emit(true);
     let data = new AnnouncementData();
     data.stops = this.stops;
     const modal = this.modalService.open(AnnouncementEditComponent);
     modal.componentInstance.setModel(data);
-    //Notify listeners once add-window has been closed
+    // notify listeners once add-window has been closed
     modal.componentInstance.closeEvent.subscribe(() => {
-      this.openEvent.emit(false);
+      this.notify.emit(false);
     });
   }
 }

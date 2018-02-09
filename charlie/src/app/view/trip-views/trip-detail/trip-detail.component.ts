@@ -59,7 +59,7 @@ export class TripDetailComponent extends LiveDataComponent implements OnInit {
     modal.componentInstance.initData();
     modal.componentInstance.closeEvent.subscribe(() => {
       super.subscribeToData();
-    })
+    });
   }
 
   showConfirmModal(): void {
@@ -76,7 +76,6 @@ export class TripDetailComponent extends LiveDataComponent implements OnInit {
   }
 
   deleteTrip(modal: NgbModalRef): void {
-    super.unsubscribe();
     this.http.deleteTrip(this.trip.id).subscribe(
       () => {
         this.toastService.showSuccessToast('Deleted ' + this.trip.id);
