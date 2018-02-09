@@ -99,6 +99,9 @@ public class TripController extends BaseController<Trip> {
   @DeleteMapping("/{id}")
   public String deleteTrip(@PathVariable String id) {
     logger.info("Got Request to delete trip with id " + id);
+    Trip trip = getObjectForId(id);
+    trip.getVehicle().setCurrentTrip(null);
+    vehicleData.editObject(trip.getVehicle());
     return Helpers.makeIdToJSON(deleteObject(id));
   }
 
