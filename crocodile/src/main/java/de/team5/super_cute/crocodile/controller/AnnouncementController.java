@@ -1,11 +1,11 @@
 package de.team5.super_cute.crocodile.controller;
 
 import de.team5.super_cute.crocodile.config.AppConfiguration;
+import de.team5.super_cute.crocodile.data.AnnouncementData;
 import de.team5.super_cute.crocodile.data.BaseData;
 import de.team5.super_cute.crocodile.model.Announcement;
 import de.team5.super_cute.crocodile.util.Helpers;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +38,7 @@ public class AnnouncementController extends BaseController<Announcement> {
   @GetMapping("/stop/{stopId}")
   public List<Announcement> getAnnouncements(@PathVariable String stopId) {
     logger.info("Got Request to return all Announcements for Stop with id " + stopId);
-    return data.getData().stream()
-        .filter(a -> a.getStops().stream().anyMatch(s -> s.getId().equals(stopId)))
-        .collect(Collectors.toList());
+    return ((AnnouncementData) data).getAnnouncementsForStopId(stopId);
   }
 
   @PostMapping

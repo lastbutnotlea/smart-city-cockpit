@@ -105,7 +105,7 @@ public class VehicleController extends BaseController<Vehicle> {
     }
     Vehicle v = getObjectForId(id);
     v.setIsShutDown(true);
-      return Helpers.makeIdToJSON(deleteObject(id));
+    return Helpers.makeIdToJSON(editObject(v));
   }
 
   @PutMapping
