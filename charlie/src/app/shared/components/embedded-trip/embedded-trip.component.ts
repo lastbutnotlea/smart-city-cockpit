@@ -17,7 +17,6 @@ export class EmbeddedTripComponent implements OnInit {
   }
 
   public sortTrips(): TripData[] {
-    debugger;
     let sorted = [];
     if(this.areTripsForVehicle){
       sorted = this.trips.sort((a: any, b: any) => {
