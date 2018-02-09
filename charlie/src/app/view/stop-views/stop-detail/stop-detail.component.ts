@@ -51,7 +51,6 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
 
   subscribeToEmbeddedChanges(): void {
     this.openEvent.subscribe(($event) => {
-      debugger;
       if($event){
         super.unsubscribe();
       } else {

@@ -53,9 +53,13 @@ export class TripDetailComponent extends LiveDataComponent implements OnInit {
   }
 
   edit(): void {
+    super.unsubscribe();
     const modal = this.modalService.open(TripEditComponent);
     modal.componentInstance.setModel(this.trip);
     modal.componentInstance.initData();
+    modal.componentInstance.closeEvent.subscribe(() => {
+      super.subscribeToData();
+    })
   }
 
   showConfirmModal(): void {

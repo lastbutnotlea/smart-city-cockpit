@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {StopData} from '../../../shared/data/stop-data';
@@ -14,6 +14,7 @@ import {TripStopData} from "../../../shared/data/trip-stop-data";
 import {DateUtil} from "../../../shared/util/date-util";
 import {isNullOrUndefined} from "util";
 import {ToastService} from "../../../services/toast.service";
+import {VehicleData} from '../../../shared/data/vehicle-data';
 
 @Component({
   selector: 'app-trip-add',
@@ -21,8 +22,10 @@ import {ToastService} from "../../../services/toast.service";
   styleUrls: ['./trip-edit.component.css']
 })
 
-export class TripEditComponent implements OnInit {
+export class TripEditComponent implements OnInit, OnDestroy {
   model: TripData = null;
+  @Output() addEvent = new EventEmitter<TripData>();
+  @Output() closeEvent = new EventEmitter<boolean>();
 
   availableLines: DropdownValue[] = [];
   availableVehicles: DropdownValue[] = [];
@@ -34,7 +37,6 @@ export class TripEditComponent implements OnInit {
   selectedDate: Date = new Date();
 
   state: number = 0;
-
   title: string = "Add new trip";
 
   constructor(public activeModal: NgbActiveModal,
@@ -81,6 +83,10 @@ export class TripEditComponent implements OnInit {
         this.toastService.showErrorToast("Could not load lines.");
       }
     );
+  }
+
+  ngOnDestroy(): void {
+    this.closeEvent.emit(true);
   }
 
   getDirectionDropdownItems(): DropdownValue[] {
@@ -201,6 +207,7 @@ export class TripEditComponent implements OnInit {
       data => {
         this.activeModal.close('Close click');
         this.toastService.showSuccessToast(data.id + ' created.');
+        this.addEvent.emit(this.model);
       },
       err => {
         console.log("An error occurred: " + JSON.stringify(err));
@@ -215,6 +222,7 @@ export class TripEditComponent implements OnInit {
       () => {
         this.activeModal.close('Close click');
         this.toastService.showSuccessToast('Edited ' + this.model.id + '.');
+        this.addEvent.emit(this.model);
       },
       err => {
         console.log("An error occurred: " + JSON.stringify(err));
