@@ -6,6 +6,7 @@ import de.team5.super_cute.crocodile.config.AppConfiguration;
 import de.team5.super_cute.crocodile.data.BaseData;
 import de.team5.super_cute.crocodile.data.LineData;
 import de.team5.super_cute.crocodile.data.TripData;
+import de.team5.super_cute.crocodile.data.VehicleData;
 import de.team5.super_cute.crocodile.model.EState;
 import de.team5.super_cute.crocodile.model.EVehicleType;
 import de.team5.super_cute.crocodile.model.Trip;
@@ -32,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(AppConfiguration.API_PREFIX + "/vehicles")
 public class VehicleController extends BaseController<Vehicle> {
 
-  private Logger logger = LoggerFactory.getLogger(this.getClass());
+  private static final Logger logger = LoggerFactory.getLogger(VehicleController.class);
 
   private TripData tripData;
   private LineData lineData;
@@ -104,7 +105,7 @@ public class VehicleController extends BaseController<Vehicle> {
     }
     Vehicle v = getObjectForId(id);
     v.setIsShutDown(true);
-      return Helpers.makeIdToJSON(deleteObject(id));
+    return Helpers.makeIdToJSON(editObject(v));
   }
 
   @PutMapping
@@ -115,6 +116,7 @@ public class VehicleController extends BaseController<Vehicle> {
 
   @GetMapping("/state")
   public EState getOverallVehiclesState() {
+    logger.info("Got Request return overall vehicle state");
     return StateCalculator.getState((int) data.getData().stream().mapToInt(Vehicle::getSeverity).average().getAsDouble());
   }
 
@@ -129,11 +131,7 @@ public class VehicleController extends BaseController<Vehicle> {
     logger.info("Got Request to return all Vehicles of Type " + type + " free from " + timeString);
     LocalDateTime time = LocalDateTime.parse(timeString);
     EVehicleType vehicleType = EVehicleType.valueOf(type);
-    List<Vehicle> vehicles = data.getData().stream()
-        .filter(v -> v.getType().equals(vehicleType))
-        .peek(tripData::setFreeFrom)
-        .filter(v -> !time.isBefore(v.getFreeFrom()))
-        .collect(Collectors.toList());
+    List<Vehicle> vehicles = ((VehicleData) data).getVehiclesWithTypeFreeFrom(vehicleType, time);
     if (!ignoreTripId.equals("")) {
       Trip tripToIgnore = tripData.getObjectForId(ignoreTripId);
       if (tripToIgnore != null) {

@@ -18,6 +18,7 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -30,7 +31,6 @@ public class MapController {
   private LineData lineData;
   private StopData stopData;
   private VehicleData vehicleData;
-  private boolean gotDataFromTpConnector = false;
   private ObjectMapper mapper;
 
   @Autowired
@@ -86,7 +86,6 @@ public class MapController {
     List<Line> lineData = this.lineData.getData();
     for (Line l : lineData) {
       ArrayNode line = connections.putArray(l.getName());
-      // TODO replace with consolidated getStops() when it exists
       List<Stop> stops = l.getStopsInbound();
       for (int i = 0; i < stops.size(); i++) {
         ObjectNode connection = line.addObject();
@@ -98,7 +97,9 @@ public class MapController {
   }
 
   @GetMapping("/state")
+  @Cacheable("networkState")
   public EState getMapState() {
+    logger.info("Got Request to return overall Network state");
     Double vehicleSeverity = vehicleData.getData().stream().mapToInt(Vehicle::getSeverity).average().getAsDouble();
     Double stopSeverity = stopData.getData().stream().mapToInt(Stop::getSeverity).average().getAsDouble();
     return StateCalculator.getState((int) ((vehicleSeverity + stopSeverity) / 2));

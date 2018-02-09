@@ -218,3 +218,14 @@ h4 {
 body{
   overflow-y: hidden;
 }
+
+/* Icon for stops to trip or feedback to service requests */
+.icon-button {
+  min-width: 38px;
+  min-height: 38px;
+  padding: 0;
+  margin: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

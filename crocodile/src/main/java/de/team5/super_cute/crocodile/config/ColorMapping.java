@@ -6,7 +6,7 @@ import java.util.Map;
 
 public class ColorMapping {
 
-  public static final Map<String, Color> lineColors = new HashMap<String, Color>() {{
+  public static final Map<String, Color> LINE_COLORS = new HashMap<String, Color>() {{
     put("10", new Color(255, 0, 0, 255));
     put("283", new Color(0, 153, 51, 255));
     put("46", new Color(0, 0, 255, 255));
@@ -19,7 +19,7 @@ public class ColorMapping {
     put("Waterloo & City", new Color(0, 255, 128, 255));
   }};
 
-  public static final Map<String, Color> girlyColors = new HashMap<String, Color>() {{
+  public static final Map<String, Color> GIRLY_COLORS = new HashMap<String, Color>() {{
     put("10", new Color(204, 0, 204, 255));
     put("283", new Color(255, 102, 153, 255));
     put("46", new Color(153, 51, 255, 255));

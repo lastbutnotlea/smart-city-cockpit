@@ -21,6 +21,7 @@ import de.team5.super_cute.crocodile.model.TickerItemable;
 import de.team5.super_cute.crocodile.model.Trip;
 import de.team5.super_cute.crocodile.util.Helpers;
 import java.io.IOException;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -60,9 +61,7 @@ public class TickerItemGenerator {
   private List<String> removedTickerItemObjectiveIds = new ArrayList<>();
 
   public List<TickerItem> getTickerItems() {
-    return cachedItems.stream()
-        .filter(ti -> !removedTickerItemObjectiveIds.contains(ti.getItem().getId()))
-        .collect(Collectors.toList());
+    return cachedItems;
   }
 
   public void deleteTickerItem(String tickerItemId) {
@@ -72,6 +71,9 @@ public class TickerItemGenerator {
         .findAny().orElse("");
     if (!tickerItemObjectId.isEmpty()) {
       removedTickerItemObjectiveIds.add(tickerItemObjectId);
+      cachedItems = cachedItems.stream()
+          .filter(ti -> !removedTickerItemObjectiveIds.contains(ti.getItem().getId()))
+          .collect(Collectors.toList());
     }
   }
 
@@ -107,12 +109,14 @@ public class TickerItemGenerator {
 
     // find lines that have no current trips
     List<Line> lines = lineData.getData();
-    lines.removeAll(tripData.getActiveTripsWithDelay(LocalDateTime.now()).stream()
+    lines.removeAll(tripData.getActiveTripsWithDelay().stream()
         .map(Trip::getLine).collect(Collectors.toList()));
     addTickerItems(lines.stream().map(TickerItemable.class::cast), lines.size());
 
     //replace all TickerItems
-    cachedItems = new ArrayList<>(newTickerItems);
+    cachedItems = new ArrayList<>(newTickerItems).stream()
+        .filter(ti -> !removedTickerItemObjectiveIds.contains(ti.getItem().getId()))
+        .collect(Collectors.toList());
     newTickerItems.clear();
 
     logger.info("Finished generating TickerItems");
@@ -122,7 +126,7 @@ public class TickerItemGenerator {
     data.limit(count).forEach(ti -> newTickerItems.add(new TickerItem(ti)));
   }
 
-  private class SeverityComparator implements Comparator<Stateable> {
+  private static class SeverityComparator implements Comparator<Stateable>, Serializable {
 
     /**
      * returns objects desc by severity

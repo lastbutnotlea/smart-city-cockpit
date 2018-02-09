@@ -1,7 +1,7 @@
 package de.team5.super_cute.crocodile.model;
 
 import static de.team5.super_cute.crocodile.config.TickerConfig.FEEDBACK_BASE_PRIORITY;
-import static de.team5.super_cute.crocodile.config.TickerConfig.FEEDBACK_CRITICAl_PRIORITY;
+import static de.team5.super_cute.crocodile.config.TickerConfig.FEEDBACK_CRITICAL_PRIORITY;
 import static de.team5.super_cute.crocodile.config.TickerConfig.FEEDBACK_FINE_PRIORITY;
 import static de.team5.super_cute.crocodile.config.TickerConfig.FEEDBACK_PROBLEMATIC_PRIORITY;
 
@@ -162,7 +162,7 @@ public class Feedback extends IdentifiableObject implements Serializable, Ticker
         priority = FEEDBACK_PROBLEMATIC_PRIORITY;
         break;
       case CRITICAL:
-        priority = FEEDBACK_CRITICAl_PRIORITY;
+        priority = FEEDBACK_CRITICAL_PRIORITY;
         break;
     }
     return FEEDBACK_BASE_PRIORITY + priority;

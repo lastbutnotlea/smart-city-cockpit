@@ -23,7 +23,16 @@ public class FeedbackData extends BaseData<Feedback> {
 
   @Override
   public List<Feedback> getData() {
-    return super.getData().stream().peek(f -> getHibernateTemplate().evict(f)).peek(this::setProcessed).collect(Collectors.toList());
+    return super.getData().stream()
+        .peek(f -> getHibernateTemplate().evict(f))
+        .peek(this::setProcessed)
+        .collect(Collectors.toList());
+  }
+
+  public List<Feedback> getFeedbackForObjectiveId(String objectiveId) {
+    return (List<Feedback>) getCurrentSession()
+        .createSQLQuery("select * from Feedback where objective = '" + objectiveId + "'")
+        .addEntity(Feedback.class).list();
   }
 
   public String processFeedback(String feedbackId, boolean processed) {

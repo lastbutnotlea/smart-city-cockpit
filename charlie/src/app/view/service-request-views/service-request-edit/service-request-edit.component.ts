@@ -8,7 +8,7 @@ import {
 } from '../../../shared/components/dropdown/dropdown.component';
 import {FeedbackData} from '../../../shared/data/feedback-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
-import {DateParserService} from '../../../services/date-parser.service';
+import {DateUtil} from '../../../shared/util/date-util';
 import {ToastService} from '../../../services/toast.service';
 import {StringFormatterService} from '../../../services/string-formatter.service';
 import {StopData} from '../../../shared/data/stop-data';
@@ -40,16 +40,14 @@ export class ServiceRequestEditComponent implements OnInit {
   selectedType: DropdownValue = loadingDropdown;
   selectedPriority: DropdownValue = loadingDropdown;
   description: string;
-  selectedDate: string = (new Date()).toISOString();
+  selectedDate: string;
   date: NgbDateStruct;
 
   availFeedback: FeedbackData[];
-  checkedFeedback: FeedbackData[];
   selectedFeedback: FeedbackData[];
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
-              private dateParser: DateParserService,
               private toastService: ToastService,
               private stringFormatter: StringFormatterService) { }
 
@@ -82,16 +80,14 @@ export class ServiceRequestEditComponent implements OnInit {
     this.selectedPriority = new DropdownValue(this.selected.priority,
       this.stringFormatter.priorityToLabel(this.selected.priority));
 
-    this.date = this.dateParser.convertDateToNgbDateStruct(new Date(this.selected.dueDate));
+    this.date = DateUtil.convertDateToNgbDateStruct(new Date(this.selected.dueDate));
     this.updateDate();
     if (this.selected.serviceRequestDescription.length != 0) {
       this.description = this.selected.serviceRequestDescription[0].text;
     }
-    this.checkedFeedback = [];
     this.selectedFeedback = [];
     this.selected.feedbacks.forEach(feedback => {
       this.selectedFeedback.push(Object.assign(new FeedbackData(), feedback));
-      this.checkedFeedback.push(Object.assign(new FeedbackData(), feedback));
     });
   }
 
@@ -107,9 +103,9 @@ export class ServiceRequestEditComponent implements OnInit {
     this.selectedPriority = selectDropdown;
     this.description = "";
 
+    this.selectedDate = DateUtil.cutTimezoneInformation(new Date());
     this.date = {year: (new Date()).getFullYear(), month: (new Date()).getMonth() + 1, day: (new Date()).getDate()};
     this.updateDate();
-    this.checkedFeedback = [];
     this.selectedFeedback = [];
   }
 
@@ -119,7 +115,6 @@ export class ServiceRequestEditComponent implements OnInit {
    */
   targetItems(): DropdownValue[] {
     if(this.targetEditable){
-      // TODO: Get data from meta data controller, do not set manually ?
       let targetItems: DropdownValue[] = [];
       targetItems.push(new DropdownValue(true, 'Vehicle'));
       targetItems.push(new DropdownValue(false, 'Stop'));
@@ -187,7 +182,6 @@ export class ServiceRequestEditComponent implements OnInit {
       this.selectedTarget = selectDropdown;
       if (this.dataEdited) {
         this.selectedFeedback = [];
-        this.checkedFeedback = [];
       }
     }
     this.targetTypeChosen = true;
@@ -229,6 +223,7 @@ export class ServiceRequestEditComponent implements OnInit {
     this.selected.priority = this.selectedPriority.value;
     this.selected.dueDate = this.selectedDate;
     this.selected.feedbacks = this.selectedFeedback;
+    this.removeFeedbackOfDifferentTargets();
     if(this.dataEdited) {
       this.sendEditRequest();
     } else {
@@ -253,13 +248,15 @@ export class ServiceRequestEditComponent implements OnInit {
     );
   }
 
+  removeFeedbackOfDifferentTargets() {
+    // get rid of all feedback that belongs to other targets
+    this.selected.feedbacks = this.selected.feedbacks.filter(feedback =>
+      feedback.objective.id === this.selected.target.id);
+  }
+
   sendEditRequest(): void {
     this.selected.name = null;
     this.selected.serviceRequestDescription[0].text = this.description;
-    // get rid of all feedback that belongs to other targets
-    this.selected.feedbacks.filter(feedback => {
-      return feedback.objective.id !== this.selected.target.id;
-    });
     this.http.editServiceRequest(this.selected).subscribe(
       data => {
         this.callback(data);
@@ -283,7 +280,6 @@ export class ServiceRequestEditComponent implements OnInit {
   }
 
   typeItems(): DropdownValue[] {
-    // TODO: Get data from meta data controller, do not set manually
     let typeItems: DropdownValue[] = [];
     typeItems.push(new DropdownValue('CLEANING', 'Cleaning'));
     typeItems.push(new DropdownValue('MAINTENANCE', 'Maintenance'));
@@ -295,26 +291,25 @@ export class ServiceRequestEditComponent implements OnInit {
   }
 
   updateDate(): void {
-    if(this.dateParser.isBeforeDate(new Date(), this.date)) {
-      this.selectedDate = this.dateParser.parseDate(
+    if(DateUtil.isBeforeDate(new Date(), this.date)) {
+      this.selectedDate = DateUtil.parseDate(
         this.selectedDate,
         this.date
       );
     } else {
-      this.date = this.dateParser.convertDateToNgbDateStruct(new Date(this.selectedDate));
+      this.date = DateUtil.convertDateToNgbDateStruct(new Date(this.selectedDate));
     }
   }
 
   isChecked(feedback: FeedbackData) {
-    return this.checkedFeedback.filter(feedback => feedback.id === feedback.id).length === 1;
+    return this.selectedFeedback.find(f => f.id === feedback.id);
   }
 
-  includeFeedback(feedback: FeedbackData, included: boolean) {
-    if (included) {
-      this.selectedFeedback.push(feedback);
+  includeFeedback(feedback: FeedbackData) {
+    if(this.isChecked(feedback)){
+      this.selectedFeedback = this.selectedFeedback.filter(f => f.id !== feedback.id);
     } else {
-      this.selectedFeedback = this.selectedFeedback.filter(filteredFeedback =>
-        filteredFeedback.id !== feedback.id);
+      this.selectedFeedback.push(feedback);
     }
     console.log(JSON.stringify(this.selectedFeedback));
   }
