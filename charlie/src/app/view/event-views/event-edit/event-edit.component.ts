@@ -94,7 +94,6 @@ export class EventEditComponent implements OnInit {
     this.data.priority = this.priority.value;
     this.data.startTime = DateUtil.cutTimezoneInformation(this.startTime);
     this.data.endTime = DateUtil.cutTimezoneInformation(this.endTime);
-    debugger;
     this.data.appointmentInvolvedParties = new Array(
       new PartyData(this.appointmentInvolvedParties[0].id,
         this.party.value,
