@@ -9,8 +9,8 @@ import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 
 export class ConfirmDeletionComponent implements OnDestroy {
   @Input() objectToDelete: String;
-  @Output() deletionEvent = new EventEmitter<boolean>();
-  @Output() closeEvent = new EventEmitter<boolean>();
+  deletionEvent = new EventEmitter<boolean>();
+  closeEvent = new EventEmitter<boolean>();
   deleteDisabled: boolean = false;
 
   constructor(public activeModal: NgbActiveModal) { }

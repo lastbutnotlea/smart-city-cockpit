@@ -45,7 +45,7 @@ export class ServiceRequestEditComponent implements OnInit, OnDestroy {
 
   availFeedback: FeedbackData[];
   selectedFeedback: FeedbackData[];
-  @Output() closeEvent = new EventEmitter<boolean>();
+  closeEvent = new EventEmitter<boolean>();
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,

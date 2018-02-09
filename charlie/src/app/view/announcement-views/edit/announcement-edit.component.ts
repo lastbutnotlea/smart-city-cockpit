@@ -29,7 +29,7 @@ export class AnnouncementEditComponent implements OnInit, OnDestroy {
 
   // this can hold the reference to an edit model, but is still updated only on "confirm"
   private data: AnnouncementData = new AnnouncementData();
-  @Output() closeEvent = new EventEmitter<boolean>();
+  closeEvent = new EventEmitter<boolean>();
 
   private callback: (param: AnnouncementData) => void = () => {
   };
