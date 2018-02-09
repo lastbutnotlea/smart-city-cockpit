@@ -57,15 +57,14 @@ public class StopController extends BaseController<Stop> {
   @GetMapping("/{id}/lines")
   public List<LineForStopData> getLinesForStop(@PathVariable String id) {
     logger.info("Got Request to return stops for line with id " + id);
-    List <Line> lines = lineData.getData();
+    List <Line> linesInbound = lineData.getLineWithStop(id, true);
+    List <Line> linesOutbound = lineData.getLineWithStop(id, false);
     List<LineForStopData> lineForStopData = new ArrayList<>();
-    for (Line line:lines) {
-      if(line.getStopsInbound().stream().anyMatch(s -> s.getId().equals(id))){
-        lineForStopData.add(new LineForStopData(true, line.getName(), line.getId()));
-      }
-      if(line.getStopsOutbound().stream().anyMatch(s -> s.getId().equals(id))){
-        lineForStopData.add(new LineForStopData(false, line.getName(), line.getId()));
-      }
+    for (Line line:linesInbound) {
+      lineForStopData.add(new LineForStopData(true, line.getName(), line.getId()));
+    }
+    for (Line line: linesOutbound) {
+      lineForStopData.add(new LineForStopData(false, line.getName(), line.getId()));
     }
     return lineForStopData;
   }

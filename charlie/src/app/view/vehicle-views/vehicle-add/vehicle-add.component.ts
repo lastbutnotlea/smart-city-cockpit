@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {DropdownValue, loadingDropdown, selectDropdown} from '../../../shared/components/dropdown/dropdown.component';
-import {DateParserService} from "../../../services/date-parser.service";
+import {DateUtil} from "../../../shared/util/date-util";
 import {StringFormatterService} from '../../../services/string-formatter.service';
 import {ToastService} from '../../../services/toast.service';
 
@@ -15,8 +15,8 @@ import {ToastService} from '../../../services/toast.service';
 export class VehicleAddComponent implements OnInit {
 
   vehicleTypes: string[] = [];
-  selected: DropdownValue = new DropdownValue(null, "");
-  capacity: number;
+  selected: DropdownValue = loadingDropdown;
+  capacity: number = null;
   saveDisabled: boolean = false;
 
   minCapacity: number = 1;
@@ -55,7 +55,7 @@ export class VehicleAddComponent implements OnInit {
       type: this.selected.value,
       state: 'FINE',
       identifiableType: "vehicle",
-      freeFrom: DateParserService.cutTimezoneInformation(new Date()),
+      freeFrom: DateUtil.cutTimezoneInformation(new Date()),
       isShutDown: false,
       currentLine: null
     }).subscribe(
@@ -76,7 +76,10 @@ export class VehicleAddComponent implements OnInit {
   }
 
   nextDisabled(){
-    return this.capacity === null || this.selected === selectDropdown || this.selected === loadingDropdown || this.saveDisabled;
+    return this.capacity === null
+      || this.selected === selectDropdown
+      || this.selected === loadingDropdown
+      || this.saveDisabled;
   }
 
   validate(event) {
