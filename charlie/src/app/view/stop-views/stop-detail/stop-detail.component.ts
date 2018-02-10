@@ -62,10 +62,11 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
     modal.componentInstance.onAdd(item => {
       this.stop = item;
     });
+
     modal.componentInstance.closeEvent.subscribe(() => {
       // restart requesting live-data again
       super.subscribeToData();
-    })
+    });
   }
 
   unSkipStop(modal: NgbModalRef, skipData: SkipData): void {
@@ -90,9 +91,10 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
     modal.componentInstance.deletionEvent.subscribe(($event) => {
       this.unSkipStop(modal, skipData);
     });
+
     modal.componentInstance.closeEvent.subscribe(() => {
       super.subscribeToData();
-    })
+    });
   }
 
   getStop(): void {
