@@ -1,5 +1,6 @@
 package de.team5.super_cute.crocodile;
 
+import static de.team5.super_cute.crocodile.config.AppConfiguration.TIMEZONE;
 import static de.team5.super_cute.crocodile.config.C4CConfig.EVENT_TEST_LOCATION_NAME;
 
 import de.team5.super_cute.crocodile.config.C4CConfig;
@@ -44,7 +45,7 @@ public class C4CTest {
       add(new C4CNotes("There are gonna be many many people", EC4CNotesTypeCode.APPOINTMENT_NOTES));
     }};
     testC4CEntity(
-        new Event("Fussballspiel", EState.FINE, LocalDateTime.now(), LocalDateTime.now().plusHours(1),
+        new Event("Fussballspiel", EState.FINE, LocalDateTime.now(TIMEZONE), LocalDateTime.now(TIMEZONE).plusHours(1),
             EVENT_TEST_LOCATION_NAME, aip, notes));
   }
 
@@ -54,7 +55,7 @@ public class C4CTest {
       add(new C4CNotes("Please clean this mess.", EC4CNotesTypeCode.SERVICE_REQUEST_DESCRIPTION));
     }};
     testC4CEntity(
-        new ServiceRequest("Reinigung des Fahrzeugs | " + Math.random(), EState.FINE, LocalDateTime.now().plusDays(5),
+        new ServiceRequest("Reinigung des Fahrzeugs | " + Math.random(), EState.FINE, LocalDateTime.now(TIMEZONE).plusDays(5),
             EServiceType.CLEANING, notes, "Vehicle_0", "Feedback_0"));
   }
 

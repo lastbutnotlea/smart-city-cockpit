@@ -1,6 +1,7 @@
 package de.team5.super_cute.crocodile.generator;
 
 import static de.team5.super_cute.crocodile.config.AppConfiguration.LIVEDATA_FREQUENCY;
+import static de.team5.super_cute.crocodile.config.AppConfiguration.TIMEZONE;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.CREATE_STOP_DEFECT_PERCENTAGE;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.CREATE_VEHICLE_DEFECT_PERCENTAGE;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.DEFECT_FEEDBACK_PERCENTAGE;
@@ -149,7 +150,7 @@ public class LiveDataGenerator {
         feedbackData.addObject(new Feedback((
             STOP_DEFECT_FEEDBACK.get(defect)
                 .get(r.nextInt(STOP_DEFECT_FEEDBACK.get(defect).size()))),
-            LocalDateTime.now(), feedbackable, STOP_FEEDBACK,
+            LocalDateTime.now(TIMEZONE), feedbackable, STOP_FEEDBACK,
             getState(STOP_DEFECTS_SEVERITY.get(defect)), false));
         currentFeedbackCount++;
       }
@@ -171,7 +172,7 @@ public class LiveDataGenerator {
         feedbackData.addObject(new Feedback((
             VEHICLE_DEFECT_FEEDBACK.get(defect)
                 .get(r.nextInt(VEHICLE_DEFECT_FEEDBACK.get(defect).size()))),
-            LocalDateTime.now(), feedbackable, STOP_FEEDBACK,
+            LocalDateTime.now(TIMEZONE), feedbackable, STOP_FEEDBACK,
             getState(VEHICLE_DEFECTS_SEVERITY.get(defect)), false));
         currentFeedbackCount++;
       }
@@ -237,7 +238,7 @@ public class LiveDataGenerator {
       Random random) {
     String message = VALUE_FEEDBACK.get(fieldname).get(rating.ordinal())
         .get(random.nextInt(VALUE_FEEDBACK.get(fieldname).get(rating.ordinal()).size()));
-    return new Feedback(message, LocalDateTime.now(), objective,
+    return new Feedback(message, LocalDateTime.now(TIMEZONE), objective,
         fieldname.equals(PEOPLE_WAITING) ? STOP_FEEDBACK : VEHICLE_FEEDBACK, rating, false);
   }
 }

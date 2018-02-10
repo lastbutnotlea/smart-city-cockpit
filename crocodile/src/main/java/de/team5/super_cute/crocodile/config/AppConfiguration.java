@@ -1,5 +1,6 @@
 package de.team5.super_cute.crocodile.config;
 
+import java.time.ZoneId;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -12,4 +13,5 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 public class AppConfiguration {
   public static final int LIVEDATA_FREQUENCY = 30000;
   public static final String API_PREFIX = "/api";
+  public static ZoneId TIMEZONE = ZoneId.of("Europe/Berlin");
 }

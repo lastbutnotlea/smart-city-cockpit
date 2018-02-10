@@ -1,6 +1,7 @@
 package de.team5.super_cute.crocodile;
 
 import static de.team5.super_cute.crocodile.config.AppConfiguration.API_PREFIX;
+import static de.team5.super_cute.crocodile.config.AppConfiguration.TIMEZONE;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import de.team5.super_cute.crocodile.model.Announcement;
@@ -30,7 +31,7 @@ public class AnnouncementControllerTest {
         API_PREFIX + "/stops",
         new TypeReference<List<Stop>>() {});
     List<Stop> stops = stopControllerTestHelper.getObjects().subList(0, 10);
-    Announcement announcement = new Announcement("TestTestTest", LocalDateTime.now(), LocalDateTime.now().plusDays(1), stops);
+    Announcement announcement = new Announcement("TestTestTest", LocalDateTime.now(TIMEZONE), LocalDateTime.now(TIMEZONE).plusDays(1), stops);
     announcementControllerTestHelper.testAddAndDelete(announcement);
   }
 }
