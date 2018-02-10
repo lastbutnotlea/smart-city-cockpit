@@ -1,5 +1,7 @@
 package de.team5.super_cute.crocodile;
 
+import static de.team5.super_cute.crocodile.config.AppConfiguration.TIMEZONE;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import de.team5.super_cute.crocodile.config.AppConfiguration;
 import de.team5.super_cute.crocodile.model.EServiceType;
@@ -44,7 +46,8 @@ public class ServiceRequestControllerTest {
     List<C4CNotes> notes = new ArrayList<C4CNotes>() {{
       add(new C4CNotes("Please clean this mess.", EC4CNotesTypeCode.SERVICE_REQUEST_DESCRIPTION));
     }};
-    ServiceRequest sr = new ServiceRequest("Reinigung des Fahrzeugs | " + Math.random(), EState.FINE, LocalDateTime.now().plusDays(5),
+    ServiceRequest sr = new ServiceRequest("Reinigung des Fahrzeugs | " + Math.random(), EState.FINE, LocalDateTime.now(
+        TIMEZONE).plusDays(5),
             EServiceType.MAINTENANCE, notes, "Vehicle_0", "FeedbackGroup_0");
     sr.setTarget(vehicleControllerTestHelper.getObjects().get(0));
     sr.setFeedbacks(new HashSet<Feedback>(feedbacks));

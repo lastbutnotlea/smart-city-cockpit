@@ -1,5 +1,6 @@
 package de.team5.super_cute.crocodile.model;
 
+import static de.team5.super_cute.crocodile.config.AppConfiguration.TIMEZONE;
 import static de.team5.super_cute.crocodile.config.InitialSetupConfig.CAPACITY_INITIAL_MAX;
 import static de.team5.super_cute.crocodile.config.InitialSetupConfig.CAPACITY_INITIAL_MIN;
 import static de.team5.super_cute.crocodile.config.InitialSetupConfig.DELAY_INITIAL_MAX;
@@ -84,7 +85,7 @@ public class Vehicle extends IdentifiableObject implements Serializable, Stateab
   @Column
   @JsonIgnore
   @Convert(converter = LocalDateTimeAttributeConverter.class)
-  private LocalDateTime outdateCurrentTrip = LocalDateTime.now();
+  private LocalDateTime outdateCurrentTrip = LocalDateTime.now(TIMEZONE);
 
   @Column
   @Convert(converter = LocalDateTimeAttributeConverter.class)
@@ -231,7 +232,7 @@ public class Vehicle extends IdentifiableObject implements Serializable, Stateab
 
   public void setCurrentTrip(Trip currentTrip) {
     if (currentTrip == null) {
-      outdateCurrentTrip = LocalDateTime.now();
+      outdateCurrentTrip = LocalDateTime.now(TIMEZONE);
     } else {
       outdateCurrentTrip = currentTrip.getLastStopTime();
     }
