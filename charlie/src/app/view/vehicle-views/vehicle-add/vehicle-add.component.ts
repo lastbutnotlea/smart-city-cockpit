@@ -1,10 +1,11 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnDestroy, OnInit} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {DropdownValue, loadingDropdown, selectDropdown} from '../../../shared/components/dropdown/dropdown.component';
 import {DateUtil} from "../../../shared/util/date-util";
 import {StringFormatterService} from '../../../services/string-formatter.service';
 import {ToastService} from '../../../services/toast.service';
+import {VehicleData} from '../../../shared/data/vehicle-data';
 
 @Component({
   selector: 'app-vehicle-add',
@@ -12,7 +13,7 @@ import {ToastService} from '../../../services/toast.service';
   styleUrls: ['./vehicle-add.component.css']
 })
 
-export class VehicleAddComponent implements OnInit {
+export class VehicleAddComponent implements OnInit, OnDestroy {
 
   vehicleTypes: string[] = [];
   selected: DropdownValue = loadingDropdown;
@@ -21,6 +22,10 @@ export class VehicleAddComponent implements OnInit {
 
   minCapacity: number = 1;
   maxCapacity: number = 999;
+  vehicle: VehicleData = new VehicleData();
+
+  addEvent = new EventEmitter<VehicleData>();
+  closeEvent = new EventEmitter<boolean>();
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
@@ -39,29 +44,22 @@ export class VehicleAddComponent implements OnInit {
     });
   }
 
+  ngOnDestroy(): void {
+    this.closeEvent.emit(true);
+  }
+
   confirm(): void {
-    if(this.capacity <= 0) {
-      this.toastService.showErrorToast('Enter positive capacity please');
-      return;
-    }
     this.saveDisabled = true;
-    this.http.addVehicle({
-      id: null,
-      capacity: this.capacity,
-      load: 0,
-      delay: 0,
-      temperature: null,
-      defects: [],
-      type: this.selected.value,
-      state: 'FINE',
-      identifiableType: "vehicle",
-      freeFrom: DateUtil.cutTimezoneInformation(new Date()),
-      isShutDown: false,
-      currentLine: null
-    }).subscribe(
+    this.vehicle.capacity = this.capacity;
+    this.vehicle.type = this.selected.value;
+    this.vehicle.state = "FINE";
+    this.vehicle.freeFrom = DateUtil.cutTimezoneInformation(new Date());
+
+    this.http.addVehicle(this.vehicle).subscribe(
       data => {
         this.toastService.showSuccessToast('Added ' + data.id);
         this.activeModal.close('Close click');
+        this.addEvent.emit(this.vehicle);
       },
       err => {
         this.saveDisabled = false;

@@ -27,7 +27,6 @@ export class FeedbackItemComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.item);
     this.time = new Date(this.item.timestamp).toString();
     this.route.queryParams.forEach((params: Params) => {
       let id = params['id'];
