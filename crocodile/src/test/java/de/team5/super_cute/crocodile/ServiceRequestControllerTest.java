@@ -1,5 +1,7 @@
 package de.team5.super_cute.crocodile;
 
+import static de.team5.super_cute.crocodile.config.AppConfiguration.TIMEZONE;
+
 import com.fasterxml.jackson.core.type.TypeReference;
 import de.team5.super_cute.crocodile.config.AppConfiguration;
 import de.team5.super_cute.crocodile.model.EServiceType;
@@ -10,7 +12,6 @@ import de.team5.super_cute.crocodile.model.Vehicle;
 import de.team5.super_cute.crocodile.model.c4c.C4CNotes;
 import de.team5.super_cute.crocodile.model.c4c.EC4CNotesTypeCode;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;

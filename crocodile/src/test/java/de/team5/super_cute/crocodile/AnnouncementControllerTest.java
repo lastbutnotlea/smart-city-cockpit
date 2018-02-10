@@ -1,12 +1,12 @@
 package de.team5.super_cute.crocodile;
 
 import static de.team5.super_cute.crocodile.config.AppConfiguration.API_PREFIX;
+import static de.team5.super_cute.crocodile.config.AppConfiguration.TIMEZONE;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import de.team5.super_cute.crocodile.model.Announcement;
 import de.team5.super_cute.crocodile.model.Stop;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
