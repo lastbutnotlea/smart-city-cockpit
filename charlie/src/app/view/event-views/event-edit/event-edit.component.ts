@@ -1,5 +1,5 @@
-import {Component, OnInit} from '@angular/core';
-import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
+import {Component, Input, OnInit, Output} from '@angular/core';
+import {NgbActiveModal, NgbDateStruct, NgbTimeStruct} from '@ng-bootstrap/ng-bootstrap';
 import {EventData} from '../../../shared/data/event-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
 import {
@@ -18,6 +18,7 @@ import {DateUtil} from "../../../shared/util/date-util";
   styleUrls: ['./event-edit.component.css']
 })
 export class EventEditComponent implements OnInit {
+  @Input() @Output()
   data: EventData;
 
   id: string;
@@ -104,6 +105,7 @@ export class EventEditComponent implements OnInit {
       data => {
         this.activeModal.close('Close click');
         this.toastService.showSuccessToast('Edited event ' + data.id);
+        console.log('Received for Edit Event: ' + data)
       },
       err => {
         this.toastService.showErrorToast('Failed to edit event ' + this.data.id);

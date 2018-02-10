@@ -37,6 +37,7 @@ export class TripEditComponent implements OnInit, OnDestroy {
 
   state: number = 0;
   title: string = "Add new trip";
+  confirmed: boolean = false;
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
@@ -200,32 +201,38 @@ export class TripEditComponent implements OnInit, OnDestroy {
   }
 
   private confirmAddTrip(): void {
+    this.confirmed = true;
     this.model = new TripData();
     this.setDataInModel();
     this.http.addTrip(this.model).subscribe(
       data => {
         this.activeModal.close('Close click');
+        this.confirmed = false;
         this.toastService.showSuccessToast(data.id + ' created.');
         this.addEvent.emit(this.model);
       },
       err => {
         console.log("An error occurred: " + JSON.stringify(err));
-        this.toastService.showErrorToast('An error occurred.')
+        this.toastService.showErrorToast('An error occurred.');
+        this.confirmed = false;
       }
     );
   }
 
   private confirmEditTrip(): void {
+    this.confirmed = true;
     this.setDataInModel();
     this.http.editTrip(this.model).subscribe(
       () => {
         this.activeModal.close('Close click');
+        this.confirmed = false;
         this.toastService.showSuccessToast('Edited ' + this.model.id + '.');
         this.addEvent.emit(this.model);
       },
       err => {
         console.log("An error occurred: " + JSON.stringify(err));
         this.toastService.showErrorToast('An error occurred: ' + JSON.stringify(err));
+        this.confirmed = false;
       }
     );
   }
@@ -236,7 +243,7 @@ export class TripEditComponent implements OnInit, OnDestroy {
     this.model.isInbound = this.selectedDirection.value;
     this.model.stops = this.getStops().filter(stop => {
       return this.selectedStops.get(stop);
-    }).map(stop => new TripStopData(stop.id, null, null, null));
+    }).map(stop => new TripStopData(stop.id, null, stop.commonName, stop.state));
     this.model.stops[0].departureTime = DateUtil.cutTimezoneInformation(this.selectedDate);
   }
 }
