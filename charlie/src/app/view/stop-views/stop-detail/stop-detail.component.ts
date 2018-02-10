@@ -19,7 +19,7 @@ import {ConfirmDeletionComponent} from '../../../shared/components/confirm-popup
 @Component({
   selector: 'app-stop-detail-view',
   templateUrl: './stop-detail.component.html',
-  styleUrls: ['./stop-detail.component.css']
+  styleUrls: ['./stop-detail.component.css'],
 })
 
 export class StopDetailComponent extends LiveDataComponent implements OnInit {
@@ -45,11 +45,27 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
     super.subscribeToData();
   }
 
+  // pause requests for live data if embedded components open any window
+  onChangeInEmbeddedComponents(windowOpened: boolean){
+    if(windowOpened){
+      super.unsubscribe();
+    } else {
+      super.subscribeToData();
+    }
+  }
+
   skipStop(): void {
+    // pause request for live-data
+    super.unsubscribe();
     const modal = this.modalService.open(SkipStopComponent);
     modal.componentInstance.data = this.stop;
     modal.componentInstance.onAdd(item => {
       this.stop = item;
+    });
+
+    modal.componentInstance.closeEvent.subscribe(() => {
+      // restart requesting live-data again
+      super.subscribeToData();
     });
   }
 
@@ -69,10 +85,15 @@ export class StopDetailComponent extends LiveDataComponent implements OnInit {
   }
 
   showConfirmModal(skipData: SkipData): void {
+    super.unsubscribe()
     const modal = this.modalService.open(ConfirmDeletionComponent);
     modal.componentInstance.objectToDelete = skipData.id;
     modal.componentInstance.deletionEvent.subscribe(($event) => {
       this.unSkipStop(modal, skipData);
+    });
+
+    modal.componentInstance.closeEvent.subscribe(() => {
+      super.subscribeToData();
     });
   }
 

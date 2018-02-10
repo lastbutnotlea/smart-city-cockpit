@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, EventEmitter, OnDestroy} from '@angular/core';
 import {NgbActiveModal} from '@ng-bootstrap/ng-bootstrap';
 import {StopData} from '../../../shared/data/stop-data';
 import {HttpRoutingService} from '../../../services/http-routing.service';
@@ -8,12 +8,12 @@ import {DateUtil} from "../../../shared/util/date-util";
 import {AnnouncementData} from '../../../shared/data/announcement-data';
 
 @Component({
-  selector: 'app-service-request-edit',
+  selector: 'app-skip-stop',
   templateUrl: './stop-skip.html',
   styleUrls: ['./stop-skip.css']
 })
 
-export class SkipStopComponent {
+export class SkipStopComponent implements OnDestroy{
   data: StopData;
 
   saveDisabled: boolean = false;
@@ -24,10 +24,15 @@ export class SkipStopComponent {
   to: Date = new Date();
 
   private callback: (param: StopData) => void = () => {};
+  closeEvent = new EventEmitter<boolean>();
 
   constructor(public activeModal: NgbActiveModal,
               public http: HttpRoutingService,
               private toastService: ToastService) {
+  }
+
+  ngOnDestroy(): void {
+    this.closeEvent.emit(true);
   }
 
   confirm(): void {

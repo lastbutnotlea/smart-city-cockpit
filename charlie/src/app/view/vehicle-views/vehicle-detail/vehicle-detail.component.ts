@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit} from '@angular/core';
 import {Location} from '@angular/common';
 import {ActivatedRoute} from '@angular/router';
 import {LiveDataComponent} from '../../../shared/components/live-data/live-data.component';
@@ -25,6 +25,9 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
   serviceRequests: ServiceRequestData[] = [];
   trips: TripData[] = [];
 
+  // Used to check if a window has been opened or closed by an embedded component
+  openEvent = new EventEmitter<boolean>();
+
   constructor(private http: HttpRoutingService,
               private route: ActivatedRoute,
               private location: Location,
@@ -36,6 +39,15 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
 
   ngOnInit(): void {
     super.subscribeToData();
+  }
+
+  // pause requests for live data if embedded components open any window
+  onChangeInEmbeddedComponents(windowOpened: boolean){
+    if(windowOpened){
+      super.unsubscribe();
+    } else {
+      super.subscribeToData();
+    }
   }
 
   getVehicleData(): void {
@@ -88,6 +100,7 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
         if (data.id === "Vehicle is in use!") {
           this.toastService.showErrorToast('Failed to delete ' + this.vehicle.id + ' because it has future trips.');
           modal.close('Close click');
+          this.subscribeToData();
         } else {
           this.toastService.showSuccessToast('Deleted ' + this.vehicle.id);
           modal.close('Close click');
@@ -97,16 +110,22 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
       err => {
         this.toastService.showErrorToast('Failed to delete ' + this.vehicle.id);
         modal.componentInstance.deleteDisabled = false;
+        this.subscribeToData();
       }
     );
   }
 
   showConfirmModal(): void {
+    super.unsubscribe();
     const modal = this.modalService.open(ConfirmDeletionComponent);
     modal.componentInstance.objectToDelete = this.vehicle.id;
     modal.componentInstance.deletionEvent.subscribe(($event) => {
       this.delete(modal);
     });
+    modal.componentInstance.closeEvent.subscribe(() => {
+      // delete was not confirmed, request live-data again
+      super.subscribeToData();
+    })
   }
 
   // update trip data

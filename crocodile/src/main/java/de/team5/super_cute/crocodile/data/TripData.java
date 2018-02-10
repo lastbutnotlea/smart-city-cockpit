@@ -27,8 +27,8 @@ public class TripData extends BaseData<Trip> {
       + "select trip.*\n"
       + "from trip_times join trip on trip_times.trip_id = trip.id\n"
       + "  join vehicle v on trip.vehicle_id = v.id\n"
-      + "where max > localtimestamp - v.delay * interval '1 second'\n";
-  private String presentTripsWithDelayQueryAdditive = " and min < localtimestamp - v.delay * interval '1 second'";
+      + "where max > (SELECT TIMESTAMP with time zone 'now' AT TIME ZONE 'Europe/Berlin') - v.delay * interval '1 second'\n";
+  private String presentTripsWithDelayQueryAdditive = " and min < (SELECT TIMESTAMP with time zone 'now' AT TIME ZONE 'Europe/Berlin') - v.delay * interval '1 second'";
 
   @Autowired
   public TripData(HibernateTemplate template) {
@@ -99,7 +99,7 @@ public class TripData extends BaseData<Trip> {
             + "\n"
             + "select trip.*\n"
             + "from trip_times join trip on trip_times.trip_id = trip.id\n"
-            + "where min < localtimestamp and max > localtimestamp").addEntity(Trip.class).list();
+            + "where min < (SELECT TIMESTAMP with time zone 'now' AT TIME ZONE 'Europe/Berlin') and max > (SELECT TIMESTAMP with time zone 'now' AT TIME ZONE 'Europe/Berlin')").addEntity(Trip.class).list();
   }
 
   public List<Trip> getActiveTripsForLine(String lineId) {
