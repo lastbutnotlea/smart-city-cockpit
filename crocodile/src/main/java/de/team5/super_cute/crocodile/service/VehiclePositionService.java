@@ -1,5 +1,7 @@
 package de.team5.super_cute.crocodile.service;
 
+import static de.team5.super_cute.crocodile.config.AppConfiguration.TIMEZONE;
+
 import de.team5.super_cute.crocodile.data.TripData;
 import de.team5.super_cute.crocodile.jsonclasses.PositionData;
 import de.team5.super_cute.crocodile.jsonclasses.PositionStopData;
@@ -35,7 +37,7 @@ public class VehiclePositionService {
     List<PositionStopData> positionAfterStopDatas = new ArrayList<>();
     addAllPositionStopDatas(positionAfterStopDatas, line, isInbound);
 
-    LocalDateTime now = LocalDateTime.now();
+    LocalDateTime now = LocalDateTime.now(TIMEZONE);
     List<Trip> trips = tripData.getActiveTripsWithDelay().stream()
         .filter(t -> t.getIsInbound() == isInbound)
         .filter(t -> t.getLine().getId().equals(line.getId()))

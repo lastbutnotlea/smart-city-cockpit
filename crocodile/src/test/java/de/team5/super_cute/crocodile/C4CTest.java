@@ -14,6 +14,7 @@ import de.team5.super_cute.crocodile.model.c4c.C4CNotes;
 import de.team5.super_cute.crocodile.model.c4c.EC4CNotesTypeCode;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.olingo.odata2.api.batch.BatchException;
@@ -44,7 +45,7 @@ public class C4CTest {
       add(new C4CNotes("There are gonna be many many people", EC4CNotesTypeCode.APPOINTMENT_NOTES));
     }};
     testC4CEntity(
-        new Event("Fussballspiel", EState.FINE, LocalDateTime.now(), LocalDateTime.now().plusHours(1),
+        new Event("Fussballspiel", EState.FINE, LocalDateTime.now(TIMEZONE), LocalDateTime.now(TIMEZONE).plusHours(1),
             EVENT_TEST_LOCATION_NAME, aip, notes));
   }
 
@@ -54,7 +55,7 @@ public class C4CTest {
       add(new C4CNotes("Please clean this mess.", EC4CNotesTypeCode.SERVICE_REQUEST_DESCRIPTION));
     }};
     testC4CEntity(
-        new ServiceRequest("Reinigung des Fahrzeugs | " + Math.random(), EState.FINE, LocalDateTime.now().plusDays(5),
+        new ServiceRequest("Reinigung des Fahrzeugs | " + Math.random(), EState.FINE, LocalDateTime.now(TIMEZONE).plusDays(5),
             EServiceType.CLEANING, notes, "Vehicle_0", "Feedback_0"));
   }
 

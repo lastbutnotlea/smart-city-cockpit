@@ -9,6 +9,7 @@ import de.team5.super_cute.crocodile.model.c4c.AppointmentInvolvedParties;
 import de.team5.super_cute.crocodile.model.c4c.C4CNotes;
 import de.team5.super_cute.crocodile.model.c4c.EC4CNotesTypeCode;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import org.junit.Test;
@@ -32,12 +33,15 @@ public class EventControllerTest {
         new TypeReference<List<Event>>() {
         });
     List<AppointmentInvolvedParties> aip = new ArrayList<AppointmentInvolvedParties>() {{
-      add(new AppointmentInvolvedParties((String) C4CConfig.PARTY_NAME_TO_ID.keySet().toArray()[0]));
+      add(new AppointmentInvolvedParties(
+          (String) C4CConfig.PARTY_NAME_TO_ID.keySet().toArray()[0]));
     }};
     List<C4CNotes> notes = new ArrayList<C4CNotes>() {{
       add(new C4CNotes("There are gonna be many many people", EC4CNotesTypeCode.APPOINTMENT_NOTES));
     }};
-    Event event = new Event("Fussballspiel", EState.FINE, LocalDateTime.now(), LocalDateTime.now().plusHours(1),
+    Event event = new Event("Fussballspiel", EState.FINE,
+        LocalDateTime.now(TIMEZONE), LocalDateTime.now(
+        TIMEZONE).plusHours(1),
         "Uni Augsburg Gruppe 02 / Universitätsstraße 02 / 86159 Augsburg / DE", aip, notes);
     eventControllerTestHelper.testAddAndDelete(event);
   }

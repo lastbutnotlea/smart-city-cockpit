@@ -10,6 +10,7 @@ import de.team5.super_cute.crocodile.model.Vehicle;
 import de.team5.super_cute.crocodile.model.c4c.C4CNotes;
 import de.team5.super_cute.crocodile.model.c4c.EC4CNotesTypeCode;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -44,7 +45,8 @@ public class ServiceRequestControllerTest {
     List<C4CNotes> notes = new ArrayList<C4CNotes>() {{
       add(new C4CNotes("Please clean this mess.", EC4CNotesTypeCode.SERVICE_REQUEST_DESCRIPTION));
     }};
-    ServiceRequest sr = new ServiceRequest("Reinigung des Fahrzeugs | " + Math.random(), EState.FINE, LocalDateTime.now().plusDays(5),
+    ServiceRequest sr = new ServiceRequest("Reinigung des Fahrzeugs | " + Math.random(), EState.FINE, LocalDateTime.now(
+        TIMEZONE).plusDays(5),
             EServiceType.MAINTENANCE, notes, "Vehicle_0", "FeedbackGroup_0");
     sr.setTarget(vehicleControllerTestHelper.getObjects().get(0));
     sr.setFeedbacks(new HashSet<Feedback>(feedbacks));
