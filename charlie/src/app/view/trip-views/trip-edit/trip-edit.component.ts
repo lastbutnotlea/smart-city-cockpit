@@ -236,7 +236,7 @@ export class TripEditComponent implements OnInit {
     this.model.isInbound = this.selectedDirection.value;
     this.model.stops = this.getStops().filter(stop => {
       return this.selectedStops.get(stop);
-    }).map(stop => new TripStopData(stop.id, null, null, null));
+    }).map(stop => new TripStopData(stop.id, null, stop.commonName, stop.state));
     this.model.stops[0].departureTime = DateUtil.cutTimezoneInformation(this.selectedDate);
   }
 }
