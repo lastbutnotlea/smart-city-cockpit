@@ -36,7 +36,7 @@ public class VehiclePositionService {
     addAllPositionStopDatas(positionAfterStopDatas, line, isInbound);
 
     LocalDateTime now = LocalDateTime.now();
-    List<Trip> trips = tripData.getActiveTripsWithDelay(now).stream()
+    List<Trip> trips = tripData.getActiveTripsWithDelay().stream()
         .filter(t -> t.getIsInbound() == isInbound)
         .filter(t -> t.getLine().getId().equals(line.getId()))
         .collect(Collectors.toList());

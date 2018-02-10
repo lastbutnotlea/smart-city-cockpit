@@ -9,7 +9,7 @@ import {EventData} from '../../../shared/data/event-data';
 import {PartyData} from '../../../shared/data/party-data';
 import {C4CNotes} from '../../../shared/data/c4c-notes';
 import {ToastService} from '../../../services/toast.service';
-import {DateParserService} from "../../../services/date-parser.service";
+import {DateUtil} from "../../../shared/util/date-util";
 
 @Component({
   selector: 'app-event-add',
@@ -67,8 +67,8 @@ export class EventAddComponent implements OnInit {
     event.id = '';
     event.subject = this.subject;
     event.priority = this.priority.value;
-    event.startTime = DateParserService.cutTimezoneInformation(this.fromDate);
-    event.endTime = DateParserService.cutTimezoneInformation(this.toDate);
+    event.startTime = DateUtil.cutTimezoneInformation(this.fromDate);
+    event.endTime = DateUtil.cutTimezoneInformation(this.toDate);
     event.appointmentInvolvedParties = new Array(new PartyData('', this.party.value, ''));
     let notesC4C: C4CNotes = new C4CNotes;
     notesC4C.id = '';
