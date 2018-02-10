@@ -14,7 +14,6 @@ import {EmbeddedLineComponent} from './shared/components/embedded-line/embedded-
 import {EmbeddedVehicleComponent} from './shared/components/embedded-vehicle/embedded-vehicle.component';
 import {ConfirmDeletionComponent} from './shared/components/confirm-popup/confirm-deletion.component';
 import {StopSortService} from './services/stop-sort.service';
-import {DateUtil} from './shared/util/date-util';
 import {Angular2FontawesomeModule} from 'angular2-fontawesome';
 import {TickerComponent} from './view/ticker/ticker-main/ticker.component';
 import {TickerItemComponent} from './view/ticker/ticker-item/ticker-item.component';
