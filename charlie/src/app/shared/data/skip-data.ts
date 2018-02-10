@@ -1,6 +1,7 @@
 export class SkipData {
   id: string;
-  from: Date;
-  to: Date;
+  from: string;
+  to: string;
   reason: string;
+  skippedTripIds: string[];
 }

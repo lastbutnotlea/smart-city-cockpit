@@ -1,11 +1,14 @@
 <div class="d-flex" [style]="getWidthStyle()" #element>
   <button
     class="btn btn-outline-primary button-dropdown d-flex w-100 justify-content-between"
-    #dropdownButton [disabled]="isDisabled"
-    (click)="isOpen = !isOpen">
+    #dropdownButton [disabled]="disabled"
+    (click)="changeOpen()">
     <span></span>
     <span class="text-ellipsis flex-grow-1">{{selected.label}}</span>
-    <span><i class="fa fa-angle-down"></i></span>
+    <span>
+      <i *ngIf="isOpen" class="fa fa-angle-up"></i>
+      <i *ngIf="!isOpen" class="fa fa-angle-down"></i>
+    </span>
   </button>
   <div class="{{isOpen? 'd-flex' : 'd-none'}} flex-column dropdown-container bg-white"
        [style]="getPositionStyle()"

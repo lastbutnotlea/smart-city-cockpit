@@ -1,6 +1,7 @@
 package de.team5.super_cute.crocodile.config;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class InitialSetupConfig {
 
@@ -17,7 +18,7 @@ public class InitialSetupConfig {
   public static final int TEMPERATURE_INITIAL_MAX = 30;
 
 
-  public static final ArrayList<String> LINEIDS = new ArrayList<String>() {{
+  public static final List<String> LINEIDS = new ArrayList<String>() {{
     add("10");
     add("283");
     add("46");

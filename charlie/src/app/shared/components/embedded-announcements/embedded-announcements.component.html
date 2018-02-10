@@ -3,7 +3,7 @@
     <i class="fa fa-bullhorn fa-2x float-left padding-left-5 text-primary"></i>
     <label class="padding-emb-box-headline">Announcements</label>
   </a>
-  <button class="btn btn-outline-primary p-2" (click)="add()">Add</button>
+  <button class="btn btn-outline-primary no-float" (click)="add()">Add</button>
 </h4>
 <div *ngFor="let announcement of announcements">
   <a href="announcements/?id={{announcement.id}}">
@@ -13,8 +13,8 @@
   </a>
   <p>
     <label class="text-secondary">
-      From {{announcement.validFrom | date:'MM/dd/yyyy HH:mm'}} to {{announcement.validTo |
-      date:'MM/dd/yyyy HH:mm'}}
+      From {{announcement.validFrom | date:'MM/dd/yyyy HH:mm'}}
+      to {{announcement.validTo | date:'MM/dd/yyyy HH:mm'}}
     </label>
   </p>
 </div>

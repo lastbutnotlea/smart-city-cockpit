@@ -1,6 +1,7 @@
 package de.team5.super_cute.crocodile.generator;
 
 
+import static de.team5.super_cute.crocodile.config.AppConfiguration.TIMEZONE;
 import static de.team5.super_cute.crocodile.config.InitialSetupConfig.INITIALIZE_FOR_MINUTES;
 import static de.team5.super_cute.crocodile.config.InitialSetupConfig.INITIALIZE_SINCE_MINUTES;
 import static de.team5.super_cute.crocodile.config.InitialSetupConfig.LINEIDS;
@@ -52,8 +53,8 @@ public class InitialDataGenerator {
     LoggerFactory.getLogger(getClass())
         .info("Started initialization");
     List<Line> lines = new TpDataConnector().getLines(LINEIDS);
-    LocalDateTime from = LocalDateTime.now().minusMinutes(INITIALIZE_SINCE_MINUTES);
-    LocalDateTime to = LocalDateTime.now().plusMinutes(INITIALIZE_FOR_MINUTES);
+    LocalDateTime from = LocalDateTime.now(TIMEZONE).minusMinutes(INITIALIZE_SINCE_MINUTES);
+    LocalDateTime to = LocalDateTime.now(TIMEZONE).plusMinutes(INITIALIZE_FOR_MINUTES);
     generateTripsAndVehicles(from, to, lines);
     LoggerFactory.getLogger(getClass())
         .info("Finished initialization");
@@ -200,7 +201,7 @@ public class InitialDataGenerator {
     return pointer;
   }
 
-  private class MyLocalDateTime {
+  private static class MyLocalDateTime {
 
     private LocalDateTime localDateTime;
 

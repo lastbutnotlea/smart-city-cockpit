@@ -37,6 +37,10 @@ p {
   margin-bottom: 30px;
 }
 
+.padding-top-10 {
+  padding-top: 10px;
+}
+
 .padding-top-30 {
   padding-top: 30px;
 }
@@ -99,6 +103,10 @@ p {
 
 .greyed-out {
   opacity: 0.3;
+}
+
+.btn:disabled {
+  opacity: 0.4 !important;
 }
 
 /* STYLING EMBEDDED COMPONENTS */
@@ -209,4 +217,15 @@ h4 {
 
 body{
   overflow-y: hidden;
+}
+
+/* Icon for stops to trip or feedback to service requests */
+.icon-button {
+  min-width: 38px;
+  min-height: 38px;
+  padding: 0;
+  margin: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

@@ -56,6 +56,7 @@ public class CsvExportController {
     ResultSet myResultSet = dataSource.getConnection().prepareStatement(sql).executeQuery();
     writer.writeAll(myResultSet, true);
     writer.close();
+    myResultSet.close();
     return s.toString();
   }
 

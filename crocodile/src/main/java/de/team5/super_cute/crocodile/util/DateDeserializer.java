@@ -1,7 +1,6 @@
 package de.team5.super_cute.crocodile.util;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import java.io.IOException;
@@ -19,7 +18,7 @@ public class DateDeserializer extends StdDeserializer<LocalDateTime> {
 
   @Override
   public LocalDateTime deserialize(JsonParser jp, DeserializationContext ctxt)
-      throws IOException, JsonProcessingException {
+      throws IOException {
 
     return LocalDateTime.parse(jp.getValueAsString());
   }

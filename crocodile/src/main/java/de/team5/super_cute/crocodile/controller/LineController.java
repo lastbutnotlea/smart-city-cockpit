@@ -1,9 +1,9 @@
 package de.team5.super_cute.crocodile.controller;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import de.team5.super_cute.crocodile.config.AppConfiguration;
 import de.team5.super_cute.crocodile.data.BaseData;
 import de.team5.super_cute.crocodile.data.LineData;
+import de.team5.super_cute.crocodile.jsonclasses.FilterData;
 import de.team5.super_cute.crocodile.jsonclasses.PositionData;
 import de.team5.super_cute.crocodile.model.EVehicleType;
 import de.team5.super_cute.crocodile.model.Line;
@@ -68,15 +68,6 @@ public class LineController extends BaseController<Line> {
   public PositionData getVehiclePositionOutbound(@PathVariable String id) {
     logger.info("Got request for vehicles outbound of line with id " + id);
     return vehiclePositionService.getVehiclePositions(getObjectForId(id), false);
-  }
-
-// TODO move to jsonclasses when doing the metadatacontroller
-  private class FilterData {
-
-    @JsonProperty
-    List<String> lineNames;
-    @JsonProperty
-    List<String> types;
   }
 
 }

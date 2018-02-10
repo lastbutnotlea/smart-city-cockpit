@@ -1,5 +1,7 @@
 package de.team5.super_cute.crocodile.model;
 
+import static de.team5.super_cute.crocodile.config.AppConfiguration.TIMEZONE;
+
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -63,8 +65,8 @@ public class Trip extends IdentifiableObject implements Serializable {
     initializeTrip();
   }
 
-  public void initializeTrip() {
-    if (isActive(LocalDateTime.now())) {
+  public void  initializeTrip() {
+    if (isActive(LocalDateTime.now(TIMEZONE))) {
       vehicle.setCurrentTrip(this);
     }
     if (getLastStopTime().isAfter(vehicle.getFreeFrom())) {

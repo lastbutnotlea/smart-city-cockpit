@@ -1,11 +1,13 @@
 package de.team5.super_cute.crocodile.controller;
 
+import static de.team5.super_cute.crocodile.config.AppConfiguration.TIMEZONE;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.TEMPERATURE_INITIAL;
 
 import de.team5.super_cute.crocodile.config.AppConfiguration;
 import de.team5.super_cute.crocodile.data.BaseData;
 import de.team5.super_cute.crocodile.data.LineData;
 import de.team5.super_cute.crocodile.data.TripData;
+import de.team5.super_cute.crocodile.data.VehicleData;
 import de.team5.super_cute.crocodile.model.EState;
 import de.team5.super_cute.crocodile.model.EVehicleType;
 import de.team5.super_cute.crocodile.model.Trip;
@@ -32,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(AppConfiguration.API_PREFIX + "/vehicles")
 public class VehicleController extends BaseController<Vehicle> {
 
-  private Logger logger = LoggerFactory.getLogger(this.getClass());
+  private static final Logger logger = LoggerFactory.getLogger(VehicleController.class);
 
   private TripData tripData;
   private LineData lineData;
@@ -88,7 +90,7 @@ public class VehicleController extends BaseController<Vehicle> {
     logger.info("Got Request to delete the vehicle with id " + id);
     if (tripData.hasPresentOrFutureTrips(id)) {
       //there are planned or active trips for that vehicle
-      return "Vehicle is in use!";
+      return Helpers.makeIdToJSON("Vehicle is in use!");
     }
     //delete past trips for this vehicle
     return forceDeleteVehicle(id);
@@ -104,7 +106,7 @@ public class VehicleController extends BaseController<Vehicle> {
     }
     Vehicle v = getObjectForId(id);
     v.setIsShutDown(true);
-      return Helpers.makeIdToJSON(deleteObject(id));
+    return Helpers.makeIdToJSON(editObject(v));
   }
 
   @PutMapping
@@ -115,6 +117,7 @@ public class VehicleController extends BaseController<Vehicle> {
 
   @GetMapping("/state")
   public EState getOverallVehiclesState() {
+    logger.info("Got Request return overall vehicle state");
     return StateCalculator.getState((int) data.getData().stream().mapToInt(Vehicle::getSeverity).average().getAsDouble());
   }
 
@@ -127,13 +130,14 @@ public class VehicleController extends BaseController<Vehicle> {
   public List<Vehicle> getVehiclesFreeFrom(@PathVariable String type, @PathVariable String timeString, @RequestParam(defaultValue = "")
       String ignoreTripId) {
     logger.info("Got Request to return all Vehicles of Type " + type + " free from " + timeString);
-    List<Vehicle> vehicles = data.getData().stream()
-        .filter(v -> v.getType().equals(EVehicleType.valueOf(type)))
-        .peek(tripData::setFreeFrom)
-        .filter(v -> !LocalDateTime.parse(timeString).isBefore(v.getFreeFrom()))
-        .collect(Collectors.toList());
+    LocalDateTime time = LocalDateTime.parse(timeString);
+    EVehicleType vehicleType = EVehicleType.valueOf(type);
+    List<Vehicle> vehicles = ((VehicleData) data).getVehiclesWithTypeFreeFrom(vehicleType, time);
     if (!ignoreTripId.equals("")) {
-      vehicles.add(tripData.getObjectForId(ignoreTripId).getVehicle());
+      Trip tripToIgnore = tripData.getObjectForId(ignoreTripId);
+      if (tripToIgnore != null) {
+        vehicles.add(tripToIgnore.getVehicle());
+      }
     }
     return vehicles;
   }
@@ -142,15 +146,18 @@ public class VehicleController extends BaseController<Vehicle> {
     if (vehicle == null) {
       return;
     }
-    if (vehicle.getOutdateCurrentTrip().isBefore(LocalDateTime.now())) {
-      Trip current = tripData.getCurrentTripOfVehicle(vehicle, LocalDateTime.now());
-      if (current != null) {
-        current.getLine().setState(lineData.calculateLineState(current.getLine()));
-      }
+    if (vehicle.getOutdateCurrentTrip().isBefore(LocalDateTime.now(TIMEZONE))) {
+      Trip current = tripData.getCurrentTripOfVehicle(vehicle, LocalDateTime.now(TIMEZONE));
       vehicle.setCurrentTrip(current);
     }
-    if (vehicle.getFreeFrom().equals(Helpers.DUMMY_TIME)) {
-      vehicle.setFreeFrom(LocalDateTime.now());
+
+    if (vehicle.getCurrentTrip() != null) {
+      vehicle.getCurrentTrip().getLine().setState(lineData.calculateLineState(vehicle.getCurrentTrip().getLine()));
     }
+
+    if (vehicle.getFreeFrom().equals(Helpers.DUMMY_TIME)) {
+      vehicle.setFreeFrom(LocalDateTime.now(TIMEZONE));
+    }
+    data.editObject(vehicle);
   }
 }
