@@ -1,5 +1,6 @@
 package de.team5.super_cute.crocodile.generator;
 
+import static de.team5.super_cute.crocodile.config.AppConfiguration.TIMEZONE;
 import static de.team5.super_cute.crocodile.config.C4CConfig.EVENT_TEST_LOCATION_NAME;
 import static de.team5.super_cute.crocodile.config.TickerConfig.ITEM_COUNT;
 import static de.team5.super_cute.crocodile.config.TickerConfig.STOP_COUNT;
@@ -86,8 +87,8 @@ public class TickerItemGenerator {
           .filter(e ->
               // filter out test case events, location name is never set through our gui
               !e.getLocationName().equals(EVENT_TEST_LOCATION_NAME)
-                  && e.getStartTime().isAfter(LocalDateTime.now().minusHours(2))
-                  && e.getEndTime().isBefore(LocalDateTime.now().plusHours(2)))
+                  && e.getStartTime().isAfter(LocalDateTime.now(TIMEZONE).minusHours(2))
+                  && e.getEndTime().isBefore(LocalDateTime.now(TIMEZONE).plusHours(2)))
           .map(TickerItemable.class::cast), Integer.MAX_VALUE);
     } catch (EntityProviderException | EdmException | IOException e) {
       Helpers.logException(logger, e);
