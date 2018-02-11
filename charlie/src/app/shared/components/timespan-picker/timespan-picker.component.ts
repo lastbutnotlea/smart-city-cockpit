@@ -19,7 +19,10 @@ export class TimespanPickerComponent {
   @Input()
   textTo: string = "Valid until: ";
 
-  isValidFrom: (Date) => boolean = (d: Date) => new Date() <= d;
+  // holds the date that is current when the component is instantiated
+  private reference: Date = new Date();
+
+  isValidFrom: (Date) => boolean = (d: Date) => this.reference <= d;
   isValidTo: (Date) => boolean = (d: Date) => this.from <= d;
 
   onFromChange(newFrom: Date): void {
