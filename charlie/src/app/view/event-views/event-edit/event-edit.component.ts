@@ -60,7 +60,7 @@ export class EventEditComponent implements OnInit {
     this.http.getInvolvedParties().subscribe(data => {
       this.availableParties = toDropdownItems(data, party => party);
       if (this.availableParties.some(p => p.label === this.appointmentInvolvedParties[0].partyName)) {
-        this.party = toDropdownItem(this.appointmentInvolvedParties[0], party => party.partyName);
+        this.party = toDropdownItem(this.appointmentInvolvedParties[0].partyName, party => party);
       } else {
         this.party = selectDropdown;
       }
