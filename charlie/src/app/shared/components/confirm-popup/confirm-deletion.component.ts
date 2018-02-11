@@ -16,7 +16,11 @@ export class ConfirmDeletionComponent implements OnDestroy {
   constructor(public activeModal: NgbActiveModal) { }
 
   ngOnDestroy(): void {
-    this.closeEvent.emit(false);
+    if(this.deleteDisabled){
+      this.closeEvent.emit(false);
+    } else {
+      this.closeEvent.emit(true);
+    }
   }
 
   confirm(): void {
