@@ -1,5 +1,6 @@
 package de.team5.super_cute.crocodile.controller;
 
+import static de.team5.super_cute.crocodile.config.AppConfiguration.TIMEZONE;
 import static de.team5.super_cute.crocodile.config.LiveDataConfig.TEMPERATURE_INITIAL;
 
 import de.team5.super_cute.crocodile.config.AppConfiguration;
@@ -145,15 +146,17 @@ public class VehicleController extends BaseController<Vehicle> {
     if (vehicle == null) {
       return;
     }
-    if (vehicle.getOutdateCurrentTrip().isBefore(LocalDateTime.now())) {
-      Trip current = tripData.getCurrentTripOfVehicle(vehicle, LocalDateTime.now());
-      if (current != null) {
-        current.getLine().setState(lineData.calculateLineState(current.getLine()));
-      }
+    if (vehicle.getOutdateCurrentTrip().isBefore(LocalDateTime.now(TIMEZONE))) {
+      Trip current = tripData.getCurrentTripOfVehicle(vehicle, LocalDateTime.now(TIMEZONE));
       vehicle.setCurrentTrip(current);
     }
+
+    if (vehicle.getCurrentTrip() != null) {
+      vehicle.getCurrentTrip().getLine().setState(lineData.calculateLineState(vehicle.getCurrentTrip().getLine()));
+    }
+
     if (vehicle.getFreeFrom().equals(Helpers.DUMMY_TIME)) {
-      vehicle.setFreeFrom(LocalDateTime.now());
+      vehicle.setFreeFrom(LocalDateTime.now(TIMEZONE));
     }
     data.editObject(vehicle);
   }

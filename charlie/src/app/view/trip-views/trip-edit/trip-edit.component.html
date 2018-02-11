@@ -1,3 +1,4 @@
+<div [ngClass]="{'greyed-out': confirmed}">
 <div class="modal-header">
   <h4 class="modal-title">
     {{ title }}
@@ -69,3 +70,6 @@
     Save
   </button>
 </div>
+</div>
+
+<div *ngIf="confirmed" class="fa fa-spinner fa-pulse fa-5x center-center text-primary"></div>

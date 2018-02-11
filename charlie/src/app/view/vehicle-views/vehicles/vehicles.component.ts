@@ -72,7 +72,15 @@ export class VehiclesComponent extends LiveDataComponent implements OnInit {
   }
 
   add(): void {
-    this.modalService.open(VehicleAddComponent);
+    //stop requesting live-data during add-process
+    super.unsubscribe();
+    const modal = this.modalService.open(VehicleAddComponent);
+    modal.componentInstance.addEvent.subscribe(($event) => {
+      this.vehicles.push($event);
+    });
+    modal.componentInstance.closeEvent.subscribe(() => {
+      super.subscribeToData();
+    })
   }
 
   // update vehicles

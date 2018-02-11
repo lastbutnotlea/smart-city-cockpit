@@ -58,7 +58,7 @@ export class AnnouncementItemComponent implements OnInit {
   showConfirmModal(): void {
     const modal = this.modalService.open(ConfirmDeletionComponent);
     modal.componentInstance.objectToDelete = this.data.id;
-    modal.componentInstance.deletionEvent.subscribe(($event) => {
+    modal.componentInstance.deletionEvent.subscribe(() => {
       this.deleteItem(modal);
     });
   }
