@@ -1,3 +1,8 @@
 nav {
   background-color: #dddddd;
 }
+
+.logo {
+  width: 15%;
+  padding-right: 50px;
+}

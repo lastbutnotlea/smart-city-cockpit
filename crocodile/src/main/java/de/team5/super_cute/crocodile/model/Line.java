@@ -181,7 +181,7 @@ public class Line extends IdentifiableObject implements Serializable, Stateable,
 
   @Override
   public String getItemHeader() {
-    return "Line not serviced.";
+    return "Line not serviced";
   }
 
   public void setItemHeader(String s) {
