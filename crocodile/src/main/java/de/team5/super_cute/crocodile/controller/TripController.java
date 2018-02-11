@@ -81,7 +81,10 @@ public class TripController extends BaseController<Trip> {
   public ResponseEntity<String> addTrip(@RequestBody Trip tripInput) {
     logger.info("Got Request to add trip " + tripInput);
     handleTripFromFrontend(tripInput);
-    return ResponseEntity.ok(Helpers.makeIdToJSON(addObject(tripInput)));
+    String idJson = Helpers.makeIdToJSON(addObject(tripInput));
+    // save new vehicle data from trip initialization to database
+    vehicleData.editObject(tripInput.getVehicle());
+    return ResponseEntity.ok(idJson);
   }
 
   @DeleteMapping("/{id}")
@@ -97,14 +100,15 @@ public class TripController extends BaseController<Trip> {
   public String editTrip(@RequestBody Trip tripInput) {
     logger.info("Got Request to edit trip " + tripInput);
     handleTripFromFrontend(tripInput);
-    return Helpers.makeIdToJSON(editObject(tripInput));
+    String idJson = Helpers.makeIdToJSON(editObject(tripInput));
+    // save new vehicle data from trip initialization to database
+    vehicleData.editObject(tripInput.getVehicle());
+    return idJson;
   }
 
   private void handleTripFromFrontend(Trip trip) {
     ((TripData) data).insertCorrectTimesForTrip(trip);
     trip.initializeTrip();
-    // save new vehicle data from trip initialization to database
-    vehicleData.editObject(trip.getVehicle());
   }
 
 }
