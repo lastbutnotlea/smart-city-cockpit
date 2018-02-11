@@ -122,9 +122,11 @@ export class VehicleDetailComponent extends LiveDataComponent implements OnInit 
     modal.componentInstance.deletionEvent.subscribe(($event) => {
       this.delete(modal);
     });
-    modal.componentInstance.closeEvent.subscribe(() => {
-      // delete was not confirmed, request live-data again
-      super.subscribeToData();
+    modal.componentInstance.closeEvent.subscribe(($event) => {
+      if($event) {
+        // delete was not confirmed, request live-data again
+        super.subscribeToData();
+      }
     })
   }
 
