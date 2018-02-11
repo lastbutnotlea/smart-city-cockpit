@@ -69,9 +69,11 @@ export class TripDetailComponent extends LiveDataComponent implements OnInit {
     modal.componentInstance.deletionEvent.subscribe(($event) => {
       this.deleteTrip(modal);
     });
-    modal.componentInstance.closeEvent.subscribe(() => {
-      // delete was not confirmed, request live-data again
-      super.subscribeToData();
+    modal.componentInstance.closeEvent.subscribe(($event) => {
+      if($event){
+        // delete was not confirmed, request live-data again
+        super.subscribeToData();
+      }
     })
   }
 

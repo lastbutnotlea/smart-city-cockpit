@@ -5,7 +5,7 @@ import {OnDestroy} from '@angular/core';
 export abstract class LiveDataComponent implements OnDestroy {
 
   protected timerSubscription: AnonymousSubscription;
-  protected interval: number = 2000;
+  protected interval: number = 20000;
 
   /**
    * Makes sure live-data-requests are stopped
