@@ -52,7 +52,7 @@ export class EventEditComponent implements OnInit {
     }
     this.appointmentNotes = [];
     for (const note of this.data.appointmentNotes) {
-      this.appointmentNotes.push(note);
+      this.appointmentNotes.push(Object.assign(new C4CNotes(), note));
     }
   }
 
