@@ -29,7 +29,7 @@
       Cancel
     </button>
     <ng-container *ngIf="state !== 0">
-      <button type="button" class="btn btn-outline-primary" (click)="back()" [disabled]="!isBackEnabled()">Back</button>
+      <button type="button" class="btn btn-outline-dark" (click)="back()" [disabled]="!isBackEnabled()">Back</button>
     </ng-container>
     <button type="button" class="btn btn-outline-primary" (click)="next()" [disabled]="!isNextEnabled()">
       {{state === 2? "Save" : "Next"}}
