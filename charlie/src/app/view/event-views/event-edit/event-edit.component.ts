@@ -91,21 +91,15 @@ export class EventEditComponent implements OnInit {
 
   confirm(): void {
     this.saveDisabled = true;
-    this.data.subject = this.subject;
-    this.data.priority = this.priority.value;
-    this.data.startTime = DateUtil.cutTimezoneInformation(this.startTime);
-    this.data.endTime = DateUtil.cutTimezoneInformation(this.endTime);
-    this.data.appointmentInvolvedParties = new Array(
-      new PartyData(this.appointmentInvolvedParties[0].id,
-        this.party.value,
-        this.appointmentInvolvedParties[0].objectId));
-    this.data.appointmentNotes = this.appointmentNotes;
+    let model = new EventData();
+    this.fillEventWithData(model);
 
-    this.http.editEvent(this.data).subscribe(
+    this.http.editEvent(model).subscribe(
       data => {
         this.activeModal.close('Close click');
         this.toastService.showSuccessToast('Edited event ' + data.id);
-        console.log('Received for Edit Event: ' + data)
+        console.log('Received for Edit Event: ' + data);
+        this.fillEventWithData(this.data);
       },
       err => {
         this.toastService.showErrorToast('Failed to edit event ' + this.data.id);
@@ -113,5 +107,17 @@ export class EventEditComponent implements OnInit {
         this.saveDisabled = false;
       }
     );
+  }
+
+  private fillEventWithData(event: EventData) {
+    event.subject = this.subject;
+    event.priority = this.priority.value;
+    event.startTime = DateUtil.cutTimezoneInformation(this.startTime);
+    event.endTime = DateUtil.cutTimezoneInformation(this.endTime);
+    event.appointmentInvolvedParties = new Array(
+      new PartyData(this.appointmentInvolvedParties[0].id,
+        this.party.value,
+        this.appointmentInvolvedParties[0].objectId));
+    event.appointmentNotes = this.appointmentNotes;
   }
 }
