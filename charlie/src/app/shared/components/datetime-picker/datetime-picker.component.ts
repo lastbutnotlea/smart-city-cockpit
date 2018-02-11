@@ -13,7 +13,7 @@ export class DatetimePickerComponent {
 
   @Input()
   set model(model: Date) {
-    if (this.isValid(model)) {
+    if (this.isValid(model) || !this.isValid(this._model)) {
       this._model = model;
     }
     this.time = DateUtil.convertDateToNgbTimeStruct(this._model);
