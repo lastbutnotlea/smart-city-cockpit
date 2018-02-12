@@ -27,10 +27,10 @@
         <i class="fa fa-calendar fa-2x float-left padding-left-5 text-primary"></i>
         <label class="padding-emb-box-headline">Information</label>
       </h4>
-      <p>Subject: {{event.subject}}</p>
-      <p>Priority: {{ stringFormatter.priorityToLabel(event.priority) }}</p>
-      <p>Start Date: {{event.startTime | date:'MM/dd/yyyy HH:mm'}}</p>
-      <p>Start Date: {{event.endTime | date:'MM/dd/yyyy HH:mm'}}</p>
+      <p><label class="text-secondary">Subject: </label> {{event.subject}}</p>
+      <p><label class="text-secondary">Priority: </label> {{ stringFormatter.priorityToLabel(event.priority) }}</p>
+      <p><label class="text-secondary">Start Date: </label> {{event.startTime | date:'MM/dd/yyyy HH:mm'}}</p>
+      <p><label class="text-secondary">End Date: </label> {{event.endTime | date:'MM/dd/yyyy HH:mm'}}</p>
     </div>
 
     <!-- involved parties -->
