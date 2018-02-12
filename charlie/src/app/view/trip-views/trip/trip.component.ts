@@ -72,13 +72,6 @@ export class TripComponent extends LiveDataComponent implements OnInit {
   private addFilter(): void {
     this.http.getFilterData().subscribe(
       data => {
-        // add filters for vehicles
-        let vehicleFilter = new FilterComponent();
-        for (let val in data.types) {
-          let name = data.types[val];
-          vehicleFilter.addFilter(this.stringFormatter.toFirstUpperRestLower(name), trip => trip.vehicle.type === name);
-        }
-        this.filterGroup.addFilterComponent(vehicleFilter);
         // add filters for lines
         let lineFilter = new FilterComponent();
         for (let val in data.lineNames) {

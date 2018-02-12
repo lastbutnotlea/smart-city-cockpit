@@ -19,7 +19,7 @@ import {StopData} from '../../../shared/data/stop-data';
   styleUrls: ['./service-request-edit.component.css']
 })
 
-export class ServiceRequestEditComponent implements OnInit, OnDestroy {
+export class ServiceRequestEditComponent implements OnInit {
   @Input() @Output()
   data: ServiceRequestData[];
   // stores data of the new service request
@@ -45,7 +45,6 @@ export class ServiceRequestEditComponent implements OnInit, OnDestroy {
 
   availFeedback: FeedbackData[];
   selectedFeedback: FeedbackData[];
-  closeEvent = new EventEmitter<boolean>();
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
@@ -60,10 +59,6 @@ export class ServiceRequestEditComponent implements OnInit, OnDestroy {
     } else {
       this.setInitialData();
     }
-  }
-
-  ngOnDestroy(): void {
-    this.closeEvent.emit(true);
   }
 
   setPreviousData(): void {
