@@ -30,7 +30,7 @@
       <p><label class="text-secondary">Subject: </label> {{event.subject}}</p>
       <p><label class="text-secondary">Priority: </label> {{ stringFormatter.priorityToLabel(event.priority) }}</p>
       <p><label class="text-secondary">Start Date: </label> {{event.startTime | date:'MM/dd/yyyy HH:mm'}}</p>
-      <p><label class="text-secondary">Start Date: </label> {{event.endTime | date:'MM/dd/yyyy HH:mm'}}</p>
+      <p><label class="text-secondary">End Date: </label> {{event.endTime | date:'MM/dd/yyyy HH:mm'}}</p>
     </div>
 
     <!-- involved parties -->
