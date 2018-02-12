@@ -19,7 +19,7 @@ import {StopData} from '../../../shared/data/stop-data';
   styleUrls: ['./service-request-edit.component.css']
 })
 
-export class ServiceRequestEditComponent implements OnInit {
+export class ServiceRequestEditComponent implements OnInit, OnDestroy {
   @Input() @Output()
   data: ServiceRequestData[];
   // stores data of the new service request
@@ -45,6 +45,7 @@ export class ServiceRequestEditComponent implements OnInit {
 
   availFeedback: FeedbackData[];
   selectedFeedback: FeedbackData[];
+  closeEvent = new EventEmitter<boolean>();
 
   constructor(public activeModal: NgbActiveModal,
               private http: HttpRoutingService,
@@ -61,6 +62,10 @@ export class ServiceRequestEditComponent implements OnInit {
     }
   }
 
+  ngOnDestroy(): void {
+    this.closeEvent.emit(true);
+  }
+
   setPreviousData(): void {
     this.selected = this.data[0];
     this.title = "Edit service request " + this.selected.id;
@@ -73,7 +78,7 @@ export class ServiceRequestEditComponent implements OnInit {
       this.selectedTarget = toDropdownItem(this.selected.target, item => item.id);
     } else {
       this.selectedTarget = toDropdownItem(this.selected.target,
-          item =>this.stringFormatter.toStopId(<StopData> item));
+        item =>this.stringFormatter.toStopId(<StopData> item));
     }
     this.selectedType = new DropdownValue(this.selected.serviceType,
       this.stringFormatter.toFirstUpperRestLower(this.selected.serviceType));
@@ -160,15 +165,15 @@ export class ServiceRequestEditComponent implements OnInit {
           });
         //get all stop targets
       } else if (!this.selectedTargetType.value) {
-          this.http.getStops().subscribe(data => {
-              this.targetTypeChosen = true;
-              this.setTargetData(data);
-            },
-            err => {
-              this.toastService.showLastingErrorToast(
-                'Failed to load stop targets. Please try reloading the page');
-              console.log(JSON.stringify(err));
-            });
+        this.http.getStops().subscribe(data => {
+            this.targetTypeChosen = true;
+            this.setTargetData(data);
+          },
+          err => {
+            this.toastService.showLastingErrorToast(
+              'Failed to load stop targets. Please try reloading the page');
+            console.log(JSON.stringify(err));
+          });
       }
       // if we don't need to get new data from backend, just set targetTypeChosen to true
     } else {
@@ -314,7 +319,7 @@ export class ServiceRequestEditComponent implements OnInit {
   }
 
   stepBack() {
-   if(this.dataChosen){
+    if(this.dataChosen){
       this.dataChosen = false;
     } else if(this.targetTypeChosen) {
       this.targetTypeChosen = false;
