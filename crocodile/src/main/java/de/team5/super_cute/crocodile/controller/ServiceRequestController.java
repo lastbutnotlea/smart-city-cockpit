@@ -127,7 +127,7 @@ public class ServiceRequestController {
     cache.removeIf(sr -> sr.getId().equals(serviceRequestInput.getId()));
     cache.add(serviceRequestInput);
 
-    connector.patchC4CEntity(serviceRequestInput);
+    connector.patchC4CEntity(serviceRequestInput, true);
     return serviceRequestInput;
   }
 

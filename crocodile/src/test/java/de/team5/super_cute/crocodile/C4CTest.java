@@ -80,7 +80,7 @@ public class C4CTest {
       }
 
 
-      connector.patchC4CEntity(entityWithObjectId);
+      connector.patchC4CEntity(entityWithObjectId, false);
       List<C4CEntity> entitiesChanged = connector.getAllC4CEntities(entityWithObjectId.getEmptyObject());
       Assert.assertTrue(entitiesChanged.contains(entityWithObjectId));
 

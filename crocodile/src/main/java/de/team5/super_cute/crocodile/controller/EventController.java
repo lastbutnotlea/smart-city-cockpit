@@ -89,7 +89,7 @@ public class EventController {
     logger.info("Got Request to edit Event: " + eventInput);
 
     handleEventFromFrontend(eventInput);
-    connector.patchC4CEntity(eventInput);
+    connector.patchC4CEntity(eventInput, false);
     prepareEventForFrontend(eventInput);
     return eventInput;
   }

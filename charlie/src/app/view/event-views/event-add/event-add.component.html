@@ -32,7 +32,8 @@
       <app-dropdown [values]="availableParties" [(selected)]="party" [width]="300"></app-dropdown>
     </div>
 
-    <app-timespan-picker [(from)]="fromDate" [(to)]="toDate"></app-timespan-picker>
+    <app-timespan-picker [from]="fromDate" [to]="toDate" (fromChanged)="fromDate = $event"
+                         (toChanged)="toDate = $event"></app-timespan-picker>
   </div>
 
   <div class="modal-footer">
