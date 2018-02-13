@@ -110,7 +110,7 @@ public class TickerItemGenerator {
 
     // find lines that have no current trips
     List<Line> lines = lineData.getData();
-    lines.removeAll(tripData.getActiveTripsWithDelay().stream()
+    lines.removeAll(tripData.getActiveTripsWithDelay(LocalDateTime.now(TIMEZONE)).stream()
         .map(Trip::getLine).collect(Collectors.toList()));
     addTickerItems(lines.stream().map(TickerItemable.class::cast), lines.size());
 

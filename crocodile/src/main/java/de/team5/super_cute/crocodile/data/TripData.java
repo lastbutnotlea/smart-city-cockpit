@@ -108,9 +108,20 @@ public class TripData extends BaseData<Trip> {
             + lineId + "'").addEntity(Trip.class).list();
   }
 
-  public List<Trip> getActiveTripsWithDelay() {
+  public List<Trip> getActiveTripsWithDelay(LocalDateTime time) {
+    LocalDateTimeAttributeConverter converter = new LocalDateTimeAttributeConverter();
     return (List<Trip>) getCurrentSession()
-        .createSQLQuery(activeTripsWithDelayQuery + presentTripsWithDelayQueryAdditive)
+        .createSQLQuery("with trip_times(trip_id, min, max) as (\n"
+            + "  select trip.id, min(t.stops), max(t.stops)\n"
+            + "  from trip join trip_stops t on trip.id = t.trip_id\n"
+            + "  group by trip.id\n"
+            + ")\n"
+            + "\n"
+            + "select trip.*\n"
+            + "from trip_times join trip on trip_times.trip_id = trip.id\n"
+            + "  join vehicle v on trip.vehicle_id = v.id\n"
+            + "where max > timestamp '" + converter.convertToDatabaseColumn(time) + "' - v.delay * interval '1 second'\n"
+            + " and min < timestamp '" + converter.convertToDatabaseColumn(time) + "' - v.delay * interval '1 second'")
         .addEntity(Trip.class).list();
   }
 
