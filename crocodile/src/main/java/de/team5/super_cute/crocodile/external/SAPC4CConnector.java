@@ -293,10 +293,10 @@ public class SAPC4CConnector {
    * @param entity is patched into the sap system
    * @return ObjectId of patched object or "Failure"
    */
-  public void patchC4CEntity(C4CEntity entity)
+  public void patchC4CEntity(C4CEntity entity, boolean editSR)
       throws IOException, BatchException {
     putC4CEntity(entity, createUri("", entity.getCollectionName(), entity.getObjectId(), ""),
-        Helpers.PATCH);
+        Helpers.PATCH, editSR);
     // do separate patches for associatedEntities
     List<Field> associatedEntitiesFields = serializer.getC4CProperties(entity).stream()
         .filter(f -> ((C4CProperty) f.getAnnotation(C4CProperty.class)).hasAssociatedEntities())
@@ -307,7 +307,7 @@ public class SAPC4CConnector {
       try {
         List<C4CEntity> entities = (List<C4CEntity>) field.get(entity);
         for (C4CEntity associatedEntity : entities) {
-          patchC4CEntity(associatedEntity);
+          patchC4CEntity(associatedEntity, editSR);
         }
       } catch (IllegalAccessException e) {
         Helpers.logException(logger, e);
@@ -320,10 +320,10 @@ public class SAPC4CConnector {
    * @return ObjectId of created object or "Failure"
    */
   public String putC4CEntity(C4CEntity entity) throws IOException, BatchException {
-    return putC4CEntity(entity, entity.getCollectionName(), Helpers.POST);
+    return putC4CEntity(entity, entity.getCollectionName(), Helpers.POST, false);
   }
 
-  private String putC4CEntity(C4CEntity entity, String uri, String method)
+  private String putC4CEntity(C4CEntity entity, String uri, String method, boolean editSR)
       throws IOException, BatchException {
     List<BatchPart> batchParts = new ArrayList<>();
 
@@ -336,7 +336,7 @@ public class SAPC4CConnector {
     changeSetHeaders.put(ACCEPT_HEADER, CONTENT_TYPE);
 
     BatchChangeSetPart changeRequest = BatchChangeSetPart.method(method)
-        .uri(uri).body(serializer.serializeC4CEntityToString(entity))
+        .uri(uri).body(serializer.serializeC4CEntityToString(entity, editSR))
         .headers(changeSetHeaders).contentId(contentId).build();
     changeSet.add(changeRequest);
     batchParts.add(changeSet);

@@ -33,10 +33,11 @@ public class SAPC4CSerializer {
 
   private static final Logger logger = LoggerFactory.getLogger(SAPC4CSerializer.class);
 
-  public String serializeC4CEntityToString(C4CEntity entity) throws JsonProcessingException {
+  public String serializeC4CEntityToString(C4CEntity entity, boolean editSR)
+      throws JsonProcessingException {
     ObjectMapper mapper = new ObjectMapper();
 
-    Map<String, Object> map = serializeC4CEntity(entity);
+    Map<String, Object> map = serializeC4CEntity(entity, editSR);
     String json = mapper.writeValueAsString(map);
     return json;
   }
@@ -47,7 +48,7 @@ public class SAPC4CSerializer {
         .collect(Collectors.toList());
   }
 
-  private Map<String, Object> serializeC4CEntity(C4CEntity entity)
+  private Map<String, Object> serializeC4CEntity(C4CEntity entity, boolean editSR)
       throws JsonProcessingException {
     Map<String, Object> propMap = new HashMap<>();
 
@@ -89,7 +90,12 @@ public class SAPC4CSerializer {
         } // LocalDateTime
         else if (field.getType().equals(LocalDateTime.class)) {
           if (field.getName().equals("dueDate")) {
-            propMap.put(c4CAnnotation.name(), ((LocalDateTime) field.get(entity)).toString() + "Z");
+            if (editSR) {
+              propMap.put(c4CAnnotation.name(),
+                  (((LocalDateTime) field.get(entity)).toString() + ":00Z"));
+            } else {
+              propMap.put(c4CAnnotation.name(), ((LocalDateTime) field.get(entity)).toString());
+            }
           } else {
             propMap.put(c4CAnnotation.name(),
                 localDateTimeToC4CDateString((LocalDateTime) field.get(entity)));
@@ -113,7 +119,7 @@ public class SAPC4CSerializer {
               .getSuperclass().equals(C4CEntity.class)) {
             List<C4CEntity> items = (List<C4CEntity>) field.get(entity);
             for (C4CEntity item : items) {
-              maps.add(serializeC4CEntity(item));
+              maps.add(serializeC4CEntity(item, editSR));
             }
           }
         }
@@ -131,6 +137,7 @@ public class SAPC4CSerializer {
         .append(time.atZone(ZoneId.of("UTC")).toInstant().toEpochMilli()).append(")/")
         .toString());
   }
+
   /**
    * Gets all relevant fields from entry and sets them in result.
    *
@@ -158,7 +165,13 @@ public class SAPC4CSerializer {
               field.set(result, EState.c4CPriorityToState((String) value));
             } else if (field.getName().equals("dueDate")) {
               String dateWithTimeZone = (String) value;
-              field.set(result, LocalDateTime.parse(dateWithTimeZone.substring(0, dateWithTimeZone.length() - 1)));
+              if (dateWithTimeZone.endsWith("Z")) {
+                field.set(result, LocalDateTime
+                    .parse(dateWithTimeZone.substring(0, dateWithTimeZone.length() - 1)));
+              } else {
+                field.set(result,
+                    LocalDateTime.parse(dateWithTimeZone.substring(0, dateWithTimeZone.length())));
+              }
             } else {
               field.set(result, value);
             }

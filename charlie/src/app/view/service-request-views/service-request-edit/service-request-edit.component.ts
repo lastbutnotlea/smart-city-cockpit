@@ -30,6 +30,7 @@ export class ServiceRequestEditComponent implements OnInit, OnDestroy {
   dataChosen: boolean = false;
   saveDisabled: boolean = false;
   targetEditable: boolean = true;
+  typeEditable: boolean = true;
   dataEdited: boolean = false;
 
   selectedTargetType: DropdownValue = loadingDropdown;
@@ -67,6 +68,7 @@ export class ServiceRequestEditComponent implements OnInit, OnDestroy {
   }
 
   setPreviousData(): void {
+    this.typeEditable = false;
     this.selected = this.data[0];
     this.title = "Edit service request " + this.selected.id;
     const value = this.selected.target.identifiableType === "vehicle";
