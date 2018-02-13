@@ -87,8 +87,8 @@ public class TickerItemGenerator {
           .filter(e ->
               // filter out test case events, location name is never set through our gui
               !e.getLocationName().equals(EVENT_TEST_LOCATION_NAME)
-                  && e.getStartTime().isAfter(LocalDateTime.now(TIMEZONE).minusHours(2))
-                  && e.getEndTime().isBefore(LocalDateTime.now(TIMEZONE).plusHours(2)))
+                  && LocalDateTime.now(TIMEZONE).isAfter(e.getStartTime().minusHours(2))
+                  && LocalDateTime.now(TIMEZONE).isBefore(e.getEndTime().plusHours(2)))
           .map(TickerItemable.class::cast), Integer.MAX_VALUE);
     } catch (EntityProviderException | EdmException | IOException e) {
       Helpers.logException(logger, e);
