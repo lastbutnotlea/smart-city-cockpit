@@ -63,11 +63,10 @@ import org.springframework.stereotype.Service;
 @Service("sapC4CConnector")
 public class SAPC4CConnector {
 
-  private static final String BASE_URL = "https://my304939.crm.ondemand.com/sap/c4c/odata/v1/c4codata/";
+  private static final String BASE_URL = "https://odatac4ctrial.hana.ondemand.com/proxy/sap/c4c/odata/v1/c4codata/";
   private static final String METADATA = "$metadata";
   private static final String AUTHORIZATION_HEADER = "Authorization";
-  private static final String AUTHORIZATION =
-      "Basic VW5pQXVnc2J1cmcwMjoxMjNhYmM0NTZBQkM=";
+  private static final String AUTHORIZATION = "";
   private static final String CSRF_TOKEN_HEADER = "x-csrf-token";
   private static final String FETCH = "fetch";
   private static final String CONTENT_TYPE = "application/json";
