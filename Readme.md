@@ -1,5 +1,7 @@
 # Readme
 
+Charlie 5 showcases how a smart city cockpit for London's public transport might look. It visualizes data originating from different sources in a unified interface. Users can overlook the status of all means of transportation in real-time. The system provides tools to analyze and control vehicle fleets in a single, centralized application.
+
 ## Build and run
 
 ### Backend only
